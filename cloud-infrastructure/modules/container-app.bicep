@@ -2,6 +2,7 @@ param name string
 param location string
 param tags object
 param resourceGroupName string
+param environmentName string
 param environmentId string
 param containerRegistryName string
 param containerImageName string
@@ -11,6 +12,7 @@ param memory string = '0.5Gi'
 param sqlServerName string
 param sqlDatabaseName string
 param userAssignedIdentityName string
+param customDomainName string
 
 resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   scope: resourceGroup(resourceGroupName)
@@ -24,6 +26,22 @@ module containerRegistryPermission './container-registry-permission.bicep' = {
   params: {
     containerRegistryName: containerRegistryName
     identityPrincipalId: userAssignedIdentity.properties.principalId
+  }
+}
+
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+  scope: resourceGroup(resourceGroupName)
+  name: environmentName
+}
+
+module managedCertificate './managed-certificate.bicep' = {
+  name: '${containerAppsEnvironment.name}-certificate-module'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    environmentName: containerAppsEnvironment.name
+    location: location
+    tags: tags
+    customDomainName: customDomainName
   }
 }
 
@@ -85,6 +103,13 @@ resource containerApp 'Microsoft.App/containerApps@2023-04-01-preview' = {
           {
             latestRevision: true
             weight: 100
+          }
+        ]
+        customDomains: [
+          {
+            bindingType: 'SniEnabled'
+            certificateId: managedCertificate.outputs.certificateId
+            name: 'dev-api.platformplatform.net'  
           }
         ]
         stickySessions: null

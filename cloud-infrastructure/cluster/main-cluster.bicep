@@ -174,6 +174,8 @@ module accountManagementApi '../modules/container-app.bicep' = {
     sqlServerName: clusterUniqueName
     sqlDatabaseName: 'account-management'
     userAssignedIdentityName: 'account-management-${resourceGroupName}'
+    customDomainName: 'dev-api.platformplatform.net'
+    environmentName: contaionerAppsEnvironment.name
   }
   dependsOn: [accountManagementDatabase]
 }
