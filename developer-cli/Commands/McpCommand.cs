@@ -141,8 +141,18 @@ public static class DeveloperCliMcpTools
         [Description("Search terms")] string[]? searchTerms = null,
         [Description("Browser")] string browser = "all",
         [Description("Smoke only")] bool smoke = false,
-        [Description("Wait for Aspire to start (retries server check up to 50 seconds)")]
-        bool waitForAspire = false)
+        [Description("Wait for Aspire to start (retries server check up to 2 minutes)")]
+        bool waitForAspire = false,
+        [Description("Maximum retry count for flaky tests, zero for no retries")]
+        int? retries = null,
+        [Description("Stop after the first failure")]
+        bool stopOnFirstFailure = false,
+        [Description("Number of times to repeat each test")]
+        int? repeatEach = null,
+        [Description("Only re-run the failures")]
+        bool lastFailed = false,
+        [Description("Number of worker processes to use for running tests")]
+        int? workers = null)
     {
         var args = new List<string> { "e2e", "--quiet" };
         if (searchTerms is { Length: > 0 }) args.AddRange(searchTerms);
@@ -154,6 +164,11 @@ public static class DeveloperCliMcpTools
 
         if (smoke) args.Add("--smoke");
         if (waitForAspire) args.Add("--wait-for-aspire");
+        if (retries.HasValue) args.Add($"--retries={retries.Value}");
+        if (stopOnFirstFailure) args.Add("--stop-on-first-failure");
+        if (repeatEach.HasValue) args.Add($"--repeat-each={repeatEach.Value}");
+        if (lastFailed) args.Add("--last-failed");
+        if (workers.HasValue) args.Add($"--workers={workers.Value}");
 
         return await ExecuteCliCommandAsync(args.ToArray());
     }
