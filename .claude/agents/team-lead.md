@@ -246,9 +246,9 @@ After all [tasks] on a [feature] are [Completed], the user often switches to an 
 
 ## Session Recovery
 
-Never proactively respawn agents. Only respawn when the user explicitly asks (typically after a Claude Code restart). Before respawning, clean up orphaned members from the config file so new agents get clean names.
+NEVER call TeamCreate when a team already exists -- even if the config file is missing or the branch was renamed. Search `~/.claude/teams/` for any matching config before concluding the team is gone. If you cannot find the config, ask the user -- do not recreate it yourself.
 
-CRITICAL: Never delete the team when recovering a session. Orphaned agent processes may still be alive with full context even after the team lead's session restarts. Deleting the team destroys the coordination layer permanently. Instead, restore the team config and try to reach existing agents first.
+When the user restarts Claude Code, all agent processes die. To recover: read the existing team config to discover members, then try to reach them with SendMessage. Only respawn agents when the user explicitly asks. If something is unexpected (missing config, renamed branch, broken state), stop being proactive, do work yourself without delegating, and ask the user how to proceed.
 
 ## How Other Agents Work
 
