@@ -103,6 +103,9 @@ public class TestCommand : Command
 
         using var process = Process.Start(processStartInfo)!;
 
+        // Drain stderr asynchronously to prevent deadlock when the buffer fills
+        var stderrTask = process.StandardError.ReadToEndAsync();
+
         // Stream stdout in real-time
         while (!process.StandardOutput.EndOfStream)
         {
@@ -123,7 +126,7 @@ public class TestCommand : Command
             {
                 stats.Failed++;
                 stats.FailedTests.Add(ExtractTestName(line));
-                Console.WriteLine(line);
+                AnsiConsole.MarkupLine($"[red]{Markup.Escape(line)}[/]");
             }
             else if (trimmedLine.StartsWith("Skipped "))
             {
@@ -138,12 +141,20 @@ public class TestCommand : Command
         }
 
         process.WaitForExit();
+        stderrTask.GetAwaiter().GetResult();
         stopwatch.Stop();
         var duration = stopwatch.Elapsed.TotalSeconds;
 
         // Print our summary
         Console.WriteLine();
-        Console.WriteLine($"Test summary: total: {stats.Total}; failed: {stats.Failed}; succeeded: {stats.Passed}; skipped: {stats.Skipped}; duration: {duration:F1}s");
+        if (stats.Failed > 0 || process.ExitCode != 0)
+        {
+            AnsiConsole.MarkupLine($"[red]Test summary: total: {stats.Total}; failed: {stats.Failed}; succeeded: {stats.Passed}; skipped: {stats.Skipped}; duration: {duration:F1}s[/]");
+        }
+        else
+        {
+            Console.WriteLine($"Test summary: total: {stats.Total}; failed: {stats.Failed}; succeeded: {stats.Passed}; skipped: {stats.Skipped}; duration: {duration:F1}s");
+        }
 
         if (process.ExitCode != 0)
         {
