@@ -12,7 +12,6 @@ cmd=$(echo "$input" | sed -n 's/.*"command":"\([^"]*\)".*/\1/p')
 # Check the command and decide whether to block it
 case "$cmd" in
     "cd "*|*" && cd "*|*";cd "*|*"; cd "*) echo "❌ Do not change directory. Use absolute paths or --project flags instead." >&2; exit 2 ;;
-    *"git merge "*|*"git push "*|*"git push"*|*"git config "*) echo "❌ Dangerous git operation. Run this yourself." >&2; exit 2 ;;
     *"dotnet build"*) echo "❌ Use **build MCP tool** instead" >&2; exit 2 ;;
     *"dotnet test"*) echo "❌ Use **test MCP tool** instead" >&2; exit 2 ;;
     *"dotnet format"*) echo "❌ Use **format MCP tool** instead" >&2; exit 2 ;;
@@ -20,6 +19,5 @@ case "$cmd" in
     *"npm test"*) echo "❌ Use **test MCP tool** instead" >&2; exit 2 ;;
     *"npm run build"*) echo "❌ Use **build MCP tool** instead" >&2; exit 2 ;;
     *"npx playwright test"*) echo "❌ Use **end-to-end MCP tool** instead" >&2; exit 2 ;;
-    *"docker"*) echo "❌ Docker not allowed. Use **watch MCP tool** for Aspire/migrations" >&2; exit 2 ;;
     *) exit 0 ;;
 esac
