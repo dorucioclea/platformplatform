@@ -96,6 +96,7 @@ public sealed class SyncAiRulesAndWorkflowsCommand : Command
             {
                 CreateOrUpdateSymlink(agentsMd, copilotInstructions);
             }
+
             if (syncCopilotInstructions)
             {
                 // Commands -> instructions/workflows

@@ -1,12 +1,11 @@
 using System.CommandLine;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using DeveloperCli.Installation;
-using DeveloperCli.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol;
@@ -28,11 +27,13 @@ public class McpCommand : Command
         McpDebugLog.Log($"Process ID: {Environment.ProcessId}");
         McpDebugLog.Log($"Working directory: {Environment.CurrentDirectory}");
         McpDebugLog.Log($"CLI source: {Configuration.SourceCodeFolder}");
+        McpDebugLog.Log($"Runtime: {RuntimeInformation.FrameworkDescription}, OS: {RuntimeInformation.OSDescription}");
+        McpDebugLog.Log($"Args: {string.Join(" ", Environment.GetCommandLineArgs())}");
+        McpDebugLog.LogGitContext();
+        McpDebugLog.DetectPreviousCrash();
+        McpDebugLog.WriteSessionPid();
 
-        AppDomain.CurrentDomain.UnhandledException += (_, args) =>
-        {
-            McpDebugLog.Log($"UNHANDLED EXCEPTION (terminating={args.IsTerminating}): {args.ExceptionObject}");
-        };
+        AppDomain.CurrentDomain.UnhandledException += (_, args) => { McpDebugLog.Log($"UNHANDLED EXCEPTION (terminating={args.IsTerminating}): {args.ExceptionObject}"); };
 
         TaskScheduler.UnobservedTaskException += (_, args) =>
         {
@@ -43,12 +44,28 @@ public class McpCommand : Command
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
         {
             McpDebugLog.Log("ProcessExit event fired -- MCP server shutting down");
+            McpDebugLog.ClearSessionPid();
         };
+
+        Console.CancelKeyPress += (_, args) =>
+        {
+            McpDebugLog.Log($"CancelKeyPress received (SpecialKey={args.SpecialKey})");
+            args.Cancel = true; // Let the host shut down gracefully
+        };
+
+        RegisterPosixSignalHandlers();
 
         try
         {
-            await Console.Error.WriteLineAsync("[MCP] Starting MCP server...");
-            await Console.Error.WriteLineAsync("[MCP] Listening on stdio for MCP communication");
+            try
+            {
+                await Console.Error.WriteLineAsync("[MCP] Starting MCP server...");
+                await Console.Error.WriteLineAsync("[MCP] Listening on stdio for MCP communication");
+            }
+            catch (IOException)
+            {
+                McpDebugLog.Log("WARNING: Failed to write startup message to stderr (stream closed)");
+            }
 
             var builder = Host.CreateApplicationBuilder();
             builder.Logging.AddConsole(consoleLogOptions => { consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace; });
@@ -87,11 +104,40 @@ public class McpCommand : Command
         }
     }
 
+    private static void RegisterPosixSignalHandlers()
+    {
+        // SIGTERM and SIGHUP are not available on Windows
+        PosixSignalRegistration.Create(PosixSignal.SIGTERM, context =>
+            {
+                McpDebugLog.Log("SIGTERM received -- process is being terminated");
+                context.Cancel = true;
+            }
+        );
+
+        PosixSignalRegistration.Create(PosixSignal.SIGINT, context =>
+            {
+                McpDebugLog.Log("SIGINT received -- process interrupted");
+                context.Cancel = true;
+            }
+        );
+
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            PosixSignalRegistration.Create(PosixSignal.SIGHUP, context =>
+                {
+                    McpDebugLog.Log("SIGHUP received -- terminal disconnected");
+                    context.Cancel = true;
+                }
+            );
+        }
+    }
+
     private static void ReplaceSingleSessionHostedService(IServiceCollection services)
     {
         // Remove the SDK's SingleSessionMcpServerHostedService that calls StopApplication() on stdin EOF.
         var singleSessionDescriptor = services.FirstOrDefault(descriptor =>
-            descriptor.ServiceType == typeof(IHostedService) && descriptor.ImplementationType?.Name == "SingleSessionMcpServerHostedService");
+            descriptor.ServiceType == typeof(IHostedService) && descriptor.ImplementationType?.Name == "SingleSessionMcpServerHostedService"
+        );
 
         if (singleSessionDescriptor is not null)
         {
@@ -108,10 +154,10 @@ public class McpCommand : Command
 }
 
 /// <summary>
-/// Replaces the SDK's SingleSessionMcpServerHostedService. When the MCP session ends (stdin EOF),
-/// this service waits for in-flight tool executions to complete instead of immediately calling
-/// StopApplication(). This prevents the process from being killed mid-tool-execution when the
-/// client disconnects.
+///     Replaces the SDK's SingleSessionMcpServerHostedService. When the MCP session ends (stdin EOF),
+///     this service waits for in-flight tool executions to complete instead of immediately calling
+///     StopApplication(). This prevents the process from being killed mid-tool-execution when the
+///     client disconnects.
 /// </summary>
 public sealed class ResilientMcpServerHostedService(McpServer session, IHostApplicationLifetime lifetime) : BackgroundService
 {
@@ -139,7 +185,7 @@ public sealed class ResilientMcpServerHostedService(McpServer session, IHostAppl
         // before shutting down the process. Tools acquire ToolExecutionSemaphore, so we
         // try to acquire it here -- if we get it, no tools are running.
         McpDebugLog.Log($"ResilientMcpServerHostedService: waiting up to {GracePeriod.TotalSeconds}s for in-flight tools");
-        var acquired = await DeveloperCliMcpTools.ToolExecutionSemaphore.WaitAsync(GracePeriod);
+        var acquired = await DeveloperCliMcpTools.ToolExecutionSemaphore.WaitAsync(GracePeriod, CancellationToken.None);
         if (acquired)
         {
             DeveloperCliMcpTools.ToolExecutionSemaphore.Release();
@@ -156,26 +202,32 @@ public sealed class ResilientMcpServerHostedService(McpServer session, IHostAppl
 
 public static class McpDebugLog
 {
+    private const long MaxLogFileSize = 512 * 1024; // 500 KB
     private static string? _logFilePath;
-    private static readonly object Lock = new();
+    private static string? _sessionPidFilePath;
+    private static readonly Lock Lock = new();
 
     public static void Initialize()
     {
-        var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        _logFilePath = Path.Combine(homeDirectory, ".claude", "mcp-debug.log");
+        var logsDirectory = Path.Combine(Configuration.WorkspaceFolder, "developer-cli", "mcp");
 
-        var directory = Path.GetDirectoryName(_logFilePath)!;
-        if (!Directory.Exists(directory))
+        if (!Directory.Exists(logsDirectory))
         {
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(logsDirectory);
         }
+
+        _logFilePath = Path.Combine(logsDirectory, "mcp-debug.log");
+        _sessionPidFilePath = Path.Combine(logsDirectory, "mcp-session.pid");
+
+        RotateLogIfNeeded();
 
         Log("=== MCP Debug Log Initialized ===");
     }
 
     public static void Log(string message)
     {
-        if (_logFilePath is null) return;
+        var logFilePath = _logFilePath;
+        if (logFilePath is null) return;
 
         var timestamp = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff");
         var threadId = Environment.CurrentManagedThreadId;
@@ -185,13 +237,138 @@ public static class McpDebugLog
         {
             lock (Lock)
             {
-                File.AppendAllText(_logFilePath, entry);
+                File.AppendAllText(logFilePath, entry);
             }
         }
         catch
         {
             // Cannot fail -- this is the last resort logger
         }
+    }
+
+    public static void LogGitContext()
+    {
+        try
+        {
+            var branch = RunGitCommand("branch --show-current");
+            var commit = RunGitCommand("rev-parse --short HEAD");
+            Log($"Git: branch={branch}, commit={commit}");
+        }
+        catch (Exception exception)
+        {
+            Log($"Git context unavailable: {exception.Message}");
+        }
+    }
+
+    public static void DetectPreviousCrash()
+    {
+        if (_sessionPidFilePath is null || !File.Exists(_sessionPidFilePath)) return;
+
+        try
+        {
+            var previousPidText = File.ReadAllText(_sessionPidFilePath).Trim();
+            if (!int.TryParse(previousPidText, out var previousPid)) return;
+
+            var isStillRunning = false;
+            try
+            {
+                using var process = Process.GetProcessById(previousPid);
+                isStillRunning = !process.HasExited;
+            }
+            catch (ArgumentException)
+            {
+                // Process does not exist -- it crashed or was killed
+            }
+            catch (InvalidOperationException)
+            {
+                // Process has exited between GetProcessById and HasExited check
+            }
+
+            if (!isStillRunning)
+            {
+                Log($"CRASH DETECTED: previous session PID {previousPid} is no longer running (no clean shutdown logged)");
+            }
+        }
+        catch (Exception exception)
+        {
+            Log($"WARNING: Failed to check previous session: {exception.Message}");
+        }
+    }
+
+    public static void WriteSessionPid()
+    {
+        if (_sessionPidFilePath is null) return;
+
+        try
+        {
+            File.WriteAllText(_sessionPidFilePath, Environment.ProcessId.ToString());
+        }
+        catch (Exception exception)
+        {
+            Log($"WARNING: Failed to write session PID file: {exception.Message}");
+        }
+    }
+
+    public static void ClearSessionPid()
+    {
+        if (_sessionPidFilePath is null) return;
+
+        try
+        {
+            if (File.Exists(_sessionPidFilePath))
+            {
+                File.Delete(_sessionPidFilePath);
+            }
+        }
+        catch
+        {
+            // Best effort -- process is exiting
+        }
+    }
+
+    private static void RotateLogIfNeeded()
+    {
+        var logFilePath = _logFilePath;
+        if (logFilePath is null) return;
+
+        try
+        {
+            if (!File.Exists(logFilePath)) return;
+
+            var fileInfo = new FileInfo(logFilePath);
+            if (fileInfo.Length <= MaxLogFileSize) return;
+
+            var previousLogFilePath = logFilePath + ".prev";
+            if (File.Exists(previousLogFilePath))
+            {
+                File.Delete(previousLogFilePath);
+            }
+
+            File.Move(logFilePath, previousLogFilePath);
+        }
+        catch
+        {
+            // Best effort -- don't block startup over log rotation
+        }
+    }
+
+    private static string RunGitCommand(string arguments)
+    {
+        using var process = new Process();
+        process.StartInfo = new ProcessStartInfo
+        {
+            FileName = "git",
+            Arguments = arguments,
+            WorkingDirectory = Configuration.SourceCodeFolder,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+        process.Start();
+        var output = process.StandardOutput.ReadToEnd().Trim();
+        process.WaitForExit(TimeSpan.FromSeconds(5));
+        return output;
     }
 }
 
@@ -359,11 +536,25 @@ public static partial class DeveloperCliMcpTools
 
             process.OutputDataReceived += (_, e) =>
             {
-                if (e.Data is not null) output.Add(e.Data);
+                try
+                {
+                    if (e.Data is not null) output.Add(e.Data);
+                }
+                catch (Exception exception)
+                {
+                    McpDebugLog.Log($"Run: error in OutputDataReceived -- {exception.Message}");
+                }
             };
             process.ErrorDataReceived += (_, e) =>
             {
-                if (e.Data is not null) errors.Add(e.Data);
+                try
+                {
+                    if (e.Data is not null) errors.Add(e.Data);
+                }
+                catch (Exception exception)
+                {
+                    McpDebugLog.Log($"Run: error in ErrorDataReceived -- {exception.Message}");
+                }
             };
 
             process.Start();
@@ -439,20 +630,28 @@ public static partial class DeveloperCliMcpTools
     {
         McpDebugLog.Log($"TOOL INVOKED: SendInterruptSignal teamName={teamName}, agentName={agentName}");
 
-        var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var signalsDirectory = Path.Combine(homeDirectory, ".claude", "teams", teamName, "signals");
-
-        if (!Directory.Exists(signalsDirectory))
+        try
         {
-            Directory.CreateDirectory(signalsDirectory);
+            var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var signalsDirectory = Path.Combine(homeDirectory, ".claude", "teams", teamName, "signals");
+
+            if (!Directory.Exists(signalsDirectory))
+            {
+                Directory.CreateDirectory(signalsDirectory);
+            }
+
+            var interruptId = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd:HH:mm.ss");
+            var signalFilePath = Path.Combine(signalsDirectory, $"{agentName}.signal");
+            File.WriteAllText(signalFilePath, $"Stop working until you see message #{interruptId}");
+
+            McpDebugLog.Log("TOOL COMPLETED: SendInterruptSignal");
+            return $"Interrupt signal sent to {agentName}. Send your message now using SendMessage with prefix #{interruptId}";
         }
-
-        var interruptId = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd:HH:mm.ss");
-        var signalFilePath = Path.Combine(signalsDirectory, $"{agentName}.signal");
-        File.WriteAllText(signalFilePath, $"Stop working until you see message #{interruptId}");
-
-        McpDebugLog.Log($"TOOL COMPLETED: SendInterruptSignal");
-        return $"Interrupt signal sent to {agentName}. Send your message now using SendMessage with prefix #{interruptId}";
+        catch (Exception exception)
+        {
+            McpDebugLog.Log($"TOOL EXCEPTION: SendInterruptSignal -- {exception}");
+            return $"Error sending interrupt signal: {exception.Message}";
+        }
     }
 
     [McpServerTool]
@@ -510,8 +709,8 @@ public static partial class DeveloperCliMcpTools
             var stderrTask = ReadStreamAsync(process.StandardError, stderr);
 
             await Task.WhenAll(stdoutTask, stderrTask);
-            // Do not pass cancellationToken -- let the process finish even if cancelled
-            await process.WaitForExitAsync();
+            // Pass CancellationToken.None -- let the process finish even if the MCP client cancelled
+            await process.WaitForExitAsync(CancellationToken.None);
 
             var combinedOutput = $"{stdout}\n{stderr}";
             var outputLength = combinedOutput.Length;
@@ -550,54 +749,65 @@ public static partial class DeveloperCliMcpTools
         var totalTests = 0;
         var completedTests = 0;
 
-        while (await reader.ReadLineAsync() is { } line)
+        try
         {
-            output.AppendLine(line);
-
-            // Strip ANSI escape codes for pattern matching
-            var cleanLine = AnsiEscapeRegex().Replace(line, "");
-
-            // Parse "Running N tests using M workers" to get total
-            if (totalTests == 0 && cleanLine.StartsWith("Running ") && cleanLine.Contains(" tests using "))
+            while (await reader.ReadLineAsync() is { } line)
             {
-                var parts = cleanLine.Split(' ');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var parsed))
+                output.AppendLine(line);
+
+                // Strip ANSI escape codes for pattern matching
+                var cleanLine = AnsiEscapeRegex().Replace(line, "");
+
+                // Parse "Running N tests using M workers" to get total
+                if (totalTests == 0 && cleanLine.StartsWith("Running ") && cleanLine.Contains(" tests using "))
                 {
-                    totalTests = parsed;
-                    McpDebugLog.Log($"PROGRESS parsed total tests: {totalTests} for {toolName}");
-                }
-            }
-
-            // Count completed tests (lines starting with check mark or cross)
-            var trimmed = cleanLine.TrimStart();
-            if (totalTests > 0 && trimmed.Length > 0 && (trimmed[0] == '✓' || trimmed[0] == '✘' || trimmed.StartsWith("- ✓") || trimmed.StartsWith("- ✘")))
-            {
-                completedTests++;
-            }
-
-            var now = stopwatch.Elapsed;
-            if (now - lastProgressTime >= ProgressInterval)
-            {
-                lastProgressTime = now;
-                var counter = nextCounter();
-                try
-                {
-                    if (totalTests > 0)
+                    var parts = cleanLine.Split(' ');
+                    if (parts.Length >= 2 && int.TryParse(parts[1], out var parsed))
                     {
-                        progress.Report(new ProgressNotificationValue { Progress = completedTests, Total = totalTests });
-                        McpDebugLog.Log($"PROGRESS sent for {toolName} at {now.Minutes}m {now.Seconds}s ({completedTests}/{totalTests} tests)");
-                    }
-                    else
-                    {
-                        progress.Report(new ProgressNotificationValue { Progress = counter, Total = counter + 10 });
-                        McpDebugLog.Log($"PROGRESS sent for {toolName} at {now.Minutes}m {now.Seconds}s (counter={counter}, no total yet)");
+                        totalTests = parsed;
+                        McpDebugLog.Log($"PROGRESS parsed total tests: {totalTests} for {toolName}");
                     }
                 }
-                catch (Exception exception)
+
+                // Count completed tests (lines starting with check mark or cross)
+                var trimmed = cleanLine.TrimStart();
+                if (totalTests > 0 && trimmed.Length > 0 && (trimmed[0] == '✓' || trimmed[0] == '✘' || trimmed.StartsWith("- ✓") || trimmed.StartsWith("- ✘")))
                 {
-                    McpDebugLog.Log($"PROGRESS failed for {toolName}: {exception.Message}");
+                    completedTests++;
+                }
+
+                var now = stopwatch.Elapsed;
+                if (now - lastProgressTime >= ProgressInterval)
+                {
+                    lastProgressTime = now;
+                    var counter = nextCounter();
+                    try
+                    {
+                        if (totalTests > 0)
+                        {
+                            progress.Report(new ProgressNotificationValue { Progress = completedTests, Total = totalTests });
+                            McpDebugLog.Log($"PROGRESS sent for {toolName} at {now.Minutes}m {now.Seconds}s ({completedTests}/{totalTests} tests)");
+                        }
+                        else
+                        {
+                            progress.Report(new ProgressNotificationValue { Progress = counter, Total = counter + 10 });
+                            McpDebugLog.Log($"PROGRESS sent for {toolName} at {now.Minutes}m {now.Seconds}s (counter={counter}, no total yet)");
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        McpDebugLog.Log($"PROGRESS failed for {toolName}: {exception.Message}");
+                    }
                 }
             }
+        }
+        catch (IOException exception)
+        {
+            McpDebugLog.Log($"STREAM ERROR reading stdout for {toolName}: {exception.Message}");
+        }
+        catch (ObjectDisposedException exception)
+        {
+            McpDebugLog.Log($"STREAM DISPOSED reading stdout for {toolName}: {exception.Message}");
         }
     }
 
@@ -606,9 +816,20 @@ public static partial class DeveloperCliMcpTools
 
     private static async Task ReadStreamAsync(StreamReader reader, StringBuilder output)
     {
-        while (await reader.ReadLineAsync() is { } line)
+        try
         {
-            output.AppendLine(line);
+            while (await reader.ReadLineAsync() is { } line)
+            {
+                output.AppendLine(line);
+            }
+        }
+        catch (IOException)
+        {
+            // Stream closed unexpectedly -- child process may have been killed
+        }
+        catch (ObjectDisposedException)
+        {
+            // Stream disposed -- process already exited
         }
     }
 }
