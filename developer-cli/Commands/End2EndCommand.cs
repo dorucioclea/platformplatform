@@ -34,7 +34,7 @@ public class End2EndCommand : Command
         var stopOnFirstFailureOption = new Option<bool>("--stop-on-first-failure", "-x") { Description = "Stop after the first failure" };
         var uiOption = new Option<bool>("--ui") { Description = "Run tests in interactive UI mode with time-travel debugging" };
         var workersOption = new Option<int?>("--workers", "-w") { Description = "Number of worker processes to use for running tests" };
-        var waitForAspireOption = new Option<bool>("--wait-for-aspire") { Description = "Wait for Aspire to start (retries server check up to 50 seconds)" };
+        var noWaitForAspireOption = new Option<bool>("--no-wait-for-aspire") { Description = "Skip waiting for Aspire to start (by default, retries server check up to 3 minutes)" };
 
         Arguments.Add(searchTermsArgument);
         Options.Add(browserOption);
@@ -55,7 +55,7 @@ public class End2EndCommand : Command
         Options.Add(stopOnFirstFailureOption);
         Options.Add(uiOption);
         Options.Add(workersOption);
-        Options.Add(waitForAspireOption);
+        Options.Add(noWaitForAspireOption);
 
         // SetHandler only supports up to 8 parameters, so we use SetAction for this complex command
         SetAction(parseResult => Execute(
@@ -78,7 +78,7 @@ public class End2EndCommand : Command
                 parseResult.GetValue(stopOnFirstFailureOption),
                 parseResult.GetValue(uiOption),
                 parseResult.GetValue(workersOption),
-                parseResult.GetValue(waitForAspireOption)
+                parseResult.GetValue(noWaitForAspireOption)
             )
         );
     }
@@ -105,7 +105,7 @@ public class End2EndCommand : Command
         bool stopOnFirstFailure,
         bool ui,
         int? workers,
-        bool waitForAspire)
+        bool noWaitForAspire)
     {
         Prerequisite.Ensure(Prerequisite.Node);
 
@@ -117,7 +117,7 @@ public class End2EndCommand : Command
         }
 
         AnsiConsole.MarkupLine("[blue]Checking server availability...[/]");
-        CheckWebsiteAccessibility(waitForAspire);
+        CheckWebsiteAccessibility(!noWaitForAspire);
 
         PlaywrightInstaller.EnsurePlaywrightBrowsers();
 
@@ -347,14 +347,19 @@ public class End2EndCommand : Command
 
     private static void CheckWebsiteAccessibility(bool waitForAspire)
     {
-        var maxRetries = waitForAspire ? 10 : 1;
+        var maxAttempts = waitForAspire ? 36 : 1; // 36 * 5s = 3 minutes
         var retryDelaySeconds = 5;
 
-        for (var attempt = 1; attempt <= maxRetries; attempt++)
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
             try
             {
-                using var httpClient = new HttpClient();
+                using var httpClient = new HttpClient(new HttpClientHandler
+                    {
+                        AllowAutoRedirect = true,
+                        ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+                    }
+                );
                 httpClient.Timeout = TimeSpan.FromSeconds(5);
 
                 var response = httpClient.Send(new HttpRequestMessage(HttpMethod.Head, BaseUrl));
@@ -364,13 +369,20 @@ public class End2EndCommand : Command
                     AnsiConsole.MarkupLine($"[green]Server is accessible at {BaseUrl}[/]");
                     return;
                 }
-            }
-            catch
-            {
-                // Retry if waiting for Aspire and not the last attempt
-                if (waitForAspire && attempt < maxRetries)
+
+                if (attempt < maxAttempts)
                 {
-                    AnsiConsole.MarkupLine($"[yellow]Server not ready yet, retrying in {retryDelaySeconds} seconds... (attempt {attempt}/{maxRetries})[/]");
+                    AnsiConsole.MarkupLine($"[yellow]Server returned HTTP {(int)response.StatusCode} ({response.StatusCode}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
+                    Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
+                }
+            }
+            catch (Exception exception)
+            {
+                var reason = exception.InnerException?.Message ?? exception.Message;
+
+                if (attempt < maxAttempts)
+                {
+                    AnsiConsole.MarkupLine($"[yellow]Server not ready ({reason}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
                     Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
                 }
             }

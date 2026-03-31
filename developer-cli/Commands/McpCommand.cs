@@ -141,8 +141,8 @@ public static class DeveloperCliMcpTools
         [Description("Search terms")] string[]? searchTerms = null,
         [Description("Browser")] string browser = "all",
         [Description("Smoke only")] bool smoke = false,
-        [Description("Wait for Aspire to start (retries server check up to 2 minutes)")]
-        bool waitForAspire = false,
+        [Description("Skip waiting for Aspire to start (by default, retries server check up to 3 minutes)")]
+        bool noWaitForAspire = false,
         [Description("Maximum retry count for flaky tests, zero for no retries")]
         int? retries = null,
         [Description("Stop after the first failure")]
@@ -163,7 +163,7 @@ public static class DeveloperCliMcpTools
         }
 
         if (smoke) args.Add("--smoke");
-        if (waitForAspire) args.Add("--wait-for-aspire");
+        if (noWaitForAspire) args.Add("--no-wait-for-aspire");
         if (retries.HasValue) args.Add($"--retries={retries.Value}");
         if (stopOnFirstFailure) args.Add("--stop-on-first-failure");
         if (repeatEach.HasValue) args.Add($"--repeat-each={repeatEach.Value}");
