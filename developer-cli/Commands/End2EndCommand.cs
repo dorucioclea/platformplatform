@@ -1,12 +1,13 @@
 using System.CommandLine;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using DeveloperCli.Installation;
 using DeveloperCli.Utilities;
 using Spectre.Console;
 
 namespace DeveloperCli.Commands;
 
-public class End2EndCommand : Command
+public partial class End2EndCommand : Command
 {
     private static readonly string[] ValidBrowsers = ["chromium", "firefox", "webkit", "safari", "all"];
 
@@ -112,14 +113,14 @@ public class End2EndCommand : Command
         if (deleteArtifacts)
         {
             DeleteAllTestArtifacts();
-            AnsiConsole.MarkupLine("[yellow]Note: --delete-artifacts is a standalone operation and exits after cleaning artifacts.[/]");
+            if (!quiet) AnsiConsole.MarkupLine("[yellow]Note: --delete-artifacts is a standalone operation and exits after cleaning artifacts.[/]");
             Environment.Exit(0);
         }
 
-        AnsiConsole.MarkupLine("[blue]Checking server availability...[/]");
-        CheckWebsiteAccessibility(!noWaitForAspire);
+        if (!quiet) AnsiConsole.MarkupLine("[blue]Checking server availability...[/]");
+        CheckWebsiteAccessibility(!noWaitForAspire, quiet);
 
-        PlaywrightInstaller.EnsurePlaywrightBrowsers();
+        PlaywrightInstaller.EnsurePlaywrightBrowsers(quiet);
 
         // Convert search terms to test patterns and grep patterns
         var (testPatterns, searchGrep) = ProcessSearchTerms(searchTerms);
@@ -130,7 +131,7 @@ public class End2EndCommand : Command
         {
             if (!AvailableSelfContainedSystems.Contains(selfContainedSystem))
             {
-                AnsiConsole.MarkupLine($"[red]Invalid self-contained system '{selfContainedSystem}'. Available systems: {string.Join(", ", AvailableSelfContainedSystems)}[/]");
+                Console.WriteLine($"Invalid self-contained system '{selfContainedSystem}'. Available systems: {string.Join(", ", AvailableSelfContainedSystems)}");
                 Environment.Exit(1);
             }
 
@@ -161,7 +162,7 @@ public class End2EndCommand : Command
         // Validate browser option
         if (!ValidBrowsers.Contains(browser.ToLower()))
         {
-            AnsiConsole.MarkupLine($"[red]Invalid browser '{browser}'. Valid options are: {string.Join(", ", ValidBrowsers)}[/]");
+            Console.WriteLine($"Invalid browser '{browser}'. Valid options are: {string.Join(", ", ValidBrowsers)}");
             Environment.Exit(1);
         }
 
@@ -174,7 +175,7 @@ public class End2EndCommand : Command
         if (useCombinedRun)
         {
             overallSuccess = RunTestsCombined(selfContainedSystemsToTest, testPatterns, browser, debugTiming, searchGrep, includeSlow, lastFailed,
-                onlyChanged, repeatEach, retries, showReport, smoke, stopOnFirstFailure, workers
+                onlyChanged, repeatEach, retries, showReport, smoke, stopOnFirstFailure, workers, quiet
             );
             if (!overallSuccess) failedSelfContainedSystems.AddRange(selfContainedSystemsToTest);
         }
@@ -183,7 +184,7 @@ public class End2EndCommand : Command
             foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
             {
                 var selfContainedSystemSuccess = RunTestsForSystem(currentSelfContainedSystem, testPatterns, browser, debug, debugTiming, searchGrep, headed, includeSlow, lastFailed,
-                    onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers
+                    onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers, quiet
                 );
 
                 if (!selfContainedSystemSuccess)
@@ -198,13 +199,13 @@ public class End2EndCommand : Command
 
         stopwatch.Stop();
 
-        AnsiConsole.MarkupLine(overallSuccess
-            ? $"[green]All tests completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
-            : $"[red]Some tests failed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
-        );
-
         if (!quiet)
         {
+            AnsiConsole.MarkupLine(overallSuccess
+                ? $"[green]All tests completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
+                : $"[red]Some tests failed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
+            );
+
             if (useCombinedRun)
             {
                 if (showReport || !overallSuccess) OpenCombinedHtmlReport();
@@ -283,17 +284,18 @@ public class End2EndCommand : Command
         bool showReport,
         bool smoke,
         bool stopOnFirstFailure,
-        int? workers)
+        int? workers,
+        bool quiet)
     {
         // Build test directory arguments for all SCSs so Playwright runs everything in one invocation
         var testDirs = new List<string>();
-        foreach (var scs in selfContainedSystems)
+        foreach (var system in selfContainedSystems)
         {
-            var end2EndTestsPath = Path.Combine(scs, "WebApp", "tests", "e2e");
+            var end2EndTestsPath = Path.Combine(system, "WebApp", "tests", "e2e");
             var fullPath = Path.Combine(Configuration.ApplicationFolder, end2EndTestsPath);
             if (!Directory.Exists(fullPath))
             {
-                AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {scs}. Skipping...[/]");
+                if (!quiet) AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {system}. Skipping...[/]");
                 continue;
             }
 
@@ -302,11 +304,11 @@ public class End2EndCommand : Command
 
         if (testDirs.Count == 0)
         {
-            AnsiConsole.MarkupLine("[yellow]No end-to-end tests found for any system.[/]");
+            if (!quiet) AnsiConsole.MarkupLine("[yellow]No end-to-end tests found for any system.[/]");
             return true;
         }
 
-        AnsiConsole.MarkupLine($"[blue]Running tests for {string.Join(", ", selfContainedSystems)} in a single Playwright invocation...[/]");
+        if (!quiet) AnsiConsole.MarkupLine($"[blue]Running tests for {string.Join(", ", selfContainedSystems)} in a single Playwright invocation...[/]");
 
         // Write a temporary combined Playwright config
         var combinedConfigPath = Path.Combine(Configuration.ApplicationFolder, "playwright.combined.config.ts");
@@ -340,20 +342,33 @@ public class End2EndCommand : Command
                 retries, runSequential, smoke, stopOnFirstFailure, false, workers
             );
 
+            var command = $"{(Configuration.IsWindows ? "cmd.exe /C npx" : "npx")} playwright test --config=./playwright.combined.config.ts {playwrightArgs}";
+
+            if (!quiet) AnsiConsole.MarkupLine($"[cyan]Running: npx playwright test --config=./playwright.combined.config.ts {playwrightArgs}[/]");
+
+            var environmentVariables = new List<(string Name, string Value)> { ("PUBLIC_URL", BaseUrl), ("PLAYWRIGHT_HTML_OPEN", "never") };
+            if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
+            if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+
+            if (quiet)
+            {
+                var result = ProcessHelper.ExecuteQuietly(command, Configuration.ApplicationFolder, environmentVariables.ToArray());
+                Console.WriteLine(ExtractPlaywrightSummary(result.CombinedOutput) ?? (result.Success ? "All tests passed." : "Tests failed."));
+                if (!result.Success) Console.WriteLine($"Full output: {result.TempFilePathWithSize}");
+                return result.Success;
+            }
+
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
                 Arguments = $"{(Configuration.IsWindows ? "/C npx" : string.Empty)} playwright test --config=./playwright.combined.config.ts {playwrightArgs}",
                 WorkingDirectory = Configuration.ApplicationFolder,
-                UseShellExecute = false
+                UseShellExecute = false,
+                Environment = { ["PUBLIC_URL"] = BaseUrl, ["PLAYWRIGHT_HTML_OPEN"] = "never" }
             };
 
-            AnsiConsole.MarkupLine($"[cyan]Running: npx playwright test --config=./playwright.combined.config.ts {playwrightArgs}[/]");
-
-            processStartInfo.EnvironmentVariables["PUBLIC_URL"] = BaseUrl;
             if (isLocalhost) processStartInfo.EnvironmentVariables["PLAYWRIGHT_VIDEO_MODE"] = "on";
             if (debugTiming) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SHOW_DEBUG_TIMING"] = "true";
-            processStartInfo.EnvironmentVariables["PLAYWRIGHT_HTML_OPEN"] = "never";
 
             try
             {
@@ -392,18 +407,19 @@ public class End2EndCommand : Command
         bool smoke,
         bool stopOnFirstFailure,
         bool ui,
-        int? workers)
+        int? workers,
+        bool quiet)
     {
         var systemPath = Path.Combine(Configuration.ApplicationFolder, selfContainedSystem, "WebApp");
         var end2EndTestsPath = Path.Combine(systemPath, "tests/e2e");
 
         if (!Directory.Exists(end2EndTestsPath))
         {
-            AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {selfContainedSystem}. Skipping...[/]");
+            if (!quiet) AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {selfContainedSystem}. Skipping...[/]");
             return true;
         }
 
-        AnsiConsole.MarkupLine($"[blue]Running tests for {selfContainedSystem}...[/]");
+        if (!quiet) AnsiConsole.MarkupLine($"[blue]Running tests for {selfContainedSystem}...[/]");
 
         // Clean up report directory if we're going to show it
         if (showReport)
@@ -411,7 +427,7 @@ public class End2EndCommand : Command
             var reportDirectory = Path.Combine(systemPath, "tests", "test-results", "playwright-report");
             if (Directory.Exists(reportDirectory))
             {
-                AnsiConsole.MarkupLine("[blue]Cleaning up previous test report...[/]");
+                if (!quiet) AnsiConsole.MarkupLine("[blue]Cleaning up previous test report...[/]");
                 Directory.Delete(reportDirectory, true);
             }
         }
@@ -425,6 +441,23 @@ public class End2EndCommand : Command
             retries, runSequential, smoke, stopOnFirstFailure, ui, workers
         );
 
+        var command = $"{(Configuration.IsWindows ? "cmd.exe /C npx" : "npx")} playwright test --config=./tests/playwright.config.ts {playwrightArgs}";
+
+        if (!quiet) AnsiConsole.MarkupLine($"[cyan]Running command in {selfContainedSystem}: npx playwright test --config=./tests/playwright.config.ts {playwrightArgs}[/]");
+
+        var environmentVariables = new List<(string Name, string Value)> { ("PUBLIC_URL", BaseUrl), ("PLAYWRIGHT_HTML_OPEN", "never") };
+        if (slowMo) environmentVariables.Add(("PLAYWRIGHT_SLOW_MO", "500"));
+        if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
+        if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+
+        if (quiet)
+        {
+            var result = ProcessHelper.ExecuteQuietly(command, systemPath, environmentVariables.ToArray());
+            Console.WriteLine(ExtractPlaywrightSummary(result.CombinedOutput) ?? (result.Success ? $"{selfContainedSystem}: all tests passed." : $"{selfContainedSystem}: tests failed."));
+            if (!result.Success) Console.WriteLine($"Full output: {result.TempFilePathWithSize}");
+            return result.Success;
+        }
+
         var processStartInfo = new ProcessStartInfo
         {
             FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
@@ -433,25 +466,16 @@ public class End2EndCommand : Command
             UseShellExecute = false
         };
 
-        AnsiConsole.MarkupLine($"[cyan]Running command in {selfContainedSystem}: npx playwright test --config=./tests/playwright.config.ts {playwrightArgs}[/]");
-
-        processStartInfo.EnvironmentVariables["PUBLIC_URL"] = BaseUrl;
-
-        if (slowMo) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SLOW_MO"] = "500";
-        if (isLocalhost) processStartInfo.EnvironmentVariables["PLAYWRIGHT_VIDEO_MODE"] = "on";
-        if (debugTiming) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SHOW_DEBUG_TIMING"] = "true";
-
-        // Prevent HTML report from opening automatically
-        processStartInfo.EnvironmentVariables["PLAYWRIGHT_HTML_OPEN"] = "never";
+        foreach (var (name, value) in environmentVariables)
+        {
+            processStartInfo.EnvironmentVariables[name] = value;
+        }
 
         var testsFailed = false;
         try
         {
             ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
-            AnsiConsole.MarkupLine(testsFailed
-                ? $"[red]Tests for {selfContainedSystem} failed[/]"
-                : $"[green]Tests for {selfContainedSystem} completed successfully[/]"
-            );
+            AnsiConsole.MarkupLine($"[green]Tests for {selfContainedSystem} completed successfully[/]");
         }
         catch (Exception)
         {
@@ -462,9 +486,9 @@ public class End2EndCommand : Command
         return !testsFailed;
     }
 
-    private static void CheckWebsiteAccessibility(bool waitForAspire)
+    private static void CheckWebsiteAccessibility(bool waitForAspire, bool quiet = false)
     {
-        var maxAttempts = waitForAspire ? 36 : 1; // 36 * 5s = 3 minutes
+        var maxAttempts = waitForAspire ? 6 : 1; // 6 * 5s = 30 seconds
         var retryDelaySeconds = 5;
 
         for (var attempt = 1; attempt <= maxAttempts; attempt++)
@@ -483,13 +507,13 @@ public class End2EndCommand : Command
 
                 if (response.IsSuccessStatusCode)
                 {
-                    AnsiConsole.MarkupLine($"[green]Server is accessible at {BaseUrl}[/]");
+                    if (!quiet) AnsiConsole.MarkupLine($"[green]Server is accessible at {BaseUrl}[/]");
                     return;
                 }
 
                 if (attempt < maxAttempts)
                 {
-                    AnsiConsole.MarkupLine($"[yellow]Server returned HTTP {(int)response.StatusCode} ({response.StatusCode}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
+                    if (!quiet) AnsiConsole.MarkupLine($"[yellow]Server returned HTTP {(int)response.StatusCode} ({response.StatusCode}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
                     Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
                 }
             }
@@ -499,14 +523,13 @@ public class End2EndCommand : Command
 
                 if (attempt < maxAttempts)
                 {
-                    AnsiConsole.MarkupLine($"[yellow]Server not ready ({reason}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
+                    if (!quiet) AnsiConsole.MarkupLine($"[yellow]Server not ready ({reason}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
                     Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
                 }
             }
         }
 
-        AnsiConsole.MarkupLine($"[red]Server is not accessible at {BaseUrl}[/]");
-        AnsiConsole.MarkupLine($"[yellow]Please start AppHost in your IDE before running '{Configuration.AliasName} e2e'[/]");
+        Console.WriteLine($"Server is not accessible at {BaseUrl}. Please start AppHost before running '{Configuration.AliasName} e2e'.");
         Environment.Exit(1);
     }
 
@@ -665,13 +688,38 @@ public class End2EndCommand : Command
         }
         else
         {
-            // Fall back to per-SCS reports
-            foreach (var scs in AvailableSelfContainedSystems)
+            // Fall back to per-system reports
+            foreach (var selfContainedSystem in AvailableSelfContainedSystems)
             {
-                OpenHtmlReport(scs);
+                OpenHtmlReport(selfContainedSystem);
             }
         }
     }
+
+    private static string? ExtractPlaywrightSummary(string output)
+    {
+        // Playwright summary lines: "8 failed" and "5 passed (31.3s)" near the end, possibly separated by test names
+        // Match lines like "N passed", "N failed", "N passed (Xs)", "N skipped"
+        var summaryPattern = SummaryLineRegex();
+        var parts = new List<string>();
+
+        foreach (var line in output.Split('\n').Reverse())
+        {
+            var cleaned = AnsiEscapeRegex().Replace(line, "").Trim();
+            if (summaryPattern.IsMatch(cleaned))
+            {
+                parts.Insert(0, cleaned);
+            }
+        }
+
+        return parts.Count > 0 ? string.Join(", ", parts) : null;
+    }
+
+    [GeneratedRegex(@"^\d+ (passed|failed|skipped)")]
+    private static partial Regex SummaryLineRegex();
+
+    [GeneratedRegex(@"\x1B\[[0-9;]*m")]
+    private static partial Regex AnsiEscapeRegex();
 
     private static void DeleteAllTestArtifacts()
     {
