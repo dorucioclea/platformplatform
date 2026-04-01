@@ -16,7 +16,7 @@ public class End2EndCommand : Command
     public End2EndCommand() : base("e2e", "Run end-to-end tests using Playwright")
     {
         var searchTermsArgument = new Argument<string[]>("search-terms") { Description = "Search terms for test filtering (e.g., 'user management', '@smoke', 'smoke', 'comprehensive', 'user-management-flows.spec.ts')", DefaultValueFactory = _ => [] };
-        var browserOption = new Option<string>("--browser", "-b") { Description = "Browser to use for tests (chromium, firefox, webkit, safari, all)", DefaultValueFactory = _ => "all" };
+        var browserOption = new Option<string>("--browser", "-b") { Description = "Browser to use for tests (chromium, firefox, webkit, safari, all). Defaults to chromium", DefaultValueFactory = _ => "chromium" };
         var debugOption = new Option<bool>("--debug") { Description = "Start with Playwright Inspector for debugging (automatically enables headed mode)" };
         var debugTimingOption = new Option<bool>("--debug-timing") { Description = "Show step timing output with color coding during test execution" };
         var headedOption = new Option<bool>("--headed") { Description = "Show browser UI while running tests (automatically enables sequential execution)" };

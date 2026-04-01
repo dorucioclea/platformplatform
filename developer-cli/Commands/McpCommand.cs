@@ -139,7 +139,8 @@ public static class DeveloperCliMcpTools
     [Description("Run end-to-end tests")]
     public static async Task<string> EndToEnd(
         [Description("Search terms")] string[]? searchTerms = null,
-        [Description("Browser")] string browser = "all",
+        [Description("Browser (chromium, firefox, webkit, safari, all). Defaults to chromium")]
+        string browser = "chromium",
         [Description("Smoke only")] bool smoke = false,
         [Description("Skip waiting for Aspire to start (by default, retries server check up to 3 minutes)")]
         bool noWaitForAspire = false,
@@ -156,11 +157,8 @@ public static class DeveloperCliMcpTools
     {
         var args = new List<string> { "e2e", "--quiet" };
         if (searchTerms is { Length: > 0 }) args.AddRange(searchTerms);
-        if (browser != "all")
-        {
-            args.Add("--browser");
-            args.Add(browser);
-        }
+        args.Add("--browser");
+        args.Add(browser);
 
         if (smoke) args.Add("--smoke");
         if (noWaitForAspire) args.Add("--no-wait-for-aspire");
