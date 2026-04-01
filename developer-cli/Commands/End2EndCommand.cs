@@ -35,7 +35,8 @@ public partial class End2EndCommand : Command
         var stopOnFirstFailureOption = new Option<bool>("--stop-on-first-failure", "-x") { Description = "Stop after the first failure" };
         var uiOption = new Option<bool>("--ui") { Description = "Run tests in interactive UI mode with time-travel debugging" };
         var workersOption = new Option<int?>("--workers", "-w") { Description = "Number of worker processes to use for running tests" };
-        var noWaitForAspireOption = new Option<bool>("--no-wait-for-aspire") { Description = "Skip waiting for Aspire to start (by default, retries server check up to 3 minutes)" };
+        var configOption = new Option<bool>("--config") { Description = "Configure test performance profile for this machine (workers, timeouts)" };
+        var noWaitForAspireOption = new Option<bool>("--no-wait-for-aspire") { Description = "Skip waiting for Aspire to start (by default, retries server check up to 30 seconds)" };
 
         Arguments.Add(searchTermsArgument);
         Options.Add(browserOption);
@@ -56,6 +57,7 @@ public partial class End2EndCommand : Command
         Options.Add(stopOnFirstFailureOption);
         Options.Add(uiOption);
         Options.Add(workersOption);
+        Options.Add(configOption);
         Options.Add(noWaitForAspireOption);
 
         // SetHandler only supports up to 8 parameters, so we use SetAction for this complex command
@@ -79,12 +81,15 @@ public partial class End2EndCommand : Command
                 parseResult.GetValue(stopOnFirstFailureOption),
                 parseResult.GetValue(uiOption),
                 parseResult.GetValue(workersOption),
+                parseResult.GetValue(configOption) || parseResult.GetValue(searchTermsArgument) is ["config"],
                 parseResult.GetValue(noWaitForAspireOption)
             )
         );
     }
 
     private static string BaseUrl => Environment.GetEnvironmentVariable("PUBLIC_URL") ?? "https://localhost:9000";
+
+    private static string DefaultsFilePath => Path.Combine(Configuration.SourceCodeFolder, ".workspace", "developer-cli", "end-to-end-tests", "e2e-defaults.json");
 
     private static void Execute(
         string[] searchTerms,
@@ -106,9 +111,24 @@ public partial class End2EndCommand : Command
         bool stopOnFirstFailure,
         bool ui,
         int? workers,
+        bool configure,
         bool noWaitForAspire)
     {
         Prerequisite.Ensure(Prerequisite.Node);
+
+        if (configure)
+        {
+            ConfigurePerformanceProfile();
+            Environment.Exit(0);
+        }
+
+        // Apply saved defaults if not explicitly provided
+        if (!File.Exists(DefaultsFilePath) && !quiet)
+        {
+            AnsiConsole.MarkupLine($"[yellow]Tip: Run '{Configuration.AliasName} e2e config' to set worker count and timeouts for this machine.[/]");
+        }
+
+        workers ??= LoadDefault("workers");
 
         if (deleteArtifacts)
         {
@@ -349,6 +369,10 @@ public partial class End2EndCommand : Command
             var environmentVariables = new List<(string Name, string Value)> { ("PUBLIC_URL", BaseUrl), ("PLAYWRIGHT_HTML_OPEN", "never") };
             if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
             if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+            var assertionTimeout = LoadDefault("assertionTimeout");
+            if (assertionTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_EXPECT_TIMEOUT", (assertionTimeout.Value * 1000).ToString()));
+            var testTimeout = LoadDefault("testTimeout");
+            if (testTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_TIMEOUT", (testTimeout.Value * 1000).ToString()));
 
             if (quiet)
             {
@@ -449,6 +473,8 @@ public partial class End2EndCommand : Command
         if (slowMo) environmentVariables.Add(("PLAYWRIGHT_SLOW_MO", "500"));
         if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
         if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+        var assertionTimeout = LoadDefault("assertionTimeout");
+        if (assertionTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_EXPECT_TIMEOUT", (assertionTimeout.Value * 1000).ToString()));
 
         if (quiet)
         {
@@ -720,6 +746,78 @@ public partial class End2EndCommand : Command
 
     [GeneratedRegex(@"\x1B\[[0-9;]*m")]
     private static partial Regex AnsiEscapeRegex();
+
+    private static void ConfigurePerformanceProfile()
+    {
+        var profiles = new Dictionary<string, (int Workers, int AssertionTimeout, int TestTimeout)>
+        {
+            ["High-end (8 workers, 15s assertions, 2m tests)"] = (8, 15, 120),
+            ["Mid-range (6 workers, 20s assertions, 3m tests)"] = (6, 20, 180),
+            ["Low-spec (4 workers, 30s assertions, 4m tests)"] = (4, 30, 240),
+            ["CI runner (1 worker, 30s assertions, 4m tests)"] = (1, 30, 240)
+        };
+
+        var currentWorkers = LoadDefault("workers");
+        var currentAssertionTimeout = LoadDefault("assertionTimeout");
+        var currentTestTimeout = LoadDefault("testTimeout");
+
+        if (currentWorkers is not null)
+        {
+            AnsiConsole.MarkupLine($"[blue]Current settings: {currentWorkers} workers, {currentAssertionTimeout ?? 20}s assertions, {currentTestTimeout ?? 180}s tests[/]");
+        }
+
+        var selection = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a [green]performance profile[/] for this machine:")
+                .AddChoices(profiles.Keys)
+        );
+
+        var (workers, assertionTimeout, testTimeout) = profiles[selection];
+        SaveDefaults("workers", workers);
+        SaveDefaults("assertionTimeout", assertionTimeout);
+        SaveDefaults("testTimeout", testTimeout);
+
+        AnsiConsole.MarkupLine($"[green]Profile saved: {workers} workers, {assertionTimeout}s assertion timeout, {testTimeout}s test timeout[/]");
+    }
+
+    private static void SaveDefaults(string key, int value)
+    {
+        var directory = Path.GetDirectoryName(DefaultsFilePath)!;
+        if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+        var defaults = LoadAllDefaults();
+        defaults[key] = value;
+
+        var entries = defaults.Select(kvp => $"\"{kvp.Key}\":{kvp.Value}");
+        File.WriteAllText(DefaultsFilePath, $"{{{string.Join(",", entries)}}}");
+    }
+
+    private static int? LoadDefault(string key)
+    {
+        var defaults = LoadAllDefaults();
+        return defaults.TryGetValue(key, out var value) ? value : null;
+    }
+
+    private static Dictionary<string, int> LoadAllDefaults()
+    {
+        if (!File.Exists(DefaultsFilePath)) return new Dictionary<string, int>();
+
+        try
+        {
+            var json = File.ReadAllText(DefaultsFilePath);
+            var result = new Dictionary<string, int>();
+            foreach (Match match in Regex.Matches(json, "\"(\\w+)\":(\\d+)"))
+            {
+                result[match.Groups[1].Value] = int.Parse(match.Groups[2].Value);
+            }
+
+            return result;
+        }
+        catch
+        {
+            return new Dictionary<string, int>();
+        }
+    }
 
     private static void DeleteAllTestArtifacts()
     {
