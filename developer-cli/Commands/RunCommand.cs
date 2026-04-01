@@ -20,7 +20,7 @@ public class RunCommand : Command
         var forceOption = new Option<bool>("--force") { Description = "Force start a fresh Aspire AppHost instance, stopping any existing one" };
         var stopOption = new Option<bool>("--stop") { Description = "Stop any running Aspire AppHost instance without starting a new one" };
         var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process" };
-        var detachOption = new Option<bool>("--detach", "-d") { Description = "Run the Aspire process in detached mode (background)" };
+        var detachOption = new Option<bool>("--detach", "-d") { Description = "Run the Aspire process in detached mode (default)" };
         var publicUrlOption = new Option<string?>("--public-url") { Description = "Set the PUBLIC_URL environment variable for the app (e.g., https://example.ngrok-free.app)" };
 
         Options.Add(watchOption);
@@ -53,10 +53,10 @@ public class RunCommand : Command
             return;
         }
 
-        // Validate that either --attach or --detach is specified (but not both)
-        if (attach == detach)
+        // Both specified is contradictory
+        if (attach && detach)
         {
-            AnsiConsole.MarkupLine("[red]You must specify either --attach (-a) or --detach (-d) mode.[/]");
+            AnsiConsole.MarkupLine("[red]Cannot specify both --attach and --detach.[/]");
             Environment.Exit(1);
         }
 
