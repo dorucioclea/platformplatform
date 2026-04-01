@@ -322,8 +322,8 @@ public class DeployCommand : Command
                     )
             );
 
-            if (IsContainerRegistryNameConflicting(Config.StagingSubscription.Id, Config.StagingLocation.SharedLocation, $"{uniquePrefix}-stage", $"{uniquePrefix}stage") ||
-                IsContainerRegistryNameConflicting(Config.ProductionSubscription.Id, Config.ProductionLocation.SharedLocation, $"{uniquePrefix}-prod", $"{uniquePrefix}prod"))
+            if (IsContainerRegistryNameConflicting(Config.StagingSubscription.Id, Config.StagingLocation.SharedLocation, $"{uniquePrefix}-stage-global", $"{uniquePrefix}stage") ||
+                IsContainerRegistryNameConflicting(Config.ProductionSubscription.Id, Config.ProductionLocation.SharedLocation, $"{uniquePrefix}-prod-global", $"{uniquePrefix}prod"))
             {
                 AnsiConsole.MarkupLine(
                     "[red]ERROR:[/]Azure resources conflicting with this prefix is already in use, possibly in [bold]another subscription[/] or in [bold]another location[/]. Please enter a unique name."
