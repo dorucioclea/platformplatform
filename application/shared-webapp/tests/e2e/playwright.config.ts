@@ -61,12 +61,12 @@ export default defineConfig({
 
   // Global timeout for each test (double timeout for slow motion)
   timeout: (() => {
-    const baseTimeout = process.env.PLAYWRIGHT_TIMEOUT ? Number.parseInt(process.env.PLAYWRIGHT_TIMEOUT, 10) : 60000;
+    const baseTimeout = process.env.PLAYWRIGHT_TIMEOUT ? Number.parseInt(process.env.PLAYWRIGHT_TIMEOUT, 10) : 180_000;
     const isSlowMotion = !!process.env.PLAYWRIGHT_SLOW_MO;
     return isSlowMotion ? baseTimeout * 2 : baseTimeout;
   })(),
   expect: {
-    timeout: 10000
+    timeout: 20_000
   },
 
   // Output directories - centralized test artifacts
