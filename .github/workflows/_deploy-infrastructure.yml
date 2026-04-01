@@ -79,6 +79,7 @@ jobs:
       - name: Plan Cluster Resources
         id: deploy_cluster
         env:
+          POSTGRES_ADMIN_OBJECT_ID: ${{ inputs.postgres_admin_object_id }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ vars.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}
@@ -144,6 +145,7 @@ jobs:
       - name: Deploy Cluster Resources
         id: deploy_cluster
         env:
+          POSTGRES_ADMIN_OBJECT_ID: ${{ inputs.postgres_admin_object_id }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ vars.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}
@@ -160,9 +162,6 @@ jobs:
 
       - name: Install PostgreSQL Client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
-      - name: Add PostgreSQL Admin
-        run: bash ./cloud-infrastructure/cluster/add-postgres-admin.sh ${{ inputs.unique_prefix }} ${{ inputs.azure_environment }} ${{ inputs.cluster_location_acronym }} ${{ inputs.postgres_admin_object_id }}
 
       - name: Open Firewall
         working-directory: cloud-infrastructure/cluster
