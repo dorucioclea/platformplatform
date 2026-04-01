@@ -46,11 +46,18 @@ export async function getWorkerTenant(
 }
 
 /**
- * Extract the self-contained system prefix from the current working directory or test context
+ * Extract the self-contained system prefix from the test file path or current working directory
+ * @param testFilePath Optional test file path from testInfo.file
  * @returns The self-contained system prefix (e.g., "account" or "back-office")
  */
-export function getSelfContainedSystemPrefix(): string | undefined {
-  // Try to extract from current working directory
+export function getSelfContainedSystemPrefix(testFilePath?: string): string | undefined {
+  // Prefer the test file path (works in combined runner where cwd is application/)
+  if (testFilePath) {
+    const fileMatch = testFilePath.match(/application\/([^/]+)\/WebApp/);
+    if (fileMatch) return fileMatch[1];
+  }
+
+  // Fall back to current working directory (works in per-SCS runner)
   const cwd = process.cwd();
   const match = cwd.match(/application\/([^/]+)\/WebApp/);
   return match ? match[1] : undefined;

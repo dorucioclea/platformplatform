@@ -168,22 +168,30 @@ public class End2EndCommand : Command
         var stopwatch = Stopwatch.StartNew();
         var overallSuccess = true;
         var failedSelfContainedSystems = new List<string>();
+        var showBrowser = headed || debug || slowMo;
+        var useCombinedRun = selfContainedSystemsToTest.Length > 1 && !debug && !ui && !showBrowser;
 
-        foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
+        if (useCombinedRun)
         {
-            var selfContainedSystemSuccess = RunTestsForSystem(currentSelfContainedSystem, testPatterns, browser, debug, debugTiming, searchGrep, headed, includeSlow, lastFailed,
-                onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers
+            overallSuccess = RunTestsCombined(selfContainedSystemsToTest, testPatterns, browser, debugTiming, searchGrep, includeSlow, lastFailed,
+                onlyChanged, repeatEach, retries, showReport, smoke, stopOnFirstFailure, workers
             );
-
-            if (!selfContainedSystemSuccess)
+            if (!overallSuccess) failedSelfContainedSystems.AddRange(selfContainedSystemsToTest);
+        }
+        else
+        {
+            foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
             {
-                overallSuccess = false;
-                failedSelfContainedSystems.Add(currentSelfContainedSystem);
+                var selfContainedSystemSuccess = RunTestsForSystem(currentSelfContainedSystem, testPatterns, browser, debug, debugTiming, searchGrep, headed, includeSlow, lastFailed,
+                    onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers
+                );
 
-                // If stop on first failure is enabled, exit the loop after the first failure
-                if (stopOnFirstFailure)
+                if (!selfContainedSystemSuccess)
                 {
-                    break;
+                    overallSuccess = false;
+                    failedSelfContainedSystems.Add(currentSelfContainedSystem);
+
+                    if (stopOnFirstFailure) break;
                 }
             }
         }
@@ -197,7 +205,11 @@ public class End2EndCommand : Command
 
         if (!quiet)
         {
-            if (showReport)
+            if (useCombinedRun)
+            {
+                if (showReport || !overallSuccess) OpenCombinedHtmlReport();
+            }
+            else if (showReport)
             {
                 foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
                 {
@@ -255,6 +267,111 @@ public class End2EndCommand : Command
         var finalGrep = grepTerms.Count > 0 ? string.Join(" ", grepTerms) : null;
 
         return (testPatterns.ToArray(), finalGrep);
+    }
+
+    private static bool RunTestsCombined(
+        string[] selfContainedSystems,
+        string[] testPatterns,
+        string browser,
+        bool debugTiming,
+        string? searchGrep,
+        bool includeSlow,
+        bool lastFailed,
+        bool onlyChanged,
+        int? repeatEach,
+        int? retries,
+        bool showReport,
+        bool smoke,
+        bool stopOnFirstFailure,
+        int? workers)
+    {
+        // Build test directory arguments for all SCSs so Playwright runs everything in one invocation
+        var testDirs = new List<string>();
+        foreach (var scs in selfContainedSystems)
+        {
+            var end2EndTestsPath = Path.Combine(scs, "WebApp", "tests", "e2e");
+            var fullPath = Path.Combine(Configuration.ApplicationFolder, end2EndTestsPath);
+            if (!Directory.Exists(fullPath))
+            {
+                AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {scs}. Skipping...[/]");
+                continue;
+            }
+
+            testDirs.Add(end2EndTestsPath);
+        }
+
+        if (testDirs.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[yellow]No end-to-end tests found for any system.[/]");
+            return true;
+        }
+
+        AnsiConsole.MarkupLine($"[blue]Running tests for {string.Join(", ", selfContainedSystems)} in a single Playwright invocation...[/]");
+
+        // Write a temporary combined Playwright config
+        var combinedConfigPath = Path.Combine(Configuration.ApplicationFolder, "playwright.combined.config.ts");
+        var testMatchEntries = string.Join(", ", testDirs.Select(dir => $"\"{dir}/**/*.spec.ts\""));
+        var configContent = $$"""
+                              import { defineConfig } from "@playwright/test";
+                              import baseConfig from "./shared-webapp/tests/e2e/playwright.config";
+
+                              export default defineConfig({
+                                ...baseConfig,
+                                testDir: ".",
+                                testMatch: [{{testMatchEntries}}]
+                              });
+                              """;
+        File.WriteAllText(combinedConfigPath, configContent);
+
+        try
+        {
+            // Clean up report directory if we're going to show it
+            var reportDirectory = Path.Combine(Configuration.ApplicationFolder, "tests", "test-results", "playwright-report");
+            if (showReport && Directory.Exists(reportDirectory))
+            {
+                Directory.Delete(reportDirectory, true);
+            }
+
+            var runSequential = debugTiming;
+            var isLocalhost = BaseUrl.Contains("localhost", StringComparison.OrdinalIgnoreCase);
+
+            var playwrightArgs = BuildPlaywrightArgs(
+                testPatterns, browser, false, searchGrep, false, includeSlow, lastFailed, onlyChanged, repeatEach,
+                retries, runSequential, smoke, stopOnFirstFailure, false, workers
+            );
+
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
+                Arguments = $"{(Configuration.IsWindows ? "/C npx" : string.Empty)} playwright test --config=./playwright.combined.config.ts {playwrightArgs}",
+                WorkingDirectory = Configuration.ApplicationFolder,
+                UseShellExecute = false
+            };
+
+            AnsiConsole.MarkupLine($"[cyan]Running: npx playwright test --config=./playwright.combined.config.ts {playwrightArgs}[/]");
+
+            processStartInfo.EnvironmentVariables["PUBLIC_URL"] = BaseUrl;
+            if (isLocalhost) processStartInfo.EnvironmentVariables["PLAYWRIGHT_VIDEO_MODE"] = "on";
+            if (debugTiming) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SHOW_DEBUG_TIMING"] = "true";
+            processStartInfo.EnvironmentVariables["PLAYWRIGHT_HTML_OPEN"] = "never";
+
+            try
+            {
+                ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
+                AnsiConsole.MarkupLine("[green]All tests completed successfully[/]");
+                return true;
+            }
+            catch
+            {
+                AnsiConsole.MarkupLine("[red]Some tests failed[/]");
+                return false;
+            }
+        }
+        finally
+        {
+            // Clean up the temporary config
+            if (File.Exists(combinedConfigPath)) File.Delete(combinedConfigPath);
+        }
     }
 
     private static bool RunTestsForSystem(
@@ -533,6 +650,26 @@ public class End2EndCommand : Command
         else
         {
             AnsiConsole.MarkupLine($"[yellow]No test report found for '{selfContainedSystem}' at '{reportPath}'[/]");
+        }
+    }
+
+    private static void OpenCombinedHtmlReport()
+    {
+        // The combined run uses the application-level report path from the base config (test-results/playwright-report)
+        var reportPath = Path.Combine(Configuration.ApplicationFolder, "test-results", "playwright-report", "index.html");
+
+        if (File.Exists(reportPath))
+        {
+            AnsiConsole.MarkupLine("[green]Opening combined test report...[/]");
+            ProcessHelper.OpenBrowser(reportPath);
+        }
+        else
+        {
+            // Fall back to per-SCS reports
+            foreach (var scs in AvailableSelfContainedSystems)
+            {
+                OpenHtmlReport(scs);
+            }
         }
     }
 
