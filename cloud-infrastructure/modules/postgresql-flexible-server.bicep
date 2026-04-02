@@ -6,6 +6,8 @@ param subnetId string
 param virtualNetworkId string
 param isProduction bool
 param diagnosticStorageAccountId string
+@description('Object ID of the Entra ID security group to assign as PostgreSQL administrator')
+param dbAdminObjectId string = ''
 
 resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2025-08-01' = {
   name: name
@@ -41,6 +43,16 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2025-08-01' =
       // Runtime traffic from Container Apps flows exclusively through the private endpoint.
       publicNetworkAccess: 'Enabled'
     }
+  }
+}
+
+resource postgresServerAdministrator 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2025-08-01' = if (!empty(dbAdminObjectId)) {
+  parent: postgresServer
+  name: dbAdminObjectId
+  properties: {
+    principalName: 'PostgreSQL Admins - ${isProduction ? 'Production' : 'Staging'}'
+    principalType: 'Group'
+    tenantId: tenantId
   }
 }
 

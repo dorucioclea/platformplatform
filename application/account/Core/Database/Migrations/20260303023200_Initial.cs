@@ -26,7 +26,7 @@ public sealed class Initial : Migration
             "tenants",
             table => new
             {
-                id = table.Column<string>("bigint", nullable: false),
+                id = table.Column<long>("bigint", nullable: false),
                 created_at = table.Column<DateTimeOffset>("timestamptz", nullable: false),
                 modified_at = table.Column<DateTimeOffset>("timestamptz", nullable: true),
                 deleted_at = table.Column<DateTimeOffset>("timestamptz", nullable: true),

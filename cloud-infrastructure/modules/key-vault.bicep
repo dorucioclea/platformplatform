@@ -5,6 +5,7 @@ param tenantId string
 param subnetId string
 param storageAccountId string
 param workspaceId string
+param domainName string = ''
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: name
@@ -119,11 +120,13 @@ resource authenticationTokenSigningKey 'Microsoft.KeyVault/vaults/keys@2023-07-0
   }
 }
 
+var tokenIssuerAndAudience = domainName != '' ? 'https://${domainName}' : 'PlatformPlatform'
+
 resource authenticationTokenIssuer 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
   name: 'authentication-token-issuer'
   properties: {
-    value: 'PlatformPlatform' // Consider using the domain name (https://app.your-company.net) or company name (Your Company) as the issuer
+    value: tokenIssuerAndAudience
   }
 }
 
@@ -131,7 +134,7 @@ resource authenticationTokenAudience 'Microsoft.KeyVault/vaults/secrets@2023-07-
   parent: keyVault
   name: 'authentication-token-audience'
   properties: {
-    value: 'PlatformPlatform' // Consider using the domain name (https://product.your-company.net) or product name (product-name) as the audience
+    value: tokenIssuerAndAudience
   }
 }
 

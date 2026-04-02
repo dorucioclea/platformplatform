@@ -15,6 +15,9 @@ param communicationServicesDataLocation string = 'europe'
 param mailSenderDisplayName string = 'PlatformPlatform'
 param revisionSuffix string
 
+@description('Object ID of the Entra ID security group for PostgreSQL administration')
+param postgresAdminObjectId string = ''
+
 @secure()
 param googleOAuthClientId string
 @secure()
@@ -101,6 +104,7 @@ module keyVault '../modules/key-vault.bicep' = {
     subnetId: virtualNetwork.outputs.containerAppsSubnetId
     storageAccountId: diagnosticStorageAccount.outputs.storageAccountId
     workspaceId: existingLogAnalyticsWorkspace.id
+    domainName: domainName
   }
 }
 
@@ -153,6 +157,7 @@ module postgresServer '../modules/postgresql-flexible-server.bicep' = {
     virtualNetworkId: virtualNetwork.outputs.virtualNetworkId
     isProduction: environment == 'prod'
     diagnosticStorageAccountId: diagnosticStorageAccount.outputs.storageAccountId
+    dbAdminObjectId: postgresAdminObjectId
   }
 }
 
