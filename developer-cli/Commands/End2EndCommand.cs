@@ -1,12 +1,13 @@
 using System.CommandLine;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using DeveloperCli.Installation;
 using DeveloperCli.Utilities;
 using Spectre.Console;
 
 namespace DeveloperCli.Commands;
 
-public class End2EndCommand : Command
+public partial class End2EndCommand : Command
 {
     private static readonly string[] ValidBrowsers = ["chromium", "firefox", "webkit", "safari", "all"];
 
@@ -16,7 +17,7 @@ public class End2EndCommand : Command
     public End2EndCommand() : base("e2e", "Run end-to-end tests using Playwright")
     {
         var searchTermsArgument = new Argument<string[]>("search-terms") { Description = "Search terms for test filtering (e.g., 'user management', '@smoke', 'smoke', 'comprehensive', 'user-management-flows.spec.ts')", DefaultValueFactory = _ => [] };
-        var browserOption = new Option<string>("--browser", "-b") { Description = "Browser to use for tests (chromium, firefox, webkit, safari, all)", DefaultValueFactory = _ => "all" };
+        var browserOption = new Option<string>("--browser", "-b") { Description = "Browser to use for tests (chromium, firefox, webkit, safari, all). Defaults to chromium", DefaultValueFactory = _ => "chromium" };
         var debugOption = new Option<bool>("--debug") { Description = "Start with Playwright Inspector for debugging (automatically enables headed mode)" };
         var debugTimingOption = new Option<bool>("--debug-timing") { Description = "Show step timing output with color coding during test execution" };
         var headedOption = new Option<bool>("--headed") { Description = "Show browser UI while running tests (automatically enables sequential execution)" };
@@ -34,7 +35,8 @@ public class End2EndCommand : Command
         var stopOnFirstFailureOption = new Option<bool>("--stop-on-first-failure", "-x") { Description = "Stop after the first failure" };
         var uiOption = new Option<bool>("--ui") { Description = "Run tests in interactive UI mode with time-travel debugging" };
         var workersOption = new Option<int?>("--workers", "-w") { Description = "Number of worker processes to use for running tests" };
-        var waitForAspireOption = new Option<bool>("--wait-for-aspire") { Description = "Wait for Aspire to start (retries server check up to 50 seconds)" };
+        var configOption = new Option<bool>("--config") { Description = "Configure test performance profile for this machine (workers, timeouts)" };
+        var noWaitForAspireOption = new Option<bool>("--no-wait-for-aspire") { Description = "Skip waiting for Aspire to start (by default, retries server check up to 30 seconds)" };
 
         Arguments.Add(searchTermsArgument);
         Options.Add(browserOption);
@@ -55,7 +57,8 @@ public class End2EndCommand : Command
         Options.Add(stopOnFirstFailureOption);
         Options.Add(uiOption);
         Options.Add(workersOption);
-        Options.Add(waitForAspireOption);
+        Options.Add(configOption);
+        Options.Add(noWaitForAspireOption);
 
         // SetHandler only supports up to 8 parameters, so we use SetAction for this complex command
         SetAction(parseResult => Execute(
@@ -78,12 +81,15 @@ public class End2EndCommand : Command
                 parseResult.GetValue(stopOnFirstFailureOption),
                 parseResult.GetValue(uiOption),
                 parseResult.GetValue(workersOption),
-                parseResult.GetValue(waitForAspireOption)
+                parseResult.GetValue(configOption) || parseResult.GetValue(searchTermsArgument) is ["config"],
+                parseResult.GetValue(noWaitForAspireOption)
             )
         );
     }
 
     private static string BaseUrl => Environment.GetEnvironmentVariable("PUBLIC_URL") ?? "https://localhost:9000";
+
+    private static string DefaultsFilePath => Path.Combine(Configuration.WorkspaceFolder, "developer-cli", "end-to-end-tests", "e2e-defaults.json");
 
     private static void Execute(
         string[] searchTerms,
@@ -105,21 +111,36 @@ public class End2EndCommand : Command
         bool stopOnFirstFailure,
         bool ui,
         int? workers,
-        bool waitForAspire)
+        bool configure,
+        bool noWaitForAspire)
     {
         Prerequisite.Ensure(Prerequisite.Node);
+
+        if (configure)
+        {
+            ConfigurePerformanceProfile();
+            Environment.Exit(0);
+        }
+
+        // Apply saved defaults if not explicitly provided
+        if (!File.Exists(DefaultsFilePath) && !quiet)
+        {
+            AnsiConsole.MarkupLine($"[yellow]Tip: Run '{Configuration.AliasName} e2e config' to set worker count and timeouts for this machine.[/]");
+        }
+
+        workers ??= LoadDefault("workers");
 
         if (deleteArtifacts)
         {
             DeleteAllTestArtifacts();
-            AnsiConsole.MarkupLine("[yellow]Note: --delete-artifacts is a standalone operation and exits after cleaning artifacts.[/]");
+            if (!quiet) AnsiConsole.MarkupLine("[yellow]Note: --delete-artifacts is a standalone operation and exits after cleaning artifacts.[/]");
             Environment.Exit(0);
         }
 
-        AnsiConsole.MarkupLine("[blue]Checking server availability...[/]");
-        CheckWebsiteAccessibility(waitForAspire);
+        if (!quiet) AnsiConsole.MarkupLine("[blue]Checking server availability...[/]");
+        CheckWebsiteAccessibility(!noWaitForAspire, quiet);
 
-        PlaywrightInstaller.EnsurePlaywrightBrowsers();
+        PlaywrightInstaller.EnsurePlaywrightBrowsers(quiet);
 
         // Convert search terms to test patterns and grep patterns
         var (testPatterns, searchGrep) = ProcessSearchTerms(searchTerms);
@@ -130,7 +151,7 @@ public class End2EndCommand : Command
         {
             if (!AvailableSelfContainedSystems.Contains(selfContainedSystem))
             {
-                AnsiConsole.MarkupLine($"[red]Invalid self-contained system '{selfContainedSystem}'. Available systems: {string.Join(", ", AvailableSelfContainedSystems)}[/]");
+                Console.WriteLine($"Invalid self-contained system '{selfContainedSystem}'. Available systems: {string.Join(", ", AvailableSelfContainedSystems)}");
                 Environment.Exit(1);
             }
 
@@ -161,43 +182,55 @@ public class End2EndCommand : Command
         // Validate browser option
         if (!ValidBrowsers.Contains(browser.ToLower()))
         {
-            AnsiConsole.MarkupLine($"[red]Invalid browser '{browser}'. Valid options are: {string.Join(", ", ValidBrowsers)}[/]");
+            Console.WriteLine($"Invalid browser '{browser}'. Valid options are: {string.Join(", ", ValidBrowsers)}");
             Environment.Exit(1);
         }
 
         var stopwatch = Stopwatch.StartNew();
         var overallSuccess = true;
         var failedSelfContainedSystems = new List<string>();
+        var showBrowser = headed || debug || slowMo;
+        var useCombinedRun = selfContainedSystemsToTest.Length > 1 && !debug && !ui && !showBrowser;
 
-        foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
+        if (useCombinedRun)
         {
-            var selfContainedSystemSuccess = RunTestsForSystem(currentSelfContainedSystem, testPatterns, browser, debug, debugTiming, searchGrep, headed, includeSlow, lastFailed,
-                onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers
+            overallSuccess = RunTestsCombined(selfContainedSystemsToTest, testPatterns, browser, debugTiming, searchGrep, includeSlow, lastFailed,
+                onlyChanged, repeatEach, retries, showReport, smoke, stopOnFirstFailure, workers, quiet
             );
-
-            if (!selfContainedSystemSuccess)
+            if (!overallSuccess) failedSelfContainedSystems.AddRange(selfContainedSystemsToTest);
+        }
+        else
+        {
+            foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
             {
-                overallSuccess = false;
-                failedSelfContainedSystems.Add(currentSelfContainedSystem);
+                var selfContainedSystemSuccess = RunTestsForSystem(currentSelfContainedSystem, testPatterns, browser, debug, debugTiming, searchGrep, headed, includeSlow, lastFailed,
+                    onlyChanged, repeatEach, retries, showReport, slowMo, smoke, stopOnFirstFailure, ui, workers, quiet
+                );
 
-                // If stop on first failure is enabled, exit the loop after the first failure
-                if (stopOnFirstFailure)
+                if (!selfContainedSystemSuccess)
                 {
-                    break;
+                    overallSuccess = false;
+                    failedSelfContainedSystems.Add(currentSelfContainedSystem);
+
+                    if (stopOnFirstFailure) break;
                 }
             }
         }
 
         stopwatch.Stop();
 
-        AnsiConsole.MarkupLine(overallSuccess
-            ? $"[green]All tests completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
-            : $"[red]Some tests failed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
-        );
-
         if (!quiet)
         {
-            if (showReport)
+            AnsiConsole.MarkupLine(overallSuccess
+                ? $"[green]All tests completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
+                : $"[red]Some tests failed in {stopwatch.Elapsed.TotalSeconds:F1} seconds[/]"
+            );
+
+            if (useCombinedRun)
+            {
+                if (showReport || !overallSuccess) OpenCombinedHtmlReport();
+            }
+            else if (showReport)
             {
                 foreach (var currentSelfContainedSystem in selfContainedSystemsToTest)
                 {
@@ -257,6 +290,129 @@ public class End2EndCommand : Command
         return (testPatterns.ToArray(), finalGrep);
     }
 
+    private static bool RunTestsCombined(
+        string[] selfContainedSystems,
+        string[] testPatterns,
+        string browser,
+        bool debugTiming,
+        string? searchGrep,
+        bool includeSlow,
+        bool lastFailed,
+        bool onlyChanged,
+        int? repeatEach,
+        int? retries,
+        bool showReport,
+        bool smoke,
+        bool stopOnFirstFailure,
+        int? workers,
+        bool quiet)
+    {
+        // Build test directory arguments for all SCSs so Playwright runs everything in one invocation
+        var testDirs = new List<string>();
+        foreach (var system in selfContainedSystems)
+        {
+            var end2EndTestsPath = Path.Combine(system, "WebApp", "tests", "e2e");
+            var fullPath = Path.Combine(Configuration.ApplicationFolder, end2EndTestsPath);
+            if (!Directory.Exists(fullPath))
+            {
+                if (!quiet) AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {system}. Skipping...[/]");
+                continue;
+            }
+
+            testDirs.Add(end2EndTestsPath);
+        }
+
+        if (testDirs.Count == 0)
+        {
+            if (!quiet) AnsiConsole.MarkupLine("[yellow]No end-to-end tests found for any system.[/]");
+            return true;
+        }
+
+        if (!quiet) AnsiConsole.MarkupLine($"[blue]Running tests for {string.Join(", ", selfContainedSystems)} in a single Playwright invocation...[/]");
+
+        // Write a temporary combined Playwright config
+        var combinedConfigPath = Path.Combine(Configuration.ApplicationFolder, "playwright.combined.config.ts");
+        var testMatchEntries = string.Join(", ", testDirs.Select(dir => $"\"{dir}/**/*.spec.ts\""));
+        var configContent = $$"""
+                              import { defineConfig } from "@playwright/test";
+                              import baseConfig from "./shared-webapp/tests/e2e/playwright.config";
+
+                              export default defineConfig({
+                                ...baseConfig,
+                                testDir: ".",
+                                testMatch: [{{testMatchEntries}}]
+                              });
+                              """;
+        File.WriteAllText(combinedConfigPath, configContent);
+
+        try
+        {
+            // Clean up report directory if we're going to show it
+            var reportDirectory = Path.Combine(Configuration.ApplicationFolder, "tests", "test-results", "playwright-report");
+            if (showReport && Directory.Exists(reportDirectory))
+            {
+                Directory.Delete(reportDirectory, true);
+            }
+
+            var runSequential = debugTiming;
+            var isLocalhost = BaseUrl.Contains("localhost", StringComparison.OrdinalIgnoreCase);
+
+            var playwrightArgs = BuildPlaywrightArgs(
+                testPatterns, browser, false, searchGrep, false, includeSlow, lastFailed, onlyChanged, repeatEach,
+                retries, runSequential, smoke, stopOnFirstFailure, false, workers
+            );
+
+            var command = $"{(Configuration.IsWindows ? "cmd.exe /C npx" : "npx")} playwright test --config=./playwright.combined.config.ts {playwrightArgs}";
+
+            if (!quiet) AnsiConsole.MarkupLine($"[cyan]Running: npx playwright test --config=./playwright.combined.config.ts {playwrightArgs}[/]");
+
+            var environmentVariables = new List<(string Name, string Value)> { ("PUBLIC_URL", BaseUrl), ("PLAYWRIGHT_HTML_OPEN", "never") };
+            if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
+            if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+            var assertionTimeout = LoadDefault("assertionTimeout");
+            if (assertionTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_EXPECT_TIMEOUT", (assertionTimeout.Value * 1000).ToString()));
+            var testTimeout = LoadDefault("testTimeout");
+            if (testTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_TIMEOUT", (testTimeout.Value * 1000).ToString()));
+
+            if (quiet)
+            {
+                var result = ProcessHelper.ExecuteQuietly(command, Configuration.ApplicationFolder, environmentVariables.ToArray());
+                Console.WriteLine(ExtractPlaywrightSummary(result.CombinedOutput) ?? (result.Success ? "All tests passed." : "Tests failed."));
+                if (!result.Success) Console.WriteLine($"Full output: {result.TempFilePathWithSize}");
+                return result.Success;
+            }
+
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
+                Arguments = $"{(Configuration.IsWindows ? "/C npx" : string.Empty)} playwright test --config=./playwright.combined.config.ts {playwrightArgs}",
+                WorkingDirectory = Configuration.ApplicationFolder,
+                UseShellExecute = false,
+                Environment = { ["PUBLIC_URL"] = BaseUrl, ["PLAYWRIGHT_HTML_OPEN"] = "never" }
+            };
+
+            if (isLocalhost) processStartInfo.EnvironmentVariables["PLAYWRIGHT_VIDEO_MODE"] = "on";
+            if (debugTiming) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SHOW_DEBUG_TIMING"] = "true";
+
+            try
+            {
+                ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
+                AnsiConsole.MarkupLine("[green]All tests completed successfully[/]");
+                return true;
+            }
+            catch
+            {
+                AnsiConsole.MarkupLine("[red]Some tests failed[/]");
+                return false;
+            }
+        }
+        finally
+        {
+            // Clean up the temporary config
+            if (File.Exists(combinedConfigPath)) File.Delete(combinedConfigPath);
+        }
+    }
+
     private static bool RunTestsForSystem(
         string selfContainedSystem,
         string[] testPatterns,
@@ -275,18 +431,19 @@ public class End2EndCommand : Command
         bool smoke,
         bool stopOnFirstFailure,
         bool ui,
-        int? workers)
+        int? workers,
+        bool quiet)
     {
         var systemPath = Path.Combine(Configuration.ApplicationFolder, selfContainedSystem, "WebApp");
         var end2EndTestsPath = Path.Combine(systemPath, "tests/e2e");
 
         if (!Directory.Exists(end2EndTestsPath))
         {
-            AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {selfContainedSystem}. Skipping...[/]");
+            if (!quiet) AnsiConsole.MarkupLine($"[yellow]No end-to-end tests found for {selfContainedSystem}. Skipping...[/]");
             return true;
         }
 
-        AnsiConsole.MarkupLine($"[blue]Running tests for {selfContainedSystem}...[/]");
+        if (!quiet) AnsiConsole.MarkupLine($"[blue]Running tests for {selfContainedSystem}...[/]");
 
         // Clean up report directory if we're going to show it
         if (showReport)
@@ -294,7 +451,7 @@ public class End2EndCommand : Command
             var reportDirectory = Path.Combine(systemPath, "tests", "test-results", "playwright-report");
             if (Directory.Exists(reportDirectory))
             {
-                AnsiConsole.MarkupLine("[blue]Cleaning up previous test report...[/]");
+                if (!quiet) AnsiConsole.MarkupLine("[blue]Cleaning up previous test report...[/]");
                 Directory.Delete(reportDirectory, true);
             }
         }
@@ -308,6 +465,25 @@ public class End2EndCommand : Command
             retries, runSequential, smoke, stopOnFirstFailure, ui, workers
         );
 
+        var command = $"{(Configuration.IsWindows ? "cmd.exe /C npx" : "npx")} playwright test --config=./tests/playwright.config.ts {playwrightArgs}";
+
+        if (!quiet) AnsiConsole.MarkupLine($"[cyan]Running command in {selfContainedSystem}: npx playwright test --config=./tests/playwright.config.ts {playwrightArgs}[/]");
+
+        var environmentVariables = new List<(string Name, string Value)> { ("PUBLIC_URL", BaseUrl), ("PLAYWRIGHT_HTML_OPEN", "never") };
+        if (slowMo) environmentVariables.Add(("PLAYWRIGHT_SLOW_MO", "500"));
+        if (isLocalhost) environmentVariables.Add(("PLAYWRIGHT_VIDEO_MODE", "on"));
+        if (debugTiming) environmentVariables.Add(("PLAYWRIGHT_SHOW_DEBUG_TIMING", "true"));
+        var assertionTimeout = LoadDefault("assertionTimeout");
+        if (assertionTimeout is not null) environmentVariables.Add(("PLAYWRIGHT_EXPECT_TIMEOUT", (assertionTimeout.Value * 1000).ToString()));
+
+        if (quiet)
+        {
+            var result = ProcessHelper.ExecuteQuietly(command, systemPath, environmentVariables.ToArray());
+            Console.WriteLine(ExtractPlaywrightSummary(result.CombinedOutput) ?? (result.Success ? $"{selfContainedSystem}: all tests passed." : $"{selfContainedSystem}: tests failed."));
+            if (!result.Success) Console.WriteLine($"Full output: {result.TempFilePathWithSize}");
+            return result.Success;
+        }
+
         var processStartInfo = new ProcessStartInfo
         {
             FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
@@ -316,25 +492,16 @@ public class End2EndCommand : Command
             UseShellExecute = false
         };
 
-        AnsiConsole.MarkupLine($"[cyan]Running command in {selfContainedSystem}: npx playwright test --config=./tests/playwright.config.ts {playwrightArgs}[/]");
-
-        processStartInfo.EnvironmentVariables["PUBLIC_URL"] = BaseUrl;
-
-        if (slowMo) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SLOW_MO"] = "500";
-        if (isLocalhost) processStartInfo.EnvironmentVariables["PLAYWRIGHT_VIDEO_MODE"] = "on";
-        if (debugTiming) processStartInfo.EnvironmentVariables["PLAYWRIGHT_SHOW_DEBUG_TIMING"] = "true";
-
-        // Prevent HTML report from opening automatically
-        processStartInfo.EnvironmentVariables["PLAYWRIGHT_HTML_OPEN"] = "never";
+        foreach (var (name, value) in environmentVariables)
+        {
+            processStartInfo.EnvironmentVariables[name] = value;
+        }
 
         var testsFailed = false;
         try
         {
             ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
-            AnsiConsole.MarkupLine(testsFailed
-                ? $"[red]Tests for {selfContainedSystem} failed[/]"
-                : $"[green]Tests for {selfContainedSystem} completed successfully[/]"
-            );
+            AnsiConsole.MarkupLine($"[green]Tests for {selfContainedSystem} completed successfully[/]");
         }
         catch (Exception)
         {
@@ -345,39 +512,50 @@ public class End2EndCommand : Command
         return !testsFailed;
     }
 
-    private static void CheckWebsiteAccessibility(bool waitForAspire)
+    private static void CheckWebsiteAccessibility(bool waitForAspire, bool quiet = false)
     {
-        var maxRetries = waitForAspire ? 10 : 1;
+        var maxAttempts = waitForAspire ? 6 : 1; // 6 * 5s = 30 seconds
         var retryDelaySeconds = 5;
 
-        for (var attempt = 1; attempt <= maxRetries; attempt++)
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
             try
             {
-                using var httpClient = new HttpClient();
+                using var httpClient = new HttpClient(new HttpClientHandler
+                    {
+                        AllowAutoRedirect = true,
+                        ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+                    }
+                );
                 httpClient.Timeout = TimeSpan.FromSeconds(5);
 
                 var response = httpClient.Send(new HttpRequestMessage(HttpMethod.Head, BaseUrl));
 
                 if (response.IsSuccessStatusCode)
                 {
-                    AnsiConsole.MarkupLine($"[green]Server is accessible at {BaseUrl}[/]");
+                    if (!quiet) AnsiConsole.MarkupLine($"[green]Server is accessible at {BaseUrl}[/]");
                     return;
                 }
-            }
-            catch
-            {
-                // Retry if waiting for Aspire and not the last attempt
-                if (waitForAspire && attempt < maxRetries)
+
+                if (attempt < maxAttempts)
                 {
-                    AnsiConsole.MarkupLine($"[yellow]Server not ready yet, retrying in {retryDelaySeconds} seconds... (attempt {attempt}/{maxRetries})[/]");
+                    if (!quiet) AnsiConsole.MarkupLine($"[yellow]Server returned HTTP {(int)response.StatusCode} ({response.StatusCode}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
+                    Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
+                }
+            }
+            catch (Exception exception)
+            {
+                var reason = exception.InnerException?.Message ?? exception.Message;
+
+                if (attempt < maxAttempts)
+                {
+                    if (!quiet) AnsiConsole.MarkupLine($"[yellow]Server not ready ({reason}), retrying in {retryDelaySeconds}s... (attempt {attempt}/{maxAttempts})[/]");
                     Thread.Sleep(TimeSpan.FromSeconds(retryDelaySeconds));
                 }
             }
         }
 
-        AnsiConsole.MarkupLine($"[red]Server is not accessible at {BaseUrl}[/]");
-        AnsiConsole.MarkupLine($"[yellow]Please start AppHost in your IDE before running '{Configuration.AliasName} e2e'[/]");
+        Console.WriteLine($"Server is not accessible at {BaseUrl}. Please start AppHost before running '{Configuration.AliasName} e2e'.");
         Environment.Exit(1);
     }
 
@@ -521,6 +699,123 @@ public class End2EndCommand : Command
         else
         {
             AnsiConsole.MarkupLine($"[yellow]No test report found for '{selfContainedSystem}' at '{reportPath}'[/]");
+        }
+    }
+
+    private static void OpenCombinedHtmlReport()
+    {
+        // The combined run uses the application-level report path from the base config (test-results/playwright-report)
+        var reportPath = Path.Combine(Configuration.ApplicationFolder, "test-results", "playwright-report", "index.html");
+
+        if (File.Exists(reportPath))
+        {
+            AnsiConsole.MarkupLine("[green]Opening combined test report...[/]");
+            ProcessHelper.OpenBrowser(reportPath);
+        }
+        else
+        {
+            // Fall back to per-system reports
+            foreach (var selfContainedSystem in AvailableSelfContainedSystems)
+            {
+                OpenHtmlReport(selfContainedSystem);
+            }
+        }
+    }
+
+    private static string? ExtractPlaywrightSummary(string output)
+    {
+        // Playwright summary lines: "8 failed" and "5 passed (31.3s)" near the end, possibly separated by test names
+        // Match lines like "N passed", "N failed", "N passed (Xs)", "N skipped"
+        var summaryPattern = SummaryLineRegex();
+        var parts = new List<string>();
+
+        foreach (var line in output.Split('\n').Reverse())
+        {
+            var cleaned = AnsiEscapeRegex().Replace(line, "").Trim();
+            if (summaryPattern.IsMatch(cleaned))
+            {
+                parts.Insert(0, cleaned);
+            }
+        }
+
+        return parts.Count > 0 ? string.Join(", ", parts) : null;
+    }
+
+    [GeneratedRegex(@"^\d+ (passed|failed|skipped)")]
+    private static partial Regex SummaryLineRegex();
+
+    [GeneratedRegex(@"\x1B\[[0-9;]*m")]
+    private static partial Regex AnsiEscapeRegex();
+
+    private static void ConfigurePerformanceProfile()
+    {
+        var profiles = new Dictionary<string, (int Workers, int AssertionTimeout, int TestTimeout)>
+        {
+            ["High-end (8 workers, 15s assertions, 2m tests)"] = (8, 15, 120),
+            ["Mid-range (6 workers, 20s assertions, 3m tests)"] = (6, 20, 180),
+            ["Low-spec (4 workers, 30s assertions, 4m tests)"] = (4, 30, 240),
+            ["CI runner (1 worker, 30s assertions, 4m tests)"] = (1, 30, 240)
+        };
+
+        var currentWorkers = LoadDefault("workers");
+        var currentAssertionTimeout = LoadDefault("assertionTimeout");
+        var currentTestTimeout = LoadDefault("testTimeout");
+
+        if (currentWorkers is not null)
+        {
+            AnsiConsole.MarkupLine($"[blue]Current settings: {currentWorkers} workers, {currentAssertionTimeout ?? 20}s assertions, {currentTestTimeout ?? 180}s tests[/]");
+        }
+
+        var selection = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Select a [green]performance profile[/] for this machine:")
+                .AddChoices(profiles.Keys)
+        );
+
+        var (workers, assertionTimeout, testTimeout) = profiles[selection];
+        SaveDefaults("workers", workers);
+        SaveDefaults("assertionTimeout", assertionTimeout);
+        SaveDefaults("testTimeout", testTimeout);
+
+        AnsiConsole.MarkupLine($"[green]Profile saved: {workers} workers, {assertionTimeout}s assertion timeout, {testTimeout}s test timeout[/]");
+    }
+
+    private static void SaveDefaults(string key, int value)
+    {
+        var directory = Path.GetDirectoryName(DefaultsFilePath)!;
+        if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+        var defaults = LoadAllDefaults();
+        defaults[key] = value;
+
+        var entries = defaults.Select(kvp => $"\"{kvp.Key}\":{kvp.Value}");
+        File.WriteAllText(DefaultsFilePath, $"{{{string.Join(",", entries)}}}");
+    }
+
+    private static int? LoadDefault(string key)
+    {
+        var defaults = LoadAllDefaults();
+        return defaults.TryGetValue(key, out var value) ? value : null;
+    }
+
+    private static Dictionary<string, int> LoadAllDefaults()
+    {
+        if (!File.Exists(DefaultsFilePath)) return new Dictionary<string, int>();
+
+        try
+        {
+            var json = File.ReadAllText(DefaultsFilePath);
+            var result = new Dictionary<string, int>();
+            foreach (Match match in Regex.Matches(json, "\"(\\w+)\":(\\d+)"))
+            {
+                result[match.Groups[1].Value] = int.Parse(match.Groups[2].Value);
+            }
+
+            return result;
+        }
+        catch
+        {
+            return new Dictionary<string, int>();
         }
     }
 

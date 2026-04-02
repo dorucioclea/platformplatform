@@ -8,6 +8,7 @@ test.describe("@comprehensive", () => {
   /**
    * Tests theme switching functionality via preferences page across different viewport sizes.
    * Covers:
+   * - CSP nonce configuration in meta tag and response headers
    * - Theme switching between light, dark, and system modes via preferences page
    * - Theme persistence across page reloads
    * - Theme persistence across navigation
@@ -17,12 +18,22 @@ test.describe("@comprehensive", () => {
   test("should handle theme switching with persistence across viewport sizes", async ({ ownerPage }) => {
     createTestContext(ownerPage);
 
-    await step("Navigate to admin dashboard & verify default light theme")(async () => {
-      await ownerPage.goto("/account");
+    await step("Navigate to admin dashboard & verify default light theme and CSP nonce")(async () => {
+      const response = await ownerPage.goto("/account");
 
       // Verify dashboard loads with default light theme
       await expect(ownerPage.getByRole("heading", { name: "Overview" })).toBeVisible();
       await expect(ownerPage.locator("html")).not.toHaveClass("dark");
+
+      // Verify CSP nonce is configured in meta tag and response headers
+      const nonceMetaExists = await ownerPage.locator('meta[name="csp-nonce"]').count();
+      expect(nonceMetaExists).toBe(1);
+
+      const cspHeader = response?.headers()["content-security-policy"];
+      expect(cspHeader).toBeTruthy();
+      expect(cspHeader).toContain("script-src");
+      expect(cspHeader).toContain("'nonce-");
+      expect(cspHeader).toContain("style-src");
     })();
 
     await step("Navigate to preferences page & select dark theme")(async () => {

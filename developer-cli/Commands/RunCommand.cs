@@ -103,18 +103,27 @@ public class RunCommand : Command
             }
         }
 
-        // Also check if there are any dotnet processes running AppHost (both run and watch modes)
+        // Also check if there are any dotnet processes running AppHost for THIS project (both run and watch modes)
         if (Configuration.IsWindows)
         {
-            // Check if any dotnet.exe processes are running with AppHost in the command line
-            var appHostProcesses = ProcessHelper.StartProcess("""powershell -Command "Get-Process dotnet -ErrorAction SilentlyContinue | Where-Object {$_.CommandLine -like '*AppHost*'} | Select-Object Id" """, redirectOutput: true, exitOnError: false);
+            var escapedPath = Configuration.SourceCodeFolder.Replace("\\", "\\\\");
+            var appHostProcesses = ProcessHelper.StartProcess($$"""powershell -Command "Get-Process dotnet -ErrorAction SilentlyContinue | Where-Object {$_.CommandLine -like '*AppHost*' -and $_.CommandLine -like '*{{escapedPath}}*'} | Select-Object Id" """, redirectOutput: true, exitOnError: false);
             return !string.IsNullOrWhiteSpace(appHostProcesses) && appHostProcesses.Contains("Id");
         }
-        else
+
+        var pidsOutput = ProcessHelper.StartProcess("pgrep -f dotnet.*AppHost", redirectOutput: true, exitOnError: false);
+        if (string.IsNullOrWhiteSpace(pidsOutput)) return false;
+
+        foreach (var pid in pidsOutput.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
         {
-            var appHostProcesses = ProcessHelper.StartProcess("pgrep -f dotnet.*AppHost", redirectOutput: true, exitOnError: false);
-            return !string.IsNullOrWhiteSpace(appHostProcesses);
+            var commandLine = ProcessHelper.StartProcess($"ps -p {pid} -o args=", redirectOutput: true, exitOnError: false).Trim();
+            if (commandLine.Contains(Configuration.SourceCodeFolder, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
         }
+
+        return false;
     }
 
     private static void StopAspire()

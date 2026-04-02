@@ -3,6 +3,16 @@ import { test } from "@shared/e2e/fixtures/page-auth";
 import { createTestContext, expectToastMessage } from "@shared/e2e/utils/test-assertions";
 import { step } from "@shared/e2e/utils/test-step-wrapper";
 
+test.beforeEach(async ({ ownerPage }) => {
+  await ownerPage.goto("/account");
+  const isSubscriptionEnabled = await ownerPage.evaluate(() => {
+    const meta = document.head.querySelector('meta[name="runtimeEnv"]');
+    const runtimeEnv = JSON.parse(meta?.getAttribute("content") ?? "{}");
+    return runtimeEnv.PUBLIC_SUBSCRIPTION_ENABLED === "true";
+  });
+  test.skip(!isSubscriptionEnabled, "Subscriptions are not enabled (Stripe not configured)");
+});
+
 test.describe("@smoke", () => {
   /**
    * SUBSCRIPTION MANAGEMENT E2E TEST

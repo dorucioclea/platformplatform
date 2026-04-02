@@ -6,18 +6,36 @@ namespace DeveloperCli.Installation;
 
 public static class PlaywrightInstaller
 {
-    public static void EnsurePlaywrightBrowsers()
+    public static void EnsurePlaywrightBrowsers(bool quiet = false)
     {
-        AnsiConsole.MarkupLine("[blue]Ensuring Playwright browsers are installed...[/]");
+        if (!quiet) AnsiConsole.MarkupLine("[blue]Ensuring Playwright browsers are installed...[/]");
 
-        var processStartInfo = new ProcessStartInfo
+        var command = Configuration.IsWindows
+            ? "cmd.exe"
+            : Configuration.IsLinux
+                ? "sudo"
+                : "npx";
+        var arguments = Configuration.IsWindows
+            ? "/C npx --yes playwright install --with-deps"
+            : Configuration.IsLinux
+                ? "npx --yes playwright install --with-deps"
+                : "--yes playwright install --with-deps";
+
+        if (quiet)
         {
-            FileName = Configuration.IsWindows ? "cmd.exe" : "npx",
-            Arguments = $"{(Configuration.IsWindows ? "/C npx" : string.Empty)} --yes playwright install --with-deps",
-            WorkingDirectory = Configuration.ApplicationFolder,
-            UseShellExecute = false
-        };
+            ProcessHelper.ExecuteQuietly($"{command} {arguments}", Configuration.ApplicationFolder);
+        }
+        else
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = command,
+                Arguments = arguments,
+                WorkingDirectory = Configuration.ApplicationFolder,
+                UseShellExecute = false
+            };
 
-        ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
+            ProcessHelper.StartProcess(processStartInfo, throwOnError: true);
+        }
     }
 }

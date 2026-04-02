@@ -164,7 +164,7 @@ export const test = base.extend<PageAuthFixtures>({
   ownerPage: async ({ browser }, use, testInfo) => {
     const workerIndex = testInfo.parallelIndex;
     const browserName = testInfo.project.name;
-    const systemPrefix = getSelfContainedSystemPrefix();
+    const systemPrefix = getSelfContainedSystemPrefix(testInfo.file);
 
     // Get tenant for this worker
     const tenant = await getWorkerTenant(workerIndex, systemPrefix);
@@ -188,7 +188,7 @@ export const test = base.extend<PageAuthFixtures>({
   adminPage: async ({ browser }, use, testInfo) => {
     const workerIndex = testInfo.parallelIndex;
     const browserName = testInfo.project.name;
-    const systemPrefix = getSelfContainedSystemPrefix();
+    const systemPrefix = getSelfContainedSystemPrefix(testInfo.file);
 
     // Get tenant for this worker
     const tenant = await getWorkerTenant(workerIndex, systemPrefix);
@@ -212,7 +212,7 @@ export const test = base.extend<PageAuthFixtures>({
   memberPage: async ({ browser }, use, testInfo) => {
     const workerIndex = testInfo.parallelIndex;
     const browserName = testInfo.project.name;
-    const systemPrefix = getSelfContainedSystemPrefix();
+    const systemPrefix = getSelfContainedSystemPrefix(testInfo.file);
 
     // Get tenant for this worker
     const tenant = await getWorkerTenant(workerIndex, systemPrefix);
@@ -235,7 +235,7 @@ export const test = base.extend<PageAuthFixtures>({
 
   anonymousPage: async ({ browser }, use, testInfo) => {
     const workerIndex = testInfo.parallelIndex;
-    const systemPrefix = getSelfContainedSystemPrefix();
+    const systemPrefix = getSelfContainedSystemPrefix(testInfo.file);
 
     // Get tenant for this worker - ensure users exist for testing existing user flows
     const tenant = await getWorkerTenant(workerIndex, systemPrefix, {

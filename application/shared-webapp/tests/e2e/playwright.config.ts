@@ -2,14 +2,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { getBaseUrl, isLinux, isWindows } from "./utils/constants";
 
-let workers: number | undefined;
-if (process.env.CI) {
-  workers = 1; // Limit to 1 worker on CI
-} else if (isWindows) {
-  workers = 4; // Limit to 4 workers on Windows to avoid performance issues
-} else {
-  workers = undefined; // On non-Windows systems, use all available CPUs
-}
+const workers = process.env.CI ? 1 : undefined;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -61,12 +54,12 @@ export default defineConfig({
 
   // Global timeout for each test (double timeout for slow motion)
   timeout: (() => {
-    const baseTimeout = process.env.PLAYWRIGHT_TIMEOUT ? Number.parseInt(process.env.PLAYWRIGHT_TIMEOUT, 10) : 60000;
+    const baseTimeout = process.env.PLAYWRIGHT_TIMEOUT ? Number.parseInt(process.env.PLAYWRIGHT_TIMEOUT, 10) : 180_000;
     const isSlowMotion = !!process.env.PLAYWRIGHT_SLOW_MO;
     return isSlowMotion ? baseTimeout * 2 : baseTimeout;
   })(),
   expect: {
-    timeout: 10000
+    timeout: process.env.PLAYWRIGHT_EXPECT_TIMEOUT ? Number.parseInt(process.env.PLAYWRIGHT_EXPECT_TIMEOUT, 10) : 20_000
   },
 
   // Output directories - centralized test artifacts

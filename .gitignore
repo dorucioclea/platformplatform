@@ -399,7 +399,7 @@ FodyWeavers.xsd
 dist/
 .turbo/
 **/translations/locale/*.ts
-application/account/WebApp/tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 # Ignore AI files from Antigravity, Cursor, CoPilot, and Windsurf. To enable, run the sync-ai-rules CLI command and remove ignore below
 .agent
@@ -424,3 +424,6 @@ playwright-report/
 
 # PlatformPlatform agent workspace
 .workspace
+
+# Generated Playwright combined config (created by pp e2e)
+application/playwright.combined.config.ts

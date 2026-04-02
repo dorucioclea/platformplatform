@@ -20,7 +20,7 @@
     "dev:setup": {
       "dependsOn": ["^dev:setup"],
       "inputs": ["$TURBO_DEFAULT$", "shared/lib/api/*.Api.json"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "shared/lib/api/*.generated.d.ts"]
     },
     "format": {
       "dependsOn": ["^format"],
