@@ -104,6 +104,7 @@ module keyVault '../modules/key-vault.bicep' = {
     subnetId: virtualNetwork.outputs.containerAppsSubnetId
     storageAccountId: diagnosticStorageAccount.outputs.storageAccountId
     workspaceId: existingLogAnalyticsWorkspace.id
+    domainName: domainName
   }
 }
 
