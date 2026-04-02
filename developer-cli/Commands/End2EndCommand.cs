@@ -89,7 +89,7 @@ public partial class End2EndCommand : Command
 
     private static string BaseUrl => Environment.GetEnvironmentVariable("PUBLIC_URL") ?? "https://localhost:9000";
 
-    private static string DefaultsFilePath => Path.Combine(Configuration.SourceCodeFolder, ".workspace", "developer-cli", "end-to-end-tests", "e2e-defaults.json");
+    private static string DefaultsFilePath => Path.Combine(Configuration.WorkspaceFolder, "developer-cli", "end-to-end-tests", "e2e-defaults.json");
 
     private static void Execute(
         string[] searchTerms,

@@ -21,6 +21,8 @@ if (args.Length == 0)
 // Preprocess arguments to handle @ symbols in search terms
 args = CommandLineArgumentsPreprocessor.PreprocessArguments(args);
 
+WorkspaceHelper.EnsureWorkspace();
+
 // Check if running MCP command - skip all output to keep stdout clean for MCP protocol
 var isMcpCommand = args.Length > 0 && args[0] == "mcp";
 var solutionName = new DirectoryInfo(Configuration.SourceCodeFolder).Name;
