@@ -87,6 +87,9 @@ msgstr "Cancel"
 msgid "Cards"
 msgstr "Cards"
 
+msgid "Checkbox"
+msgstr "Checkbox"
+
 msgid "Cherry"
 msgstr "Cherry"
 
@@ -282,6 +285,9 @@ msgstr "Pick a date"
 msgid "Radio card selector"
 msgstr "Radio card selector"
 
+msgid "Radio group"
+msgstr "Radio group"
+
 msgid "Read only"
 msgstr "Read only"
 
@@ -305,6 +311,9 @@ msgstr "Search"
 
 msgid "Secondary"
 msgstr "Secondary"
+
+msgid "Select"
+msgstr "Select"
 
 msgid "Select fruits"
 msgstr "Select fruits"
@@ -332,6 +341,9 @@ msgstr "Something went wrong. Please try again."
 
 msgid "Standard user access"
 msgstr "Standard user access"
+
+msgid "Switch"
+msgstr "Switch"
 
 msgid "Team members"
 msgstr "Team members"

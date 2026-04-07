@@ -17,11 +17,13 @@ import {
 import { AppLayout } from "@repo/ui/components/AppLayout";
 import { Badge } from "@repo/ui/components/Badge";
 import { Button } from "@repo/ui/components/Button";
-import { Checkbox } from "@repo/ui/components/Checkbox";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/Card";
+import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
 import {
+  Dialog,
   DialogBody,
   DialogClose,
   DialogContent,
@@ -30,16 +32,16 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@repo/ui/components/Dialog";
-import { Dialog } from "@repo/ui/components/Dialog";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/Card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@repo/ui/components/Empty";
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@repo/ui/components/Field";
 import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { NumberField } from "@repo/ui/components/NumberField";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
+import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
+import { SelectField } from "@repo/ui/components/SelectField";
 import { Skeleton } from "@repo/ui/components/Skeleton";
-import { Switch } from "@repo/ui/components/Switch";
+import { SwitchField } from "@repo/ui/components/SwitchField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
@@ -125,7 +127,6 @@ function ControlRow({
 
   return (
     <div className="grid grid-cols-4 gap-x-6 gap-y-4">
-      {/* TextField -- supports: label, tooltip, disabled, readOnly, errorMessage, startIcon */}
       <TextField
         label={label ? t`Text field` : undefined}
         tooltip={tip}
@@ -137,7 +138,6 @@ function ControlRow({
         errorMessage={err}
         startIcon={showIcon ? <SearchIcon /> : undefined}
       />
-      {/* TextAreaField -- supports: label, tooltip, disabled, readOnly, errorMessage */}
       <TextAreaField
         label={label ? t`Text area` : undefined}
         tooltip={tip}
@@ -148,7 +148,6 @@ function ControlRow({
         isReadOnly={readOnly}
         errorMessage={err}
       />
-      {/* NumberField -- supports: label, tooltip, disabled, readOnly, errorMessage */}
       <NumberField
         label={label ? t`Number (integer)` : undefined}
         tooltip={tip}
@@ -160,8 +159,8 @@ function ControlRow({
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={err}
+        startIcon={showIcon ? <SearchIcon /> : undefined}
       />
-      {/* NumberField decimal -- supports: label, tooltip, disabled, readOnly, errorMessage */}
       <NumberField
         label={label ? t`Number (decimal)` : undefined}
         tooltip={tip}
@@ -174,8 +173,16 @@ function ControlRow({
         isReadOnly={readOnly}
         errorMessage={err}
       />
-      {/* Select -- NO built-in: label, tooltip, readOnly, errorMessage */}
-      <Select name={`select-${suffix}`} value={selectedColor} onValueChange={(v) => v && setSelectedColor(v)} disabled={disabled}>
+      <SelectField
+        label={label ? t`Select` : undefined}
+        tooltip={tip}
+        name={`select-${suffix}`}
+        value={selectedColor}
+        onValueChange={(v) => v && setSelectedColor(v)}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
+      >
         <SelectTrigger>
           <SelectValue>{() => colorLabels[selectedColor]}</SelectValue>
         </SelectTrigger>
@@ -184,17 +191,19 @@ function ControlRow({
           <SelectItem value="green"><Trans>Green</Trans></SelectItem>
           <SelectItem value="blue"><Trans>Blue</Trans></SelectItem>
         </SelectContent>
-      </Select>
-      {/* MultiSelect -- supports: label, tooltip. NO: disabled, readOnly, errorMessage */}
+      </SelectField>
       <MultiSelect
         label={label ? t`Multi select` : undefined}
         tooltip={tip}
+        name={`multi-${suffix}`}
         placeholder={t`Select fruits`}
         items={fruitItems}
         value={selectedFruits}
         onChange={setSelectedFruits}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
       />
-      {/* DateField -- supports: label, tooltip, disabled, readOnly, errorMessage */}
       <DateField
         label={label ? t`Date field` : undefined}
         tooltip={tip}
@@ -203,18 +212,23 @@ function ControlRow({
         isReadOnly={readOnly}
         errorMessage={err}
       />
-      {/* DatePicker -- supports: label, tooltip, disabled, errorMessage. NO: readOnly */}
       <DatePicker
         label={label ? t`Date picker` : undefined}
         tooltip={tip}
         name={`datepicker-${suffix}`}
         placeholder={t`Pick a date`}
         isDisabled={disabled}
+        isReadOnly={readOnly}
         errorMessage={err}
       />
-      {/* DateRangePicker -- supports: label, disabled. NO: tooltip, readOnly, errorMessage */}
-      <DateRangePicker label={label ? t`Date range` : undefined} disabled={disabled} />
-      {/* TimeField -- supports: label, tooltip, disabled, readOnly, errorMessage */}
+      <DateRangePicker
+        label={label ? t`Date range` : undefined}
+        tooltip={tip}
+        name={`daterange-${suffix}`}
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
+      />
       <TimeField
         label={label ? t`Time field` : undefined}
         tooltip={tip}
@@ -223,15 +237,38 @@ function ControlRow({
         isReadOnly={readOnly}
         errorMessage={err}
       />
-      {/* Switch -- NO built-in: label, tooltip, readOnly, errorMessage */}
-      <Switch checked={switchChecked} onCheckedChange={setSwitchChecked} disabled={disabled} />
-      {/* Checkbox -- NO built-in: label, tooltip, readOnly, errorMessage */}
-      <Checkbox checked={checkboxChecked} onCheckedChange={setCheckboxChecked} disabled={disabled} />
-      {/* RadioGroup -- NO built-in: label, tooltip, readOnly, errorMessage */}
-      <RadioGroup name={`radio-${suffix}`} defaultValue="option-a" disabled={disabled}>
+      <SwitchField
+        label={label ? t`Switch` : undefined}
+        tooltip={tip}
+        name={`switch-${suffix}`}
+        checked={switchChecked}
+        onCheckedChange={setSwitchChecked}
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
+      />
+      <CheckboxField
+        label={label ? t`Checkbox` : undefined}
+        tooltip={tip}
+        name={`checkbox-${suffix}`}
+        checked={checkboxChecked}
+        onCheckedChange={setCheckboxChecked}
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
+      />
+      <RadioGroupField
+        label={label ? t`Radio group` : undefined}
+        tooltip={tip}
+        name={`radio-${suffix}`}
+        defaultValue="option-a"
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={err}
+      >
         <RadioGroupItem value="option-a" />
         <RadioGroupItem value="option-b" />
-      </RadioGroup>
+      </RadioGroupField>
     </div>
   );
 }
