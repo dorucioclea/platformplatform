@@ -1,8 +1,9 @@
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { type ReactNode, useCallback, useRef } from "react";
+import { type ReactNode, useCallback, useContext, useRef } from "react";
 
 import { cn } from "../utils";
-import { Field, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
@@ -12,7 +13,10 @@ export interface MultiSelectItem {
 }
 
 export interface MultiSelectProps {
+  name?: string;
   label?: string;
+  description?: string;
+  errorMessage?: string;
   tooltip?: string;
   placeholder?: string;
   emptyMessage?: ReactNode;
@@ -20,30 +24,51 @@ export interface MultiSelectProps {
   value: string[];
   onChange: (value: string[]) => void;
   className?: string;
+  isDisabled?: boolean;
+  isReadOnly?: boolean;
 }
 
 export function MultiSelect({
+  name,
   label,
+  description,
+  errorMessage,
   tooltip,
   placeholder,
   emptyMessage,
   items,
   value,
   onChange,
-  className
+  className,
+  isDisabled,
+  isReadOnly
 }: MultiSelectProps) {
+  const formErrors = useContext(FormValidationContext);
+  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
+  const fieldErrorMessages = fieldValidationErrors
+    ? Array.isArray(fieldValidationErrors)
+      ? fieldValidationErrors
+      : [fieldValidationErrors]
+    : [];
+  const errors = errorMessage
+    ? [{ message: errorMessage }]
+    : fieldErrorMessages.length > 0
+      ? fieldErrorMessages.map((err) => ({ message: err }))
+      : undefined;
+  const isInvalid = errors && errors.length > 0;
   const listRef = useRef<HTMLDivElement>(null);
   const displayLabel = value.length > 0 ? `${value.length} selected` : placeholder;
 
   const handleToggle = useCallback(
     (itemId: string) => {
+      if (isReadOnly) return;
       if (value.includes(itemId)) {
         onChange(value.filter((v) => v !== itemId));
       } else {
         onChange([...value, itemId]);
       }
     },
-    [value, onChange]
+    [value, onChange, isReadOnly]
   );
 
   const handleKeyDown = useCallback(
@@ -78,7 +103,9 @@ export function MultiSelect({
               <button
                 type="button"
                 aria-label={label ?? placeholder}
-                className="flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30 dark:active:bg-input/60"
+                aria-invalid={isInvalid || undefined}
+                disabled={isDisabled || isReadOnly}
+                className="flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:bg-input/30 dark:active:bg-input/60"
               />
             }
           >
@@ -115,6 +142,8 @@ export function MultiSelect({
           </PopoverContent>
         </Popover>
       )}
+      {description && <FieldDescription>{description}</FieldDescription>}
+      <FieldError errors={errors} />
     </Field>
   );
 }
