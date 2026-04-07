@@ -48,20 +48,17 @@ msgstr "Advarsler og badges"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
-msgid "Apple"
-msgstr "Æble"
-
 msgid "Are you sure?"
 msgstr "Er du sikker?"
+
+msgid "Area chart"
+msgstr "Områdediagram"
 
 msgid "Badges"
 msgstr "Badges"
 
-msgid "Banana"
-msgstr "Banan"
-
-msgid "Blue"
-msgstr "Blå"
+msgid "Bar chart"
+msgstr "Søjlediagram"
 
 msgid "Bold"
 msgstr "Fed"
@@ -95,9 +92,6 @@ msgstr "Afkrydsningsfelt (fra)"
 
 msgid "Checkbox (on)"
 msgstr "Afkrydsningsfelt (til)"
-
-msgid "Cherry"
-msgstr "Kirsebær"
 
 msgid "Create"
 msgstr "Opret"
@@ -198,9 +192,6 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
-msgid "Green"
-msgstr "Grøn"
-
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
@@ -228,6 +219,9 @@ msgstr "Stor"
 msgid "Last month"
 msgstr "Sidste måned"
 
+msgid "Line chart"
+msgstr "Linjediagram"
+
 msgid "Link"
 msgstr "Link"
 
@@ -239,9 +233,6 @@ msgstr "Lang dato"
 
 msgid "Manage your notification preferences."
 msgstr "Administrer dine notifikationsindstillinger."
-
-msgid "Mango"
-msgstr "Mango"
 
 msgid "Meeting notes from last week"
 msgstr "Mødenoter fra sidste uge"
@@ -264,6 +255,9 @@ msgstr "Ingen data endnu"
 msgid "No results found"
 msgstr "Ingen resultater fundet"
 
+msgid "None"
+msgstr "Ingen"
+
 msgid "Notifications"
 msgstr "Notifikationer"
 
@@ -280,13 +274,10 @@ msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
 msgid "Option A"
-msgstr ""
+msgstr "Mulighed A"
 
 msgid "Option B"
-msgstr ""
-
-msgid "Orange"
-msgstr "Appelsin"
+msgstr "Mulighed B"
 
 msgid "Outline"
 msgstr "Kontur"
@@ -294,11 +285,17 @@ msgstr "Kontur"
 msgid "Owner"
 msgstr "Ejer"
 
-msgid "Pick a color"
-msgstr ""
+msgid "Pick a chart"
+msgstr "Vælg et diagram"
 
 msgid "Pick a date"
 msgstr "Vælg en dato"
+
+msgid "Pie chart"
+msgstr "Cirkeldiagram"
+
+msgid "Radar chart"
+msgstr "Radardiagram"
 
 msgid "Radio card selector"
 msgstr "Radiokort-vælger"
@@ -308,9 +305,6 @@ msgstr "Radiogruppe"
 
 msgid "Read only"
 msgstr "Skrivebeskyttet"
-
-msgid "Red"
-msgstr "Rød"
 
 msgid "Relative"
 msgstr "Relativ"

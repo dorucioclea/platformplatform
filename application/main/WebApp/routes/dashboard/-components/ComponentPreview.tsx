@@ -14,24 +14,37 @@ import {
   TextCursorInputIcon,
   ToggleLeftIcon
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
-import { ControlRow, useFruitItems } from "./ControlRow";
+import { ControlRow, useChartItems } from "./ControlRow";
 import { DateFormatPreview } from "./DateFormatPreview";
 import { DialogsPreview } from "./DialogsPreview";
 import { EmptySkeletonPreview } from "./EmptySkeletonPreview";
 
 export function ComponentPreview() {
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedFruits, setSelectedFruits] = useState<string[]>([]);
-  const fruitItems = useFruitItems();
+  const [selectedCharts, setSelectedCharts] = useState<string[]>([]);
+  const chartItems = useChartItems();
+  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "labels");
 
-  const shared = { selectedColor, setSelectedColor, selectedFruits, setSelectedFruits, fruitItems };
+  useEffect(() => {
+    const handleHashChange = () => setActiveTab(window.location.hash.replace("#", "") || "labels");
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  const handleTabChange = (value: string | number) => {
+    const tab = String(value);
+    setActiveTab(tab);
+    window.location.hash = tab;
+  };
+
+  const shared = { selectedColor, setSelectedColor, selectedCharts, setSelectedCharts, chartItems };
 
   return (
-    <Tabs defaultValue="labels">
+    <Tabs value={activeTab} onValueChange={handleTabChange}>
       <TabsList>
         <TabsTrigger value="labels">
           <TextCursorInputIcon />

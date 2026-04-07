@@ -48,20 +48,17 @@ msgstr "Alerts and badges"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
-msgid "Apple"
-msgstr "Apple"
-
 msgid "Are you sure?"
 msgstr "Are you sure?"
+
+msgid "Area chart"
+msgstr "Area chart"
 
 msgid "Badges"
 msgstr "Badges"
 
-msgid "Banana"
-msgstr "Banana"
-
-msgid "Blue"
-msgstr "Blue"
+msgid "Bar chart"
+msgstr "Bar chart"
 
 msgid "Bold"
 msgstr "Bold"
@@ -95,9 +92,6 @@ msgstr "Checkbox (off)"
 
 msgid "Checkbox (on)"
 msgstr "Checkbox (on)"
-
-msgid "Cherry"
-msgstr "Cherry"
 
 msgid "Create"
 msgstr "Create"
@@ -198,9 +192,6 @@ msgstr "Good morning"
 msgid "Good morning, {firstName}"
 msgstr "Good morning, {firstName}"
 
-msgid "Green"
-msgstr "Green"
-
 msgid "Here's your overview of what's happening."
 msgstr "Here's your overview of what's happening."
 
@@ -228,6 +219,9 @@ msgstr "Large"
 msgid "Last month"
 msgstr "Last month"
 
+msgid "Line chart"
+msgstr "Line chart"
+
 msgid "Link"
 msgstr "Link"
 
@@ -239,9 +233,6 @@ msgstr "Long date"
 
 msgid "Manage your notification preferences."
 msgstr "Manage your notification preferences."
-
-msgid "Mango"
-msgstr "Mango"
 
 msgid "Meeting notes from last week"
 msgstr "Meeting notes from last week"
@@ -264,6 +255,9 @@ msgstr "No data yet"
 msgid "No results found"
 msgstr "No results found"
 
+msgid "None"
+msgstr "None"
+
 msgid "Notifications"
 msgstr "Notifications"
 
@@ -285,20 +279,23 @@ msgstr "Option A"
 msgid "Option B"
 msgstr "Option B"
 
-msgid "Orange"
-msgstr "Orange"
-
 msgid "Outline"
 msgstr "Outline"
 
 msgid "Owner"
 msgstr "Owner"
 
-msgid "Pick a color"
-msgstr "Pick a color"
+msgid "Pick a chart"
+msgstr "Pick a chart"
 
 msgid "Pick a date"
 msgstr "Pick a date"
+
+msgid "Pie chart"
+msgstr "Pie chart"
+
+msgid "Radar chart"
+msgstr "Radar chart"
 
 msgid "Radio card selector"
 msgstr "Radio card selector"
@@ -308,9 +305,6 @@ msgstr "Radio group"
 
 msgid "Read only"
 msgstr "Read only"
-
-msgid "Red"
-msgstr "Red"
 
 msgid "Relative"
 msgstr "Relative"

@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 export interface MultiSelectItem {
   id: string;
   label: string;
+  icon?: ReactNode;
 }
 
 export interface MultiSelectProps {
@@ -20,6 +21,7 @@ export interface MultiSelectProps {
   tooltip?: string;
   placeholder?: string;
   emptyMessage?: ReactNode;
+  startIcon?: ReactNode;
   items: MultiSelectItem[];
   value: string[];
   onChange: (value: string[]) => void;
@@ -36,6 +38,7 @@ export function MultiSelect({
   tooltip,
   placeholder,
   emptyMessage,
+  startIcon,
   items,
   value,
   onChange,
@@ -79,6 +82,10 @@ export function MultiSelect({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent, itemId: string) => {
+      if (e.key === "Tab") {
+        setOpen(false);
+        return;
+      }
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
         handleToggle(itemId);
@@ -90,10 +97,24 @@ export function MultiSelect({
         e.preventDefault();
         const previous = (e.currentTarget as HTMLElement).previousElementSibling as HTMLElement | null;
         previous?.focus();
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        document.getElementById(name ?? "")?.focus();
       }
     },
-    [handleToggle]
+    [handleToggle, name, setOpen]
   );
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (isOpen) {
+      requestAnimationFrame(() => {
+        const firstOption = listRef.current?.querySelector("[role=option]") as HTMLElement | null;
+        firstOption?.focus();
+      });
+    }
+  };
 
   return (
     <Field className={cn("flex flex-col", className)}>
@@ -109,7 +130,7 @@ export function MultiSelect({
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
-        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? undefined : setOpen}>
+        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? undefined : handleOpenChange}>
           <PopoverTrigger
             render={
               <button
@@ -128,7 +149,12 @@ export function MultiSelect({
               />
             }
           >
-            <span className={cn("truncate", value.length === 0 && "text-muted-foreground")}>{displayLabel}</span>
+            {startIcon && (
+              <span className="shrink-0 text-muted-foreground [&_svg:not([class*='size-'])]:size-4">{startIcon}</span>
+            )}
+            <span className={cn("flex-1 truncate text-left", value.length === 0 && "text-muted-foreground")}>
+              {displayLabel}
+            </span>
             <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
           </PopoverTrigger>
           <PopoverContent className="w-(--anchor-width) p-1" align="start">
@@ -140,7 +166,7 @@ export function MultiSelect({
                     key={item.id}
                     role="option"
                     aria-selected={checked}
-                    tabIndex={0}
+                    tabIndex={-1}
                     onClick={() => handleToggle(item.id)}
                     onKeyDown={(e) => handleKeyDown(e, item.id)}
                     className={cn(
@@ -148,6 +174,7 @@ export function MultiSelect({
                       checked && "bg-accent"
                     )}
                   >
+                    {item.icon && <span className="shrink-0 [&_svg:not([class*='size-'])]:size-4">{item.icon}</span>}
                     <span className="truncate">{item.label}</span>
                     {checked && (
                       <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center">

@@ -1,24 +1,33 @@
 import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { NumberField } from "@repo/ui/components/NumberField";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
 import { SelectField } from "@repo/ui/components/SelectField";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
-import { EuroIcon, SearchIcon } from "lucide-react";
+import {
+  AreaChartIcon,
+  BarChart3Icon,
+  EuroIcon,
+  LineChartIcon,
+  PieChartIcon,
+  RadarIcon,
+  SearchIcon
+} from "lucide-react";
 import { useState } from "react";
 
 import type { ControlRowProps } from "./controlRowTypes";
 
 import { DateAndToggleFields } from "./DateAndToggleFields";
 
-export function useFruitItems() {
+export function useChartItems() {
   return [
-    { id: "apple", label: t`Apple` },
-    { id: "banana", label: t`Banana` },
-    { id: "cherry", label: t`Cherry` },
-    { id: "mango", label: t`Mango` },
-    { id: "orange", label: t`Orange` }
+    { id: "bar", label: t`Bar chart`, icon: <BarChart3Icon /> },
+    { id: "line", label: t`Line chart`, icon: <LineChartIcon /> },
+    { id: "pie", label: t`Pie chart`, icon: <PieChartIcon /> },
+    { id: "area", label: t`Area chart`, icon: <AreaChartIcon /> },
+    { id: "radar", label: t`Radar chart`, icon: <RadarIcon /> }
   ];
 }
 
@@ -26,9 +35,9 @@ export function ControlRow({
   suffix,
   selectedColor,
   setSelectedColor,
-  selectedFruits,
-  setSelectedFruits,
-  fruitItems,
+  selectedCharts,
+  setSelectedCharts,
+  chartItems,
   label,
   tooltip,
   disabled,
@@ -38,17 +47,17 @@ export function ControlRow({
 }: ControlRowProps & {
   selectedColor: string;
   setSelectedColor: (value: string) => void;
-  selectedFruits: string[];
-  setSelectedFruits: (value: string[]) => void;
-  fruitItems: { id: string; label: string }[];
+  selectedCharts: string[];
+  setSelectedCharts: (value: string[]) => void;
+  chartItems: { id: string; label: string }[];
 }) {
   const hasValues = !!(disabled || readOnly);
-  const [localColor, setLocalColor] = useState(hasValues ? "green" : "");
-  const [localFruits, setLocalFruits] = useState<string[]>(hasValues ? ["apple", "banana"] : []);
-  const colorItems = [
-    { value: "red", label: t`Red` },
-    { value: "green", label: t`Green` },
-    { value: "blue", label: t`Blue` }
+  const [localColor, setLocalColor] = useState(hasValues ? "bar" : "");
+  const [localCharts, setLocalCharts] = useState<string[]>(hasValues ? ["bar", "pie"] : []);
+  const chartSelectItems = [
+    { value: "bar", label: t`Bar chart`, icon: <BarChart3Icon /> },
+    { value: "line", label: t`Line chart`, icon: <LineChartIcon /> },
+    { value: "pie", label: t`Pie chart`, icon: <PieChartIcon /> }
   ];
   const tooltipText = tooltip ? t`This is a helpful tooltip` : undefined;
   const errorMessage = error ? t`This field is required` : undefined;
@@ -110,19 +119,26 @@ export function ControlRow({
         label={label ? t`Select` : undefined}
         tooltip={tooltipText}
         name={`select-${suffix}`}
-        items={colorItems}
-        value={hasValues ? localColor : selectedColor}
-        onValueChange={(value) => value && (hasValues ? setLocalColor(value) : setSelectedColor(value))}
+        items={chartSelectItems}
+        value={hasValues ? localColor : selectedColor || null}
+        onValueChange={(value) => (hasValues ? setLocalColor(value ?? "") : setSelectedColor(value ?? ""))}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       >
         <SelectTrigger>
-          <SelectValue placeholder={t`Pick a color`} />
+          {showIcon && <BarChart3Icon />}
+          <SelectValue placeholder={t`Pick a chart`} />
         </SelectTrigger>
         <SelectContent>
-          {colorItems.map((item) => (
+          <SelectItem value={null}>
+            <span className="text-muted-foreground">
+              <Trans>None</Trans>
+            </span>
+          </SelectItem>
+          {chartSelectItems.map((item) => (
             <SelectItem key={item.value} value={item.value}>
+              {item.icon}
               {item.label}
             </SelectItem>
           ))}
@@ -133,9 +149,10 @@ export function ControlRow({
         tooltip={tooltipText}
         name={`multi-${suffix}`}
         placeholder={t`Select fruits`}
-        items={fruitItems}
-        value={hasValues ? localFruits : selectedFruits}
-        onChange={hasValues ? setLocalFruits : setSelectedFruits}
+        startIcon={showIcon ? <SearchIcon /> : undefined}
+        items={chartItems}
+        value={hasValues ? localCharts : selectedCharts}
+        onChange={hasValues ? setLocalCharts : setSelectedCharts}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
