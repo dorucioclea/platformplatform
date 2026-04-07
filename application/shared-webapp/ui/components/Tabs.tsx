@@ -98,8 +98,27 @@ function TabsTrigger({
   size = "default",
   ...props
 }: TabsPrimitive.Tab.Props & VariantProps<typeof tabTriggerVariants>) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const el = triggerRef.current;
+    if (!el) return;
+    const observer = new MutationObserver(() => {
+      if (el.hasAttribute("data-active")) {
+        el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+      }
+    });
+    observer.observe(el, { attributes: true, attributeFilter: ["data-active"] });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <TabsPrimitive.Tab data-slot="tabs-trigger" className={cn(tabTriggerVariants({ size, className }))} {...props} />
+    <TabsPrimitive.Tab
+      ref={triggerRef}
+      data-slot="tabs-trigger"
+      className={cn(tabTriggerVariants({ size, className }))}
+      {...props}
+    />
   );
 }
 
