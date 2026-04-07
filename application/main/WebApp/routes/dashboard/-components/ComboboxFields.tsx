@@ -122,7 +122,9 @@ function FreeTextCombobox({
         onValueChange={(v: string | null) => setValue(v ?? "")}
         onInputValueChange={(text) => {
           setSearch(text);
-          if (text && !chartItems.some((i) => i.label === text)) setValue(text);
+          const exactMatch = chartItems.find((i) => i.label.toLowerCase() === text.toLowerCase());
+          if (exactMatch) setValue(exactMatch.id);
+          else if (text) setValue(text);
         }}
         itemToStringLabel={(v: string) => chartItems.find((i) => i.id === v)?.label ?? v}
       >
