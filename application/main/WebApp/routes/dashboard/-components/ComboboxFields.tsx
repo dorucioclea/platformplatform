@@ -103,11 +103,18 @@ function FreeTextCombobox({
   errorMessage,
   chartItems
 }: ComboboxFieldsProps) {
-  const [value, setValue] = useState(hasValues ? "pie" : "");
-  const [search, setSearch] = useState("");
-  const filtered = filterItems(chartItems, search);
-  const selectedIcon = chartItems.find((i) => i.id === value)?.icon;
+  const initialLabel = hasValues ? (chartItems.find((i) => i.id === "pie")?.label ?? "") : "";
+  const [inputText, setInputText] = useState(initialLabel);
+  const [selectedId, setSelectedId] = useState<string | null>(hasValues ? "pie" : null);
+  const filtered = filterItems(chartItems, inputText);
+  const selectedIcon = chartItems.find((i) => i.id === selectedId)?.icon;
   const errors = errorMessage ? [{ message: errorMessage }] : undefined;
+
+  const handleValueChange = (v: string | null) => {
+    setSelectedId(v);
+    const itemLabel = chartItems.find((i) => i.id === v)?.label;
+    if (itemLabel) setInputText(itemLabel);
+  };
 
   return (
     <Field className="flex flex-col">
@@ -117,9 +124,12 @@ function FreeTextCombobox({
       <Combobox
         disabled={disabled}
         open={readOnly ? false : undefined}
-        value={value}
-        onValueChange={(v: string | null) => setValue(v ?? "")}
-        onInputValueChange={setSearch}
+        value={selectedId}
+        onValueChange={handleValueChange}
+        onInputValueChange={(text) => {
+          setInputText(text);
+          if (!chartItems.some((i) => i.label === text)) setSelectedId(null);
+        }}
         itemToStringLabel={(v: string) => chartItems.find((i) => i.id === v)?.label ?? v}
       >
         <ComboboxInput
