@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
@@ -28,6 +28,7 @@ export function DateField({
   inputClassName,
   name,
   value,
+  defaultValue,
   onChange,
   autoFocus,
   isRequired,
@@ -49,7 +50,10 @@ export function DateField({
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
+  const [hasValue, setHasValue] = useState(!!(value ?? defaultValue));
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasValue(!!e.target.value);
     onChange?.(e.target.value);
   };
 
@@ -65,13 +69,14 @@ export function DateField({
         name={name}
         type="date"
         value={value}
+        defaultValue={defaultValue}
         onChange={handleChange}
         autoFocus={autoFocus}
         required={isRequired}
         disabled={isDisabled}
         readOnly={isReadOnly}
         aria-invalid={isInvalid || undefined}
-        className={inputClassName}
+        className={cn(!hasValue && "text-muted-foreground", inputClassName)}
         {...props}
       />
       {description && <FieldDescription>{description}</FieldDescription>}

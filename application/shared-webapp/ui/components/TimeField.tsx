@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
@@ -32,6 +32,7 @@ export function TimeField({
   inputClassName,
   name,
   value,
+  defaultValue,
   onChange,
   autoFocus,
   trailingContent,
@@ -54,15 +55,21 @@ export function TimeField({
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
+  const [hasValue, setHasValue] = useState(!!(value ?? defaultValue));
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasValue(!!e.target.value);
     onChange?.(e.target.value);
   };
+
+  const emptyClassName = !hasValue ? "text-muted-foreground" : undefined;
 
   const inputProps = {
     id: name,
     name,
     type: "time" as const,
     value,
+    defaultValue,
     onChange: handleChange,
     autoFocus,
     required: isRequired,
@@ -81,11 +88,11 @@ export function TimeField({
       )}
       {trailingContent ? (
         <InputGroup>
-          <InputGroupInput className={inputClassName} {...inputProps} />
+          <InputGroupInput className={cn(emptyClassName, inputClassName)} {...inputProps} />
           <InputGroupAddon align="inline-end">{trailingContent}</InputGroupAddon>
         </InputGroup>
       ) : (
-        <Input className={inputClassName} {...inputProps} />
+        <Input className={cn(emptyClassName, inputClassName)} {...inputProps} />
       )}
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />
