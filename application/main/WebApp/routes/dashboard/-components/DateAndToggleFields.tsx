@@ -117,17 +117,17 @@ export function DateAndToggleFields({
         label={label ? t`Radio group` : undefined}
         tooltip={tooltipText}
         name={`radio-${suffix}`}
-        defaultValue="option-a"
+        defaultValue={hasValues ? "option-a" : undefined}
         disabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       >
-        <label className="flex items-center gap-2">
-          <RadioGroupItem value="option-a" />
+        <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-a`} value="option-a" />
           <Trans>Option A</Trans>
         </label>
-        <label className="flex items-center gap-2">
-          <RadioGroupItem value="option-b" />
+        <label htmlFor={`radio-${suffix}-b`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-b`} value="option-b" />
           <Trans>Option B</Trans>
         </label>
       </RadioGroupField>

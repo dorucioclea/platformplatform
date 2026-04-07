@@ -98,13 +98,13 @@ export function MultiSelect({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
+        <label
           data-slot="field-label"
           className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </label>
       )}
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>
@@ -116,7 +116,7 @@ export function MultiSelect({
                 id={name}
                 type="button"
                 aria-label={label ?? placeholder}
-                aria-invalid={isInvalid || undefined}
+                data-invalid={isInvalid || undefined}
                 disabled={isDisabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
                   if (e.key === "ArrowDown" && !open) {
@@ -124,7 +124,7 @@ export function MultiSelect({
                     setOpen(true);
                   }
                 }}
-                className="flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:bg-input/30 dark:active:bg-input/60"
+                className="flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:outline data-[invalid]:outline-2 data-[invalid]:outline-offset-2 data-[invalid]:outline-destructive dark:bg-input/30 dark:active:bg-input/60"
               />
             }
           >

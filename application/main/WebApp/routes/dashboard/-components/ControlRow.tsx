@@ -5,7 +5,7 @@ import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/
 import { SelectField } from "@repo/ui/components/SelectField";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
-import { SearchIcon } from "lucide-react";
+import { EuroIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 
 import type { ControlRowProps } from "./controlRowTypes";
@@ -81,10 +81,11 @@ export function ControlRow({
         label={label ? t`Number (integer)` : undefined}
         tooltip={tooltipText}
         name={`integer-${suffix}`}
-        defaultValue={hasValues ? 42 : 1}
+        defaultValue={hasValues ? 42 : undefined}
         minValue={0}
         maxValue={100}
         step={1}
+        allowEmpty
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
@@ -94,13 +95,16 @@ export function ControlRow({
         label={label ? t`Number (decimal)` : undefined}
         tooltip={tooltipText}
         name={`decimal-${suffix}`}
-        defaultValue={hasValues ? 149.95 : 9.99}
+        defaultValue={hasValues ? 149.95 : undefined}
         minValue={0}
         maxValue={999.99}
-        step={0.01}
+        step={0.1}
+        decimalPlaces={2}
+        allowEmpty
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
+        startIcon={showIcon ? <EuroIcon /> : undefined}
       />
       <SelectField
         label={label ? t`Select` : undefined}

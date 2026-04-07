@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
@@ -15,14 +15,21 @@ export interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "c
   className?: string;
   inputClassName?: string;
   startIcon?: React.ReactNode;
-  onChange?: (value: number) => void;
+  onChange?: (value: number | null) => void;
   minValue?: number;
   maxValue?: number;
   step?: number;
+  decimalPlaces?: number;
+  allowEmpty?: boolean;
   isRequired?: boolean;
   isDisabled?: boolean;
   isReadOnly?: boolean;
 }
+
+const decimalSeparator =
+  Intl.NumberFormat()
+    .formatToParts(1.1)
+    .find((p) => p.type === "decimal")?.value ?? ".";
 
 export function NumberField({
   label,
@@ -40,6 +47,8 @@ export function NumberField({
   minValue,
   maxValue,
   step = 1,
+  decimalPlaces,
+  allowEmpty,
   isRequired,
   isDisabled,
   isReadOnly,
@@ -59,11 +68,28 @@ export function NumberField({
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
-  const initial = value !== undefined ? value : defaultValue;
-  const [internalValue, setInternalValue] = useState<string>(initial !== undefined ? String(initial) : "");
+  const stepDecimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
+  const displayDecimals = decimalPlaces ?? stepDecimals;
+  const roundToStep = (number: number) => parseFloat(number.toFixed(Math.max(stepDecimals, displayDecimals)));
 
-  const displayValue = value !== undefined ? String(value) : internalValue;
-  const numericValue = parseFloat(displayValue);
+  const formatNumber = (num: number) => {
+    const str = displayDecimals > 0 ? num.toFixed(displayDecimals) : String(num);
+    return decimalSeparator !== "." ? str.replace(".", decimalSeparator) : str;
+  };
+
+  const parseInput = (str: string) => {
+    const normalized = decimalSeparator !== "." ? str.replace(decimalSeparator, ".") : str;
+    return parseFloat(normalized);
+  };
+
+  const initial = value !== undefined ? value : defaultValue;
+  const [internalValue, setInternalValue] = useState<string>(
+    initial !== undefined ? formatNumber(Number(initial)) : ""
+  );
+  const [isFocused, setIsFocused] = useState(false);
+
+  const displayValue = isFocused ? internalValue : value !== undefined ? formatNumber(Number(value)) : internalValue;
+  const numericValue = parseInput(displayValue);
 
   const clamp = (number: number) => {
     let result = number;
@@ -73,35 +99,79 @@ export function NumberField({
   };
 
   const handleIncrement = () => {
-    const next = clamp((isNaN(numericValue) ? (minValue ?? 0) : numericValue) + step);
-    setInternalValue(String(next));
+    const next = clamp(roundToStep((isNaN(numericValue) ? (minValue ?? 0) : numericValue) + step));
+    setInternalValue(formatNumber(next));
     onChange?.(next);
   };
 
   const handleDecrement = () => {
-    const next = clamp((isNaN(numericValue) ? (minValue ?? 0) : numericValue) - step);
-    setInternalValue(String(next));
+    const next = clamp(roundToStep((isNaN(numericValue) ? (minValue ?? 0) : numericValue) - step));
+    setInternalValue(formatNumber(next));
     onChange?.(next);
   };
 
+  // Refs for button long-press repeat (avoids stale closures in timers)
+  const incrementRef = useRef(handleIncrement);
+  const decrementRef = useRef(handleDecrement);
+  incrementRef.current = handleIncrement;
+  decrementRef.current = handleDecrement;
+  const repeatTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const startRepeat = (actionRef: { current: () => void }) => {
+    let delay = 300;
+    const repeat = () => {
+      actionRef.current();
+      delay = Math.max(40, delay * 0.8);
+      repeatTimerRef.current = setTimeout(repeat, delay);
+    };
+    repeatTimerRef.current = setTimeout(repeat, 400);
+  };
+
+  const stopRepeat = () => {
+    clearTimeout(repeatTimerRef.current);
+  };
+
+  useEffect(() => () => clearTimeout(repeatTimerRef.current), []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInternalValue(e.target.value);
-    const parsed = parseFloat(e.target.value);
-    if (!isNaN(parsed)) onChange?.(parsed);
+    if (e.target.value === "" && allowEmpty) {
+      onChange?.(null);
+    } else {
+      const parsed = parseInput(e.target.value);
+      if (!isNaN(parsed)) onChange?.(parsed);
+    }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    if (value !== undefined) {
+      setInternalValue(formatNumber(Number(value)));
+    }
   };
 
   const handleBlur = () => {
-    const parsed = parseFloat(displayValue);
+    setIsFocused(false);
+    if (internalValue === "" || internalValue.trim() === "") {
+      if (allowEmpty) {
+        setInternalValue("");
+        onChange?.(null);
+        return;
+      }
+      const fallback = minValue ?? 0;
+      setInternalValue(formatNumber(fallback));
+      onChange?.(fallback);
+      return;
+    }
+    const parsed = parseInput(internalValue);
     if (isNaN(parsed)) {
       const fallback = minValue ?? 0;
-      setInternalValue(String(fallback));
+      setInternalValue(formatNumber(fallback));
       onChange?.(fallback);
     } else {
       const clamped = clamp(parsed);
-      if (clamped !== parsed) {
-        setInternalValue(String(clamped));
-        onChange?.(clamped);
-      }
+      setInternalValue(formatNumber(clamped));
+      if (clamped !== parsed) onChange?.(clamped);
     }
   };
 
@@ -135,6 +205,7 @@ export function NumberField({
           inputMode="decimal"
           value={displayValue}
           onChange={handleChange}
+          onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           autoFocus={autoFocus}
@@ -142,14 +213,20 @@ export function NumberField({
           disabled={isDisabled}
           readOnly={isReadOnly}
           aria-invalid={isInvalid || undefined}
-          className={cn("pr-8", inputClassName)}
+          className={cn("pr-10 text-right", inputClassName)}
           {...props}
         />
         <div className="absolute top-0 right-0 flex h-full flex-col border-l border-input">
           <button
             type="button"
             tabIndex={-1}
-            onClick={handleIncrement}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              handleIncrement();
+              startRepeat(incrementRef);
+            }}
+            onPointerUp={stopRepeat}
+            onPointerLeave={stopRepeat}
             disabled={isDisabled || isReadOnly || atMax}
             aria-label="Increase"
             className="flex w-7 flex-1 items-center justify-center rounded-tr-[calc(var(--radius)-1px)] border-b border-input text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
@@ -159,7 +236,13 @@ export function NumberField({
           <button
             type="button"
             tabIndex={-1}
-            onClick={handleDecrement}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              handleDecrement();
+              startRepeat(decrementRef);
+            }}
+            onPointerUp={stopRepeat}
+            onPointerLeave={stopRepeat}
             disabled={isDisabled || isReadOnly || atMin}
             aria-label="Decrease"
             className="flex w-7 flex-1 items-center justify-center rounded-br-[calc(var(--radius)-1px)] text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"

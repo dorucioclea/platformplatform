@@ -45,6 +45,12 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
+  // Merge errorMessage into form context so SelectTrigger can show aria-invalid
+  const triggerErrors =
+    name && (errorMessage || fieldErrorMessages.length > 0)
+      ? { ...formErrors, [name]: errorMessage ? [errorMessage] : fieldErrorMessages }
+      : formErrors;
+
   const focusTrigger = () => {
     if (!name) return;
     const focusOptions = { preventScroll: true, focusVisible: true };
@@ -54,17 +60,19 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
+        <label
           data-slot="field-label"
           className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </label>
       )}
-      <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
-        {children}
-      </Select>
+      <FormValidationContext.Provider value={triggerErrors}>
+        <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
+          {children}
+        </Select>
+      </FormValidationContext.Provider>
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />
     </Field>

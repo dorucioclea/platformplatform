@@ -69,6 +69,7 @@ export function DatePicker({
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
+  const isInvalid = errors && errors.length > 0;
 
   const triggerId = id ?? name;
   const focusTrigger = () => {
@@ -94,13 +95,13 @@ export function DatePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
+        <label
           data-slot="field-label"
           className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </label>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
       <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
@@ -109,6 +110,7 @@ export function DatePicker({
             <Button
               id={id ?? name}
               variant="outline"
+              aria-invalid={isInvalid || undefined}
               className={cn(
                 "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
                 !value && "text-muted-foreground"
