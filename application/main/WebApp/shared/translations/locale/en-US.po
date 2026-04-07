@@ -13,17 +13,160 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: smartDate.value
+msgid "{0} hours ago"
+msgstr "{0} hours ago"
+
+#. placeholder {0}: smartDate.value
+msgid "{0} minutes ago"
+msgstr "{0} minutes ago"
+
+msgid "2 hours ago"
+msgstr "2 hours ago"
+
+msgid "3 minutes ago"
+msgstr "3 minutes ago"
+
+msgid "5 active members"
+msgstr "5 active members"
+
+msgid "75% of quota used"
+msgstr "75% of quota used"
+
+msgid "Add notes here"
+msgstr "Add notes here"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Alerts"
+msgstr "Alerts"
+
+msgid "Alerts and badges"
+msgstr "Alerts and badges"
+
+msgid "Alex Taylor"
+msgstr "Alex Taylor"
+
+msgid "Apple"
+msgstr "Apple"
+
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+msgid "Badges"
+msgstr "Badges"
+
+msgid "Banana"
+msgstr "Banana"
+
+msgid "Blue"
+msgstr "Blue"
+
+msgid "Bold"
+msgstr "Bold"
+
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Burning the midnight oil, {firstName}?"
 
 msgid "Burning the midnight oil?"
 msgstr "Burning the midnight oil?"
 
+msgid "Button sizes"
+msgstr "Button sizes"
+
+msgid "Button variants"
+msgstr "Button variants"
+
+msgid "Buttons"
+msgstr "Buttons"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Cards"
+msgstr "Cards"
+
+msgid "Cherry"
+msgstr "Cherry"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Create item"
+msgstr "Create item"
+
 msgid "Dashboard"
 msgstr "Dashboard"
 
+msgid "Date and time formatting"
+msgstr "Date and time formatting"
+
+msgid "Date field"
+msgstr "Date field"
+
+msgid "Date formatting"
+msgstr "Date formatting"
+
+msgid "Date picker"
+msgstr "Date picker"
+
+msgid "Date range"
+msgstr "Date range"
+
+msgid "Default"
+msgstr "Default"
+
+msgid "Default alert"
+msgstr "Default alert"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Delete item"
+msgstr "Delete item"
+
+msgid "Destructive"
+msgstr "Destructive"
+
+msgid "Destructive alert"
+msgstr "Destructive alert"
+
+msgid "Dialogs"
+msgstr "Dialogs"
+
+msgid "Dialogs and cards"
+msgstr "Dialogs and cards"
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "Disabled buttons"
+msgstr "Disabled buttons"
+
+msgid "E.g., Alex Taylor"
+msgstr "E.g., Alex Taylor"
+
+msgid "Empty and skeleton"
+msgstr "Empty and skeleton"
+
+msgid "Empty states"
+msgstr "Empty states"
+
+msgid "Extra small"
+msgstr "Extra small"
+
+msgid "Full access except changing user roles and account settings"
+msgstr "Full access except changing user roles and account settings"
+
+msgid "Full access including user roles and account settings"
+msgstr "Full access including user roles and account settings"
+
 msgid "Get started"
 msgstr "Get started"
+
+msgid "Ghost"
+msgstr "Ghost"
 
 msgid "Go to app"
 msgstr "Go to app"
@@ -46,32 +189,230 @@ msgstr "Good morning"
 msgid "Good morning, {firstName}"
 msgstr "Good morning, {firstName}"
 
+msgid "Green"
+msgstr "Green"
+
 msgid "Here's your overview of what's happening."
 msgstr "Here's your overview of what's happening."
+
+msgid "Icon-only buttons"
+msgstr "Icon-only buttons"
+
+msgid "Info alert"
+msgstr "Info alert"
+
+msgid "Invite"
+msgstr "Invite"
+
+msgid "Invite and manage your team."
+msgstr "Invite and manage your team."
+
+msgid "Italic"
+msgstr "Italic"
+
+msgid "Just now"
+msgstr "Just now"
+
+msgid "Large"
+msgstr "Large"
+
+msgid "Last month"
+msgstr "Last month"
+
+msgid "Link"
+msgstr "Link"
 
 msgid "Log in"
 msgstr "Log in"
 
+msgid "Long date"
+msgstr "Long date"
+
+msgid "Manage your notification preferences."
+msgstr "Manage your notification preferences."
+
+msgid "Mango"
+msgstr "Mango"
+
+msgid "Member"
+msgstr "Member"
+
 msgid "More information"
 msgstr "More information"
+
+msgid "Multi select"
+msgstr "Multi select"
 
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "No data yet"
+msgstr "No data yet"
+
+msgid "No results found"
+msgstr "No results found"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Number (decimal)"
+msgstr "Number (decimal)"
+
+msgid "Number (integer)"
+msgstr "Number (integer)"
+
+msgid "Open dialog"
+msgstr "Open dialog"
+
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
+
+msgid "Orange"
+msgstr "Orange"
+
+msgid "Outline"
+msgstr "Outline"
+
+msgid "Owner"
+msgstr "Owner"
+
+msgid "Pick a date"
+msgstr "Pick a date"
+
+msgid "Radio card selector"
+msgstr "Radio card selector"
+
+msgid "Read only"
+msgstr "Read only"
+
+msgid "Red"
+msgstr "Red"
+
+msgid "Relative"
+msgstr "Relative"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
 
-msgid "This is where your personalized dashboard content will appear. Stay tuned for updates."
-msgstr "This is where your personalized dashboard content will appear. Stay tuned for updates."
+msgid "Sample dialog"
+msgstr "Sample dialog"
+
+msgid "Save changes"
+msgstr "Save changes"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Secondary"
+msgstr "Secondary"
+
+msgid "Select fruits"
+msgstr "Select fruits"
+
+msgid "Send invite"
+msgstr "Send invite"
+
+msgid "Short date"
+msgstr "Short date"
+
+msgid "Short date with time"
+msgstr "Short date with time"
+
+msgid "Skeleton loading states"
+msgstr "Skeleton loading states"
+
+msgid "Small"
+msgstr "Small"
+
+msgid "Some notes"
+msgstr "Some notes"
+
+msgid "Something went wrong. Please try again."
+msgstr "Something went wrong. Please try again."
+
+msgid "Standard user access"
+msgstr "Standard user access"
+
+msgid "Team members"
+msgstr "Team members"
+
+msgid "Text area"
+msgstr "Text area"
+
+msgid "Text field"
+msgstr "Text field"
+
+msgid "There is nothing to display here. Create your first item to get started."
+msgstr "There is nothing to display here. Create your first item to get started."
+
+msgid "This action cannot be undone. This will permanently delete the item."
+msgstr "This action cannot be undone. This will permanently delete the item."
+
+msgid "This action may have unintended consequences."
+msgstr "This action may have unintended consequences."
+
+msgid "This field is required"
+msgstr "This field is required"
+
+msgid "This is a default informational alert."
+msgstr "This is a default informational alert."
+
+msgid "This is a helpful tooltip"
+msgstr "This is a helpful tooltip"
+
+msgid "This is a sample dialog with a header, body, and footer."
+msgstr "This is a sample dialog with a header, body, and footer."
+
+msgid "This is an informational message."
+msgstr "This is an informational message."
+
+msgid "Time field"
+msgstr "Time field"
+
+msgid "Toggle buttons"
+msgstr "Toggle buttons"
 
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
 
+msgid "Try adjusting your search or filter to find what you are looking for."
+msgstr "Try adjusting your search or filter to find what you are looking for."
+
+msgid "Underline"
+msgstr "Underline"
+
+msgid "Usage"
+msgstr "Usage"
+
+msgid "Validation errors"
+msgstr "Validation errors"
+
+msgid "View all"
+msgstr "View all"
+
+msgid "Warning alert"
+msgstr "Warning alert"
+
 msgid "Welcome to PlatformPlatform"
 msgstr "Welcome to PlatformPlatform"
+
+msgid "With icons"
+msgstr "With icons"
+
+msgid "With labels"
+msgstr "With labels"
+
+msgid "With tooltips"
+msgstr "With tooltips"
+
+msgid "Without labels"
+msgstr "Without labels"
+
+msgid "Yesterday"
+msgstr "Yesterday"
+
+msgid "You have 3 unread notifications."
+msgstr "You have 3 unread notifications."
 
 msgid "You successfully deployed PlatformPlatform! 🎉"
 msgstr "You successfully deployed PlatformPlatform! 🎉"
@@ -79,5 +420,5 @@ msgstr "You successfully deployed PlatformPlatform! 🎉"
 msgid "You successfully installed PlatformPlatform! 🎉"
 msgstr "You successfully installed PlatformPlatform! 🎉"
 
-msgid "Your dashboard is empty"
-msgstr "Your dashboard is empty"
+msgid "Your current plan usage this month."
+msgstr "Your current plan usage this month."

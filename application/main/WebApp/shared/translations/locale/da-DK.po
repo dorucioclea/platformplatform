@@ -13,17 +13,160 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
+#. placeholder {0}: smartDate.value
+msgid "{0} hours ago"
+msgstr ""
+
+#. placeholder {0}: smartDate.value
+msgid "{0} minutes ago"
+msgstr ""
+
+msgid "2 hours ago"
+msgstr ""
+
+msgid "3 minutes ago"
+msgstr ""
+
+msgid "5 active members"
+msgstr ""
+
+msgid "75% of quota used"
+msgstr ""
+
+msgid "Add notes here"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Alerts"
+msgstr ""
+
+msgid "Alerts and badges"
+msgstr ""
+
+msgid "Alex Taylor"
+msgstr ""
+
+msgid "Apple"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "Badges"
+msgstr ""
+
+msgid "Banana"
+msgstr ""
+
+msgid "Blue"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Sidder du stadig oppe, {firstName}?"
 
 msgid "Burning the midnight oil?"
 msgstr "Sidder du stadig oppe?"
 
+msgid "Button sizes"
+msgstr ""
+
+msgid "Button variants"
+msgstr ""
+
+msgid "Buttons"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cards"
+msgstr ""
+
+msgid "Cherry"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create item"
+msgstr ""
+
 msgid "Dashboard"
 msgstr "Dashboard"
 
+msgid "Date and time formatting"
+msgstr ""
+
+msgid "Date field"
+msgstr ""
+
+msgid "Date formatting"
+msgstr ""
+
+msgid "Date picker"
+msgstr ""
+
+msgid "Date range"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default alert"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete item"
+msgstr ""
+
+msgid "Destructive"
+msgstr ""
+
+msgid "Destructive alert"
+msgstr ""
+
+msgid "Dialogs"
+msgstr ""
+
+msgid "Dialogs and cards"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Disabled buttons"
+msgstr ""
+
+msgid "E.g., Alex Taylor"
+msgstr ""
+
+msgid "Empty and skeleton"
+msgstr ""
+
+msgid "Empty states"
+msgstr ""
+
+msgid "Extra small"
+msgstr ""
+
+msgid "Full access except changing user roles and account settings"
+msgstr ""
+
+msgid "Full access including user roles and account settings"
+msgstr ""
+
 msgid "Get started"
 msgstr "Kom i gang"
+
+msgid "Ghost"
+msgstr ""
 
 msgid "Go to app"
 msgstr "Gå til app"
@@ -46,32 +189,230 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
+msgid "Green"
+msgstr ""
+
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
+
+msgid "Icon-only buttons"
+msgstr ""
+
+msgid "Info alert"
+msgstr ""
+
+msgid "Invite"
+msgstr ""
+
+msgid "Invite and manage your team."
+msgstr ""
+
+msgid "Italic"
+msgstr ""
+
+msgid "Just now"
+msgstr ""
+
+msgid "Large"
+msgstr ""
+
+msgid "Last month"
+msgstr ""
+
+msgid "Link"
+msgstr ""
 
 msgid "Log in"
 msgstr "Log ind"
 
+msgid "Long date"
+msgstr ""
+
+msgid "Manage your notification preferences."
+msgstr ""
+
+msgid "Mango"
+msgstr ""
+
+msgid "Member"
+msgstr ""
+
 msgid "More information"
 msgstr "Mere information"
+
+msgid "Multi select"
+msgstr ""
 
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "No data yet"
+msgstr ""
+
+msgid "No results found"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Number (decimal)"
+msgstr ""
+
+msgid "Number (integer)"
+msgstr ""
+
+msgid "Open dialog"
+msgstr ""
+
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
+
+msgid "Orange"
+msgstr ""
+
+msgid "Outline"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Pick a date"
+msgstr ""
+
+msgid "Radio card selector"
+msgstr ""
+
+msgid "Read only"
+msgstr ""
+
+msgid "Red"
+msgstr ""
+
+msgid "Relative"
+msgstr ""
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
-msgid "This is where your personalized dashboard content will appear. Stay tuned for updates."
-msgstr "Her vil dit personaliserede dashboardindhold vises. Hold dig opdateret."
+msgid "Sample dialog"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Secondary"
+msgstr ""
+
+msgid "Select fruits"
+msgstr ""
+
+msgid "Send invite"
+msgstr ""
+
+msgid "Short date"
+msgstr ""
+
+msgid "Short date with time"
+msgstr ""
+
+msgid "Skeleton loading states"
+msgstr ""
+
+msgid "Small"
+msgstr ""
+
+msgid "Some notes"
+msgstr ""
+
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+msgid "Standard user access"
+msgstr ""
+
+msgid "Team members"
+msgstr ""
+
+msgid "Text area"
+msgstr ""
+
+msgid "Text field"
+msgstr ""
+
+msgid "There is nothing to display here. Create your first item to get started."
+msgstr ""
+
+msgid "This action cannot be undone. This will permanently delete the item."
+msgstr ""
+
+msgid "This action may have unintended consequences."
+msgstr ""
+
+msgid "This field is required"
+msgstr ""
+
+msgid "This is a default informational alert."
+msgstr ""
+
+msgid "This is a helpful tooltip"
+msgstr ""
+
+msgid "This is a sample dialog with a header, body, and footer."
+msgstr ""
+
+msgid "This is an informational message."
+msgstr ""
+
+msgid "Time field"
+msgstr ""
+
+msgid "Toggle buttons"
+msgstr ""
 
 msgid "Toggle sidebar"
 msgstr "Skift sidepanel"
 
+msgid "Try adjusting your search or filter to find what you are looking for."
+msgstr ""
+
+msgid "Underline"
+msgstr ""
+
+msgid "Usage"
+msgstr ""
+
+msgid "Validation errors"
+msgstr ""
+
+msgid "View all"
+msgstr ""
+
+msgid "Warning alert"
+msgstr ""
+
 msgid "Welcome to PlatformPlatform"
 msgstr "Velkommen til PlatformPlatform"
+
+msgid "With icons"
+msgstr ""
+
+msgid "With labels"
+msgstr ""
+
+msgid "With tooltips"
+msgstr ""
+
+msgid "Without labels"
+msgstr ""
+
+msgid "Yesterday"
+msgstr ""
+
+msgid "You have 3 unread notifications."
+msgstr ""
 
 msgid "You successfully deployed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
@@ -79,5 +420,5 @@ msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 msgid "You successfully installed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 
-msgid "Your dashboard is empty"
-msgstr "Dit dashboard er tomt"
+msgid "Your current plan usage this month."
+msgstr ""
