@@ -142,7 +142,7 @@ export function MultiSelect({
                 onKeyDown={(e: React.KeyboardEvent) => {
                   if (e.key === "ArrowDown" && !open) {
                     e.preventDefault();
-                    setOpen(true);
+                    handleOpenChange(true);
                   }
                 }}
                 className={cn(
