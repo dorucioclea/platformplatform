@@ -4,12 +4,14 @@ import { useLingui } from "@lingui/react";
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { cn } from "../utils";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
-import { Field, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { FormValidationContext } from "./Form";
+import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
 /**
@@ -27,25 +29,49 @@ export interface DateRangeValue {
 }
 
 export interface DateRangePickerProps {
+  name?: string;
   label?: string;
+  description?: string;
+  errorMessage?: string;
+  tooltip?: string;
   value?: DateRangeValue | null;
   onChange?: (value: DateRangeValue | null) => void;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  isReadOnly?: boolean;
 }
 
 export function DateRangePicker({
+  name,
   label,
+  description,
+  errorMessage,
+  tooltip,
   value,
   onChange,
   placeholder = "Select dates",
   className,
-  disabled
+  disabled,
+  isReadOnly
 }: Readonly<DateRangePickerProps>) {
   const { i18n } = useLingui();
   const dateLocale = dateFnsLocaleMap[i18n.locale] ?? enUS;
   const [open, setOpen] = useState(false);
+
+  const formErrors = useContext(FormValidationContext);
+  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
+  const fieldErrorMessages = fieldValidationErrors
+    ? Array.isArray(fieldValidationErrors)
+      ? fieldValidationErrors
+      : [fieldValidationErrors]
+    : [];
+  const errors = errorMessage
+    ? [{ message: errorMessage }]
+    : fieldErrorMessages.length > 0
+      ? fieldErrorMessages.map((err) => ({ message: err }))
+      : undefined;
+  const isInvalid = errors && errors.length > 0;
   const [selectionsCount, setSelectionsCount] = useState(0);
   // Track the first clicked date separately since react-day-picker's onSelect
   // doesn't reliably tell us which date was clicked
@@ -120,19 +146,24 @@ export function DateRangePicker({
 
   return (
     <Field className={cn("flex flex-col", className)}>
-      {label && <FieldLabel>{label}</FieldLabel>}
+      {label && (
+        <FieldLabel>
+          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
+        </FieldLabel>
+      )}
       <div className="relative">
         <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger
             render={
               <Button
                 variant="outline"
+                aria-invalid={isInvalid || undefined}
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
-                  "w-full min-w-40 justify-between border border-input font-normal hover:bg-white dark:hover:bg-input/30",
+                  "w-full min-w-40 justify-between border border-input font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:hover:bg-input/30",
                   hasValue && "pr-9"
                 )}
-                disabled={disabled}
+                disabled={disabled || isReadOnly}
               >
                 <div className={cn("flex items-center gap-2", !hasValue && "text-muted-foreground")}>
                   <CalendarIcon />
@@ -157,13 +188,15 @@ export function DateRangePicker({
             size="icon-xs"
             className="absolute top-1/2 right-1 -translate-y-1/2"
             onClick={handleClear}
-            disabled={disabled}
+            disabled={disabled || isReadOnly}
             aria-label="Clear dates"
           >
             <XIcon className="size-5" />
           </Button>
         )}
       </div>
+      {description && <FieldDescription>{description}</FieldDescription>}
+      <FieldError errors={errors} />
     </Field>
   );
 }
