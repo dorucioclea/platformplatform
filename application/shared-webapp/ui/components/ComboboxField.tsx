@@ -1,6 +1,6 @@
+import type { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import type * as React from "react";
 
-import type { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import { PlusIcon } from "lucide-react";
 import { useContext, useState } from "react";
 

@@ -34,15 +34,14 @@ export function ControlRow({
   chartItems: { id: string; label: string; icon?: ReactNode }[];
 }) {
   const hasValues = !!(disabled || readOnly);
-  const tooltipText = tooltip ? t`This is a helpful tooltip` : undefined;
   const errorMessage = error ? t`This field is required` : undefined;
-  const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, tooltipText, errorMessage };
+  const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, errorMessage };
 
   return (
     <div className="grid grid-cols-4 gap-x-6 gap-y-4">
       <TextField
         label={label ? t`Text field` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Single-line text input for short values like names or emails` : undefined}
         name={`text-${suffix}`}
         placeholder={t`E.g., Alex Taylor`}
         defaultValue={hasValues ? t`Alex Taylor` : undefined}
@@ -53,7 +52,7 @@ export function ControlRow({
       />
       <TextAreaField
         label={label ? t`Text area` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Multi-line text input for longer content like notes or descriptions` : undefined}
         name={`textarea-${suffix}`}
         placeholder={t`Add notes here`}
         defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
@@ -63,7 +62,7 @@ export function ControlRow({
       />
       <NumberField
         label={label ? t`Number (integer)` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Whole number input with increment and decrement buttons` : undefined}
         name={`integer-${suffix}`}
         defaultValue={hasValues ? 42 : undefined}
         minValue={0}
@@ -77,7 +76,7 @@ export function ControlRow({
       />
       <NumberField
         label={label ? t`Number (decimal)` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Decimal number input with configurable step and decimal places` : undefined}
         name={`decimal-${suffix}`}
         defaultValue={hasValues ? 149.95 : undefined}
         minValue={0}

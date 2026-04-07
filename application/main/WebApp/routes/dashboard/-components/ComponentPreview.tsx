@@ -27,7 +27,7 @@ export function ComponentPreview() {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedCharts, setSelectedCharts] = useState<string[]>([]);
   const chartItems = useChartItems();
-  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "labels");
+  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "tooltips");
 
   useEffect(() => {
     const handleHashChange = () => setActiveTab(window.location.hash.replace("#", "") || "labels");
@@ -46,13 +46,13 @@ export function ComponentPreview() {
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange}>
       <TabsList>
+        <TabsTrigger value="tooltips">
+          <InfoIcon />
+          <Trans>Controls</Trans>
+        </TabsTrigger>
         <TabsTrigger value="labels">
           <TextCursorInputIcon />
           <Trans>With labels</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="tooltips">
-          <InfoIcon />
-          <Trans>With tooltips</Trans>
         </TabsTrigger>
         <TabsTrigger value="icons">
           <SearchIcon />

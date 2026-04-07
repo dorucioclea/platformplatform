@@ -23,7 +23,7 @@ interface SelectAndComboboxFieldsProps extends ControlRowDerivedProps {
 export function SelectAndComboboxFields({
   suffix,
   label,
-  tooltipText,
+  tooltip,
   disabled,
   readOnly,
   showIcon,
@@ -49,7 +49,7 @@ export function SelectAndComboboxFields({
     <>
       <SelectField
         label={label ? t`Select` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Dropdown for selecting one value from a predefined list` : undefined}
         name={`select-${suffix}`}
         items={chartSelectItems}
         value={hasValues ? localColor : selectedColor || null}
@@ -78,7 +78,7 @@ export function SelectAndComboboxFields({
       </SelectField>
       <MultiSelect
         label={label ? t`Multi select` : undefined}
-        tooltip={tooltipText}
+        tooltip={tooltip ? t`Select multiple values from a list, unlike Select which picks one` : undefined}
         name={`multi-${suffix}`}
         placeholder={t`Select fruits`}
         startIcon={showIcon ? <SearchIcon /> : undefined}
@@ -92,7 +92,7 @@ export function SelectAndComboboxFields({
       <ComboboxFields
         suffix={suffix}
         label={label}
-        tooltipText={tooltipText}
+        tooltip={tooltip}
         disabled={disabled}
         readOnly={readOnly}
         hasValues={hasValues}

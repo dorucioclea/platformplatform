@@ -63,6 +63,12 @@ msgstr "Bar chart"
 msgid "Bold"
 msgstr "Bold"
 
+msgid "Browser native date input with locale-specific formatting"
+msgstr "Browser native date input with locale-specific formatting"
+
+msgid "Browser native time input for hours and minutes"
+msgstr "Browser native time input for hours and minutes"
+
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Burning the midnight oil, {firstName}?"
 
@@ -93,6 +99,9 @@ msgstr "Checkbox (off)"
 msgid "Checkbox (on)"
 msgstr "Checkbox (on)"
 
+msgid "Choose exactly one option from a small set of choices"
+msgstr "Choose exactly one option from a small set of choices"
+
 msgid "Combobox"
 msgstr "Combobox"
 
@@ -102,11 +111,17 @@ msgstr "Combobox (creatable)"
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
 
+msgid "Controls"
+msgstr "Controls"
+
 msgid "Create"
 msgstr "Create"
 
 msgid "Create item"
 msgstr "Create item"
+
+msgid "Custom calendar picker for selecting a single date"
+msgstr "Custom calendar picker for selecting a single date"
 
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -122,6 +137,9 @@ msgstr "Date picker"
 
 msgid "Date range"
 msgstr "Date range"
+
+msgid "Decimal number input with configurable step and decimal places"
+msgstr "Decimal number input with configurable step and decimal places"
 
 msgid "Default"
 msgstr "Default"
@@ -152,6 +170,9 @@ msgstr "Disabled"
 
 msgid "Disabled buttons"
 msgstr "Disabled buttons"
+
+msgid "Dropdown for selecting one value from a predefined list"
+msgstr "Dropdown for selecting one value from a predefined list"
 
 msgid "E.g., Alex Taylor"
 msgstr "E.g., Alex Taylor"
@@ -225,6 +246,12 @@ msgstr "Large"
 msgid "Last month"
 msgstr "Last month"
 
+msgid "Like Combobox, but also accepts custom values not in the list"
+msgstr "Like Combobox, but also accepts custom values not in the list"
+
+msgid "Like Combobox, with an explicit option to create new items"
+msgstr "Like Combobox, with an explicit option to create new items"
+
 msgid "Line chart"
 msgstr "Line chart"
 
@@ -251,6 +278,9 @@ msgstr "More information"
 
 msgid "Multi select"
 msgstr "Multi select"
+
+msgid "Multi-line text input for longer content like notes or descriptions"
+msgstr "Multi-line text input for longer content like notes or descriptions"
 
 msgid "Native date"
 msgstr "Native date"
@@ -303,6 +333,9 @@ msgstr "Pick a chart"
 msgid "Pick a date"
 msgstr "Pick a date"
 
+msgid "Pick a start and end date using the calendar"
+msgstr "Pick a start and end date using the calendar"
+
 msgid "Pie chart"
 msgstr "Pie chart"
 
@@ -336,6 +369,9 @@ msgstr "Search"
 msgid "Search charts..."
 msgstr "Search charts..."
 
+msgid "Searchable dropdown that filters options as you type"
+msgstr "Searchable dropdown that filters options as you type"
+
 msgid "Secondary"
 msgstr "Secondary"
 
@@ -345,6 +381,9 @@ msgstr "Select"
 msgid "Select fruits"
 msgstr "Select fruits"
 
+msgid "Select multiple values from a list, unlike Select which picks one"
+msgstr "Select multiple values from a list, unlike Select which picks one"
+
 msgid "Send invite"
 msgstr "Send invite"
 
@@ -353,6 +392,9 @@ msgstr "Short date"
 
 msgid "Short date with time"
 msgstr "Short date with time"
+
+msgid "Single-line text input for short values like names or emails"
+msgstr "Single-line text input for short values like names or emails"
 
 msgid "Skeleton loading states"
 msgstr "Skeleton loading states"
@@ -399,17 +441,20 @@ msgstr "This field is required"
 msgid "This is a default informational alert."
 msgstr "This is a default informational alert."
 
-msgid "This is a helpful tooltip"
-msgstr "This is a helpful tooltip"
-
 msgid "This is a sample dialog with a header, body, and footer."
 msgstr "This is a sample dialog with a header, body, and footer."
 
 msgid "This is an informational message."
 msgstr "This is an informational message."
 
+msgid "Tick box for confirming or agreeing to something"
+msgstr "Tick box for confirming or agreeing to something"
+
 msgid "Toggle buttons"
 msgstr "Toggle buttons"
+
+msgid "Toggle control for binary on/off settings"
+msgstr "Toggle control for binary on/off settings"
 
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
@@ -438,14 +483,14 @@ msgstr "Warning alert"
 msgid "Welcome to PlatformPlatform"
 msgstr "Welcome to PlatformPlatform"
 
+msgid "Whole number input with increment and decrement buttons"
+msgstr "Whole number input with increment and decrement buttons"
+
 msgid "With icons"
 msgstr "With icons"
 
 msgid "With labels"
 msgstr "With labels"
-
-msgid "With tooltips"
-msgstr "With tooltips"
 
 msgid "Without labels"
 msgstr "Without labels"

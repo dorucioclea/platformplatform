@@ -10,6 +10,5 @@ export type ControlRowProps = {
 
 export type ControlRowDerivedProps = ControlRowProps & {
   hasValues: boolean;
-  tooltipText: string | undefined;
   errorMessage: string | undefined;
 };
