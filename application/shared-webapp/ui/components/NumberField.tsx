@@ -103,6 +103,16 @@ export function NumberField({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      handleIncrement();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      handleDecrement();
+    }
+  };
+
   const atMin = minValue !== undefined && !isNaN(numericValue) && numericValue <= minValue;
   const atMax = maxValue !== undefined && !isNaN(numericValue) && numericValue >= maxValue;
 
@@ -118,10 +128,11 @@ export function NumberField({
           id={name}
           name={name}
           type="text"
-          inputMode="numeric"
+          inputMode="decimal"
           value={displayValue}
           onChange={handleChange}
           onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
           autoFocus={autoFocus}
           required={isRequired}
           disabled={isDisabled}
@@ -133,6 +144,7 @@ export function NumberField({
         <div className="absolute top-0 right-0 flex h-full flex-col border-l border-input">
           <button
             type="button"
+            tabIndex={-1}
             onClick={handleIncrement}
             disabled={isDisabled || isReadOnly || atMax}
             aria-label="Increase"
@@ -142,6 +154,7 @@ export function NumberField({
           </button>
           <button
             type="button"
+            tabIndex={-1}
             onClick={handleDecrement}
             disabled={isDisabled || isReadOnly || atMin}
             aria-label="Decrease"

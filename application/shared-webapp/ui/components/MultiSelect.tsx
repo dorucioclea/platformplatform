@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { type ReactNode, useId } from "react";
+import { type ReactNode, useCallback, useRef } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldLabel } from "./Field";
@@ -32,16 +32,37 @@ export function MultiSelect({
   onChange,
   className
 }: MultiSelectProps) {
-  const id = useId();
+  const listRef = useRef<HTMLDivElement>(null);
   const displayLabel = value.length > 0 ? `${value.length} selected` : placeholder;
 
-  const handleToggle = (itemId: string, checked: boolean) => {
-    if (checked) {
-      onChange([...value, itemId]);
-    } else {
-      onChange(value.filter((v) => v !== itemId));
-    }
-  };
+  const handleToggle = useCallback(
+    (itemId: string) => {
+      if (value.includes(itemId)) {
+        onChange(value.filter((v) => v !== itemId));
+      } else {
+        onChange([...value, itemId]);
+      }
+    },
+    [value, onChange]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, itemId: string) => {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        handleToggle(itemId);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = (e.currentTarget as HTMLElement).nextElementSibling as HTMLElement | null;
+        next?.focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        const previous = (e.currentTarget as HTMLElement).previousElementSibling as HTMLElement | null;
+        previous?.focus();
+      }
+    },
+    [handleToggle]
+  );
 
   return (
     <Field className={cn("flex flex-col", className)}>
@@ -65,32 +86,29 @@ export function MultiSelect({
             <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
           </PopoverTrigger>
           <PopoverContent className="w-(--anchor-width) p-1" align="start">
-            <div className="flex flex-col">
+            <div ref={listRef} role="listbox" aria-multiselectable="true" className="flex flex-col">
               {items.map((item) => {
                 const checked = value.includes(item.id);
                 return (
-                  <label
+                  <div
                     key={item.id}
-                    htmlFor={`${id}-${item.id}`}
+                    role="option"
+                    aria-selected={checked}
+                    tabIndex={0}
+                    onClick={() => handleToggle(item.id)}
+                    onKeyDown={(e) => handleKeyDown(e, item.id)}
                     className={cn(
-                      "relative flex cursor-pointer items-center gap-2 rounded-sm py-3 pr-8 pl-2 text-sm select-none hover:bg-accent active:bg-accent",
+                      "relative flex cursor-pointer items-center gap-2 rounded-sm py-3 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent hover:bg-accent active:bg-accent",
                       checked && "bg-accent"
                     )}
                   >
-                    <input
-                      type="checkbox"
-                      id={`${id}-${item.id}`}
-                      className="sr-only"
-                      checked={checked}
-                      onChange={(e) => handleToggle(item.id, e.target.checked)}
-                    />
                     <span className="truncate">{item.label}</span>
                     {checked && (
                       <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
                         <CheckIcon className="size-4" />
                       </span>
                     )}
-                  </label>
+                  </div>
                 );
               })}
             </div>
