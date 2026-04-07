@@ -2,10 +2,23 @@ import type * as React from "react";
 
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { createContext, useContext } from "react";
 
 import { cn } from "../utils";
+import { FormValidationContext } from "./Form";
 
-const Select = SelectPrimitive.Root;
+const SelectNameContext = createContext<string | undefined>(undefined);
+
+function Select<Value, Multiple extends boolean | undefined = false>({
+  name,
+  ...props
+}: SelectPrimitive.Root.Props<Value, Multiple>) {
+  return (
+    <SelectNameContext.Provider value={name}>
+      <SelectPrimitive.Root name={name} {...props} />
+    </SelectNameContext.Provider>
+  );
+}
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return <SelectPrimitive.Group data-slot="select-group" className={cn("scroll-my-1 p-1", className)} {...props} />;
@@ -25,14 +38,19 @@ function SelectTrigger({
 }: SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default";
 }) {
+  const name = useContext(SelectNameContext);
+  const formErrors = useContext(FormValidationContext);
+  const isInvalid = !!(name && formErrors && name in formErrors && formErrors[name]);
+
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
-      // NOTE: This diverges from stock ShadCN to use outline-based focus ring, bg-white instead of bg-transparent,
+      aria-invalid={isInvalid || undefined}
+      // NOTE: This diverges from stock ShadCN to use outline-based focus ring and error outline, bg-white instead of bg-transparent,
       // --control-height CSS variables for Apple HIG compliance, and active:bg-accent for press feedback.
       className={cn(
-        "flex w-fit cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white py-2 pr-2 pl-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-[0.1875rem] aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-[var(--control-height)] data-[size=sm]:h-[var(--control-height-sm)] dark:bg-input/30 dark:hover:bg-input/50 dark:active:bg-input/60 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&>*]:data-[slot=select-value]:line-clamp-1 [&>*]:data-[slot=select-value]:flex [&>*]:data-[slot=select-value]:items-center [&>*]:data-[slot=select-value]:gap-1.5",
+        "flex w-fit cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white py-2 pr-2 pl-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive data-[placeholder]:text-muted-foreground data-[size=default]:h-[var(--control-height)] data-[size=sm]:h-[var(--control-height-sm)] dark:bg-input/30 dark:hover:bg-input/50 dark:active:bg-input/60 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&>*]:data-[slot=select-value]:line-clamp-1 [&>*]:data-[slot=select-value]:flex [&>*]:data-[slot=select-value]:items-center [&>*]:data-[slot=select-value]:gap-1.5",
         className
       )}
       {...props}
