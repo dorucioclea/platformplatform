@@ -105,8 +105,8 @@ msgstr "Kombinationsboks (fritekst)"
 msgid "Create"
 msgstr "Opret"
 
-msgid "Create \"<0>{search}</0>\""
-msgstr "Opret \"<0>{search}</0>\""
+msgid "Create <0>{search}</0>"
+msgstr "Opret <0>{search}</0>"
 
 msgid "Create item"
 msgstr "Opret element"

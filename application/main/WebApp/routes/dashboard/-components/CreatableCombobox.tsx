@@ -85,7 +85,7 @@ export function CreatableCombobox({
               >
                 <PlusIcon />
                 <Trans>
-                  Create "<span className="font-bold">{search}</span>"
+                  Create <span className="font-bold">{search}</span>
                 </Trans>
               </ComboboxItem>
             )}
