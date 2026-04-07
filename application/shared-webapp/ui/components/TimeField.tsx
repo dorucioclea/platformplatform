@@ -63,6 +63,9 @@ export function TimeField({
   };
 
   const emptyClassName = !hasValue ? "text-muted-foreground" : undefined;
+  const readOnlyClassName = isReadOnly
+    ? "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
+    : undefined;
 
   const inputProps = {
     id: name,
@@ -88,11 +91,11 @@ export function TimeField({
       )}
       {trailingContent ? (
         <InputGroup>
-          <InputGroupInput className={cn(emptyClassName, inputClassName)} {...inputProps} />
+          <InputGroupInput className={cn(emptyClassName, readOnlyClassName, inputClassName)} {...inputProps} />
           <InputGroupAddon align="inline-end">{trailingContent}</InputGroupAddon>
         </InputGroup>
       ) : (
-        <Input className={cn(emptyClassName, inputClassName)} {...inputProps} />
+        <Input className={cn(emptyClassName, readOnlyClassName, inputClassName)} {...inputProps} />
       )}
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />
