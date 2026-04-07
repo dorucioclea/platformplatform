@@ -29,6 +29,7 @@ export interface DatePickerProps {
   placeholder?: string;
   isRequired?: boolean;
   isDisabled?: boolean;
+  isReadOnly?: boolean;
   max?: string;
   min?: string;
   showDropdowns?: boolean;
@@ -47,6 +48,7 @@ export function DatePicker({
   onChange,
   placeholder,
   isDisabled,
+  isReadOnly,
   max,
   min,
   showDropdowns,
@@ -100,7 +102,7 @@ export function DatePicker({
                 "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
                 !value && "text-muted-foreground"
               )}
-              disabled={isDisabled}
+              disabled={isDisabled || isReadOnly}
             >
               <CalendarIcon />
               <span>{selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}</span>
