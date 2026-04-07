@@ -135,7 +135,7 @@ export function DatePicker({
               >
                 <CalendarIcon className="shrink-0" />
                 <span className="truncate">
-                  {selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}
+                  {selectedDate ? format(selectedDate, "PPP", { locale: dateLocale }) : placeholder}
                 </span>
               </Button>
             }
