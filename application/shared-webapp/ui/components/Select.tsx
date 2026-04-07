@@ -44,6 +44,7 @@ function SelectTrigger({
 
   return (
     <SelectPrimitive.Trigger
+      id={name}
       data-slot="select-trigger"
       data-size={size}
       aria-invalid={isInvalid || undefined}

@@ -2,7 +2,7 @@ import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { type ReactNode, useCallback, useContext, useRef } from "react";
 
 import { cn } from "../utils";
-import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
@@ -57,6 +57,11 @@ export function MultiSelect({
       : undefined;
   const isInvalid = errors && errors.length > 0;
   const listRef = useRef<HTMLDivElement>(null);
+  const focusTrigger = () => {
+    if (!name) return;
+    const focusOptions = { preventScroll: true, focusVisible: true };
+    document.getElementById(name)?.focus(focusOptions);
+  };
   const displayLabel = value.length > 0 ? `${value.length} selected` : placeholder;
 
   const handleToggle = useCallback(
@@ -92,7 +97,13 @@ export function MultiSelect({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
+        <span
+          data-slot="field-label"
+          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          onClick={focusTrigger}
+        >
+          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
+        </span>
       )}
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>
@@ -101,6 +112,7 @@ export function MultiSelect({
           <PopoverTrigger
             render={
               <button
+                id={name}
                 type="button"
                 aria-label={label ?? placeholder}
                 aria-invalid={isInvalid || undefined}

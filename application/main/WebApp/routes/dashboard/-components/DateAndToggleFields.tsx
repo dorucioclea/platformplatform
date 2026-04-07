@@ -4,7 +4,6 @@ import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
-import { FieldLabel } from "@repo/ui/components/Field";
 import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
@@ -123,18 +122,14 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       >
-        <div className="flex items-center gap-2">
+        <label className="flex cursor-pointer items-center gap-2">
           <RadioGroupItem value="option-a" />
-          <FieldLabel>
-            <Trans>Option A</Trans>
-          </FieldLabel>
-        </div>
-        <div className="flex items-center gap-2">
+          <Trans>Option A</Trans>
+        </label>
+        <label className="flex cursor-pointer items-center gap-2">
           <RadioGroupItem value="option-b" />
-          <FieldLabel>
-            <Trans>Option B</Trans>
-          </FieldLabel>
-        </div>
+          <Trans>Option B</Trans>
+        </label>
       </RadioGroupField>
     </>
   );

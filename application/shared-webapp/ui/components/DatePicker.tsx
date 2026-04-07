@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { cn } from "../utils";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
-import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
@@ -70,6 +70,13 @@ export function DatePicker({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
+  const triggerId = id ?? name;
+  const focusTrigger = () => {
+    if (!triggerId) return;
+    const focusOptions = { preventScroll: true, focusVisible: true };
+    document.getElementById(triggerId)?.focus(focusOptions);
+  };
+
   const selectedDate = value ? new Date(`${value}T00:00:00`) : undefined;
   const maxDate = max ? new Date(`${max}T00:00:00`) : undefined;
   const minDate = min ? new Date(`${min}T00:00:00`) : undefined;
@@ -87,16 +94,20 @@ export function DatePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel htmlFor={id ?? name}>
+        <span
+          data-slot="field-label"
+          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          onClick={focusTrigger}
+        >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </FieldLabel>
+        </span>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
       <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
         <PopoverTrigger
           render={
             <Button
-              id={id}
+              id={id ?? name}
               variant="outline"
               className={cn(
                 "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",

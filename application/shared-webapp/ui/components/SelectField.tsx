@@ -3,7 +3,7 @@ import type { Select as SelectPrimitive } from "@base-ui/react/select";
 import { useContext } from "react";
 
 import { cn } from "../utils";
-import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Select } from "./Select";
@@ -45,12 +45,22 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
+  const focusTrigger = () => {
+    if (!name) return;
+    const focusOptions = { preventScroll: true, focusVisible: true };
+    document.getElementById(name)?.focus(focusOptions);
+  };
+
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel htmlFor={name}>
+        <span
+          data-slot="field-label"
+          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          onClick={focusTrigger}
+        >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </FieldLabel>
+        </span>
       )}
       <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
         {children}

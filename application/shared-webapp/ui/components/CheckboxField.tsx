@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 import { cn } from "../utils";
 import { Checkbox } from "./Checkbox";
-import { Field, FieldError, FieldLabel } from "./Field";
+import { Field, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -44,7 +44,7 @@ export function CheckboxField({
 
   return (
     <Field inline className={cn("flex-col gap-1", alignWithLabel && "self-end", className)}>
-      <div className="flex min-h-(--control-height) items-center gap-2">
+      <label className="flex min-h-(--control-height) cursor-pointer items-center gap-2">
         <Checkbox
           name={name}
           disabled={disabled}
@@ -52,11 +52,11 @@ export function CheckboxField({
           {...props}
         />
         {label && (
-          <FieldLabel htmlFor={name}>
+          <span className="text-sm leading-snug font-medium">
             {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-          </FieldLabel>
+          </span>
         )}
-      </div>
+      </label>
       <FieldError errors={errors} />
     </Field>
   );

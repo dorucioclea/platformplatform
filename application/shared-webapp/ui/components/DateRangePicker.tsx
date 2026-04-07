@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import { cn } from "../utils";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
-import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
+import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
@@ -72,6 +72,11 @@ export function DateRangePicker({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
+  const focusTrigger = () => {
+    if (!name) return;
+    const focusOptions = { preventScroll: true, focusVisible: true };
+    document.getElementById(name)?.focus(focusOptions);
+  };
   const [selectionsCount, setSelectionsCount] = useState(0);
   // Track the first clicked date separately since react-day-picker's onSelect
   // doesn't reliably tell us which date was clicked
@@ -147,13 +152,20 @@ export function DateRangePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
+        <span
+          data-slot="field-label"
+          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          onClick={focusTrigger}
+        >
+          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
+        </span>
       )}
       <div className="relative">
         <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : handleOpenChange}>
           <PopoverTrigger
             render={
               <Button
+                id={name}
                 variant="outline"
                 aria-invalid={isInvalid || undefined}
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
