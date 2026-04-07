@@ -43,7 +43,7 @@ export function CheckboxField({
       : undefined;
 
   return (
-    <Field inline className={cn("flex-col gap-1", alignWithLabel && "self-end", className)}>
+    <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
         <Checkbox
           name={name}
