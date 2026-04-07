@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
-import { InputGroup, InputGroupInput } from "./InputGroup";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./InputGroup";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
 export interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "className" | "onChange" | "type"> {
@@ -14,6 +14,7 @@ export interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "c
   tooltip?: string;
   className?: string;
   inputClassName?: string;
+  startIcon?: React.ReactNode;
   onChange?: (value: number) => void;
   minValue?: number;
   maxValue?: number;
@@ -30,6 +31,7 @@ export function NumberField({
   tooltip,
   className,
   inputClassName,
+  startIcon,
   name,
   value,
   defaultValue,
@@ -124,6 +126,7 @@ export function NumberField({
         </FieldLabel>
       )}
       <InputGroup data-disabled={isDisabled || undefined}>
+        {startIcon && <InputGroupAddon>{startIcon}</InputGroupAddon>}
         <InputGroupInput
           id={name}
           name={name}
