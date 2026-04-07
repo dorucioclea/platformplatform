@@ -53,7 +53,7 @@ export function CheckboxField({
           {...props}
         />
         {label && (
-          <span className="text-sm leading-snug font-medium">
+          <span className="flex items-center gap-2 text-sm leading-snug font-medium">
             {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
           </span>
         )}

@@ -4,6 +4,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@repo/ui/components/Combobox";
 import { Field, FieldError, FieldLabel } from "@repo/ui/components/Field";
+import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -15,6 +16,7 @@ interface ComboboxFieldsProps extends ControlRowDerivedProps {
 
 export function ComboboxFields({
   label,
+  tooltipText,
   disabled,
   readOnly,
   hasValues,
@@ -51,7 +53,13 @@ export function ComboboxFields({
       <Field className="flex flex-col">
         {label && (
           <FieldLabel>
-            <Trans>Combobox</Trans>
+            {tooltipText ? (
+              <LabelWithTooltip tooltip={tooltipText}>
+                <Trans>Combobox</Trans>
+              </LabelWithTooltip>
+            ) : (
+              <Trans>Combobox</Trans>
+            )}
           </FieldLabel>
         )}
         <Combobox
@@ -90,7 +98,13 @@ export function ComboboxFields({
       <Field className="flex flex-col">
         {label && (
           <FieldLabel>
-            <Trans>Combobox (creatable)</Trans>
+            {tooltipText ? (
+              <LabelWithTooltip tooltip={tooltipText}>
+                <Trans>Combobox (creatable)</Trans>
+              </LabelWithTooltip>
+            ) : (
+              <Trans>Combobox (creatable)</Trans>
+            )}
           </FieldLabel>
         )}
         <Combobox
