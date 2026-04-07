@@ -93,6 +93,9 @@ msgstr "Afkrydsningsfelt (fra)"
 msgid "Checkbox (on)"
 msgstr "Afkrydsningsfelt (til)"
 
+msgid "Combobox"
+msgstr "Kombinationsboks"
+
 msgid "Create"
 msgstr "Opret"
 
@@ -320,6 +323,9 @@ msgstr "Gem ændringer"
 
 msgid "Search"
 msgstr "Søg"
+
+msgid "Search charts..."
+msgstr "Søg diagrammer..."
 
 msgid "Secondary"
 msgstr "Sekundær"

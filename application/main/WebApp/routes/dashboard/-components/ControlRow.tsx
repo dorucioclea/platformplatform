@@ -1,35 +1,17 @@
+import type { ReactNode } from "react";
+
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
-import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { NumberField } from "@repo/ui/components/NumberField";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
-import { SelectField } from "@repo/ui/components/SelectField";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
-import {
-  AreaChartIcon,
-  BarChart3Icon,
-  EuroIcon,
-  LineChartIcon,
-  PieChartIcon,
-  RadarIcon,
-  SearchIcon
-} from "lucide-react";
-import { useState } from "react";
+import { EuroIcon, SearchIcon } from "lucide-react";
 
 import type { ControlRowProps } from "./controlRowTypes";
 
 import { DateAndToggleFields } from "./DateAndToggleFields";
+import { SelectAndComboboxFields } from "./SelectAndComboboxFields";
 
-export function useChartItems() {
-  return [
-    { id: "bar", label: t`Bar chart`, icon: <BarChart3Icon /> },
-    { id: "line", label: t`Line chart`, icon: <LineChartIcon /> },
-    { id: "pie", label: t`Pie chart`, icon: <PieChartIcon /> },
-    { id: "area", label: t`Area chart`, icon: <AreaChartIcon /> },
-    { id: "radar", label: t`Radar chart`, icon: <RadarIcon /> }
-  ];
-}
+export { useChartItems } from "./SelectAndComboboxFields";
 
 export function ControlRow({
   suffix,
@@ -49,16 +31,9 @@ export function ControlRow({
   setSelectedColor: (value: string) => void;
   selectedCharts: string[];
   setSelectedCharts: (value: string[]) => void;
-  chartItems: { id: string; label: string }[];
+  chartItems: { id: string; label: string; icon?: ReactNode }[];
 }) {
   const hasValues = !!(disabled || readOnly);
-  const [localColor, setLocalColor] = useState(hasValues ? "bar" : "");
-  const [localCharts, setLocalCharts] = useState<string[]>(hasValues ? ["bar", "pie"] : []);
-  const chartSelectItems = [
-    { value: "bar", label: t`Bar chart`, icon: <BarChart3Icon /> },
-    { value: "line", label: t`Line chart`, icon: <LineChartIcon /> },
-    { value: "pie", label: t`Pie chart`, icon: <PieChartIcon /> }
-  ];
   const tooltipText = tooltip ? t`This is a helpful tooltip` : undefined;
   const errorMessage = error ? t`This field is required` : undefined;
   const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, tooltipText, errorMessage };
@@ -115,47 +90,13 @@ export function ControlRow({
         errorMessage={errorMessage}
         startIcon={showIcon ? <EuroIcon /> : undefined}
       />
-      <SelectField
-        label={label ? t`Select` : undefined}
-        tooltip={tooltipText}
-        name={`select-${suffix}`}
-        items={chartSelectItems}
-        value={hasValues ? localColor : selectedColor || null}
-        onValueChange={(value) => (hasValues ? setLocalColor(value ?? "") : setSelectedColor(value ?? ""))}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      >
-        <SelectTrigger>
-          {showIcon && <BarChart3Icon />}
-          <SelectValue placeholder={t`Pick a chart`} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value={null}>
-            <span className="text-muted-foreground">
-              <Trans>None</Trans>
-            </span>
-          </SelectItem>
-          {chartSelectItems.map((item) => (
-            <SelectItem key={item.value} value={item.value}>
-              {item.icon}
-              {item.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectField>
-      <MultiSelect
-        label={label ? t`Multi select` : undefined}
-        tooltip={tooltipText}
-        name={`multi-${suffix}`}
-        placeholder={t`Select fruits`}
-        startIcon={showIcon ? <SearchIcon /> : undefined}
-        items={chartItems}
-        value={hasValues ? localCharts : selectedCharts}
-        onChange={hasValues ? setLocalCharts : setSelectedCharts}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
+      <SelectAndComboboxFields
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        selectedCharts={selectedCharts}
+        setSelectedCharts={setSelectedCharts}
+        chartItems={chartItems}
+        {...derived}
       />
       <DateAndToggleFields {...derived} />
     </div>

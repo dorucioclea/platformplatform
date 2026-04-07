@@ -44,6 +44,9 @@
     "format": "oxfmt && (oxlint --fix || true)",
     "lint": "oxlint"
   },
+  "dependencies": {
+    "@base-ui/react": "^1.2.0"
+  },
   "devDependencies": {
     "@repo/build": "*",
     "@repo/config": "*"

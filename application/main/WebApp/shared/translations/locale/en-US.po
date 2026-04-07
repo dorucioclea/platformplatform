@@ -93,6 +93,9 @@ msgstr "Checkbox (off)"
 msgid "Checkbox (on)"
 msgstr "Checkbox (on)"
 
+msgid "Combobox"
+msgstr "Combobox"
+
 msgid "Create"
 msgstr "Create"
 
@@ -320,6 +323,9 @@ msgstr "Save changes"
 
 msgid "Search"
 msgstr "Search"
+
+msgid "Search charts..."
+msgstr "Search charts..."
 
 msgid "Secondary"
 msgstr "Secondary"
