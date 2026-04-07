@@ -1,11 +1,11 @@
+import type { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
+
 import { useContext } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-
-import type { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 import { RadioGroup } from "./RadioGroup";
 
 export interface RadioGroupFieldProps extends RadioGroupPrimitive.Props {
@@ -40,17 +40,15 @@ export function RadioGroupField({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel>
-          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </FieldLabel>
+        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
       )}
-      <RadioGroup name={name} disabled={disabled || isReadOnly} {...props}>
+      <RadioGroup name={name} disabled={disabled} readOnly={isReadOnly} {...props}>
         {children}
       </RadioGroup>
       {description && <FieldDescription>{description}</FieldDescription>}

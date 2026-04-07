@@ -45,7 +45,7 @@ export function TextAreaField({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
 

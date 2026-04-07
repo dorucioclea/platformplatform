@@ -69,7 +69,7 @@ export function DateRangePicker({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
   const [selectionsCount, setSelectionsCount] = useState(0);
@@ -147,12 +147,10 @@ export function DateRangePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel>
-          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </FieldLabel>
+        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
       )}
       <div className="relative">
-        <Popover open={open} onOpenChange={handleOpenChange}>
+        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : handleOpenChange}>
           <PopoverTrigger
             render={
               <Button
@@ -160,14 +158,14 @@ export function DateRangePicker({
                 aria-invalid={isInvalid || undefined}
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
-                  "w-full min-w-40 justify-between border border-input font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:hover:bg-input/30",
+                  "w-full justify-between border border-input font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:hover:bg-input/30",
                   hasValue && "pr-9"
                 )}
-                disabled={disabled || isReadOnly}
+                disabled={disabled}
               >
-                <div className={cn("flex items-center gap-2", !hasValue && "text-muted-foreground")}>
-                  <CalendarIcon />
-                  <span className="flex-1 text-right">{formatDateRange()}</span>
+                <div className={cn("flex min-w-0 items-center gap-2", !hasValue && "text-muted-foreground")}>
+                  <CalendarIcon className="shrink-0" />
+                  <span className="truncate">{formatDateRange()}</span>
                 </div>
               </Button>
             }
@@ -182,13 +180,13 @@ export function DateRangePicker({
             />
           </PopoverContent>
         </Popover>
-        {hasValue && (
+        {hasValue && !isReadOnly && (
           <Button
             variant="ghost"
             size="icon-xs"
             className="absolute top-1/2 right-1 -translate-y-1/2"
             onClick={handleClear}
-            disabled={disabled || isReadOnly}
+            disabled={disabled}
             aria-label="Clear dates"
           >
             <XIcon className="size-5" />

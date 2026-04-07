@@ -55,7 +55,7 @@ export function NumberField({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
@@ -65,8 +65,8 @@ export function NumberField({
   const displayValue = value !== undefined ? String(value) : internalValue;
   const numericValue = parseFloat(displayValue);
 
-  const clamp = (n: number) => {
-    let result = n;
+  const clamp = (number: number) => {
+    let result = number;
     if (minValue !== undefined) result = Math.max(result, minValue);
     if (maxValue !== undefined) result = Math.min(result, maxValue);
     return result;
@@ -86,19 +86,19 @@ export function NumberField({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInternalValue(e.target.value);
-    const num = parseFloat(e.target.value);
-    if (!isNaN(num)) onChange?.(num);
+    const parsed = parseFloat(e.target.value);
+    if (!isNaN(parsed)) onChange?.(parsed);
   };
 
   const handleBlur = () => {
-    const num = parseFloat(displayValue);
-    if (isNaN(num)) {
+    const parsed = parseFloat(displayValue);
+    if (isNaN(parsed)) {
       const fallback = minValue ?? 0;
       setInternalValue(String(fallback));
       onChange?.(fallback);
     } else {
-      const clamped = clamp(num);
-      if (clamped !== num) {
+      const clamped = clamp(parsed);
+      if (clamped !== parsed) {
         setInternalValue(String(clamped));
         onChange?.(clamped);
       }
@@ -106,6 +106,7 @@ export function NumberField({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (isReadOnly) return;
     if (e.key === "ArrowUp") {
       e.preventDefault();
       handleIncrement();

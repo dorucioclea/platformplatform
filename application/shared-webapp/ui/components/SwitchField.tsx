@@ -1,11 +1,11 @@
+import type { Switch as SwitchPrimitive } from "@base-ui/react/switch";
+
 import { useContext } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-
-import type { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import { Switch } from "./Switch";
 
 export interface SwitchFieldProps extends SwitchPrimitive.Root.Props {
@@ -14,6 +14,7 @@ export interface SwitchFieldProps extends SwitchPrimitive.Root.Props {
   tooltip?: string;
   className?: string;
   isReadOnly?: boolean;
+  alignWithLabel?: boolean;
 }
 
 export function SwitchField({
@@ -23,6 +24,7 @@ export function SwitchField({
   className,
   name,
   isReadOnly,
+  alignWithLabel,
   disabled,
   onCheckedChange,
   ...props
@@ -37,18 +39,13 @@ export function SwitchField({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
   return (
-    <Field className={cn("flex flex-col gap-1", className)}>
-      <div className="flex items-center gap-2">
-        <Switch
-          name={name}
-          disabled={disabled || isReadOnly}
-          onCheckedChange={isReadOnly ? undefined : onCheckedChange}
-          {...props}
-        />
+    <Field inline className={cn("flex-col gap-1", alignWithLabel && "self-end", className)}>
+      <div className="flex min-h-(--control-height) items-center gap-2">
+        <Switch name={name} disabled={disabled} onCheckedChange={isReadOnly ? undefined : onCheckedChange} {...props} />
         {label && (
           <FieldLabel htmlFor={name}>
             {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}

@@ -90,6 +90,12 @@ msgstr "Cards"
 msgid "Checkbox"
 msgstr "Checkbox"
 
+msgid "Checkbox (off)"
+msgstr "Checkbox (off)"
+
+msgid "Checkbox (on)"
+msgstr "Checkbox (on)"
+
 msgid "Cherry"
 msgstr "Cherry"
 
@@ -237,6 +243,9 @@ msgstr "Manage your notification preferences."
 msgid "Mango"
 msgstr "Mango"
 
+msgid "Meeting notes from last week"
+msgstr "Meeting notes from last week"
+
 msgid "Member"
 msgstr "Member"
 
@@ -270,6 +279,12 @@ msgstr "Open dialog"
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 
+msgid "Option A"
+msgstr "Option A"
+
+msgid "Option B"
+msgstr "Option B"
+
 msgid "Orange"
 msgstr "Orange"
 
@@ -278,6 +293,9 @@ msgstr "Outline"
 
 msgid "Owner"
 msgstr "Owner"
+
+msgid "Pick a color"
+msgstr "Pick a color"
 
 msgid "Pick a date"
 msgstr "Pick a date"
@@ -333,9 +351,6 @@ msgstr "Skeleton loading states"
 msgid "Small"
 msgstr "Small"
 
-msgid "Some notes"
-msgstr "Some notes"
-
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
@@ -344,6 +359,12 @@ msgstr "Standard user access"
 
 msgid "Switch"
 msgstr "Switch"
+
+msgid "Switch (off)"
+msgstr "Switch (off)"
+
+msgid "Switch (on)"
+msgstr "Switch (on)"
 
 msgid "Team members"
 msgstr "Team members"

@@ -67,7 +67,7 @@ export function DatePicker({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
   const selectedDate = value ? new Date(`${value}T00:00:00`) : undefined;
@@ -92,7 +92,7 @@ export function DatePicker({
         </FieldLabel>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
         <PopoverTrigger
           render={
             <Button
@@ -102,10 +102,12 @@ export function DatePicker({
                 "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
                 !value && "text-muted-foreground"
               )}
-              disabled={isDisabled || isReadOnly}
+              disabled={isDisabled}
             >
-              <CalendarIcon />
-              <span>{selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}</span>
+              <CalendarIcon className="shrink-0" />
+              <span className="truncate">
+                {selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}
+              </span>
             </Button>
           }
         />

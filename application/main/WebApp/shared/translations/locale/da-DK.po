@@ -15,56 +15,56 @@ msgstr ""
 
 #. placeholder {0}: smartDate.value
 msgid "{0} hours ago"
-msgstr ""
+msgstr "for {0} timer siden"
 
 #. placeholder {0}: smartDate.value
 msgid "{0} minutes ago"
-msgstr ""
+msgstr "for {0} minutter siden"
 
 msgid "2 hours ago"
-msgstr ""
+msgstr "For 2 timer siden"
 
 msgid "3 minutes ago"
-msgstr ""
+msgstr "For 3 minutter siden"
 
 msgid "5 active members"
-msgstr ""
+msgstr "5 aktive medlemmer"
 
 msgid "75% of quota used"
-msgstr ""
+msgstr "75% af kvoten brugt"
 
 msgid "Add notes here"
-msgstr ""
+msgstr "Tilføj noter her"
 
 msgid "Admin"
-msgstr ""
+msgstr "Administrator"
 
 msgid "Alerts"
-msgstr ""
+msgstr "Advarsler"
 
 msgid "Alerts and badges"
-msgstr ""
+msgstr "Advarsler og badges"
 
 msgid "Alex Taylor"
-msgstr ""
+msgstr "Alex Taylor"
 
 msgid "Apple"
-msgstr ""
+msgstr "Æble"
 
 msgid "Are you sure?"
-msgstr ""
+msgstr "Er du sikker?"
 
 msgid "Badges"
-msgstr ""
+msgstr "Badges"
 
 msgid "Banana"
-msgstr ""
+msgstr "Banan"
 
 msgid "Blue"
-msgstr ""
+msgstr "Blå"
 
 msgid "Bold"
-msgstr ""
+msgstr "Fed"
 
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Sidder du stadig oppe, {firstName}?"
@@ -73,103 +73,109 @@ msgid "Burning the midnight oil?"
 msgstr "Sidder du stadig oppe?"
 
 msgid "Button sizes"
-msgstr ""
+msgstr "Knapstørrelser"
 
 msgid "Button variants"
-msgstr ""
+msgstr "Knapvarianter"
 
 msgid "Buttons"
-msgstr ""
+msgstr "Knapper"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Annuller"
 
 msgid "Cards"
-msgstr ""
+msgstr "Kort"
 
 msgid "Checkbox"
-msgstr ""
+msgstr "Afkrydsningsfelt"
+
+msgid "Checkbox (off)"
+msgstr "Afkrydsningsfelt (fra)"
+
+msgid "Checkbox (on)"
+msgstr "Afkrydsningsfelt (til)"
 
 msgid "Cherry"
-msgstr ""
+msgstr "Kirsebær"
 
 msgid "Create"
-msgstr ""
+msgstr "Opret"
 
 msgid "Create item"
-msgstr ""
+msgstr "Opret element"
 
 msgid "Dashboard"
 msgstr "Dashboard"
 
 msgid "Date and time formatting"
-msgstr ""
+msgstr "Dato- og tidsformatering"
 
 msgid "Date field"
-msgstr ""
+msgstr "Datofelt"
 
 msgid "Date formatting"
-msgstr ""
+msgstr "Datoformatering"
 
 msgid "Date picker"
-msgstr ""
+msgstr "Datovælger"
 
 msgid "Date range"
-msgstr ""
+msgstr "Datointerval"
 
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 msgid "Default alert"
-msgstr ""
+msgstr "Standardadvarsel"
 
 msgid "Delete"
-msgstr ""
+msgstr "Slet"
 
 msgid "Delete item"
-msgstr ""
+msgstr "Slet element"
 
 msgid "Destructive"
-msgstr ""
+msgstr "Destruktiv"
 
 msgid "Destructive alert"
-msgstr ""
+msgstr "Destruktiv advarsel"
 
 msgid "Dialogs"
-msgstr ""
+msgstr "Dialoger"
 
 msgid "Dialogs and cards"
-msgstr ""
+msgstr "Dialoger og kort"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiveret"
 
 msgid "Disabled buttons"
-msgstr ""
+msgstr "Deaktiverede knapper"
 
 msgid "E.g., Alex Taylor"
-msgstr ""
+msgstr "F.eks. Alex Taylor"
 
 msgid "Empty and skeleton"
-msgstr ""
+msgstr "Tom tilstand og skelet"
 
 msgid "Empty states"
-msgstr ""
+msgstr "Tomme tilstande"
 
 msgid "Extra small"
-msgstr ""
+msgstr "Ekstra lille"
 
 msgid "Full access except changing user roles and account settings"
-msgstr ""
+msgstr "Fuld adgang undtagen ændring af brugerroller og kontoindstillinger"
 
 msgid "Full access including user roles and account settings"
-msgstr ""
+msgstr "Fuld adgang inklusiv brugerroller og kontoindstillinger"
 
 msgid "Get started"
 msgstr "Kom i gang"
 
 msgid "Ghost"
-msgstr ""
+msgstr "Gennemsigtig"
 
 msgid "Go to app"
 msgstr "Gå til app"
@@ -193,238 +199,253 @@ msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
 msgid "Green"
-msgstr ""
+msgstr "Grøn"
 
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
 msgid "Icon-only buttons"
-msgstr ""
+msgstr "Knapper kun med ikon"
 
 msgid "Info alert"
-msgstr ""
+msgstr "Informationsadvarsel"
 
 msgid "Invite"
-msgstr ""
+msgstr "Inviter"
 
 msgid "Invite and manage your team."
-msgstr ""
+msgstr "Inviter og administrer dit team."
 
 msgid "Italic"
-msgstr ""
+msgstr "Kursiv"
 
 msgid "Just now"
-msgstr ""
+msgstr "Lige nu"
 
 msgid "Large"
-msgstr ""
+msgstr "Stor"
 
 msgid "Last month"
-msgstr ""
+msgstr "Sidste måned"
 
 msgid "Link"
-msgstr ""
+msgstr "Link"
 
 msgid "Log in"
 msgstr "Log ind"
 
 msgid "Long date"
-msgstr ""
+msgstr "Lang dato"
 
 msgid "Manage your notification preferences."
-msgstr ""
+msgstr "Administrer dine notifikationsindstillinger."
 
 msgid "Mango"
-msgstr ""
+msgstr "Mango"
+
+msgid "Meeting notes from last week"
+msgstr "Mødenoter fra sidste uge"
 
 msgid "Member"
-msgstr ""
+msgstr "Medlem"
 
 msgid "More information"
 msgstr "Mere information"
 
 msgid "Multi select"
-msgstr ""
+msgstr "Flervalg"
 
 msgid "Navigation"
 msgstr "Navigation"
 
 msgid "No data yet"
-msgstr ""
+msgstr "Ingen data endnu"
 
 msgid "No results found"
-msgstr ""
+msgstr "Ingen resultater fundet"
 
 msgid "Notifications"
-msgstr ""
+msgstr "Notifikationer"
 
 msgid "Number (decimal)"
-msgstr ""
+msgstr "Tal (decimal)"
 
 msgid "Number (integer)"
-msgstr ""
+msgstr "Tal (heltal)"
 
 msgid "Open dialog"
-msgstr ""
+msgstr "Åbn dialog"
 
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
-msgid "Orange"
+msgid "Option A"
 msgstr ""
+
+msgid "Option B"
+msgstr ""
+
+msgid "Orange"
+msgstr "Appelsin"
 
 msgid "Outline"
-msgstr ""
+msgstr "Kontur"
 
 msgid "Owner"
+msgstr "Ejer"
+
+msgid "Pick a color"
 msgstr ""
 
 msgid "Pick a date"
-msgstr ""
+msgstr "Vælg en dato"
 
 msgid "Radio card selector"
-msgstr ""
+msgstr "Radiokort-vælger"
 
 msgid "Radio group"
-msgstr ""
+msgstr "Radiogruppe"
 
 msgid "Read only"
-msgstr ""
+msgstr "Skrivebeskyttet"
 
 msgid "Red"
-msgstr ""
+msgstr "Rød"
 
 msgid "Relative"
-msgstr ""
+msgstr "Relativ"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
 msgid "Sample dialog"
-msgstr ""
+msgstr "Eksempeldialog"
 
 msgid "Save changes"
-msgstr ""
+msgstr "Gem ændringer"
 
 msgid "Search"
-msgstr ""
+msgstr "Søg"
 
 msgid "Secondary"
-msgstr ""
+msgstr "Sekundær"
 
 msgid "Select"
-msgstr ""
+msgstr "Vælg"
 
 msgid "Select fruits"
-msgstr ""
+msgstr "Vælg frugter"
 
 msgid "Send invite"
-msgstr ""
+msgstr "Send invitation"
 
 msgid "Short date"
-msgstr ""
+msgstr "Kort dato"
 
 msgid "Short date with time"
-msgstr ""
+msgstr "Kort dato med tid"
 
 msgid "Skeleton loading states"
-msgstr ""
+msgstr "Skelet-indlæsningstilstande"
 
 msgid "Small"
-msgstr ""
-
-msgid "Some notes"
-msgstr ""
+msgstr "Lille"
 
 msgid "Something went wrong. Please try again."
-msgstr ""
+msgstr "Noget gik galt. Prøv venligst igen."
 
 msgid "Standard user access"
-msgstr ""
+msgstr "Standard brugeradgang"
 
 msgid "Switch"
-msgstr ""
+msgstr "Kontakt"
+
+msgid "Switch (off)"
+msgstr "Kontakt (fra)"
+
+msgid "Switch (on)"
+msgstr "Kontakt (til)"
 
 msgid "Team members"
-msgstr ""
+msgstr "Teammedlemmer"
 
 msgid "Text area"
-msgstr ""
+msgstr "Tekstområde"
 
 msgid "Text field"
-msgstr ""
+msgstr "Tekstfelt"
 
 msgid "There is nothing to display here. Create your first item to get started."
-msgstr ""
+msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
 
 msgid "This action cannot be undone. This will permanently delete the item."
-msgstr ""
+msgstr "Denne handling kan ikke fortrydes. Dette vil permanent slette elementet."
 
 msgid "This action may have unintended consequences."
-msgstr ""
+msgstr "Denne handling kan have utilsigtede konsekvenser."
 
 msgid "This field is required"
-msgstr ""
+msgstr "Dette felt er påkrævet"
 
 msgid "This is a default informational alert."
-msgstr ""
+msgstr "Dette er en standard informationsadvarsel."
 
 msgid "This is a helpful tooltip"
-msgstr ""
+msgstr "Dette er et hjælpsomt tooltip"
 
 msgid "This is a sample dialog with a header, body, and footer."
-msgstr ""
+msgstr "Dette er en eksempeldialog med overskrift, brødtekst og bundtekst."
 
 msgid "This is an informational message."
-msgstr ""
+msgstr "Dette er en informationsmeddelelse."
 
 msgid "Time field"
-msgstr ""
+msgstr "Tidsfelt"
 
 msgid "Toggle buttons"
-msgstr ""
+msgstr "Skifteknapper"
 
 msgid "Toggle sidebar"
 msgstr "Skift sidepanel"
 
 msgid "Try adjusting your search or filter to find what you are looking for."
-msgstr ""
+msgstr "Prøv at justere din søgning eller dit filter for at finde det du leder efter."
 
 msgid "Underline"
-msgstr ""
+msgstr "Understregning"
 
 msgid "Usage"
-msgstr ""
+msgstr "Forbrug"
 
 msgid "Validation errors"
-msgstr ""
+msgstr "Valideringsfejl"
 
 msgid "View all"
-msgstr ""
+msgstr "Se alle"
 
 msgid "Warning alert"
-msgstr ""
+msgstr "Advarselsbesked"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Velkommen til PlatformPlatform"
 
 msgid "With icons"
-msgstr ""
+msgstr "Med ikoner"
 
 msgid "With labels"
-msgstr ""
+msgstr "Med etiketter"
 
 msgid "With tooltips"
-msgstr ""
+msgstr "Med tooltips"
 
 msgid "Without labels"
-msgstr ""
+msgstr "Uden etiketter"
 
 msgid "Yesterday"
-msgstr ""
+msgstr "I går"
 
 msgid "You have 3 unread notifications."
-msgstr ""
+msgstr "Du har 3 ulæste notifikationer."
 
 msgid "You successfully deployed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
@@ -433,4 +454,4 @@ msgid "You successfully installed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 
 msgid "Your current plan usage this month."
-msgstr ""
+msgstr "Dit nuværende planforbrug denne måned."

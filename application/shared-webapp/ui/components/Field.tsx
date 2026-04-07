@@ -71,14 +71,15 @@ const fieldVariants = cva("group/field flex w-full gap-3 data-[invalid=true]:tex
 function Field({
   className,
   orientation = "vertical",
+  inline,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
+}: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants> & { inline?: boolean }) {
   return (
     <div
       role="group"
       data-slot="field"
       data-orientation={orientation}
-      className={cn(fieldVariants({ orientation }), className)}
+      className={cn(fieldVariants({ orientation }), inline && "inline-flex w-auto [&>*]:w-auto", className)}
       {...props}
     />
   );

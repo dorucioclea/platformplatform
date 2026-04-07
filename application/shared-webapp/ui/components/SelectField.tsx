@@ -1,3 +1,5 @@
+import type { Select as SelectPrimitive } from "@base-ui/react/select";
+
 import { useContext } from "react";
 
 import { cn } from "../utils";
@@ -6,10 +8,8 @@ import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Select } from "./Select";
 
-import type { Select as SelectPrimitive } from "@base-ui/react/select";
-
-export interface SelectFieldProps<Value, Multiple extends boolean | undefined = false>
-  extends SelectPrimitive.Root.Props<Value, Multiple> {
+export interface SelectFieldProps<Value, Multiple extends boolean | undefined = false> extends SelectPrimitive.Root
+  .Props<Value, Multiple> {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -42,7 +42,7 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
   return (
@@ -52,7 +52,7 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </FieldLabel>
       )}
-      <Select name={name} disabled={isDisabled || isReadOnly} {...props}>
+      <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
         {children}
       </Select>
       {description && <FieldDescription>{description}</FieldDescription>}

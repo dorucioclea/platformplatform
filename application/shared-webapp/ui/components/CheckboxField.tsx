@@ -1,12 +1,12 @@
+import type { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
+
 import { useContext } from "react";
 
 import { cn } from "../utils";
+import { Checkbox } from "./Checkbox";
 import { Field, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-
-import type { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-import { Checkbox } from "./Checkbox";
 
 export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   label?: string;
@@ -14,6 +14,7 @@ export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   tooltip?: string;
   className?: string;
   isReadOnly?: boolean;
+  alignWithLabel?: boolean;
 }
 
 export function CheckboxField({
@@ -23,6 +24,7 @@ export function CheckboxField({
   className,
   name,
   isReadOnly,
+  alignWithLabel,
   disabled,
   onCheckedChange,
   ...props
@@ -37,15 +39,15 @@ export function CheckboxField({
   const errors = errorMessage
     ? [{ message: errorMessage }]
     : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((err) => ({ message: err }))
+      ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
   return (
-    <Field className={cn("flex flex-col gap-1", className)}>
-      <div className="flex items-center gap-2">
+    <Field inline className={cn("flex-col gap-1", alignWithLabel && "self-end", className)}>
+      <div className="flex min-h-(--control-height) items-center gap-2">
         <Checkbox
           name={name}
-          disabled={disabled || isReadOnly}
+          disabled={disabled}
           onCheckedChange={isReadOnly ? undefined : onCheckedChange}
           {...props}
         />
