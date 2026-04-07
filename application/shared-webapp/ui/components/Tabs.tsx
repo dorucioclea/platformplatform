@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../utils";
 
 function Tabs({ className, ...props }: TabsPrimitive.Root.Props) {
-  return <TabsPrimitive.Root data-slot="tabs" className={cn("flex flex-col gap-2", className)} {...props} />;
+  return <TabsPrimitive.Root data-slot="tabs" className={cn("flex flex-col gap-4", className)} {...props} />;
 }
 
 function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
