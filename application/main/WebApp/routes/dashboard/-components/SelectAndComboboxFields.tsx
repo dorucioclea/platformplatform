@@ -44,10 +44,12 @@ export function SelectAndComboboxFields({
   ];
   const currentColor = hasValues ? localColor : selectedColor;
   const selectedChartIcon = chartSelectItems.find((i) => i.value === currentColor)?.icon;
+  const [comboboxValue, setComboboxValue] = useState<string | null>(hasValues ? "pie" : null);
   const [comboboxSearch, setComboboxSearch] = useState("");
   const filteredChartItems = comboboxSearch
     ? chartItems.filter((item) => item.label.toLowerCase().includes(comboboxSearch.toLowerCase()))
     : chartItems;
+  const selectedComboboxIcon = chartItems.find((i) => i.id === comboboxValue)?.icon;
 
   return (
     <>
@@ -101,10 +103,18 @@ export function SelectAndComboboxFields({
         )}
         <Combobox
           disabled={disabled}
+          open={readOnly ? false : undefined}
+          value={comboboxValue}
+          onValueChange={setComboboxValue}
           onInputValueChange={setComboboxSearch}
           itemToStringLabel={(value: string) => chartItems.find((i) => i.id === value)?.label ?? value}
         >
-          <ComboboxInput placeholder={t`Search charts...`} disabled={disabled} />
+          <ComboboxInput
+            placeholder={t`Search charts...`}
+            disabled={disabled}
+            readOnly={readOnly}
+            startIcon={selectedComboboxIcon}
+          />
           <ComboboxContent>
             <ComboboxList>
               {filteredChartItems.length === 0 && (

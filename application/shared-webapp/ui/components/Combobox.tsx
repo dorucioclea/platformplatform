@@ -44,26 +44,33 @@ function ComboboxInput({
   className,
   children,
   disabled = false,
+  readOnly = false,
   showTrigger = true,
   showClear = false,
+  startIcon,
   ...props
 }: ComboboxPrimitive.Input.Props & {
+  readOnly?: boolean;
   showTrigger?: boolean;
   showClear?: boolean;
+  startIcon?: React.ReactNode;
 }) {
   return (
     <InputGroup data-disabled={disabled || undefined} className={cn("w-auto", className)}>
-      <ComboboxPrimitive.Input render={<InputGroupInput disabled={disabled} />} {...props} />
-      <InputGroupAddon align="inline-end">
-        {showTrigger && (
-          <ComboboxTrigger
-            render={<InputGroupButton size="icon-xs" variant="ghost" />}
-            className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
-            disabled={disabled}
-          />
-        )}
-        {showClear && <ComboboxClear disabled={disabled} />}
-      </InputGroupAddon>
+      {startIcon && <InputGroupAddon>{startIcon}</InputGroupAddon>}
+      <ComboboxPrimitive.Input render={<InputGroupInput disabled={disabled} readOnly={readOnly} />} {...props} />
+      {!readOnly && (
+        <InputGroupAddon align="inline-end">
+          {showTrigger && (
+            <ComboboxTrigger
+              render={<InputGroupButton size="icon-xs" variant="ghost" />}
+              className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
+              disabled={disabled}
+            />
+          )}
+          {showClear && <ComboboxClear disabled={disabled} />}
+        </InputGroupAddon>
+      )}
       {children}
     </InputGroup>
   );
