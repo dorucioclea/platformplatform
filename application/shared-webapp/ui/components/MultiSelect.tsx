@@ -146,7 +146,7 @@ export function MultiSelect({
                   }
                 }}
                 className={cn(
-                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 data-[invalid]:outline data-[invalid]:outline-2 data-[invalid]:outline-offset-2 data-[invalid]:outline-destructive dark:bg-input/30 dark:active:bg-input/60",
+                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:pointer-events-none disabled:opacity-50 data-[invalid]:outline data-[invalid]:outline-2 data-[invalid]:outline-offset-2 data-[invalid]:outline-destructive dark:bg-input/30 dark:active:bg-input/60",
                   isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
               />
