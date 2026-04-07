@@ -1,5 +1,6 @@
+import { useLingui } from "@lingui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
@@ -25,11 +26,6 @@ export interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "c
   isDisabled?: boolean;
   isReadOnly?: boolean;
 }
-
-const decimalSeparator =
-  Intl.NumberFormat()
-    .formatToParts(1.1)
-    .find((p) => p.type === "decimal")?.value ?? ".";
 
 export function NumberField({
   label,
@@ -67,6 +63,15 @@ export function NumberField({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
+
+  const { i18n } = useLingui();
+  const decimalSeparator = useMemo(
+    () =>
+      Intl.NumberFormat(i18n.locale)
+        .formatToParts(1.1)
+        .find((p) => p.type === "decimal")?.value ?? ".",
+    [i18n.locale]
+  );
 
   const stepDecimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
   const displayDecimals = decimalPlaces ?? stepDecimals;
