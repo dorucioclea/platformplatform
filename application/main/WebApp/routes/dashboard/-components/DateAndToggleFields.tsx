@@ -69,7 +69,7 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
+      <div className="flex flex-wrap items-start gap-x-6 gap-y-2">
         <SwitchField
           label={label ? (hasValues ? t`Switch (on)` : t`Switch`) : undefined}
           tooltip={tooltipText}
@@ -91,7 +91,7 @@ export function DateAndToggleFields({
           />
         )}
       </div>
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
+      <div className="flex flex-wrap items-start gap-x-6 gap-y-2">
         <CheckboxField
           label={label ? (hasValues ? t`Checkbox (on)` : t`Checkbox`) : undefined}
           tooltip={tooltipText}
