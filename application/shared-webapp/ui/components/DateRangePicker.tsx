@@ -198,13 +198,12 @@ export function DateRangePicker({
             />
           </PopoverContent>
         </Popover>
-        {hasValue && !isReadOnly && (
+        {hasValue && !isReadOnly && !disabled && (
           <Button
             variant="ghost"
             size="icon-xs"
             className="absolute top-1/2 right-1 -translate-y-1/2"
             onClick={handleClear}
-            disabled={disabled}
             aria-label="Clear dates"
           >
             <XIcon className="size-5" />

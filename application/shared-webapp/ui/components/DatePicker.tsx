@@ -1,6 +1,6 @@
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, XIcon } from "lucide-react";
 import { useContext, useState } from "react";
 
 import { cn } from "../utils";
@@ -82,6 +82,14 @@ export function DatePicker({
   const maxDate = max ? new Date(`${max}T00:00:00`) : undefined;
   const minDate = min ? new Date(`${min}T00:00:00`) : undefined;
 
+  const hasValue = !!value;
+
+  const handleClear = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onChange?.("");
+  };
+
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       const year = date.getFullYear();
@@ -104,56 +112,70 @@ export function DatePicker({
         </label>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
-      <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
-        <PopoverTrigger
-          render={
-            <Button
-              id={id ?? name}
-              variant="outline"
-              aria-invalid={isInvalid || undefined}
-              className={cn(
-                "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
-                !value && "text-muted-foreground"
-              )}
-              disabled={isDisabled}
-              onKeyDown={(e: React.KeyboardEvent) => {
-                if (e.key === "ArrowDown" && !open) {
-                  e.preventDefault();
-                  setOpen(true);
-                }
-              }}
-            >
-              <CalendarIcon className="shrink-0" />
-              <span className="truncate">
-                {selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}
-              </span>
-            </Button>
-          }
-        />
-        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleSelect}
-            defaultMonth={selectedDate}
-            numberOfMonths={1}
-            {...(showDropdowns && {
-              captionLayout: "dropdown" as const,
-              startMonth: minDate ?? new Date(1900, 0),
-              endMonth: maxDate ?? new Date()
-            })}
-            disabled={(date) => {
-              if (maxDate && date > maxDate) {
-                return true;
-              }
-              if (minDate && date < minDate) {
-                return true;
-              }
-              return false;
-            }}
+      <div className="relative">
+        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
+          <PopoverTrigger
+            render={
+              <Button
+                id={id ?? name}
+                variant="outline"
+                aria-invalid={isInvalid || undefined}
+                className={cn(
+                  "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
+                  !value && "text-muted-foreground",
+                  hasValue && "pr-9"
+                )}
+                disabled={isDisabled}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.key === "ArrowDown" && !open) {
+                    e.preventDefault();
+                    setOpen(true);
+                  }
+                }}
+              >
+                <CalendarIcon className="shrink-0" />
+                <span className="truncate">
+                  {selectedDate ? format(selectedDate, "PP", { locale: dateLocale }) : placeholder}
+                </span>
+              </Button>
+            }
           />
-        </PopoverContent>
-      </Popover>
+          <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={handleSelect}
+              defaultMonth={selectedDate}
+              numberOfMonths={1}
+              {...(showDropdowns && {
+                captionLayout: "dropdown" as const,
+                startMonth: minDate ?? new Date(1900, 0),
+                endMonth: maxDate ?? new Date()
+              })}
+              disabled={(date) => {
+                if (maxDate && date > maxDate) {
+                  return true;
+                }
+                if (minDate && date < minDate) {
+                  return true;
+                }
+                return false;
+              }}
+            />
+          </PopoverContent>
+        </Popover>
+        {hasValue && !isReadOnly && !isDisabled && (
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            className="absolute top-1/2 right-1 -translate-y-1/2"
+            onClick={handleClear}
+            aria-label="Clear date"
+          >
+            <XIcon className="size-5" />
+          </Button>
+        )}
+      </div>
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />
     </Field>
