@@ -63,7 +63,11 @@ function SelectOnlyCombobox({
         open={readOnly ? false : undefined}
         value={value}
         onValueChange={setValue}
-        onInputValueChange={setSearch}
+        onInputValueChange={(text) => {
+          setSearch(text);
+          const match = chartItems.find((i) => i.label.toLowerCase() === text.toLowerCase());
+          if (match) setValue(match.id);
+        }}
         itemToStringLabel={(v: string) => chartItems.find((i) => i.id === v)?.label ?? v}
       >
         <ComboboxInput
