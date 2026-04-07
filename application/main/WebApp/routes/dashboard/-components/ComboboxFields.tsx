@@ -103,18 +103,12 @@ function FreeTextCombobox({
   errorMessage,
   chartItems
 }: ComboboxFieldsProps) {
-  const initialLabel = hasValues ? (chartItems.find((i) => i.id === "pie")?.label ?? "") : "";
-  const [inputText, setInputText] = useState(initialLabel);
-  const [selectedId, setSelectedId] = useState<string | null>(hasValues ? "pie" : null);
-  const filtered = filterItems(chartItems, inputText);
-  const selectedIcon = chartItems.find((i) => i.id === selectedId)?.icon;
+  const [value, setValue] = useState<string>(hasValues ? "pie" : "");
+  const [search, setSearch] = useState("");
+  const filtered = filterItems(chartItems, search);
+  const selectedIcon = chartItems.find((i) => i.id === value)?.icon;
   const errors = errorMessage ? [{ message: errorMessage }] : undefined;
-
-  const handleValueChange = (v: string | null) => {
-    setSelectedId(v);
-    const itemLabel = chartItems.find((i) => i.id === v)?.label;
-    if (itemLabel) setInputText(itemLabel);
-  };
+  const isKnownItem = chartItems.some((i) => i.id === value);
 
   return (
     <Field className="flex flex-col">
@@ -124,11 +118,11 @@ function FreeTextCombobox({
       <Combobox
         disabled={disabled}
         open={readOnly ? false : undefined}
-        value={selectedId}
-        onValueChange={handleValueChange}
+        value={value || null}
+        onValueChange={(v: string | null) => setValue(v ?? "")}
         onInputValueChange={(text) => {
-          setInputText(text);
-          if (!chartItems.some((i) => i.label === text)) setSelectedId(null);
+          setSearch(text);
+          if (text && !chartItems.some((i) => i.label === text)) setValue(text);
         }}
         itemToStringLabel={(v: string) => chartItems.find((i) => i.id === v)?.label ?? v}
       >
@@ -147,6 +141,11 @@ function FreeTextCombobox({
                 {item.label}
               </ComboboxItem>
             ))}
+            {value && !isKnownItem && (
+              <ComboboxItem key="__custom" value={value} className="hidden">
+                {value}
+              </ComboboxItem>
+            )}
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
