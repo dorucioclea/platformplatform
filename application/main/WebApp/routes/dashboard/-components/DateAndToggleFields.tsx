@@ -79,7 +79,6 @@ export function DateAndToggleFields({
           disabled={disabled}
           isReadOnly={readOnly}
           errorMessage={errorMessage}
-          alignWithLabel={label}
         />
         {hasValues && (
           <SwitchField
@@ -101,7 +100,6 @@ export function DateAndToggleFields({
           disabled={disabled}
           isReadOnly={readOnly}
           errorMessage={errorMessage}
-          alignWithLabel={label}
         />
         {hasValues && (
           <CheckboxField

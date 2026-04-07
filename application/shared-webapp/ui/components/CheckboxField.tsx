@@ -14,7 +14,6 @@ export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   tooltip?: string;
   className?: string;
   isReadOnly?: boolean;
-  alignWithLabel?: boolean;
 }
 
 export function CheckboxField({
@@ -24,7 +23,6 @@ export function CheckboxField({
   className,
   name,
   isReadOnly,
-  alignWithLabel,
   disabled,
   onCheckedChange,
   ...props
@@ -43,7 +41,7 @@ export function CheckboxField({
       : undefined;
 
   return (
-    <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
+    <Field className={cn("inline-flex w-auto flex-col gap-1", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
         <Checkbox
           name={name}
