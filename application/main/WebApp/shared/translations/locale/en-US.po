@@ -105,9 +105,6 @@ msgstr "Combobox (free text)"
 msgid "Create"
 msgstr "Create"
 
-msgid "Create <0>{search}</0>"
-msgstr "Create <0>{search}</0>"
-
 msgid "Create item"
 msgstr "Create item"
 
