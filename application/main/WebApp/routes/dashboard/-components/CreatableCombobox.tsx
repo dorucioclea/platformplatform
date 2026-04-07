@@ -81,7 +81,7 @@ export function CreatableCombobox({
                     setCustomItems((prev) => [...prev, { id: newId, label: search }]);
                   setValue(newId);
                 }}
-                className="font-medium text-primary"
+                className="font-medium whitespace-nowrap text-primary"
               >
                 <PlusIcon />
                 <Trans>
