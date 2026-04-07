@@ -6,7 +6,7 @@ import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-import { Select } from "./Select";
+import { Select, SelectReadOnlyContext } from "./Select";
 
 export interface SelectFieldProps<Value, Multiple extends boolean | undefined = false> extends SelectPrimitive.Root
   .Props<Value, Multiple> {
@@ -69,9 +69,11 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
         </label>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
-        <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
-          {children}
-        </Select>
+        <SelectReadOnlyContext.Provider value={!!isReadOnly}>
+          <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
+            {children}
+          </Select>
+        </SelectReadOnlyContext.Provider>
       </FormValidationContext.Provider>
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />

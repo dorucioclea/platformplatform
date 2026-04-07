@@ -171,7 +171,8 @@ export function DateRangePicker({
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
                   "w-full justify-between border border-input font-normal hover:bg-white dark:hover:bg-input/30",
-                  hasValue && !isReadOnly && !disabled && "pr-9"
+                  hasValue && !isReadOnly && !disabled && "pr-9",
+                  isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
                 disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {

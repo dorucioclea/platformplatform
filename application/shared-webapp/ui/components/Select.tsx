@@ -8,6 +8,7 @@ import { cn } from "../utils";
 import { FormValidationContext } from "./Form";
 
 const SelectNameContext = createContext<string | undefined>(undefined);
+const SelectReadOnlyContext = createContext<boolean>(false);
 
 function Select<Value, Multiple extends boolean | undefined = false>({
   name,
@@ -39,6 +40,7 @@ function SelectTrigger({
   size?: "sm" | "default";
 }) {
   const name = useContext(SelectNameContext);
+  const isReadOnly = useContext(SelectReadOnlyContext);
   const formErrors = useContext(FormValidationContext);
   const isInvalid = !!(name && formErrors && name in formErrors && formErrors[name]);
 
@@ -52,6 +54,7 @@ function SelectTrigger({
       // --control-height CSS variables for Apple HIG compliance, and active:bg-accent for press feedback.
       className={cn(
         "flex w-fit cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white py-2 pr-2 pl-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive data-[placeholder]:text-muted-foreground data-[size=default]:h-[var(--control-height)] data-[size=sm]:h-[var(--control-height-sm)] dark:bg-input/30 dark:hover:bg-input/50 dark:active:bg-input/60 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&>*]:data-[slot=select-value]:line-clamp-1 [&>*]:data-[slot=select-value]:flex [&>*]:data-[slot=select-value]:items-center [&>*]:data-[slot=select-value]:gap-1.5",
+        isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2",
         className
       )}
       {...props}
@@ -188,6 +191,7 @@ export {
   SelectGroup,
   SelectItem,
   SelectLabel,
+  SelectReadOnlyContext,
   SelectScrollDownButton,
   SelectScrollUpButton,
   SelectSeparator,

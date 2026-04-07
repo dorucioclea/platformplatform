@@ -48,7 +48,17 @@ export function RadioGroupField({
       {label && (
         <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
       )}
-      <RadioGroup name={name} disabled={disabled} readOnly={isReadOnly} {...props}>
+      <RadioGroup
+        name={name}
+        disabled={disabled}
+        readOnly={isReadOnly}
+        className={
+          isReadOnly
+            ? "[&_[data-slot=radio-group-item]]:focus:outline [&_[data-slot=radio-group-item]]:focus:outline-2 [&_[data-slot=radio-group-item]]:focus:outline-offset-2"
+            : undefined
+        }
+        {...props}
+      >
         {children}
       </RadioGroup>
       {description && <FieldDescription>{description}</FieldDescription>}

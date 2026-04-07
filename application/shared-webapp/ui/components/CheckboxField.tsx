@@ -49,6 +49,7 @@ export function CheckboxField({
           name={name}
           disabled={disabled}
           onCheckedChange={isReadOnly ? undefined : onCheckedChange}
+          className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
         {label && (

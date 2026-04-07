@@ -45,7 +45,13 @@ export function SwitchField({
   return (
     <Field inline className={cn("flex-col gap-1", alignWithLabel && "self-end", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
-        <Switch name={name} disabled={disabled} onCheckedChange={isReadOnly ? undefined : onCheckedChange} {...props} />
+        <Switch
+          name={name}
+          disabled={disabled}
+          onCheckedChange={isReadOnly ? undefined : onCheckedChange}
+          className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
+          {...props}
+        />
         {label && (
           <span className="text-sm leading-snug font-medium">
             {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
