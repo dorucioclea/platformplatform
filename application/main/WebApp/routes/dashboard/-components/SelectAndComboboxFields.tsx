@@ -2,14 +2,7 @@ import type { ReactNode } from "react";
 
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList
-} from "@repo/ui/components/Combobox";
+import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@repo/ui/components/Combobox";
 import { Field, FieldLabel } from "@repo/ui/components/Field";
 import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
@@ -51,6 +44,10 @@ export function SelectAndComboboxFields({
   ];
   const currentColor = hasValues ? localColor : selectedColor;
   const selectedChartIcon = chartSelectItems.find((i) => i.value === currentColor)?.icon;
+  const [comboboxSearch, setComboboxSearch] = useState("");
+  const filteredChartItems = comboboxSearch
+    ? chartItems.filter((item) => item.label.toLowerCase().includes(comboboxSearch.toLowerCase()))
+    : chartItems;
 
   return (
     <>
@@ -104,15 +101,18 @@ export function SelectAndComboboxFields({
         )}
         <Combobox
           disabled={disabled}
+          onInputValueChange={setComboboxSearch}
           itemToStringLabel={(value: string) => chartItems.find((i) => i.id === value)?.label ?? value}
         >
           <ComboboxInput placeholder={t`Search charts...`} disabled={disabled} />
           <ComboboxContent>
             <ComboboxList>
-              <ComboboxEmpty>
-                <Trans>No results found</Trans>
-              </ComboboxEmpty>
-              {chartItems.map((item) => (
+              {filteredChartItems.length === 0 && (
+                <div className="flex w-full justify-center py-2 text-center text-sm text-muted-foreground">
+                  <Trans>No results found</Trans>
+                </div>
+              )}
+              {filteredChartItems.map((item) => (
                 <ComboboxItem key={item.id} value={item.id}>
                   {item.icon}
                   {item.label}
