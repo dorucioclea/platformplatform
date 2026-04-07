@@ -174,6 +174,12 @@ export function DateRangePicker({
                   hasValue && "pr-9"
                 )}
                 disabled={disabled}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.key === "ArrowDown" && !open) {
+                    e.preventDefault();
+                    setOpen(true);
+                  }
+                }}
               >
                 <div className={cn("flex min-w-0 items-center gap-2", !hasValue && "text-muted-foreground")}>
                   <CalendarIcon className="shrink-0" />

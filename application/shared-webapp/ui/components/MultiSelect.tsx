@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { type ReactNode, useCallback, useContext, useRef } from "react";
+import { type ReactNode, useCallback, useContext, useRef, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
@@ -56,6 +56,7 @@ export function MultiSelect({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
+  const [open, setOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const focusTrigger = () => {
     if (!name) return;
@@ -108,7 +109,7 @@ export function MultiSelect({
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
-        <Popover open={isReadOnly ? false : undefined}>
+        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? undefined : setOpen}>
           <PopoverTrigger
             render={
               <button
@@ -117,6 +118,12 @@ export function MultiSelect({
                 aria-label={label ?? placeholder}
                 aria-invalid={isInvalid || undefined}
                 disabled={isDisabled}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.key === "ArrowDown" && !open) {
+                    e.preventDefault();
+                    setOpen(true);
+                  }
+                }}
                 className="flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive dark:bg-input/30 dark:active:bg-input/60"
               />
             }

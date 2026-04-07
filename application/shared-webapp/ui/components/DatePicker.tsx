@@ -114,6 +114,12 @@ export function DatePicker({
                 !value && "text-muted-foreground"
               )}
               disabled={isDisabled}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === "ArrowDown" && !open) {
+                  e.preventDefault();
+                  setOpen(true);
+                }
+              }}
             >
               <CalendarIcon className="shrink-0" />
               <span className="truncate">
