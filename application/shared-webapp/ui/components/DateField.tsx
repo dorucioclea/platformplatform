@@ -78,7 +78,8 @@ export function DateField({
         aria-invalid={isInvalid || undefined}
         className={cn(
           !hasValue && "text-muted-foreground",
-          isReadOnly && "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden",
+          isReadOnly &&
+            "pointer-events-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden",
           inputClassName
         )}
         {...props}

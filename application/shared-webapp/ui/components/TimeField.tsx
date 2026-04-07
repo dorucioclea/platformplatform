@@ -64,7 +64,7 @@ export function TimeField({
 
   const emptyClassName = !hasValue ? "text-muted-foreground" : undefined;
   const readOnlyClassName = isReadOnly
-    ? "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
+    ? "pointer-events-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
     : undefined;
 
   const inputProps = {
