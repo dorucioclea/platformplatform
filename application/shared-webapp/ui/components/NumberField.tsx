@@ -83,7 +83,7 @@ export function NumberField({
   };
 
   const parseInput = (str: string) => {
-    const normalized = decimalSeparator !== "." ? str.replace(decimalSeparator, ".") : str;
+    const normalized = str.replace(",", ".").replace(decimalSeparator, ".");
     return parseFloat(normalized);
   };
 
