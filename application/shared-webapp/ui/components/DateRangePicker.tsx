@@ -189,7 +189,15 @@ export function DateRangePicker({
               </Button>
             }
           />
-          <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+          <PopoverContent
+            className="w-auto overflow-hidden p-0"
+            align="start"
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === "Tab") {
+                setOpen(false);
+              }
+            }}
+          >
             <Calendar
               mode="range"
               selected={dateRange}
