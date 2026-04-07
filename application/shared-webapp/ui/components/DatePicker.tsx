@@ -123,7 +123,7 @@ export function DatePicker({
                 className={cn(
                   "w-full justify-start border border-input font-normal hover:bg-white dark:hover:bg-input/30",
                   !value && "text-muted-foreground",
-                  hasValue && "pr-9"
+                  hasValue && !isReadOnly && !isDisabled && "pr-9"
                 )}
                 disabled={isDisabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
