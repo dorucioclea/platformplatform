@@ -77,13 +77,13 @@ export function NumberField({
   const displayDecimals = decimalPlaces ?? stepDecimals;
   const roundToStep = (number: number) => parseFloat(number.toFixed(Math.max(stepDecimals, displayDecimals)));
 
-  const formatNumber = (num: number) => {
-    const str = displayDecimals > 0 ? num.toFixed(displayDecimals) : String(num);
-    return decimalSeparator !== "." ? str.replace(".", decimalSeparator) : str;
+  const formatNumber = (number: number) => {
+    const formatted = displayDecimals > 0 ? number.toFixed(displayDecimals) : String(number);
+    return decimalSeparator !== "." ? formatted.replace(".", decimalSeparator) : formatted;
   };
 
-  const parseInput = (str: string) => {
-    const normalized = str.replace(",", ".").replace(decimalSeparator, ".");
+  const parseInput = (text: string) => {
+    const normalized = text.replace(",", ".").replace(decimalSeparator, ".");
     return parseFloat(normalized);
   };
 
