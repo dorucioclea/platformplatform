@@ -114,9 +114,6 @@ msgstr "Dashboard"
 msgid "Date and time formatting"
 msgstr "Date and time formatting"
 
-msgid "Date field"
-msgstr "Date field"
-
 msgid "Date formatting"
 msgstr "Date formatting"
 
@@ -254,6 +251,12 @@ msgstr "More information"
 
 msgid "Multi select"
 msgstr "Multi select"
+
+msgid "Native date"
+msgstr "Native date"
+
+msgid "Native time"
+msgstr "Native time"
 
 msgid "Navigation"
 msgstr "Navigation"
@@ -404,9 +407,6 @@ msgstr "This is a sample dialog with a header, body, and footer."
 
 msgid "This is an informational message."
 msgstr "This is an informational message."
-
-msgid "Time field"
-msgstr "Time field"
 
 msgid "Toggle buttons"
 msgstr "Toggle buttons"

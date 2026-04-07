@@ -31,7 +31,7 @@ export function DateAndToggleFields({
   return (
     <>
       <DateField
-        label={label ? t`Date field` : undefined}
+        label={label ? t`Native date` : undefined}
         tooltip={tooltipText}
         name={`datefield-${suffix}`}
         defaultValue={hasValues ? "2025-06-15" : undefined}
@@ -61,7 +61,7 @@ export function DateAndToggleFields({
         errorMessage={errorMessage}
       />
       <TimeField
-        label={label ? t`Time field` : undefined}
+        label={label ? t`Native time` : undefined}
         tooltip={tooltipText}
         name={`time-${suffix}`}
         defaultValue={hasValues ? "14:30" : undefined}

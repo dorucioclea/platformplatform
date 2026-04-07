@@ -114,9 +114,6 @@ msgstr "Dashboard"
 msgid "Date and time formatting"
 msgstr "Dato- og tidsformatering"
 
-msgid "Date field"
-msgstr "Datofelt"
-
 msgid "Date formatting"
 msgstr "Datoformatering"
 
@@ -254,6 +251,12 @@ msgstr "Mere information"
 
 msgid "Multi select"
 msgstr "Flervalg"
+
+msgid "Native date"
+msgstr "Native dato"
+
+msgid "Native time"
+msgstr "Native tid"
 
 msgid "Navigation"
 msgstr "Navigation"
@@ -404,9 +407,6 @@ msgstr "Dette er en eksempeldialog med overskrift, brødtekst og bundtekst."
 
 msgid "This is an informational message."
 msgstr "Dette er en informationsmeddelelse."
-
-msgid "Time field"
-msgstr "Tidsfelt"
 
 msgid "Toggle buttons"
 msgstr "Skifteknapper"
