@@ -71,6 +71,8 @@ public class RunCommand : Command
             StopAspire();
         }
 
+        CheckForPortConflicts();
+
         StartAspireAppHost(watch, attach, publicUrl);
     }
 
@@ -126,6 +128,55 @@ public class RunCommand : Command
         return false;
     }
 
+    private static void CheckForPortConflicts()
+    {
+        // Check if any Aspire port is held by a process from a different project
+        var ports = new[] { AspirePort, DashboardPort, ResourceServicePort };
+        var conflictSource = ports
+            .SelectMany(GetListeningProcessCommandLines)
+            .Select(FindProjectRoot)
+            .FirstOrDefault(root => root is not null);
+
+        if (conflictSource is null) return;
+
+        AnsiConsole.MarkupLine($"[red]Aspire ports are in use by another project: {conflictSource}[/]");
+        AnsiConsole.MarkupLine("[red]Stop that instance first, then try again.[/]");
+        Environment.Exit(1);
+    }
+
+    private static string[] GetListeningProcessCommandLines(int port)
+    {
+        if (Configuration.IsWindows)
+        {
+            var output = ProcessHelper.StartProcess($"""powershell -Command "Get-NetTCPConnection -LocalPort {port} -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess" """, redirectOutput: true, exitOnError: false).Trim();
+            if (string.IsNullOrWhiteSpace(output)) return [];
+
+            var commandLine = ProcessHelper.StartProcess($"""powershell -Command "(Get-Process -Id {output} -ErrorAction SilentlyContinue).CommandLine" """, redirectOutput: true, exitOnError: false).Trim();
+            return string.IsNullOrWhiteSpace(commandLine) ? [] : [commandLine];
+        }
+
+        var processIds = ProcessHelper.StartProcess($"lsof -i :{port} -sTCP:LISTEN -t", redirectOutput: true, exitOnError: false).Trim();
+        if (string.IsNullOrWhiteSpace(processIds)) return [];
+
+        return processIds
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(id => ProcessHelper.StartProcess($"ps -p {id} -o args=", redirectOutput: true, exitOnError: false).Trim())
+            .Where(args => !string.IsNullOrWhiteSpace(args))
+            .ToArray();
+    }
+
+    private static string? FindProjectRoot(string commandLine)
+    {
+        // Command lines contain paths like .../SomeProject/application/AppHost/...
+        var separator = commandLine.Contains('\\') ? "\\" : "/";
+        var marker = $"{separator}application{separator}";
+        var index = commandLine.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+        if (index == -1) return null;
+
+        var pathStart = commandLine.LastIndexOf(' ', index) + 1;
+        return commandLine[pathStart..index];
+    }
+
     private static void StopAspire()
     {
         AnsiConsole.MarkupLine("[blue]Stopping Aspire AppHost and all related services...[/]");
@@ -171,21 +222,11 @@ public class RunCommand : Command
         }
         else
         {
-            // Kill all processes on ports 9000-9999 that belong to our application
-            var pidsOutput = ProcessHelper.StartProcess("lsof -i :9000-9999 -sTCP:LISTEN -t", redirectOutput: true, exitOnError: false);
-            if (!string.IsNullOrWhiteSpace(pidsOutput))
+            // Find AppHost processes for this project, then kill each one and all its children
+            // (children include Aspire infrastructure: dcp, dcpproc, Aspire.Dashboard, etc.)
+            foreach (var processId in FindAppHostProcesses())
             {
-                foreach (var pid in pidsOutput.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-                {
-                    // Use full command line (args) since comm= truncates names on Linux
-                    var commandLine = ProcessHelper.StartProcess($"ps -p {pid} -o args=", redirectOutput: true, exitOnError: false).Trim();
-                    if (string.IsNullOrWhiteSpace(commandLine)) continue;
-
-                    if (commandLine.Contains(Configuration.SourceCodeFolder, StringComparison.OrdinalIgnoreCase))
-                    {
-                        ProcessHelper.StartProcess($"kill -9 {pid}", redirectOutput: true, exitOnError: false);
-                    }
-                }
+                KillProcessTree(processId);
             }
         }
 
@@ -193,6 +234,36 @@ public class RunCommand : Command
         Thread.Sleep(TimeSpan.FromSeconds(2));
 
         AnsiConsole.MarkupLine("[green]Aspire AppHost stopped successfully.[/]");
+    }
+
+    private static string[] FindAppHostProcesses()
+    {
+        var output = ProcessHelper.StartProcess("pgrep -f dotnet.*AppHost", redirectOutput: true, exitOnError: false);
+        if (string.IsNullOrWhiteSpace(output)) return [];
+
+        return output
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(processId =>
+                {
+                    var commandLine = ProcessHelper.StartProcess($"ps -p {processId} -o args=", redirectOutput: true, exitOnError: false).Trim();
+                    return commandLine.Contains(Configuration.SourceCodeFolder, StringComparison.OrdinalIgnoreCase);
+                }
+            )
+            .ToArray();
+    }
+
+    private static void KillProcessTree(string processId)
+    {
+        var children = ProcessHelper.StartProcess($"pgrep -P {processId}", redirectOutput: true, exitOnError: false);
+        if (!string.IsNullOrWhiteSpace(children))
+        {
+            foreach (var childId in children.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                KillProcessTree(childId);
+            }
+        }
+
+        ProcessHelper.StartProcess($"kill -9 {processId}", redirectOutput: true, exitOnError: false);
     }
 
     private static void StartAspireAppHost(bool watch, bool attach, string? publicUrl)
