@@ -99,6 +99,9 @@ msgstr "Kombinationsboks"
 msgid "Combobox (creatable)"
 msgstr "Kombinationsboks (oprettelig)"
 
+msgid "Combobox (free text)"
+msgstr "Kombinationsboks (fritekst)"
+
 msgid "Create"
 msgstr "Opret"
 

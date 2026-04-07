@@ -99,6 +99,9 @@ msgstr "Combobox"
 msgid "Combobox (creatable)"
 msgstr "Combobox (creatable)"
 
+msgid "Combobox (free text)"
+msgstr "Combobox (free text)"
+
 msgid "Create"
 msgstr "Create"
 

@@ -14,6 +14,23 @@ interface ComboboxFieldsProps extends ControlRowDerivedProps {
   chartItems: { id: string; label: string; icon?: ReactNode }[];
 }
 
+function ComboboxLabel({
+  label,
+  tooltipText,
+  children
+}: {
+  label?: boolean;
+  tooltipText?: string;
+  children: ReactNode;
+}) {
+  if (!label) return null;
+  return (
+    <FieldLabel>
+      {tooltipText ? <LabelWithTooltip tooltip={tooltipText}>{children}</LabelWithTooltip> : children}
+    </FieldLabel>
+  );
+}
+
 export function ComboboxFields({
   label,
   tooltipText,
@@ -23,14 +40,25 @@ export function ComboboxFields({
   errorMessage,
   chartItems
 }: ComboboxFieldsProps) {
+  const errors = errorMessage ? [{ message: errorMessage }] : undefined;
+  const sharedProps = { disabled, readOnly, errorMessage, label, tooltipText };
+
+  // Select-only combobox
   const [comboboxValue, setComboboxValue] = useState<string | null>(hasValues ? "pie" : null);
   const [comboboxSearch, setComboboxSearch] = useState("");
   const filteredChartItems = comboboxSearch
     ? chartItems.filter((item) => item.label.toLowerCase().includes(comboboxSearch.toLowerCase()))
     : chartItems;
   const selectedComboboxIcon = chartItems.find((i) => i.id === comboboxValue)?.icon;
-  const errors = errorMessage ? [{ message: errorMessage }] : undefined;
 
+  // Free-text combobox
+  const [freeTextValue, setFreeTextValue] = useState(hasValues ? "pie" : "");
+  const [freeTextSearch, setFreeTextSearch] = useState("");
+  const filteredFreeText = freeTextSearch
+    ? chartItems.filter((item) => item.label.toLowerCase().includes(freeTextSearch.toLowerCase()))
+    : chartItems;
+
+  // Creatable combobox (with Create button)
   const [creatableValue, setCreatableValue] = useState<string | null>(hasValues ? "pie" : null);
   const [creatableSearch, setCreatableSearch] = useState("");
   const [customItems, setCustomItems] = useState<{ id: string; label: string; icon?: ReactNode }[]>([]);
@@ -39,29 +67,13 @@ export function ComboboxFields({
     ? allCreatableItems.filter((item) => item.label.toLowerCase().includes(creatableSearch.toLowerCase()))
     : allCreatableItems;
   const hasExactMatch = allCreatableItems.some((item) => item.label.toLowerCase() === creatableSearch.toLowerCase());
-  const createItemFromSearch = (search: string) => {
-    if (!search || hasExactMatch) return;
-    const newId = search.toLowerCase().replace(/\s+/g, "-");
-    if (!allCreatableItems.some((i) => i.id === newId)) {
-      setCustomItems((prev) => [...prev, { id: newId, label: search }]);
-    }
-    setCreatableValue(newId);
-  };
 
   return (
     <>
       <Field className="flex flex-col">
-        {label && (
-          <FieldLabel>
-            {tooltipText ? (
-              <LabelWithTooltip tooltip={tooltipText}>
-                <Trans>Combobox</Trans>
-              </LabelWithTooltip>
-            ) : (
-              <Trans>Combobox</Trans>
-            )}
-          </FieldLabel>
-        )}
+        <ComboboxLabel {...sharedProps}>
+          <Trans>Combobox</Trans>
+        </ComboboxLabel>
         <Combobox
           disabled={disabled}
           open={readOnly ? false : undefined}
@@ -96,17 +108,40 @@ export function ComboboxFields({
         <FieldError errors={errors} />
       </Field>
       <Field className="flex flex-col">
-        {label && (
-          <FieldLabel>
-            {tooltipText ? (
-              <LabelWithTooltip tooltip={tooltipText}>
-                <Trans>Combobox (creatable)</Trans>
-              </LabelWithTooltip>
-            ) : (
-              <Trans>Combobox (creatable)</Trans>
-            )}
-          </FieldLabel>
-        )}
+        <ComboboxLabel {...sharedProps}>
+          <Trans>Combobox (free text)</Trans>
+        </ComboboxLabel>
+        <Combobox
+          disabled={disabled}
+          open={readOnly ? false : undefined}
+          value={freeTextValue}
+          onValueChange={(value: string | null) => setFreeTextValue(value ?? "")}
+          onInputValueChange={setFreeTextSearch}
+          itemToStringLabel={(value: string) => chartItems.find((i) => i.id === value)?.label ?? value}
+        >
+          <ComboboxInput
+            placeholder={t`Type or search...`}
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-invalid={!!errorMessage || undefined}
+          />
+          <ComboboxContent>
+            <ComboboxList>
+              {filteredFreeText.map((item) => (
+                <ComboboxItem key={item.id} value={item.id}>
+                  {item.icon}
+                  {item.label}
+                </ComboboxItem>
+              ))}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
+        <FieldError errors={errors} />
+      </Field>
+      <Field className="flex flex-col">
+        <ComboboxLabel {...sharedProps}>
+          <Trans>Combobox (creatable)</Trans>
+        </ComboboxLabel>
         <Combobox
           disabled={disabled}
           open={readOnly ? false : undefined}
@@ -120,7 +155,6 @@ export function ComboboxFields({
             disabled={disabled}
             readOnly={readOnly}
             aria-invalid={!!errorMessage || undefined}
-            onBlur={() => createItemFromSearch(creatableSearch)}
           />
           <ComboboxContent>
             <ComboboxList>
@@ -133,7 +167,13 @@ export function ComboboxFields({
               {creatableSearch && !hasExactMatch && (
                 <ComboboxItem
                   value={creatableSearch}
-                  onClick={() => createItemFromSearch(creatableSearch)}
+                  onClick={() => {
+                    const newId = creatableSearch.toLowerCase().replace(/\s+/g, "-");
+                    if (!allCreatableItems.some((i) => i.id === newId)) {
+                      setCustomItems((prev) => [...prev, { id: newId, label: creatableSearch }]);
+                    }
+                    setCreatableValue(newId);
+                  }}
                   className="font-medium text-primary"
                 >
                   <PlusIcon />
