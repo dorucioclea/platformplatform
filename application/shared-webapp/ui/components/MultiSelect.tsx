@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
-import { type ReactNode, useCallback, useContext, useRef, useState } from "react";
+import { type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
@@ -108,13 +108,16 @@ export function MultiSelect({
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    if (isOpen) {
-      requestAnimationFrame(() => {
-        const firstOption = listRef.current?.querySelector("[role=option]") as HTMLElement | null;
-        firstOption?.focus();
-      });
-    }
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => {
+      const firstOption = listRef.current?.querySelector("[role=option]") as HTMLElement | null;
+      firstOption?.focus();
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [open]);
 
   return (
     <Field className={cn("flex flex-col", className)}>
