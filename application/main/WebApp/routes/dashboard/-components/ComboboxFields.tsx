@@ -37,11 +37,13 @@ export function ComboboxFields({
     ? allCreatableItems.filter((item) => item.label.toLowerCase().includes(creatableSearch.toLowerCase()))
     : allCreatableItems;
   const hasExactMatch = allCreatableItems.some((item) => item.label.toLowerCase() === creatableSearch.toLowerCase());
-  const handleCreateItem = () => {
-    const newId = creatableSearch.toLowerCase().replace(/\s+/g, "-");
-    setCustomItems((prev) => [...prev, { id: newId, label: creatableSearch }]);
+  const createItemFromSearch = (search: string) => {
+    if (!search || hasExactMatch) return;
+    const newId = search.toLowerCase().replace(/\s+/g, "-");
+    if (!allCreatableItems.some((i) => i.id === newId)) {
+      setCustomItems((prev) => [...prev, { id: newId, label: search }]);
+    }
     setCreatableValue(newId);
-    setCreatableSearch("");
   };
 
   return (
@@ -104,6 +106,7 @@ export function ComboboxFields({
             disabled={disabled}
             readOnly={readOnly}
             aria-invalid={!!errorMessage || undefined}
+            onBlur={() => createItemFromSearch(creatableSearch)}
           />
           <ComboboxContent>
             <ComboboxList>
@@ -114,7 +117,11 @@ export function ComboboxFields({
                 </ComboboxItem>
               ))}
               {creatableSearch && !hasExactMatch && (
-                <ComboboxItem value={creatableSearch} onClick={handleCreateItem}>
+                <ComboboxItem
+                  value={creatableSearch}
+                  onClick={() => createItemFromSearch(creatableSearch)}
+                  className="font-medium text-primary"
+                >
                   <PlusIcon />
                   <Trans>Create "{creatableSearch}"</Trans>
                 </ComboboxItem>
