@@ -122,11 +122,11 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       >
-        <label className="flex cursor-pointer items-center gap-2">
+        <label className="flex items-center gap-2">
           <RadioGroupItem value="option-a" />
           <Trans>Option A</Trans>
         </label>
-        <label className="flex cursor-pointer items-center gap-2">
+        <label className="flex items-center gap-2">
           <RadioGroupItem value="option-b" />
           <Trans>Option B</Trans>
         </label>
