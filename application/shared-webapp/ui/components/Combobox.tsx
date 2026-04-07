@@ -59,18 +59,22 @@ function ComboboxInput({
     <InputGroup data-disabled={disabled || undefined} className={cn("w-auto", className)}>
       {startIcon && <InputGroupAddon>{startIcon}</InputGroupAddon>}
       <ComboboxPrimitive.Input render={<InputGroupInput disabled={disabled} readOnly={readOnly} />} {...props} />
-      {!readOnly && (
-        <InputGroupAddon align="inline-end">
-          {showTrigger && (
-            <ComboboxTrigger
-              render={<InputGroupButton size="icon-xs" variant="ghost" />}
-              className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
-              disabled={disabled}
-            />
-          )}
-          {showClear && <ComboboxClear disabled={disabled} />}
-        </InputGroupAddon>
-      )}
+      <InputGroupAddon align="inline-end">
+        {readOnly ? (
+          <ChevronDownIcon className="size-4 text-muted-foreground" />
+        ) : (
+          <>
+            {showTrigger && (
+              <ComboboxTrigger
+                render={<InputGroupButton size="icon-xs" variant="ghost" />}
+                className="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
+                disabled={disabled}
+              />
+            )}
+            {showClear && <ComboboxClear disabled={disabled} />}
+          </>
+        )}
+      </InputGroupAddon>
       {children}
     </InputGroup>
   );

@@ -96,8 +96,14 @@ msgstr "Checkbox (on)"
 msgid "Combobox"
 msgstr "Combobox"
 
+msgid "Combobox (creatable)"
+msgstr "Combobox (creatable)"
+
 msgid "Create"
 msgstr "Create"
+
+msgid "Create \"{creatableSearch}\""
+msgstr "Create \"{creatableSearch}\""
 
 msgid "Create item"
 msgstr "Create item"
@@ -410,6 +416,9 @@ msgstr "Toggle sidebar"
 
 msgid "Try adjusting your search or filter to find what you are looking for."
 msgstr "Try adjusting your search or filter to find what you are looking for."
+
+msgid "Type or search..."
+msgstr "Type or search..."
 
 msgid "Underline"
 msgstr "Underline"

@@ -2,8 +2,6 @@ import type { ReactNode } from "react";
 
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@repo/ui/components/Combobox";
-import { Field, FieldLabel } from "@repo/ui/components/Field";
 import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
 import { SelectField } from "@repo/ui/components/SelectField";
@@ -11,6 +9,8 @@ import { AreaChartIcon, BarChart3Icon, LineChartIcon, PieChartIcon, RadarIcon, S
 import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
+
+import { ComboboxFields } from "./ComboboxFields";
 
 interface SelectAndComboboxFieldsProps extends ControlRowDerivedProps {
   selectedColor: string;
@@ -44,12 +44,6 @@ export function SelectAndComboboxFields({
   ];
   const currentColor = hasValues ? localColor : selectedColor;
   const selectedChartIcon = chartSelectItems.find((i) => i.value === currentColor)?.icon;
-  const [comboboxValue, setComboboxValue] = useState<string | null>(hasValues ? "pie" : null);
-  const [comboboxSearch, setComboboxSearch] = useState("");
-  const filteredChartItems = comboboxSearch
-    ? chartItems.filter((item) => item.label.toLowerCase().includes(comboboxSearch.toLowerCase()))
-    : chartItems;
-  const selectedComboboxIcon = chartItems.find((i) => i.id === comboboxValue)?.icon;
 
   return (
     <>
@@ -95,43 +89,16 @@ export function SelectAndComboboxFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <Field className="flex flex-col">
-        {label && (
-          <FieldLabel>
-            <Trans>Combobox</Trans>
-          </FieldLabel>
-        )}
-        <Combobox
-          disabled={disabled}
-          open={readOnly ? false : undefined}
-          value={comboboxValue}
-          onValueChange={setComboboxValue}
-          onInputValueChange={setComboboxSearch}
-          itemToStringLabel={(value: string) => chartItems.find((i) => i.id === value)?.label ?? value}
-        >
-          <ComboboxInput
-            placeholder={t`Search charts...`}
-            disabled={disabled}
-            readOnly={readOnly}
-            startIcon={selectedComboboxIcon}
-          />
-          <ComboboxContent>
-            <ComboboxList>
-              {filteredChartItems.length === 0 && (
-                <div className="flex w-full justify-center py-2 text-center text-sm text-muted-foreground">
-                  <Trans>No results found</Trans>
-                </div>
-              )}
-              {filteredChartItems.map((item) => (
-                <ComboboxItem key={item.id} value={item.id}>
-                  {item.icon}
-                  {item.label}
-                </ComboboxItem>
-              ))}
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox>
-      </Field>
+      <ComboboxFields
+        suffix={suffix}
+        label={label}
+        tooltipText={tooltipText}
+        disabled={disabled}
+        readOnly={readOnly}
+        hasValues={hasValues}
+        errorMessage={errorMessage}
+        chartItems={chartItems}
+      />
     </>
   );
 }

@@ -96,8 +96,14 @@ msgstr "Afkrydsningsfelt (til)"
 msgid "Combobox"
 msgstr "Kombinationsboks"
 
+msgid "Combobox (creatable)"
+msgstr "Kombinationsboks (oprettelig)"
+
 msgid "Create"
 msgstr "Opret"
+
+msgid "Create \"{creatableSearch}\""
+msgstr "Opret \"{creatableSearch}\""
 
 msgid "Create item"
 msgstr "Opret element"
@@ -410,6 +416,9 @@ msgstr "Skift sidepanel"
 
 msgid "Try adjusting your search or filter to find what you are looking for."
 msgstr "Prøv at justere din søgning eller dit filter for at finde det du leder efter."
+
+msgid "Type or search..."
+msgstr "Skriv eller søg..."
 
 msgid "Underline"
 msgstr "Understregning"
