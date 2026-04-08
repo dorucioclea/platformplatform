@@ -11,6 +11,7 @@ import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TimeField } from "@repo/ui/components/TimeField";
+import { TimeZonePicker } from "@repo/ui/components/TimeZonePicker";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
 import { useState } from "react";
@@ -35,6 +36,8 @@ export function DateAndToggleFields({
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
     hasValues ? { start: new Date(2025, 5, 1), end: new Date(2025, 5, 15) } : null
   );
+  const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [timeZone, setTimeZone] = useState<string | null>(hasValues ? browserTimeZone : null);
 
   return (
     <>
@@ -73,6 +76,16 @@ export function DateAndToggleFields({
         tooltip={tooltip ? tooltips.timeField : undefined}
         name={`time-${suffix}`}
         defaultValue={hasValues ? "14:30" : undefined}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      />
+      <TimeZonePicker
+        label={label ? t`Time zone` : undefined}
+        tooltip={tooltip ? tooltips.timeZonePicker : undefined}
+        name={`timezone-${suffix}`}
+        value={timeZone}
+        onValueChange={setTimeZone}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}

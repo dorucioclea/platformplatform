@@ -600,6 +600,9 @@ msgstr "Dette er en informationsmeddelelse."
 msgid "This is where your personalized dashboard content will appear. Stay tuned for updates."
 msgstr "Her vil dit personlige dashboard-indhold blive vist. Hold dig opdateret."
 
+msgid "Time zone"
+msgstr "Tidszone"
+
 msgid "Toggle bold"
 msgstr "Skift fed"
 

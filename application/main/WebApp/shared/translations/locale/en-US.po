@@ -600,6 +600,9 @@ msgstr "This is an informational message."
 msgid "This is where your personalized dashboard content will appear. Stay tuned for updates."
 msgstr "This is where your personalized dashboard content will appear. Stay tuned for updates."
 
+msgid "Time zone"
+msgstr "Time zone"
+
 msgid "Toggle bold"
 msgstr "Toggle bold"
 

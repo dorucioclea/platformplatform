@@ -113,6 +113,12 @@ export const tooltips = {
       <PropNote>Uses the browser's built-in time picker.</PropNote>
     </PropList>
   ),
+  timeZonePicker: (
+    <PropList title="TimeZonePicker" description="Searchable time zone selector">
+      <Prop name="value / onValueChange">IANA time zone identifier</Prop>
+      <PropNote>Groups by continent. Uses browser Intl API for offset display.</PropNote>
+    </PropList>
+  ),
   switchField: (
     <PropList title="SwitchField" description="Toggle for on/off settings">
       <Prop name="checked / onCheckedChange">Controlled toggle state</Prop>
