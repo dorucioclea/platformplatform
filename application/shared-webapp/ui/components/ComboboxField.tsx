@@ -2,7 +2,7 @@ import type { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import type * as React from "react";
 
 import { PlusIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
@@ -78,6 +78,9 @@ export function ComboboxField({
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const suppressOpenRef = useRef(false);
   const [search, setSearch] = useState("");
   const filtered = filterItems(items, search);
   const selectedIcon = items.find((item) => item.id === value)?.icon;
@@ -85,10 +88,20 @@ export function ComboboxField({
   const hasExactMatch = items.some((item) => item.label.toLowerCase() === search.toLowerCase());
 
   const focusTrigger = () => {
-    if (name) {
-      const focusOptions = { preventScroll: true, focusVisible: true };
-      document.getElementById(name)?.focus(focusOptions);
-    }
+    const input = name
+      ? (document.getElementById(name) as HTMLElement | null)
+      : (fieldRef.current?.querySelector("input") as HTMLElement | null);
+    if (!input) return;
+    suppressOpenRef.current = true;
+    input.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      suppressOpenRef.current = false;
+    });
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (suppressOpenRef.current && nextOpen) return;
+    setOpen(nextOpen);
   };
 
   const handleInputValueChange = (text: string) => {
@@ -109,19 +122,20 @@ export function ComboboxField({
   };
 
   return (
-    <Field className={cn("flex flex-col", className)}>
+    <Field ref={fieldRef} className={cn("flex flex-col", className)}>
       {label && (
-        <label
+        <span
           data-slot="field-label"
-          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </label>
+        </span>
       )}
       <Combobox
         disabled={isDisabled}
-        open={isReadOnly ? false : undefined}
+        open={isReadOnly ? false : open}
+        onOpenChange={handleOpenChange}
         value={value ?? null}
         onValueChange={(v) => {
           clearNow();
