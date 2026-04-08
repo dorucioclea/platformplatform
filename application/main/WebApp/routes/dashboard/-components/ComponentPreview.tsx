@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@repo/ui/components/Button";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
+import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import {
   CalendarIcon,
   MousePointerClickIcon,
@@ -29,7 +29,7 @@ export function ComponentPreview() {
   const [showLabels, setShowLabels] = useState(true);
   const [showTooltips, setShowTooltips] = useState(true);
   const [showIcons, setShowIcons] = useState(true);
-  const [controlState, setControlState] = useState<"none" | "disabled" | "readonly">("none");
+  const [controlState, setControlState] = useState<"enabled" | "disabled" | "readonly">("enabled");
   const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
@@ -84,29 +84,25 @@ export function ComponentPreview() {
             disabled={!showLabels}
           />
           <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
-          <div className="flex items-center" data-slot="button-group">
-            <Button
-              size="xs"
-              variant={controlState === "none" ? "default" : "outline"}
-              onClick={() => setControlState("none")}
-            >
-              <Trans>Interactive</Trans>
-            </Button>
-            <Button
-              size="xs"
-              variant={controlState === "disabled" ? "default" : "outline"}
-              onClick={() => setControlState("disabled")}
-            >
+          <ToggleGroup
+            variant="outline"
+            value={[controlState]}
+            onValueChange={(values) => {
+              if (values.length > 0) {
+                setControlState(values[0] as "enabled" | "disabled" | "readonly");
+              }
+            }}
+          >
+            <ToggleGroupItem value="enabled">
+              <Trans>Enabled</Trans>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="disabled">
               <Trans>Disabled</Trans>
-            </Button>
-            <Button
-              size="xs"
-              variant={controlState === "readonly" ? "default" : "outline"}
-              onClick={() => setControlState("readonly")}
-            >
+            </ToggleGroupItem>
+            <ToggleGroupItem value="readonly">
               <Trans>Read only</Trans>
-            </Button>
-          </div>
+            </ToggleGroupItem>
+          </ToggleGroup>
           <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
         </div>
         <ControlRow

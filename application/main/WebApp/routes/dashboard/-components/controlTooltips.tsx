@@ -131,5 +131,12 @@ export const tooltips = {
       <Prop name="isReadOnly">Visible but not changeable</Prop>
       <PropNote>Use for 2-5 mutually exclusive options. For more, use Select.</PropNote>
     </PropList>
+  ),
+  toggleGroup: (
+    <PropList title="ToggleGroup" description="Segmented button group for exclusive or multi-select options">
+      <Prop name="variant">Visual style: default or outline</Prop>
+      <Prop name="value">Controlled pressed state as array of values</Prop>
+      <PropNote>Use for toggling between a small set of options like view modes or text formatting.</PropNote>
+    </PropList>
   )
 };

@@ -4,11 +4,15 @@ import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
+import { Field, FieldLabel } from "@repo/ui/components/Field";
 import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
+import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
 import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TimeField } from "@repo/ui/components/TimeField";
+import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
+import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
 import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
@@ -26,6 +30,7 @@ export function DateAndToggleFields({
 }: ControlRowDerivedProps) {
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [toggleValues, setToggleValues] = useState<string[]>(hasValues ? ["bold"] : []);
   const [datePickerValue, setDatePickerValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
     hasValues ? { start: new Date(2025, 5, 1), end: new Date(2025, 5, 15) } : null
@@ -132,6 +137,30 @@ export function DateAndToggleFields({
           <Trans>Option B</Trans>
         </label>
       </RadioGroupField>
+      <Field>
+        {label && (
+          <FieldLabel>
+            {tooltip ? (
+              <LabelWithTooltip tooltip={tooltips.toggleGroup}>
+                <Trans>Toggle group</Trans>
+              </LabelWithTooltip>
+            ) : (
+              <Trans>Toggle group</Trans>
+            )}
+          </FieldLabel>
+        )}
+        <ToggleGroup variant="outline" value={toggleValues} onValueChange={setToggleValues} disabled={disabled}>
+          <ToggleGroupItem value="bold" aria-label={t`Toggle bold`}>
+            <BoldIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="italic" aria-label={t`Toggle italic`}>
+            <ItalicIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="underline" aria-label={t`Toggle underline`}>
+            <UnderlineIcon />
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </Field>
     </>
   );
 }

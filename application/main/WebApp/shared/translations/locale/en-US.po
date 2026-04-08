@@ -240,6 +240,9 @@ msgstr "Empty and skeleton"
 msgid "Empty states"
 msgstr "Empty states"
 
+msgid "Enabled"
+msgstr "Enabled"
+
 msgid "Errors"
 msgstr "Errors"
 
@@ -299,9 +302,6 @@ msgstr "Icons"
 
 msgid "Info alert"
 msgstr "Info alert"
-
-msgid "Interactive"
-msgstr "Interactive"
 
 msgid "Invitation sent"
 msgstr "Invitation sent"
@@ -591,11 +591,23 @@ msgstr "This is a default informational alert."
 msgid "This is an informational message."
 msgstr "This is an informational message."
 
+msgid "Toggle bold"
+msgstr "Toggle bold"
+
 msgid "Toggle buttons"
 msgstr "Toggle buttons"
 
+msgid "Toggle group"
+msgstr "Toggle group"
+
+msgid "Toggle italic"
+msgstr "Toggle italic"
+
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
+
+msgid "Toggle underline"
+msgstr "Toggle underline"
 
 msgid "Tooltips"
 msgstr "Tooltips"

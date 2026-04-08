@@ -240,6 +240,9 @@ msgstr "Tom tilstand og skelet"
 msgid "Empty states"
 msgstr "Tomme tilstande"
 
+msgid "Enabled"
+msgstr "Aktiveret"
+
 msgid "Errors"
 msgstr ""
 
@@ -299,9 +302,6 @@ msgstr ""
 
 msgid "Info alert"
 msgstr "Informationsadvarsel"
-
-msgid "Interactive"
-msgstr ""
 
 msgid "Invitation sent"
 msgstr ""
@@ -591,11 +591,23 @@ msgstr "Dette er en standard informationsadvarsel."
 msgid "This is an informational message."
 msgstr "Dette er en informationsmeddelelse."
 
+msgid "Toggle bold"
+msgstr "Skift fed"
+
 msgid "Toggle buttons"
 msgstr "Skifteknapper"
 
+msgid "Toggle group"
+msgstr "Skiftegruppe"
+
+msgid "Toggle italic"
+msgstr "Skift kursiv"
+
 msgid "Toggle sidebar"
 msgstr "Skift sidepanel"
+
+msgid "Toggle underline"
+msgstr "Skift understregning"
 
 msgid "Tooltips"
 msgstr ""
