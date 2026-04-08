@@ -1,10 +1,10 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { cn } from "@repo/ui/utils";
 import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
+import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
 import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
@@ -72,9 +72,9 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <div className={cn("flex flex-wrap gap-x-6 gap-y-2 self-start", label && "mt-[1.953rem]")}>
+      <InlineFieldGroup alignWithLabel={label}>
         <SwitchField
-          label={label ? (hasValues ? t`Switch (on)` : t`Switch`) : undefined}
+          label={hasValues ? t`Switch (on)` : t`Switch`}
           tooltip={tooltip ? tooltips.switchField : undefined}
           name={`switch-${suffix}`}
           checked={hasValues ? true : switchChecked}
@@ -85,17 +85,17 @@ export function DateAndToggleFields({
         />
         {hasValues && (
           <SwitchField
-            label={label ? t`Switch (off)` : undefined}
+            label={t`Switch (off)`}
             name={`switch-off-${suffix}`}
             checked={false}
             disabled={disabled}
             isReadOnly={readOnly}
           />
         )}
-      </div>
-      <div className={cn("flex flex-wrap gap-x-6 gap-y-2 self-start", label && "mt-[1.953rem]")}>
+      </InlineFieldGroup>
+      <InlineFieldGroup alignWithLabel={label}>
         <CheckboxField
-          label={label ? (hasValues ? t`Checkbox (on)` : t`Checkbox`) : undefined}
+          label={hasValues ? t`Checkbox (on)` : t`Checkbox`}
           tooltip={tooltip ? tooltips.checkboxField : undefined}
           name={`checkbox-${suffix}`}
           checked={hasValues ? true : checkboxChecked}
@@ -106,14 +106,14 @@ export function DateAndToggleFields({
         />
         {hasValues && (
           <CheckboxField
-            label={label ? t`Checkbox (off)` : undefined}
+            label={t`Checkbox (off)`}
             name={`checkbox-off-${suffix}`}
             checked={false}
             disabled={disabled}
             isReadOnly={readOnly}
           />
         )}
-      </div>
+      </InlineFieldGroup>
       <RadioGroupField
         label={label ? t`Radio group` : undefined}
         tooltip={tooltip ? tooltips.radioGroup : undefined}
