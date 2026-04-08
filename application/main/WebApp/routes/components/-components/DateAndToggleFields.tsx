@@ -79,7 +79,7 @@ export function DateAndToggleFields({
       />
       <InlineFieldGroup alignWithLabel={label}>
         <SwitchField
-          label={hasValues ? t`Switch (on)` : t`Switch`}
+          label={t`Switch`}
           tooltip={tooltip ? tooltips.switchField : undefined}
           name={`switch-${suffix}`}
           checked={hasValues ? true : switchChecked}
@@ -88,19 +88,13 @@ export function DateAndToggleFields({
           isReadOnly={readOnly}
           errorMessage={errorMessage}
         />
-        {hasValues && (
-          <SwitchField
-            label={t`Switch (off)`}
-            name={`switch-off-${suffix}`}
-            checked={false}
-            disabled={disabled}
-            isReadOnly={readOnly}
-          />
+        {hasValues && !disabled && !readOnly && (
+          <SwitchField label={t`Switch (off)`} name={`switch-off-${suffix}`} checked={false} />
         )}
       </InlineFieldGroup>
       <InlineFieldGroup alignWithLabel={label}>
         <CheckboxField
-          label={hasValues ? t`Checkbox (on)` : t`Checkbox`}
+          label={t`Checkbox`}
           tooltip={tooltip ? tooltips.checkboxField : undefined}
           name={`checkbox-${suffix}`}
           checked={hasValues ? true : checkboxChecked}
@@ -109,14 +103,8 @@ export function DateAndToggleFields({
           isReadOnly={readOnly}
           errorMessage={errorMessage}
         />
-        {hasValues && (
-          <CheckboxField
-            label={t`Checkbox (off)`}
-            name={`checkbox-off-${suffix}`}
-            checked={false}
-            disabled={disabled}
-            isReadOnly={readOnly}
-          />
+        {hasValues && !disabled && !readOnly && (
+          <CheckboxField label={t`Checkbox (off)`} name={`checkbox-off-${suffix}`} checked={false} />
         )}
       </InlineFieldGroup>
       <RadioGroupField

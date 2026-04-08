@@ -90,11 +90,11 @@ export function ComponentPreview() {
             <ToggleGroupItem value="enabled">
               <Trans>Enabled</Trans>
             </ToggleGroupItem>
-            <ToggleGroupItem value="disabled">
-              <Trans>Disabled</Trans>
-            </ToggleGroupItem>
             <ToggleGroupItem value="readonly">
               <Trans>Read only</Trans>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="disabled">
+              <Trans>Disabled</Trans>
             </ToggleGroupItem>
           </ToggleGroup>
           <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />

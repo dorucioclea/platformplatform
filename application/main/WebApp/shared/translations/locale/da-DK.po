@@ -138,9 +138,6 @@ msgstr "Afkrydsningsfelt"
 msgid "Checkbox (off)"
 msgstr "Afkrydsningsfelt (fra)"
 
-msgid "Checkbox (on)"
-msgstr "Afkrydsningsfelt (til)"
-
 msgid "Close"
 msgstr ""
 
@@ -566,9 +563,6 @@ msgstr "Kontakt"
 
 msgid "Switch (off)"
 msgstr "Kontakt (fra)"
-
-msgid "Switch (on)"
-msgstr "Kontakt (til)"
 
 msgid "Team members"
 msgstr "Teammedlemmer"

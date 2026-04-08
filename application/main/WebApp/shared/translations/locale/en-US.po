@@ -138,9 +138,6 @@ msgstr "Checkbox"
 msgid "Checkbox (off)"
 msgstr "Checkbox (off)"
 
-msgid "Checkbox (on)"
-msgstr "Checkbox (on)"
-
 msgid "Close"
 msgstr "Close"
 
@@ -566,9 +563,6 @@ msgstr "Switch"
 
 msgid "Switch (off)"
 msgstr "Switch (off)"
-
-msgid "Switch (on)"
-msgstr "Switch (on)"
 
 msgid "Team members"
 msgstr "Team members"
