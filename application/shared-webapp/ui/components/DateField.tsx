@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -43,8 +44,9 @@ export function DateField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
@@ -53,6 +55,7 @@ export function DateField({
   const [hasValue, setHasValue] = useState(!!(value ?? defaultValue));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    markChanged();
     setHasValue(!!e.target.value);
     onChange?.(e.target.value);
   };
@@ -71,6 +74,7 @@ export function DateField({
         value={value}
         defaultValue={defaultValue}
         onChange={handleChange}
+        onBlur={clearOnBlur}
         autoFocus={autoFocus}
         required={isRequired}
         disabled={isDisabled}

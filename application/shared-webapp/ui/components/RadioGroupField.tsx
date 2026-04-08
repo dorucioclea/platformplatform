@@ -2,6 +2,7 @@ import type { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-gro
 
 import { useContext } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -28,6 +29,7 @@ export function RadioGroupField({
   isReadOnly,
   disabled,
   children,
+  onValueChange,
   ...props
 }: Readonly<RadioGroupFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -37,11 +39,17 @@ export function RadioGroupField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
+
+  const handleValueChange: typeof onValueChange = (value, event) => {
+    clearNow();
+    onValueChange?.(value, event);
+  };
 
   return (
     <Field className={cn("flex flex-col", className)}>
@@ -52,6 +60,7 @@ export function RadioGroupField({
         name={name}
         disabled={disabled}
         readOnly={isReadOnly}
+        onValueChange={handleValueChange}
         className={
           isReadOnly
             ? "[&_[data-slot=radio-group-item]]:focus:outline [&_[data-slot=radio-group-item]]:focus:outline-2 [&_[data-slot=radio-group-item]]:focus:outline-offset-2"

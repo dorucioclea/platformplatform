@@ -2,6 +2,7 @@ import type { Select as SelectPrimitive } from "@base-ui/react/select";
 
 import { useContext } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -30,6 +31,7 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   isDisabled,
   isReadOnly,
   children,
+  onValueChange,
   ...props
 }: Readonly<SelectFieldProps<Value, Multiple>>) {
   const formErrors = useContext(FormValidationContext);
@@ -39,16 +41,22 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
+  const handleValueChange: typeof onValueChange = (value, event) => {
+    clearNow();
+    onValueChange?.(value, event);
+  };
+
   // Merge errorMessage into form context so SelectTrigger can show aria-invalid
   const triggerErrors =
-    name && (errorMessage || fieldErrorMessages.length > 0)
-      ? { ...formErrors, [name]: errorMessage ? [errorMessage] : fieldErrorMessages }
+    name && (displayError || fieldErrorMessages.length > 0)
+      ? { ...formErrors, [name]: displayError ? [displayError] : fieldErrorMessages }
       : formErrors;
 
   const focusTrigger = () => {
@@ -70,7 +78,13 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
         <SelectReadOnlyContext.Provider value={!!isReadOnly}>
-          <Select name={name} disabled={isDisabled} open={isReadOnly ? false : undefined} {...props}>
+          <Select
+            name={name}
+            disabled={isDisabled}
+            open={isReadOnly ? false : undefined}
+            onValueChange={handleValueChange}
+            {...props}
+          >
             {children}
           </Select>
         </SelectReadOnlyContext.Provider>

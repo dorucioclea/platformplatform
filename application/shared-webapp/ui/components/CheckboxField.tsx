@@ -2,6 +2,7 @@ import type { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 
 import { useContext } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Checkbox } from "./Checkbox";
 import { Field, FieldError } from "./Field";
@@ -36,11 +37,17 @@ export function CheckboxField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
+
+  const handleCheckedChange: typeof onCheckedChange = (checked, event) => {
+    clearNow();
+    onCheckedChange?.(checked, event);
+  };
 
   return (
     <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
@@ -48,7 +55,7 @@ export function CheckboxField({
         <Checkbox
           name={name}
           disabled={disabled}
-          onCheckedChange={isReadOnly ? undefined : onCheckedChange}
+          onCheckedChange={isReadOnly ? undefined : handleCheckedChange}
           className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />

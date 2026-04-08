@@ -21,6 +21,9 @@ msgstr "for {0} timer siden"
 msgid "{0} minutes ago"
 msgstr "for {0} minutter siden"
 
+msgid "+1 555 000 0000"
+msgstr ""
+
 msgid "2 hours ago"
 msgstr "For 2 timer siden"
 
@@ -33,11 +36,20 @@ msgstr "5 aktive medlemmer"
 msgid "75% of quota used"
 msgstr "75% af kvoten brugt"
 
+msgid "About this feature"
+msgstr ""
+
+msgid "Add notes about this contact"
+msgstr ""
+
 msgid "Add notes here"
 msgstr "Tilføj noter her"
 
 msgid "Admin"
 msgstr "Administrator"
+
+msgid "Alert dialogs"
+msgstr ""
 
 msgid "Alerts"
 msgstr "Advarsler"
@@ -48,8 +60,14 @@ msgstr "Advarsler og badges"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
-msgid "Are you sure?"
-msgstr "Er du sikker?"
+msgid "Archive"
+msgstr ""
+
+msgid "Archive item"
+msgstr ""
+
+msgid "Archive this item?"
+msgstr ""
 
 msgid "Area chart"
 msgstr "Områdediagram"
@@ -84,6 +102,9 @@ msgstr "Annuller"
 msgid "Cards"
 msgstr "Kort"
 
+msgid "Changes published"
+msgstr ""
+
 msgid "Checkbox"
 msgstr "Afkrydsningsfelt"
 
@@ -93,6 +114,12 @@ msgstr "Afkrydsningsfelt (fra)"
 msgid "Checkbox (on)"
 msgstr "Afkrydsningsfelt (til)"
 
+msgid "Close"
+msgstr ""
+
+msgid "colleague@company.com"
+msgstr ""
+
 msgid "Combobox"
 msgstr "Kombinationsboks"
 
@@ -101,6 +128,18 @@ msgstr "Kombinationsboks (oprettelig)"
 
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
+
+msgid "Company"
+msgstr ""
+
+msgid "Company name"
+msgstr ""
+
+msgid "Confirm action"
+msgstr ""
+
+msgid "Contact details saved"
+msgstr ""
 
 msgid "Controls"
 msgstr ""
@@ -138,14 +177,14 @@ msgstr "Slet"
 msgid "Delete item"
 msgstr "Slet element"
 
+msgid "Delete this item?"
+msgstr ""
+
 msgid "Destructive"
 msgstr "Destruktiv"
 
 msgid "Destructive alert"
 msgstr "Destruktiv advarsel"
-
-msgid "Dialogs"
-msgstr "Dialoger"
 
 msgid "Dialogs and cards"
 msgstr "Dialoger og kort"
@@ -156,8 +195,26 @@ msgstr "Deaktiveret"
 msgid "Disabled buttons"
 msgstr "Deaktiverede knapper"
 
+msgid "E.g., Alex"
+msgstr ""
+
 msgid "E.g., Alex Taylor"
 msgstr "F.eks. Alex Taylor"
+
+msgid "E.g., Taylor"
+msgstr ""
+
+msgid "Edit contact"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "email@example.com"
+msgstr ""
 
 msgid "Empty and skeleton"
 msgstr "Tom tilstand og skelet"
@@ -170,6 +227,12 @@ msgstr ""
 
 msgid "Extra small"
 msgstr "Ekstra lille"
+
+msgid "First name"
+msgstr ""
+
+msgid "Form dialogs"
+msgstr ""
 
 msgid "Full access except changing user roles and account settings"
 msgstr "Fuld adgang undtagen ændring af brugerroller og kontoindstillinger"
@@ -216,14 +279,26 @@ msgstr ""
 msgid "Info alert"
 msgstr "Informationsadvarsel"
 
+msgid "Invitation sent"
+msgstr ""
+
 msgid "Invite"
 msgstr "Inviter"
+
+msgid "Invite a new member to join your workspace."
+msgstr ""
 
 msgid "Invite and manage your team."
 msgstr "Inviter og administrer dit team."
 
 msgid "Italic"
 msgstr "Kursiv"
+
+msgid "Item archived"
+msgstr ""
+
+msgid "Item deleted"
+msgstr ""
 
 msgid "Just now"
 msgstr "Lige nu"
@@ -236,6 +311,15 @@ msgstr "Stor"
 
 msgid "Last month"
 msgstr "Sidste måned"
+
+msgid "Last name"
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+msgid "Leave"
+msgstr ""
 
 msgid "Line chart"
 msgstr "Linjediagram"
@@ -282,6 +366,12 @@ msgstr "Ingen resultater fundet"
 msgid "None"
 msgstr "Ingen"
 
+msgid "Not yet"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
 msgid "Notifications"
 msgstr "Notifikationer"
 
@@ -291,11 +381,11 @@ msgstr "Tal (decimal)"
 msgid "Number (integer)"
 msgstr "Tal (heltal)"
 
-msgid "Open dialog"
-msgstr "Åbn dialog"
-
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
+
+msgid "Opened documentation"
+msgstr ""
 
 msgid "Option A"
 msgstr "Mulighed A"
@@ -309,6 +399,9 @@ msgstr "Kontur"
 msgid "Owner"
 msgstr "Ejer"
 
+msgid "Phone number"
+msgstr ""
+
 msgid "Pick a chart"
 msgstr "Vælg et diagram"
 
@@ -317,6 +410,9 @@ msgstr "Vælg en dato"
 
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
+
+msgid "Publish now"
+msgstr ""
 
 msgid "Radar chart"
 msgstr "Radardiagram"
@@ -327,8 +423,14 @@ msgstr "Radiokort-vælger"
 msgid "Radio group"
 msgstr "Radiogruppe"
 
+msgid "Read docs"
+msgstr ""
+
 msgid "Read only"
 msgstr "Skrivebeskyttet"
+
+msgid "Ready to publish?"
+msgstr ""
 
 msgid "Relative"
 msgstr "Relativ"
@@ -336,11 +438,14 @@ msgstr "Relativ"
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
-msgid "Sample dialog"
-msgstr "Eksempeldialog"
+msgid "Role"
+msgstr ""
 
 msgid "Save changes"
 msgstr "Gem ændringer"
+
+msgid "Saving..."
+msgstr ""
 
 msgid "Search"
 msgstr "Søg"
@@ -357,8 +462,14 @@ msgstr "Vælg"
 msgid "Select fruits"
 msgstr "Vælg frugter"
 
+msgid "Send invitation"
+msgstr ""
+
 msgid "Send invite"
 msgstr "Send invitation"
+
+msgid "Sending..."
+msgstr ""
 
 msgid "Short date"
 msgstr "Kort dato"
@@ -378,6 +489,9 @@ msgstr "Noget gik galt. Prøv venligst igen."
 msgid "Standard user access"
 msgstr "Standard brugeradgang"
 
+msgid "Stay"
+msgstr ""
+
 msgid "Switch"
 msgstr "Kontakt"
 
@@ -396,23 +510,26 @@ msgstr "Tekstområde"
 msgid "Text field"
 msgstr "Tekstfelt"
 
+msgid "The item will be moved to the archive. You can restore it later from the archive."
+msgstr ""
+
 msgid "There is nothing to display here. Create your first item to get started."
 msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
 
-msgid "This action cannot be undone. This will permanently delete the item."
-msgstr "Denne handling kan ikke fortrydes. Dette vil permanent slette elementet."
+msgid "This action cannot be undone. The item will be permanently removed."
+msgstr ""
 
 msgid "This action may have unintended consequences."
 msgstr "Denne handling kan have utilsigtede konsekvenser."
+
+msgid "This feature helps you manage your workspace more efficiently. All changes are synced across your team in real time."
+msgstr ""
 
 msgid "This field is required"
 msgstr "Dette felt er påkrævet"
 
 msgid "This is a default informational alert."
 msgstr "Dette er en standard informationsadvarsel."
-
-msgid "This is a sample dialog with a header, body, and footer."
-msgstr "Dette er en eksempeldialog med overskrift, brødtekst og bundtekst."
 
 msgid "This is an informational message."
 msgstr "Dette er en informationsmeddelelse."
@@ -435,6 +552,12 @@ msgstr "Skriv eller søg..."
 msgid "Underline"
 msgstr "Understregning"
 
+msgid "Unsaved changes"
+msgstr ""
+
+msgid "Update the contact details. Changes will be saved immediately."
+msgstr ""
+
 msgid "Usage"
 msgstr "Forbrug"
 
@@ -456,11 +579,17 @@ msgstr "I går"
 msgid "You have 3 unread notifications."
 msgstr "Du har 3 ulæste notifikationer."
 
+msgid "You have unsaved changes. If you leave now, your changes will be lost."
+msgstr ""
+
 msgid "You successfully deployed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 
 msgid "You successfully installed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
+
+msgid "Your changes will be published and visible to all team members immediately."
+msgstr ""
 
 msgid "Your current plan usage this month."
 msgstr "Dit nuværende planforbrug denne måned."

@@ -3,6 +3,7 @@ import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
 import { useContext, useState } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
@@ -64,8 +65,9 @@ export function DatePicker({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
@@ -95,6 +97,7 @@ export function DatePicker({
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
+      clearNow();
       onChange?.(`${year}-${month}-${day}`);
       setOpen(false);
     }

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -46,14 +47,16 @@ export function TextField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    markChanged();
     onChange?.(e.target.value);
   };
 
@@ -63,6 +66,7 @@ export function TextField({
     type,
     value,
     onChange: handleChange,
+    onBlur: clearOnBlur,
     autoFocus,
     required: isRequired,
     disabled: isDisabled,

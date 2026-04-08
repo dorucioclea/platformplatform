@@ -2,6 +2,7 @@ import { useLingui } from "@lingui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -57,8 +58,9 @@ export function NumberField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
@@ -139,6 +141,7 @@ export function NumberField({
   useEffect(() => () => clearTimeout(repeatTimerRef.current), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    markChanged();
     setInternalValue(e.target.value);
     if (e.target.value === "" && allowEmpty) {
       onChange?.(null);
@@ -156,6 +159,7 @@ export function NumberField({
   };
 
   const handleBlur = () => {
+    clearOnBlur();
     setIsFocused(false);
     if (internalValue === "" || internalValue.trim() === "") {
       if (allowEmpty) {

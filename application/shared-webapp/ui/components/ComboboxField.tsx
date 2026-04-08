@@ -4,6 +4,7 @@ import type * as React from "react";
 import { PlusIcon } from "lucide-react";
 import { useContext, useState } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "./Combobox";
 import { Field, FieldDescription, FieldError } from "./Field";
@@ -69,8 +70,9 @@ export function ComboboxField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
@@ -93,6 +95,7 @@ export function ComboboxField({
     setSearch(text);
     const exactMatch = items.find((item) => item.label.toLowerCase() === text.toLowerCase());
     if (exactMatch) {
+      clearNow();
       onValueChange?.(exactMatch.id);
     } else if (text && (allowCustomValue || allowCreate)) {
       onValueChange?.(text);
@@ -101,6 +104,7 @@ export function ComboboxField({
 
   const handleCreateItem = () => {
     onCreateItem?.(search);
+    clearNow();
     onValueChange?.(search);
   };
 
@@ -119,7 +123,10 @@ export function ComboboxField({
         disabled={isDisabled}
         open={isReadOnly ? false : undefined}
         value={value ?? null}
-        onValueChange={onValueChange}
+        onValueChange={(v) => {
+          clearNow();
+          onValueChange?.(v);
+        }}
         onInputValueChange={handleInputValueChange}
         itemToStringLabel={(itemValue: ComboboxPrimitive.Item.Props["value"]) =>
           items.find((item) => item.id === itemValue)?.label ?? String(itemValue ?? "")

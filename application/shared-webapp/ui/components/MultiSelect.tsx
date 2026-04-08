@@ -1,6 +1,7 @@
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 
+import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
@@ -53,8 +54,9 @@ export function MultiSelect({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const errors = errorMessage
-    ? [{ message: errorMessage }]
+  const { displayError, clearNow } = useFieldError(errorMessage);
+  const errors = displayError
+    ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
@@ -71,13 +73,14 @@ export function MultiSelect({
   const handleToggle = useCallback(
     (itemId: string) => {
       if (isReadOnly) return;
+      clearNow();
       if (value.includes(itemId)) {
         onChange(value.filter((v) => v !== itemId));
       } else {
         onChange([...value, itemId]);
       }
     },
-    [value, onChange, isReadOnly]
+    [value, onChange, isReadOnly, clearNow]
   );
 
   const handleKeyDown = useCallback(
