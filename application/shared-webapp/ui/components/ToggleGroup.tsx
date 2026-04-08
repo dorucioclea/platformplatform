@@ -9,13 +9,15 @@ import { toggleVariants } from "./Toggle";
 type ToggleGroupContextValue = VariantProps<typeof toggleVariants> & {
   spacing?: number;
   orientation?: "horizontal" | "vertical";
+  isReadOnly?: boolean;
 };
 
 const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   size: "default",
   variant: "default",
   spacing: 0,
-  orientation: "horizontal"
+  orientation: "horizontal",
+  isReadOnly: false
 });
 
 function ToggleGroup({
@@ -24,18 +26,24 @@ function ToggleGroup({
   size,
   spacing = 0,
   orientation = "horizontal",
+  isReadOnly = false,
+  value,
+  onValueChange,
   children,
   ...props
 }: ToggleGroupPrimitive.Props &
   VariantProps<typeof toggleVariants> & {
     spacing?: number;
     orientation?: "horizontal" | "vertical";
+    isReadOnly?: boolean;
   }) {
   const childArray = React.Children.toArray(children);
 
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
+      value={value}
+      onValueChange={isReadOnly ? undefined : onValueChange}
       className={cn(
         "inline-flex w-fit items-center rounded-md",
         orientation === "vertical" ? "flex-col items-stretch" : "flex-row",
@@ -44,7 +52,7 @@ function ToggleGroup({
       style={spacing > 0 ? { gap: `${spacing * 0.25}rem` } : undefined}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation }}>
+      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation, isReadOnly }}>
         {childArray.map((child, index) => {
           if (!React.isValidElement(child)) {
             return child;
@@ -78,6 +86,7 @@ function ToggleGroupItem({
   const isLast = position === "last" || position === "only";
   const isHorizontal = orientation === "horizontal";
   const isConnected = spacing === 0;
+  const isReadOnly = context.isReadOnly ?? false;
 
   return (
     <TogglePrimitive
@@ -95,6 +104,7 @@ function ToggleGroupItem({
           variant === "outline" && !isHorizontal && !isFirst && "border-t-0"
         ],
         "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground",
+        isReadOnly && "cursor-default hover:bg-transparent hover:text-current active:bg-transparent",
         className
       )}
       {...props}

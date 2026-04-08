@@ -149,7 +149,13 @@ export function DateAndToggleFields({
             )}
           </FieldLabel>
         )}
-        <ToggleGroup variant="outline" value={toggleValues} onValueChange={setToggleValues} disabled={disabled}>
+        <ToggleGroup
+          variant="outline"
+          value={toggleValues}
+          onValueChange={setToggleValues}
+          disabled={disabled}
+          isReadOnly={readOnly}
+        >
           <ToggleGroupItem value="bold" aria-label={t`Toggle bold`}>
             <BoldIcon />
           </ToggleGroupItem>
