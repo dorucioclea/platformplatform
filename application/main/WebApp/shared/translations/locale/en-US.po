@@ -96,6 +96,9 @@ msgstr "Birthday must be in the past"
 msgid "Bold"
 msgstr "Bold"
 
+msgid "Browse and test all UI components."
+msgstr "Browse and test all UI components."
+
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Burning the midnight oil, {firstName}?"
 
@@ -143,6 +146,12 @@ msgstr "Combobox (creatable)"
 
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
+
+msgid "Component preview"
+msgstr "Component preview"
+
+msgid "Components"
+msgstr "Components"
 
 msgid "Confirm action"
 msgstr "Confirm action"
@@ -591,6 +600,9 @@ msgstr "This is a default informational alert."
 msgid "This is an informational message."
 msgstr "This is an informational message."
 
+msgid "This is where your personalized dashboard content will appear. Stay tuned for updates."
+msgstr "This is where your personalized dashboard content will appear. Stay tuned for updates."
+
 msgid "Toggle bold"
 msgstr "Toggle bold"
 
@@ -668,3 +680,6 @@ msgstr "Your changes will be published and visible to all team members immediate
 
 msgid "Your current plan usage this month."
 msgstr "Your current plan usage this month."
+
+msgid "Your dashboard is empty"
+msgstr "Your dashboard is empty"
