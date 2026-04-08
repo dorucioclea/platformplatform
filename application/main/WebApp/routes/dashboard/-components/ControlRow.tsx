@@ -8,6 +8,7 @@ import { EuroIcon, SearchIcon } from "lucide-react";
 
 import type { ControlRowProps } from "./controlRowTypes";
 
+import { tooltips } from "./controlTooltips";
 import { DateAndToggleFields } from "./DateAndToggleFields";
 import { SelectAndComboboxFields } from "./SelectAndComboboxFields";
 
@@ -41,7 +42,7 @@ export function ControlRow({
     <div className="grid grid-cols-4 gap-x-6 gap-y-4">
       <TextField
         label={label ? t`Text field` : undefined}
-        tooltip={tooltip ? t`Single-line text input for short values like names or emails` : undefined}
+        tooltip={tooltip ? tooltips.textField : undefined}
         name={`text-${suffix}`}
         placeholder={t`E.g., Alex Taylor`}
         defaultValue={hasValues ? t`Alex Taylor` : undefined}
@@ -52,7 +53,7 @@ export function ControlRow({
       />
       <TextAreaField
         label={label ? t`Text area` : undefined}
-        tooltip={tooltip ? t`Multi-line text input for longer content like notes or descriptions` : undefined}
+        tooltip={tooltip ? tooltips.textArea : undefined}
         name={`textarea-${suffix}`}
         placeholder={t`Add notes here`}
         defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
@@ -62,7 +63,7 @@ export function ControlRow({
       />
       <NumberField
         label={label ? t`Number (integer)` : undefined}
-        tooltip={tooltip ? t`Whole number input with increment and decrement buttons` : undefined}
+        tooltip={tooltip ? tooltips.numberInteger : undefined}
         name={`integer-${suffix}`}
         defaultValue={hasValues ? 42 : undefined}
         minValue={0}
@@ -76,7 +77,7 @@ export function ControlRow({
       />
       <NumberField
         label={label ? t`Number (decimal)` : undefined}
-        tooltip={tooltip ? t`Decimal number input with configurable step and decimal places` : undefined}
+        tooltip={tooltip ? tooltips.numberDecimal : undefined}
         name={`decimal-${suffix}`}
         defaultValue={hasValues ? 149.95 : undefined}
         minValue={0}

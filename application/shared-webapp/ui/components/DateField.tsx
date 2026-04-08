@@ -10,7 +10,7 @@ export interface DateFieldProps extends Omit<React.ComponentProps<"input">, "cla
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   inputClassName?: string;
   onChange?: (value: string) => void;

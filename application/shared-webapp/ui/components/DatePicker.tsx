@@ -22,7 +22,7 @@ export interface DatePickerProps {
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   value?: string;
   onChange?: (value: string) => void;

@@ -6,7 +6,7 @@ import { InfoIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip";
 
 export interface LabelWithTooltipProps {
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   children: React.ReactNode;
 }
 

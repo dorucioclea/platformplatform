@@ -11,7 +11,7 @@ import { Switch } from "./Switch";
 export interface SwitchFieldProps extends SwitchPrimitive.Root.Props {
   label?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   isReadOnly?: boolean;
 }

@@ -12,6 +12,8 @@ import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
 
+import { tooltips } from "./controlTooltips";
+
 export function DateAndToggleFields({
   suffix,
   label,
@@ -32,7 +34,7 @@ export function DateAndToggleFields({
     <>
       <DateField
         label={label ? t`Native date` : undefined}
-        tooltip={tooltip ? t`Browser native date input with locale-specific formatting` : undefined}
+        tooltip={tooltip ? tooltips.dateField : undefined}
         name={`datefield-${suffix}`}
         defaultValue={hasValues ? "2025-06-15" : undefined}
         isDisabled={disabled}
@@ -41,7 +43,7 @@ export function DateAndToggleFields({
       />
       <DatePicker
         label={label ? t`Date picker` : undefined}
-        tooltip={tooltip ? t`Custom calendar picker for selecting a single date` : undefined}
+        tooltip={tooltip ? tooltips.datePicker : undefined}
         name={`datepicker-${suffix}`}
         placeholder={t`Pick a date`}
         value={datePickerValue}
@@ -52,7 +54,7 @@ export function DateAndToggleFields({
       />
       <DateRangePicker
         label={label ? t`Date range` : undefined}
-        tooltip={tooltip ? t`Pick a start and end date using the calendar` : undefined}
+        tooltip={tooltip ? tooltips.dateRange : undefined}
         name={`daterange-${suffix}`}
         value={dateRangeValue}
         onChange={setDateRangeValue}
@@ -62,7 +64,7 @@ export function DateAndToggleFields({
       />
       <TimeField
         label={label ? t`Native time` : undefined}
-        tooltip={tooltip ? t`Browser native time input for hours and minutes` : undefined}
+        tooltip={tooltip ? tooltips.timeField : undefined}
         name={`time-${suffix}`}
         defaultValue={hasValues ? "14:30" : undefined}
         isDisabled={disabled}
@@ -72,7 +74,7 @@ export function DateAndToggleFields({
       <div className="flex flex-wrap gap-x-6 gap-y-2 self-start">
         <SwitchField
           label={label ? (hasValues ? t`Switch (on)` : t`Switch`) : undefined}
-          tooltip={tooltip ? t`Toggle control for binary on/off settings` : undefined}
+          tooltip={tooltip ? tooltips.switchField : undefined}
           name={`switch-${suffix}`}
           checked={hasValues ? true : switchChecked}
           onCheckedChange={setSwitchChecked}
@@ -93,7 +95,7 @@ export function DateAndToggleFields({
       <div className="flex flex-wrap gap-x-6 gap-y-2 self-start">
         <CheckboxField
           label={label ? (hasValues ? t`Checkbox (on)` : t`Checkbox`) : undefined}
-          tooltip={tooltip ? t`Tick box for confirming or agreeing to something` : undefined}
+          tooltip={tooltip ? tooltips.checkboxField : undefined}
           name={`checkbox-${suffix}`}
           checked={hasValues ? true : checkboxChecked}
           onCheckedChange={setCheckboxChecked}
@@ -113,7 +115,7 @@ export function DateAndToggleFields({
       </div>
       <RadioGroupField
         label={label ? t`Radio group` : undefined}
-        tooltip={tooltip ? t`Choose exactly one option from a small set of choices` : undefined}
+        tooltip={tooltip ? tooltips.radioGroup : undefined}
         name={`radio-${suffix}`}
         defaultValue={hasValues ? "option-a" : undefined}
         disabled={disabled}

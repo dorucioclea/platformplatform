@@ -18,7 +18,7 @@ export interface MultiSelectProps {
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   placeholder?: string;
   emptyMessage?: ReactNode;
   startIcon?: ReactNode;

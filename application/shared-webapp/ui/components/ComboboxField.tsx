@@ -21,7 +21,7 @@ export interface ComboboxFieldProps {
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   placeholder?: string;
   emptyMessage?: React.ReactNode;
   items: ComboboxFieldItem[];

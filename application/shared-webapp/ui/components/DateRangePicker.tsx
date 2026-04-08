@@ -33,7 +33,7 @@ export interface DateRangePickerProps {
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   value?: DateRangeValue | null;
   onChange?: (value: DateRangeValue | null) => void;
   placeholder?: string;

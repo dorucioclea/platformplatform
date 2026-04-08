@@ -10,7 +10,7 @@ export interface TextAreaFieldProps extends Omit<React.ComponentProps<"textarea"
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   textareaClassName?: string;
   onChange?: (value: string) => void;

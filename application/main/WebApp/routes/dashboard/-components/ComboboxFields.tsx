@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
 
+import { tooltips } from "./controlTooltips";
+
 type ChartItem = { id: string; label: string; icon?: ReactNode };
 
 export interface ComboboxFieldsProps extends ControlRowDerivedProps {
@@ -31,7 +33,7 @@ export function ComboboxFields({
     <>
       <ComboboxField
         label={label ? t`Combobox` : undefined}
-        tooltip={tooltip ? t`Searchable dropdown that filters options as you type` : undefined}
+        tooltip={tooltip ? tooltips.combobox : undefined}
         placeholder={t`Search charts...`}
         emptyMessage={t`No results found`}
         items={chartItems}
@@ -43,7 +45,7 @@ export function ComboboxFields({
       />
       <ComboboxField
         label={label ? t`Combobox (free text)` : undefined}
-        tooltip={tooltip ? t`Like Combobox, but also accepts custom values not in the list` : undefined}
+        tooltip={tooltip ? tooltips.comboboxFreeText : undefined}
         placeholder={t`Type or search...`}
         items={chartItems}
         value={freeTextValue}
@@ -55,7 +57,7 @@ export function ComboboxFields({
       />
       <ComboboxField
         label={label ? t`Combobox (creatable)` : undefined}
-        tooltip={tooltip ? t`Like Combobox, with an explicit option to create new items` : undefined}
+        tooltip={tooltip ? tooltips.comboboxCreatable : undefined}
         placeholder={t`Type or search...`}
         items={allCreatableItems}
         value={creatableValue}

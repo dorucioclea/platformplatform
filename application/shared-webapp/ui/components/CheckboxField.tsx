@@ -11,7 +11,7 @@ import { LabelWithTooltip } from "./LabelWithTooltip";
 export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   label?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   isReadOnly?: boolean;
 }

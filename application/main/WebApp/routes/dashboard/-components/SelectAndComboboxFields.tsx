@@ -11,6 +11,7 @@ import { useState } from "react";
 import type { ControlRowDerivedProps } from "./controlRowTypes";
 
 import { ComboboxFields } from "./ComboboxFields";
+import { tooltips } from "./controlTooltips";
 
 interface SelectAndComboboxFieldsProps extends ControlRowDerivedProps {
   selectedColor: string;
@@ -49,7 +50,7 @@ export function SelectAndComboboxFields({
     <>
       <SelectField
         label={label ? t`Select` : undefined}
-        tooltip={tooltip ? t`Dropdown for selecting one value from a predefined list` : undefined}
+        tooltip={tooltip ? tooltips.select : undefined}
         name={`select-${suffix}`}
         items={chartSelectItems}
         value={hasValues ? localColor : selectedColor || null}
@@ -78,7 +79,7 @@ export function SelectAndComboboxFields({
       </SelectField>
       <MultiSelect
         label={label ? t`Multi select` : undefined}
-        tooltip={tooltip ? t`Select multiple values from a list, unlike Select which picks one` : undefined}
+        tooltip={tooltip ? tooltips.multiSelect : undefined}
         name={`multi-${suffix}`}
         placeholder={t`Select fruits`}
         startIcon={showIcon ? <SearchIcon /> : undefined}

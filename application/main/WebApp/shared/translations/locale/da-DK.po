@@ -63,12 +63,6 @@ msgstr "Søjlediagram"
 msgid "Bold"
 msgstr "Fed"
 
-msgid "Browser native date input with locale-specific formatting"
-msgstr ""
-
-msgid "Browser native time input for hours and minutes"
-msgstr ""
-
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Sidder du stadig oppe, {firstName}?"
 
@@ -99,9 +93,6 @@ msgstr "Afkrydsningsfelt (fra)"
 msgid "Checkbox (on)"
 msgstr "Afkrydsningsfelt (til)"
 
-msgid "Choose exactly one option from a small set of choices"
-msgstr ""
-
 msgid "Combobox"
 msgstr "Kombinationsboks"
 
@@ -120,9 +111,6 @@ msgstr "Opret"
 msgid "Create item"
 msgstr "Opret element"
 
-msgid "Custom calendar picker for selecting a single date"
-msgstr ""
-
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -137,9 +125,6 @@ msgstr "Datovælger"
 
 msgid "Date range"
 msgstr "Datointerval"
-
-msgid "Decimal number input with configurable step and decimal places"
-msgstr ""
 
 msgid "Default"
 msgstr "Standard"
@@ -170,9 +155,6 @@ msgstr "Deaktiveret"
 
 msgid "Disabled buttons"
 msgstr "Deaktiverede knapper"
-
-msgid "Dropdown for selecting one value from a predefined list"
-msgstr ""
 
 msgid "E.g., Alex Taylor"
 msgstr "F.eks. Alex Taylor"
@@ -246,12 +228,6 @@ msgstr "Stor"
 msgid "Last month"
 msgstr "Sidste måned"
 
-msgid "Like Combobox, but also accepts custom values not in the list"
-msgstr ""
-
-msgid "Like Combobox, with an explicit option to create new items"
-msgstr ""
-
 msgid "Line chart"
 msgstr "Linjediagram"
 
@@ -278,9 +254,6 @@ msgstr "Mere information"
 
 msgid "Multi select"
 msgstr "Flervalg"
-
-msgid "Multi-line text input for longer content like notes or descriptions"
-msgstr ""
 
 msgid "Native date"
 msgstr "Native dato"
@@ -333,9 +306,6 @@ msgstr "Vælg et diagram"
 msgid "Pick a date"
 msgstr "Vælg en dato"
 
-msgid "Pick a start and end date using the calendar"
-msgstr ""
-
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
@@ -369,9 +339,6 @@ msgstr "Søg"
 msgid "Search charts..."
 msgstr "Søg diagrammer..."
 
-msgid "Searchable dropdown that filters options as you type"
-msgstr ""
-
 msgid "Secondary"
 msgstr "Sekundær"
 
@@ -381,9 +348,6 @@ msgstr "Vælg"
 msgid "Select fruits"
 msgstr "Vælg frugter"
 
-msgid "Select multiple values from a list, unlike Select which picks one"
-msgstr ""
-
 msgid "Send invite"
 msgstr "Send invitation"
 
@@ -392,9 +356,6 @@ msgstr "Kort dato"
 
 msgid "Short date with time"
 msgstr "Kort dato med tid"
-
-msgid "Single-line text input for short values like names or emails"
-msgstr ""
 
 msgid "Skeleton loading states"
 msgstr "Skelet-indlæsningstilstande"
@@ -447,14 +408,8 @@ msgstr "Dette er en eksempeldialog med overskrift, brødtekst og bundtekst."
 msgid "This is an informational message."
 msgstr "Dette er en informationsmeddelelse."
 
-msgid "Tick box for confirming or agreeing to something"
-msgstr ""
-
 msgid "Toggle buttons"
 msgstr "Skifteknapper"
-
-msgid "Toggle control for binary on/off settings"
-msgstr ""
 
 msgid "Toggle sidebar"
 msgstr "Skift sidepanel"
@@ -482,9 +437,6 @@ msgstr "Advarselsbesked"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Velkommen til PlatformPlatform"
-
-msgid "Whole number input with increment and decrement buttons"
-msgstr ""
 
 msgid "With icons"
 msgstr "Med ikoner"

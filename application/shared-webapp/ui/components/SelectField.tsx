@@ -13,7 +13,7 @@ export interface SelectFieldProps<Value, Multiple extends boolean | undefined = 
   label?: string;
   description?: string;
   errorMessage?: string;
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   className?: string;
   isDisabled?: boolean;
   isReadOnly?: boolean;
