@@ -37,6 +37,8 @@ export interface ComboboxFieldProps {
   allowCreate?: boolean;
   /** Called when user creates a new item via the Create option */
   onCreateItem?: (label: string) => void;
+  /** Icon shown when no item is selected or selected item has no icon */
+  startIcon?: React.ReactNode;
 }
 
 function filterItems(items: ComboboxFieldItem[], search: string) {
@@ -61,7 +63,8 @@ export function ComboboxField({
   isReadOnly,
   allowCustomValue,
   allowCreate,
-  onCreateItem
+  onCreateItem,
+  startIcon: startIconProp
 }: Readonly<ComboboxFieldProps>) {
   const formErrors = useContext(FormValidationContext);
   const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
@@ -151,7 +154,7 @@ export function ComboboxField({
           placeholder={placeholder}
           disabled={isDisabled}
           readOnly={isReadOnly}
-          startIcon={selectedIcon}
+          startIcon={selectedIcon ?? startIconProp}
           aria-invalid={isInvalid || undefined}
         />
         <ComboboxContent>

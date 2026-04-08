@@ -4,7 +4,7 @@ import { t } from "@lingui/core/macro";
 import { NumberField } from "@repo/ui/components/NumberField";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
-import { EuroIcon, SearchIcon } from "lucide-react";
+import { EuroIcon, HashIcon, SearchIcon } from "lucide-react";
 
 import type { ControlRowProps } from "./controlRowTypes";
 
@@ -73,7 +73,7 @@ export function ControlRow({
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
-        startIcon={showIcon ? <SearchIcon /> : undefined}
+        startIcon={showIcon ? <HashIcon /> : undefined}
       />
       <NumberField
         label={label ? t`Number (decimal)` : undefined}

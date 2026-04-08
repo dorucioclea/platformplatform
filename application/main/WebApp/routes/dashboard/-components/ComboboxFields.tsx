@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { t } from "@lingui/core/macro";
 import { ComboboxField } from "@repo/ui/components/ComboboxField";
+import { TrendingUpIcon } from "lucide-react";
 import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
@@ -19,15 +20,17 @@ export function ComboboxFields({
   tooltip,
   disabled,
   readOnly,
+  showIcon,
   hasValues,
   errorMessage,
   chartItems
 }: ComboboxFieldsProps) {
+  const items = showIcon ? chartItems : chartItems.map(({ icon: _, ...rest }) => rest);
   const [selectValue, setSelectValue] = useState<string | null>(hasValues ? "pie" : null);
   const [freeTextValue, setFreeTextValue] = useState<string | null>(hasValues ? "pie" : null);
   const [creatableValue, setCreatableValue] = useState<string | null>(hasValues ? "pie" : null);
   const [creatableItems, setCreatableItems] = useState<ChartItem[]>([]);
-  const allCreatableItems = [...chartItems, ...creatableItems];
+  const allCreatableItems = [...items, ...creatableItems];
 
   return (
     <>
@@ -36,23 +39,25 @@ export function ComboboxFields({
         tooltip={tooltip ? tooltips.combobox : undefined}
         placeholder={t`Search charts...`}
         emptyMessage={t`No results found`}
-        items={chartItems}
+        items={items}
         value={selectValue}
         onValueChange={setSelectValue}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
+        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
       />
       <ComboboxField
         label={label ? t`Combobox (free text)` : undefined}
         tooltip={tooltip ? tooltips.comboboxFreeText : undefined}
         placeholder={t`Type or search...`}
-        items={chartItems}
+        items={items}
         value={freeTextValue}
         onValueChange={setFreeTextValue}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
+        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
         allowCustomValue
       />
       <ComboboxField
@@ -65,6 +70,7 @@ export function ComboboxFields({
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
+        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
         allowCreate
         onCreateItem={(itemLabel) => {
           const newId = itemLabel.toLowerCase().replace(/\s+/g, "-");

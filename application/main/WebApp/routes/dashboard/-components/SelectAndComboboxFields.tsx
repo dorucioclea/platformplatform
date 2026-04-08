@@ -5,7 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { MultiSelect } from "@repo/ui/components/MultiSelect";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
 import { SelectField } from "@repo/ui/components/SelectField";
-import { AreaChartIcon, BarChart3Icon, LineChartIcon, PieChartIcon, RadarIcon, SearchIcon } from "lucide-react";
+import { AreaChartIcon, BarChart3Icon, LineChartIcon, PieChartIcon, RadarIcon, TrendingUpIcon } from "lucide-react";
 import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
@@ -60,7 +60,7 @@ export function SelectAndComboboxFields({
         errorMessage={errorMessage}
       >
         <SelectTrigger>
-          {selectedChartIcon}
+          {showIcon ? (selectedChartIcon ?? <TrendingUpIcon />) : null}
           <SelectValue placeholder={t`Pick a chart`} />
         </SelectTrigger>
         <SelectContent>
@@ -71,7 +71,7 @@ export function SelectAndComboboxFields({
           </SelectItem>
           {chartSelectItems.map((item) => (
             <SelectItem key={item.value} value={item.value}>
-              {item.icon}
+              {showIcon ? item.icon : null}
               {item.label}
             </SelectItem>
           ))}
@@ -82,8 +82,8 @@ export function SelectAndComboboxFields({
         tooltip={tooltip ? tooltips.multiSelect : undefined}
         name={`multi-${suffix}`}
         placeholder={t`Select charts`}
-        startIcon={showIcon ? <SearchIcon /> : undefined}
-        items={chartItems}
+        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
+        items={showIcon ? chartItems : chartItems.map(({ icon: _, ...rest }) => rest)}
         value={hasValues ? localCharts : selectedCharts}
         onChange={hasValues ? setLocalCharts : setSelectedCharts}
         isDisabled={disabled}
@@ -96,6 +96,7 @@ export function SelectAndComboboxFields({
         tooltip={tooltip}
         disabled={disabled}
         readOnly={readOnly}
+        showIcon={showIcon}
         hasValues={hasValues}
         errorMessage={errorMessage}
         chartItems={chartItems}
