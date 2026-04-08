@@ -72,11 +72,26 @@ msgstr ""
 msgid "Area chart"
 msgstr "Områdediagram"
 
+msgid "Availability"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
 msgid "Badges"
 msgstr "Badges"
 
 msgid "Bar chart"
 msgstr "Søjlediagram"
+
+msgid "Basic contact information and profile photo."
+msgstr ""
+
+msgid "Birthday"
+msgstr ""
+
+msgid "Birthday must be in the past"
+msgstr ""
 
 msgid "Bold"
 msgstr "Fed"
@@ -129,16 +144,13 @@ msgstr "Kombinationsboks (oprettelig)"
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
 
-msgid "Company"
-msgstr ""
-
-msgid "Company name"
-msgstr ""
-
 msgid "Confirm action"
 msgstr ""
 
 msgid "Contact details saved"
+msgstr ""
+
+msgid "Contact info"
 msgstr ""
 
 msgid "Controls"
@@ -165,6 +177,9 @@ msgstr "Datovælger"
 msgid "Date range"
 msgstr "Datointerval"
 
+msgid "Dates and additional notes about this contact."
+msgstr ""
+
 msgid "Default"
 msgstr "Standard"
 
@@ -188,6 +203,9 @@ msgstr "Destruktiv advarsel"
 
 msgid "Dialogs and cards"
 msgstr "Dialoger og kort"
+
+msgid "Dirty dialog"
+msgstr ""
 
 msgid "Disabled"
 msgstr "Deaktiveret"
@@ -231,6 +249,9 @@ msgstr "Ekstra lille"
 msgid "First name"
 msgstr ""
 
+msgid "First name is required"
+msgstr ""
+
 msgid "Form dialogs"
 msgstr ""
 
@@ -267,6 +288,9 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
+msgid "Grant admin access"
+msgstr ""
+
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
@@ -298,6 +322,9 @@ msgid "Item archived"
 msgstr ""
 
 msgid "Item deleted"
+msgstr ""
+
+msgid "JPEG, PNG or WebP. Max 1 MB."
 msgstr ""
 
 msgid "Just now"
@@ -357,6 +384,9 @@ msgstr "Native tid"
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "Next"
+msgstr ""
+
 msgid "No data yet"
 msgstr "Ingen data endnu"
 
@@ -411,14 +441,17 @@ msgstr "Vælg en dato"
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
+msgid "Please enter a valid email address"
+msgstr ""
+
+msgid "Profile picture preview"
+msgstr ""
+
 msgid "Publish now"
 msgstr ""
 
 msgid "Radar chart"
 msgstr "Radardiagram"
-
-msgid "Radio card selector"
-msgstr "Radiokort-vælger"
 
 msgid "Radio group"
 msgstr "Radiogruppe"
@@ -435,16 +468,25 @@ msgstr ""
 msgid "Relative"
 msgstr "Relativ"
 
+msgid "Remove"
+msgstr ""
+
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
 msgid "Role"
 msgstr ""
 
+msgid "Role & preferences"
+msgstr ""
+
 msgid "Save changes"
 msgstr "Gem ændringer"
 
 msgid "Saving..."
+msgstr ""
+
+msgid "Schedule & notes"
 msgstr ""
 
 msgid "Search"
@@ -459,8 +501,8 @@ msgstr "Sekundær"
 msgid "Select"
 msgstr "Vælg"
 
-msgid "Select fruits"
-msgstr "Vælg frugter"
+msgid "Select charts"
+msgstr ""
 
 msgid "Send invitation"
 msgstr ""
@@ -468,7 +510,13 @@ msgstr ""
 msgid "Send invite"
 msgstr "Send invitation"
 
+msgid "Send welcome email"
+msgstr ""
+
 msgid "Sending..."
+msgstr ""
+
+msgid "Set the contact's role and communication preferences."
 msgstr ""
 
 msgid "Short date"
@@ -476,6 +524,12 @@ msgstr "Kort dato"
 
 msgid "Short date with time"
 msgstr "Kort dato med tid"
+
+msgid "Show toast"
+msgstr ""
+
+msgid "Simulate errors"
+msgstr ""
 
 msgid "Skeleton loading states"
 msgstr "Skelet-indlæsningstilstande"
@@ -490,6 +544,9 @@ msgid "Standard user access"
 msgstr "Standard brugeradgang"
 
 msgid "Stay"
+msgstr ""
+
+msgid "Subscribe to newsletter"
 msgstr ""
 
 msgid "Switch"
@@ -555,7 +612,10 @@ msgstr "Understregning"
 msgid "Unsaved changes"
 msgstr ""
 
-msgid "Update the contact details. Changes will be saved immediately."
+msgid "Upload photo"
+msgstr ""
+
+msgid "Upload profile picture"
 msgstr ""
 
 msgid "Usage"
@@ -575,6 +635,9 @@ msgstr "Med ikoner"
 
 msgid "Yesterday"
 msgstr "I går"
+
+msgid "You can go back to change earlier steps before saving."
+msgstr ""
 
 msgid "You have 3 unread notifications."
 msgstr "Du har 3 ulæste notifikationer."

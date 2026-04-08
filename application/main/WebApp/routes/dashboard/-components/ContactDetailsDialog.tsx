@@ -1,54 +1,88 @@
+import type { DateRangeValue } from "@repo/ui/components/DateRangePicker";
+
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@repo/ui/components/Button";
-import {
-  DialogBody,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from "@repo/ui/components/Dialog";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/Dialog";
 import { DirtyDialog } from "@repo/ui/components/DirtyDialog";
-import { Form } from "@repo/ui/components/Form";
-import { TextAreaField } from "@repo/ui/components/TextAreaField";
-import { TextField } from "@repo/ui/components/TextField";
-import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface ContactDetailsDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+import { ContactInfoStep } from "./ContactInfoStep";
+import { RolePreferencesStep } from "./RolePreferencesStep";
+import { ScheduleNotesStep } from "./ScheduleNotesStep";
+
+const TOTAL_STEPS = 3;
+
+function StepIndicator({ current, total }: Readonly<{ current: number; total: number }>) {
+  return (
+    <div className="flex items-center gap-1.5">
+      {Array.from({ length: total }, (_, i) => (
+        <div
+          key={i}
+          className={`h-1.5 rounded-full transition-all ${i <= current ? "w-6 bg-primary" : "w-4 bg-muted"}`}
+        />
+      ))}
+      <span className="ml-1 text-xs text-muted-foreground">
+        {current + 1} / {total}
+      </span>
+    </div>
+  );
 }
 
-export function ContactDetailsDialog({ isOpen, onOpenChange }: Readonly<ContactDetailsDialogProps>) {
+const stepTitles = () => [t`Contact info`, t`Schedule & notes`, t`Role & preferences`];
+const stepDescriptions = () => [
+  t`Basic contact information and profile photo.`,
+  t`Dates and additional notes about this contact.`,
+  t`Set the contact's role and communication preferences.`
+];
+
+export interface ContactDetailsDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  dirtyDialog: boolean;
+  showToasts: boolean;
+  simulateErrors: boolean;
+}
+
+export function ContactDetailsDialog({
+  isOpen,
+  onOpenChange,
+  dirtyDialog,
+  showToasts,
+  simulateErrors
+}: Readonly<ContactDetailsDialogProps>) {
+  const [step, setStep] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
+  const [birthday, setBirthday] = useState<string | undefined>(undefined);
+  const [availability, setAvailability] = useState<DateRangeValue | null>(null);
 
   const mutation = useMutation({
     mutationFn: async (_data: { body?: unknown }) => {
-      await new Promise<void>((resolve) => setTimeout(resolve, 800));
+      await new Promise<void>((resolve) => setTimeout(resolve, 500));
     },
     onSuccess: () => {
       setIsDirty(false);
       onOpenChange(false);
-      toast.success(t`Contact details saved`);
+      if (showToasts) toast.success(t`Contact details saved`);
     }
   });
 
   const markDirty = () => setIsDirty(true);
   const handleCloseComplete = () => {
+    setStep(0);
     setIsDirty(false);
     mutation.reset();
   };
+
+  const titles = stepTitles();
+  const descriptions = stepDescriptions();
 
   return (
     <DirtyDialog
       open={isOpen}
       onOpenChange={onOpenChange}
-      hasUnsavedChanges={isDirty}
+      hasUnsavedChanges={dirtyDialog && isDirty}
       unsavedChangesTitle={t`Unsaved changes`}
       unsavedChangesMessage={<Trans>You have unsaved changes. If you leave now, your changes will be lost.</Trans>}
       leaveLabel={t`Leave`}
@@ -56,84 +90,38 @@ export function ContactDetailsDialog({ isOpen, onOpenChange }: Readonly<ContactD
       onCloseComplete={handleCloseComplete}
       trackingTitle="Edit contact"
     >
-      <DialogContent className="sm:w-dialog-lg">
+      <DialogContent className="sm:w-dialog-md">
         <DialogHeader>
-          <DialogTitle>
-            <Trans>Edit contact</Trans>
-          </DialogTitle>
-          <DialogDescription>
-            <Trans>Update the contact details. Changes will be saved immediately.</Trans>
-          </DialogDescription>
+          <StepIndicator current={step} total={TOTAL_STEPS} />
+          <DialogTitle>{titles[step]}</DialogTitle>
+          <DialogDescription>{descriptions[step]}</DialogDescription>
         </DialogHeader>
-        <Form
-          onSubmit={mutationSubmitter(mutation)}
-          validationErrors={
-            mutation.error instanceof Error
-              ? undefined
-              : (mutation.error as { errors?: Record<string, string[]> } | null)?.errors
-          }
-          className="flex min-h-0 flex-1 flex-col"
-        >
-          <DialogBody>
-            <div className="grid grid-cols-2 gap-4">
-              <TextField
-                autoFocus
-                name="firstName"
-                label={t`First name`}
-                defaultValue="Alex"
-                placeholder={t`E.g., Alex`}
-                onChange={markDirty}
-              />
-              <TextField
-                name="lastName"
-                label={t`Last name`}
-                defaultValue="Taylor"
-                placeholder={t`E.g., Taylor`}
-                onChange={markDirty}
-              />
-              <TextField
-                name="email"
-                label={t`Email`}
-                type="email"
-                defaultValue="alex.taylor@example.com"
-                placeholder={t`email@example.com`}
-                className="col-span-2"
-                onChange={markDirty}
-              />
-              <TextField
-                name="phone"
-                label={t`Phone number`}
-                type="tel"
-                defaultValue="+1 555 123 4567"
-                placeholder={t`+1 555 000 0000`}
-                onChange={markDirty}
-              />
-              <TextField
-                name="company"
-                label={t`Company`}
-                defaultValue="Acme Corp"
-                placeholder={t`Company name`}
-                onChange={markDirty}
-              />
-              <TextAreaField
-                name="notes"
-                label={t`Notes`}
-                defaultValue="Met at conference in March."
-                placeholder={t`Add notes about this contact`}
-                className="col-span-2"
-                onChange={markDirty}
-              />
-            </div>
-          </DialogBody>
-          <DialogFooter>
-            <DialogClose render={<Button type="reset" variant="secondary" disabled={mutation.isPending} />}>
-              <Trans>Cancel</Trans>
-            </DialogClose>
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? <Trans>Saving...</Trans> : <Trans>Save changes</Trans>}
-            </Button>
-          </DialogFooter>
-        </Form>
+        {step === 0 && (
+          <ContactInfoStep
+            simulateErrors={simulateErrors}
+            onNext={() => setStep(1)}
+            onCancel={() => onOpenChange(false)}
+            onChange={markDirty}
+          />
+        )}
+        {step === 1 && (
+          <ScheduleNotesStep
+            simulateErrors={simulateErrors}
+            birthday={birthday}
+            onBirthdayChange={setBirthday}
+            availability={availability}
+            onAvailabilityChange={setAvailability}
+            onBack={() => setStep(0)}
+            onNext={() => setStep(2)}
+            onChange={markDirty}
+          />
+        )}
+        {step === 2 && <RolePreferencesStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
+        {step < TOTAL_STEPS - 1 && (
+          <p className="px-6 pb-6 text-xs text-muted-foreground">
+            <Trans>You can go back to change earlier steps before saving.</Trans>
+          </p>
+        )}
       </DialogContent>
     </DirtyDialog>
   );

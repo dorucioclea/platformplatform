@@ -72,11 +72,26 @@ msgstr "Archive this item?"
 msgid "Area chart"
 msgstr "Area chart"
 
+msgid "Availability"
+msgstr "Availability"
+
+msgid "Back"
+msgstr "Back"
+
 msgid "Badges"
 msgstr "Badges"
 
 msgid "Bar chart"
 msgstr "Bar chart"
+
+msgid "Basic contact information and profile photo."
+msgstr "Basic contact information and profile photo."
+
+msgid "Birthday"
+msgstr "Birthday"
+
+msgid "Birthday must be in the past"
+msgstr "Birthday must be in the past"
 
 msgid "Bold"
 msgstr "Bold"
@@ -129,17 +144,14 @@ msgstr "Combobox (creatable)"
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
 
-msgid "Company"
-msgstr "Company"
-
-msgid "Company name"
-msgstr "Company name"
-
 msgid "Confirm action"
 msgstr "Confirm action"
 
 msgid "Contact details saved"
 msgstr "Contact details saved"
+
+msgid "Contact info"
+msgstr "Contact info"
 
 msgid "Controls"
 msgstr "Controls"
@@ -165,6 +177,9 @@ msgstr "Date picker"
 msgid "Date range"
 msgstr "Date range"
 
+msgid "Dates and additional notes about this contact."
+msgstr "Dates and additional notes about this contact."
+
 msgid "Default"
 msgstr "Default"
 
@@ -188,6 +203,9 @@ msgstr "Destructive alert"
 
 msgid "Dialogs and cards"
 msgstr "Dialogs and cards"
+
+msgid "Dirty dialog"
+msgstr "Dirty dialog"
 
 msgid "Disabled"
 msgstr "Disabled"
@@ -231,6 +249,9 @@ msgstr "Extra small"
 msgid "First name"
 msgstr "First name"
 
+msgid "First name is required"
+msgstr "First name is required"
+
 msgid "Form dialogs"
 msgstr "Form dialogs"
 
@@ -267,6 +288,9 @@ msgstr "Good morning"
 msgid "Good morning, {firstName}"
 msgstr "Good morning, {firstName}"
 
+msgid "Grant admin access"
+msgstr "Grant admin access"
+
 msgid "Here's your overview of what's happening."
 msgstr "Here's your overview of what's happening."
 
@@ -299,6 +323,9 @@ msgstr "Item archived"
 
 msgid "Item deleted"
 msgstr "Item deleted"
+
+msgid "JPEG, PNG or WebP. Max 1 MB."
+msgstr "JPEG, PNG or WebP. Max 1 MB."
 
 msgid "Just now"
 msgstr "Just now"
@@ -357,6 +384,9 @@ msgstr "Native time"
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "Next"
+msgstr "Next"
+
 msgid "No data yet"
 msgstr "No data yet"
 
@@ -411,14 +441,17 @@ msgstr "Pick a date"
 msgid "Pie chart"
 msgstr "Pie chart"
 
+msgid "Please enter a valid email address"
+msgstr "Please enter a valid email address"
+
+msgid "Profile picture preview"
+msgstr "Profile picture preview"
+
 msgid "Publish now"
 msgstr "Publish now"
 
 msgid "Radar chart"
 msgstr "Radar chart"
-
-msgid "Radio card selector"
-msgstr "Radio card selector"
 
 msgid "Radio group"
 msgstr "Radio group"
@@ -435,17 +468,26 @@ msgstr "Ready to publish?"
 msgid "Relative"
 msgstr "Relative"
 
+msgid "Remove"
+msgstr "Remove"
+
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
 
 msgid "Role"
 msgstr "Role"
 
+msgid "Role & preferences"
+msgstr "Role & preferences"
+
 msgid "Save changes"
 msgstr "Save changes"
 
 msgid "Saving..."
 msgstr "Saving..."
+
+msgid "Schedule & notes"
+msgstr "Schedule & notes"
 
 msgid "Search"
 msgstr "Search"
@@ -459,8 +501,8 @@ msgstr "Secondary"
 msgid "Select"
 msgstr "Select"
 
-msgid "Select fruits"
-msgstr "Select fruits"
+msgid "Select charts"
+msgstr "Select charts"
 
 msgid "Send invitation"
 msgstr "Send invitation"
@@ -468,14 +510,26 @@ msgstr "Send invitation"
 msgid "Send invite"
 msgstr "Send invite"
 
+msgid "Send welcome email"
+msgstr "Send welcome email"
+
 msgid "Sending..."
 msgstr "Sending..."
+
+msgid "Set the contact's role and communication preferences."
+msgstr "Set the contact's role and communication preferences."
 
 msgid "Short date"
 msgstr "Short date"
 
 msgid "Short date with time"
 msgstr "Short date with time"
+
+msgid "Show toast"
+msgstr "Show toast"
+
+msgid "Simulate errors"
+msgstr "Simulate errors"
 
 msgid "Skeleton loading states"
 msgstr "Skeleton loading states"
@@ -491,6 +545,9 @@ msgstr "Standard user access"
 
 msgid "Stay"
 msgstr "Stay"
+
+msgid "Subscribe to newsletter"
+msgstr "Subscribe to newsletter"
 
 msgid "Switch"
 msgstr "Switch"
@@ -555,8 +612,11 @@ msgstr "Underline"
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
-msgid "Update the contact details. Changes will be saved immediately."
-msgstr "Update the contact details. Changes will be saved immediately."
+msgid "Upload photo"
+msgstr "Upload photo"
+
+msgid "Upload profile picture"
+msgstr "Upload profile picture"
 
 msgid "Usage"
 msgstr "Usage"
@@ -575,6 +635,9 @@ msgstr "With icons"
 
 msgid "Yesterday"
 msgstr "Yesterday"
+
+msgid "You can go back to change earlier steps before saving."
+msgstr "You can go back to change earlier steps before saving."
 
 msgid "You have 3 unread notifications."
 msgstr "You have 3 unread notifications."

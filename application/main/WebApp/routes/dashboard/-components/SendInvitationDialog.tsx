@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Button } from "@repo/ui/components/Button";
+import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import {
   DialogBody,
   DialogClose,
@@ -11,32 +12,55 @@ import {
   DialogTitle
 } from "@repo/ui/components/Dialog";
 import { DirtyDialog } from "@repo/ui/components/DirtyDialog";
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@repo/ui/components/Field";
 import { Form } from "@repo/ui/components/Form";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/Select";
-import { SelectField } from "@repo/ui/components/SelectField";
+import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
+import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
+import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TextField } from "@repo/ui/components/TextField";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { useMutation } from "@tanstack/react-query";
+import { MailIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
-interface SendInvitationDialogProps {
+export interface SendInvitationDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  dirtyDialog: boolean;
+  showToasts: boolean;
+  simulateErrors: boolean;
 }
 
-export function SendInvitationDialog({ isOpen, onOpenChange }: Readonly<SendInvitationDialogProps>) {
+export function SendInvitationDialog({
+  isOpen,
+  onOpenChange,
+  dirtyDialog,
+  showToasts,
+  simulateErrors
+}: Readonly<SendInvitationDialogProps>) {
+  const [isDirty, setIsDirty] = useState(false);
+
   const mutation = useMutation({
     mutationFn: async (_data: { body?: unknown }) => {
-      await new Promise<void>((resolve) => setTimeout(resolve, 600));
+      await new Promise<void>((resolve) => setTimeout(resolve, 500));
     },
     onSuccess: () => {
+      setIsDirty(false);
       onOpenChange(false);
-      toast.success(t`Invitation sent`);
+      if (showToasts) toast.success(t`Invitation sent`);
     }
   });
 
+  const markDirty = () => setIsDirty(true);
+
   return (
-    <DirtyDialog open={isOpen} onOpenChange={onOpenChange} hasUnsavedChanges={false} trackingTitle="Send invitation">
+    <DirtyDialog
+      open={isOpen}
+      onOpenChange={onOpenChange}
+      hasUnsavedChanges={dirtyDialog && isDirty}
+      trackingTitle="Send invitation"
+    >
       <DialogContent className="sm:w-dialog-md">
         <DialogHeader>
           <DialogTitle>
@@ -46,33 +70,83 @@ export function SendInvitationDialog({ isOpen, onOpenChange }: Readonly<SendInvi
             <Trans>Invite a new member to join your workspace.</Trans>
           </DialogDescription>
         </DialogHeader>
-        <Form onSubmit={mutationSubmitter(mutation)} className="flex min-h-0 flex-1 flex-col">
+        <Form
+          onSubmit={mutationSubmitter(mutation)}
+          validationErrors={simulateErrors ? { email: [t`Please enter a valid email address`] } : undefined}
+          className="flex min-h-0 flex-1 flex-col"
+        >
           <DialogBody>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               <TextField
                 autoFocus
                 name="email"
                 label={t`Email address`}
                 type="email"
                 placeholder={t`colleague@company.com`}
-                isRequired
+                onChange={markDirty}
               />
-              <SelectField name="role" label={t`Role`} defaultValue="member">
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="owner">
-                    <Trans>Owner</Trans>
-                  </SelectItem>
-                  <SelectItem value="admin">
-                    <Trans>Admin</Trans>
-                  </SelectItem>
-                  <SelectItem value="member">
-                    <Trans>Member</Trans>
-                  </SelectItem>
-                </SelectContent>
-              </SelectField>
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-medium">
+                  <Trans>Role</Trans>
+                </p>
+                <RadioGroup defaultValue="member" onValueChange={markDirty}>
+                  <FieldLabel>
+                    <Field orientation="horizontal">
+                      <RadioGroupItem value="owner" />
+                      <FieldContent>
+                        <FieldTitle>
+                          <ShieldIcon />
+                          <Trans>Owner</Trans>
+                        </FieldTitle>
+                        <FieldDescription>
+                          <Trans>Full access including user roles and account settings</Trans>
+                        </FieldDescription>
+                      </FieldContent>
+                    </Field>
+                  </FieldLabel>
+                  <FieldLabel>
+                    <Field orientation="horizontal">
+                      <RadioGroupItem value="admin" />
+                      <FieldContent>
+                        <FieldTitle>
+                          <UserIcon />
+                          <Trans>Admin</Trans>
+                        </FieldTitle>
+                        <FieldDescription>
+                          <Trans>Full access except changing user roles and account settings</Trans>
+                        </FieldDescription>
+                      </FieldContent>
+                    </Field>
+                  </FieldLabel>
+                  <FieldLabel>
+                    <Field orientation="horizontal">
+                      <RadioGroupItem value="member" />
+                      <FieldContent>
+                        <FieldTitle>
+                          <MailIcon />
+                          <Trans>Member</Trans>
+                        </FieldTitle>
+                        <FieldDescription>
+                          <Trans>Standard user access</Trans>
+                        </FieldDescription>
+                      </FieldContent>
+                    </Field>
+                  </FieldLabel>
+                </RadioGroup>
+              </div>
+              <InlineFieldGroup>
+                <SwitchField
+                  name="notify"
+                  label={t`Send welcome email`}
+                  defaultChecked
+                  onCheckedChange={markDirty}
+                />
+                <CheckboxField
+                  name="admin-access"
+                  label={t`Grant admin access`}
+                  onCheckedChange={markDirty}
+                />
+              </InlineFieldGroup>
             </div>
           </DialogBody>
           <DialogFooter>

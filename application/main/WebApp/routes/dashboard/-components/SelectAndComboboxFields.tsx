@@ -81,7 +81,7 @@ export function SelectAndComboboxFields({
         label={label ? t`Multi select` : undefined}
         tooltip={tooltip ? tooltips.multiSelect : undefined}
         name={`multi-${suffix}`}
-        placeholder={t`Select fruits`}
+        placeholder={t`Select charts`}
         startIcon={showIcon ? <SearchIcon /> : undefined}
         items={chartItems}
         value={hasValues ? localCharts : selectedCharts}
