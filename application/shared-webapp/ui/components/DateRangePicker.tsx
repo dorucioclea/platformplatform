@@ -202,6 +202,7 @@ export function DateRangePicker({
             }}
           >
             <Calendar
+              autoFocus
               mode="range"
               selected={dateRange}
               onDayClick={handleDayClick}

@@ -177,6 +177,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
 
   return (
     <Button
+      ref={ref}
       variant="ghost"
       size="icon"
       data-day={day.date.toLocaleDateString()}

@@ -154,6 +154,7 @@ export function DatePicker({
             }}
           >
             <Calendar
+              autoFocus
               mode="single"
               selected={selectedDate}
               onSelect={handleSelect}

@@ -20,6 +20,7 @@ function LabelWithTooltip({ tooltip, children }: Readonly<LabelWithTooltipProps>
       {children}
       <Tooltip>
         <TooltipTrigger
+          tabIndex={-1}
           aria-label={t`More information`}
           className="inline-flex size-4 shrink-0 items-center justify-center rounded-full p-0 outline-ring hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
         >
