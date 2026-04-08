@@ -13,11 +13,11 @@ const toggleVariants = cva(
         default: "bg-transparent",
         outline: "border border-input bg-transparent shadow-xs hover:bg-muted"
       },
-      // NOTE: This diverges from stock ShadCN to use CSS variable heights. Default is 36px to match segmented control conventions; lg is 44px for Apple HIG tap targets.
+      // NOTE: This diverges from stock ShadCN to use CSS variable heights for Apple HIG compliance (44px tap targets).
       size: {
-        default: "h-[var(--control-height-sm)] min-w-[var(--control-height-sm)] px-2",
-        sm: "h-[var(--control-height-xs)] min-w-[var(--control-height-xs)] px-1.5 text-xs",
-        lg: "h-[var(--control-height)] min-w-[var(--control-height)] px-2.5"
+        default: "h-[var(--control-height)] min-w-[var(--control-height)] px-2",
+        sm: "h-[var(--control-height-sm)] min-w-[var(--control-height-sm)] px-1.5",
+        lg: "h-[var(--control-height-lg)] min-w-[var(--control-height-lg)] px-2.5"
       }
     },
     defaultVariants: {
