@@ -147,7 +147,7 @@ export function DateRangePicker({
     if (!value?.start || !value?.end) {
       return placeholder;
     }
-    return `${format(value.start, "PPP", { locale: dateLocale })} - ${format(value.end, "PPP", { locale: dateLocale })}`;
+    return `${format(value.start, "PP", { locale: dateLocale })} - ${format(value.end, "PP", { locale: dateLocale })}`;
   };
 
   const hasValue = value !== null && value !== undefined;

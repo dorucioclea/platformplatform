@@ -78,6 +78,7 @@ export function ComponentPreview() {
             disabled={!showLabels}
           />
           <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
+          <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
           <ToggleGroup
             variant="outline"
             value={[controlState]}
@@ -97,7 +98,6 @@ export function ComponentPreview() {
               <Trans>Disabled</Trans>
             </ToggleGroupItem>
           </ToggleGroup>
-          <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
         </div>
         <ControlRow
           suffix="controls"
