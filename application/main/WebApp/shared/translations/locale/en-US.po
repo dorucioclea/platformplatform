@@ -300,6 +300,9 @@ msgstr "Icons"
 msgid "Info alert"
 msgstr "Info alert"
 
+msgid "Interactive"
+msgstr "Interactive"
+
 msgid "Invitation sent"
 msgstr "Invitation sent"
 

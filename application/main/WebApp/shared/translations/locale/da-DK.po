@@ -300,6 +300,9 @@ msgstr ""
 msgid "Info alert"
 msgstr "Informationsadvarsel"
 
+msgid "Interactive"
+msgstr ""
+
 msgid "Invitation sent"
 msgstr ""
 

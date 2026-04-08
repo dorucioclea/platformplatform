@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { Button } from "@repo/ui/components/Button";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import {
@@ -27,9 +28,8 @@ export function ComponentPreview() {
 
   const [showLabels, setShowLabels] = useState(true);
   const [showTooltips, setShowTooltips] = useState(true);
-  const [showIcons, setShowIcons] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [showIcons, setShowIcons] = useState(true);
+  const [controlState, setControlState] = useState<"none" | "disabled" | "readonly">("none");
   const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
@@ -84,22 +84,29 @@ export function ComponentPreview() {
             disabled={!showLabels}
           />
           <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
-          <SwitchField
-            label={t`Disabled`}
-            checked={isDisabled}
-            onCheckedChange={(checked) => {
-              setIsDisabled(checked);
-              if (checked) setIsReadOnly(false);
-            }}
-          />
-          <SwitchField
-            label={t`Read only`}
-            checked={isReadOnly}
-            onCheckedChange={(checked) => {
-              setIsReadOnly(checked);
-              if (checked) setIsDisabled(false);
-            }}
-          />
+          <div className="flex items-center" data-slot="button-group">
+            <Button
+              size="xs"
+              variant={controlState === "none" ? "default" : "outline"}
+              onClick={() => setControlState("none")}
+            >
+              <Trans>Interactive</Trans>
+            </Button>
+            <Button
+              size="xs"
+              variant={controlState === "disabled" ? "default" : "outline"}
+              onClick={() => setControlState("disabled")}
+            >
+              <Trans>Disabled</Trans>
+            </Button>
+            <Button
+              size="xs"
+              variant={controlState === "readonly" ? "default" : "outline"}
+              onClick={() => setControlState("readonly")}
+            >
+              <Trans>Read only</Trans>
+            </Button>
+          </div>
           <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
         </div>
         <ControlRow
@@ -107,8 +114,8 @@ export function ComponentPreview() {
           label={showLabels}
           tooltip={showTooltips && showLabels}
           showIcon={showIcons}
-          disabled={isDisabled}
-          readOnly={isReadOnly}
+          disabled={controlState === "disabled"}
+          readOnly={controlState === "readonly"}
           error={showErrors}
           {...shared}
         />
