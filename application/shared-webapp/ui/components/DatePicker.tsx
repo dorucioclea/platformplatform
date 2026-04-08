@@ -149,7 +149,9 @@ export function DatePicker({
             align="start"
             onKeyDown={(e: React.KeyboardEvent) => {
               if (e.key === "Tab") {
+                e.preventDefault();
                 setOpen(false);
+                document.getElementById(triggerId ?? "")?.focus();
               }
             }}
           >

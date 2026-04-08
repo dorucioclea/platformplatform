@@ -86,7 +86,9 @@ export function MultiSelect({
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent, itemId: string) => {
       if (e.key === "Tab") {
+        e.preventDefault();
         setOpen(false);
+        document.getElementById(name ?? "")?.focus();
         return;
       }
       if (e.key === " " || e.key === "Enter") {

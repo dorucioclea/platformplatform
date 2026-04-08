@@ -197,7 +197,9 @@ export function DateRangePicker({
             align="start"
             onKeyDown={(e: React.KeyboardEvent) => {
               if (e.key === "Tab") {
+                e.preventDefault();
                 setOpen(false);
+                document.getElementById(name ?? "")?.focus();
               }
             }}
           >
