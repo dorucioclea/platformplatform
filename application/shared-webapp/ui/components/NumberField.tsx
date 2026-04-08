@@ -58,7 +58,7 @@ export function NumberField({
       ? fieldValidationErrors
       : [fieldValidationErrors]
     : [];
-  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
+  const { displayError, markChanged, clearOnBlur, clearNow } = useFieldError(errorMessage);
   const errors = displayError
     ? [{ message: displayError }]
     : fieldErrorMessages.length > 0
@@ -106,12 +106,14 @@ export function NumberField({
   };
 
   const handleIncrement = () => {
+    clearNow();
     const next = clamp(roundToStep((isNaN(numericValue) ? (minValue ?? 0) : numericValue) + step));
     setInternalValue(formatNumber(next));
     onChange?.(next);
   };
 
   const handleDecrement = () => {
+    clearNow();
     const next = clamp(roundToStep((isNaN(numericValue) ? (minValue ?? 0) : numericValue) - step));
     setInternalValue(formatNumber(next));
     onChange?.(next);
