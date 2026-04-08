@@ -3,7 +3,7 @@ import type { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import { useContext } from "react";
 
 import { cn } from "../utils";
-import { Field, FieldError, FieldLabel } from "./Field";
+import { Field, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Switch } from "./Switch";
@@ -14,6 +14,7 @@ export interface SwitchFieldProps extends SwitchPrimitive.Root.Props {
   tooltip?: React.ReactNode;
   className?: string;
   isReadOnly?: boolean;
+  alignWithLabel?: boolean;
 }
 
 export function SwitchField({
@@ -23,6 +24,7 @@ export function SwitchField({
   className,
   name,
   isReadOnly,
+  alignWithLabel,
   disabled,
   onCheckedChange,
   ...props
@@ -41,12 +43,7 @@ export function SwitchField({
       : undefined;
 
   return (
-    <Field className={cn("inline-flex w-auto flex-col", className)}>
-      {label && (
-        <FieldLabel className="invisible" aria-hidden="true">
-          {"\u200D"}
-        </FieldLabel>
-      )}
+    <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
         <Switch
           name={name}

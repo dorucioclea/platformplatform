@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 import { cn } from "../utils";
 import { Checkbox } from "./Checkbox";
-import { Field, FieldError, FieldLabel } from "./Field";
+import { Field, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -14,6 +14,7 @@ export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   tooltip?: React.ReactNode;
   className?: string;
   isReadOnly?: boolean;
+  alignWithLabel?: boolean;
 }
 
 export function CheckboxField({
@@ -23,6 +24,7 @@ export function CheckboxField({
   className,
   name,
   isReadOnly,
+  alignWithLabel,
   disabled,
   onCheckedChange,
   ...props
@@ -41,12 +43,7 @@ export function CheckboxField({
       : undefined;
 
   return (
-    <Field className={cn("inline-flex w-auto flex-col", className)}>
-      {label && (
-        <FieldLabel className="invisible" aria-hidden="true">
-          {"\u200D"}
-        </FieldLabel>
-      )}
+    <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
         <Checkbox
           name={name}

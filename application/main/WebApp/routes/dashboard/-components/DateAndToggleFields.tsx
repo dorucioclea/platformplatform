@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { cn } from "@repo/ui/utils";
 import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
@@ -71,7 +72,7 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <div className="flex flex-wrap gap-x-6 gap-y-2 self-start">
+      <div className={cn("flex flex-wrap gap-x-6 gap-y-2 self-start", label && "mt-[1.953rem]")}>
         <SwitchField
           label={label ? (hasValues ? t`Switch (on)` : t`Switch`) : undefined}
           tooltip={tooltip ? tooltips.switchField : undefined}
@@ -92,7 +93,7 @@ export function DateAndToggleFields({
           />
         )}
       </div>
-      <div className="flex flex-wrap gap-x-6 gap-y-2 self-start">
+      <div className={cn("flex flex-wrap gap-x-6 gap-y-2 self-start", label && "mt-[1.953rem]")}>
         <CheckboxField
           label={label ? (hasValues ? t`Checkbox (on)` : t`Checkbox`) : undefined}
           tooltip={tooltip ? tooltips.checkboxField : undefined}
