@@ -173,7 +173,7 @@ export function DateRangePicker({
                 aria-invalid={isInvalid || undefined}
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
-                  "w-full justify-between border border-input font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30",
+                  "w-full justify-between border border-input px-2.5 font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30",
                   hasValue && !isReadOnly && !disabled && "pr-9",
                   isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
