@@ -48,8 +48,8 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       weekStartsOn={weekStartsOn}
       className={cn(
-        // NOTE: This diverges from stock ShadCN to use 44px cell size for Apple HIG touch target compliance.
-        "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:--spacing(11)] [--rdp-nav_button-height:--spacing(11)] [--rdp-nav_button-width:--spacing(11)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        // NOTE: This diverges from stock ShadCN to use responsive control height for cell size (38px desktop, 44px mobile).
+        "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         String.raw`rtl:[&_.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:[&_.rdp-button\_previous>svg]:rotate-180`,
         className
