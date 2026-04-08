@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../utils";
 
 const alertVariants = cva(
-  "relative flex w-full items-start gap-3 rounded-lg border p-4 text-sm [&>svg]:size-5 [&>svg]:shrink-0",
+  "relative w-full rounded-lg border p-4 text-sm [&>svg]:absolute [&>svg]:top-4 [&>svg]:left-4 [&>svg]:size-5 [&>svg~*]:pl-7",
   {
     variants: {
       variant: {
@@ -25,7 +25,9 @@ function Alert({ className, variant, ...props }: React.ComponentProps<"div"> & V
 
 function AlertTitle({ className, ...props }: React.ComponentProps<"h5">) {
   // oxlint-disable-next-line jsx-a11y/heading-has-content -- Content provided via {...props} spread
-  return <h5 data-slot="alert-title" className={cn("leading-none font-medium", className)} {...props} />;
+  return (
+    <h5 data-slot="alert-title" className={cn("mb-1 leading-none font-medium tracking-tight", className)} {...props} />
+  );
 }
 
 function AlertDescription({ className, ...props }: React.ComponentProps<"p">) {
