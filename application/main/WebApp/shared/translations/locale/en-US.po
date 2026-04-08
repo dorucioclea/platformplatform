@@ -120,6 +120,15 @@ msgstr "Cancel"
 msgid "Cards"
 msgstr "Cards"
 
+msgid "Change language"
+msgstr "Change language"
+
+msgid "Change theme"
+msgstr "Change theme"
+
+msgid "Change zoom level"
+msgstr "Change zoom level"
+
 msgid "Changes published"
 msgstr "Changes published"
 
@@ -174,11 +183,11 @@ msgstr "Create item"
 msgid "Dashboard"
 msgstr "Dashboard"
 
+msgid "Date and time"
+msgstr "Date and time"
+
 msgid "Date and time formatting"
 msgstr "Date and time formatting"
-
-msgid "Date formatting"
-msgstr "Date formatting"
 
 msgid "Date picker"
 msgstr "Date picker"
@@ -344,9 +353,6 @@ msgstr "Labels"
 
 msgid "Large"
 msgstr "Large"
-
-msgid "Last month"
-msgstr "Last month"
 
 msgid "Last name"
 msgstr "Last name"
@@ -531,9 +537,6 @@ msgstr "Set the contact's role and communication preferences."
 msgid "Short date"
 msgstr "Short date"
 
-msgid "Short date with time"
-msgstr "Short date with time"
-
 msgid "Show toast"
 msgstr "Show toast"
 
@@ -659,9 +662,6 @@ msgstr "With icons"
 
 msgid "Yesterday"
 msgstr "Yesterday"
-
-msgid "You can go back to change earlier steps before saving."
-msgstr "You can go back to change earlier steps before saving."
 
 msgid "You have 3 unread notifications."
 msgstr "You have 3 unread notifications."

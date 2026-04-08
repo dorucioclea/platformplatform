@@ -9,6 +9,7 @@ import { useState } from "react";
 import { AlertDialogsPreview } from "./AlertDialogsPreview";
 import { CardsPreview } from "./CardsPreview";
 import { ContactDetailsDialog } from "./ContactDetailsDialog";
+import { DateFormatPreview } from "./DateFormatPreview";
 import { SendInvitationDialog } from "./SendInvitationDialog";
 
 export function DialogsPreview() {
@@ -61,6 +62,7 @@ export function DialogsPreview() {
       </div>
       <AlertDialogsPreview showToasts={showToasts} />
       <CardsPreview />
+      <DateFormatPreview />
     </div>
   );
 }

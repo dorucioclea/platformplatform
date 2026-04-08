@@ -120,6 +120,15 @@ msgstr "Annuller"
 msgid "Cards"
 msgstr "Kort"
 
+msgid "Change language"
+msgstr "Skift sprog"
+
+msgid "Change theme"
+msgstr "Skift tema"
+
+msgid "Change zoom level"
+msgstr "Skift zoomniveau"
+
 msgid "Changes published"
 msgstr ""
 
@@ -174,11 +183,11 @@ msgstr "Opret element"
 msgid "Dashboard"
 msgstr "Dashboard"
 
+msgid "Date and time"
+msgstr "Dato og tid"
+
 msgid "Date and time formatting"
 msgstr "Dato- og tidsformatering"
-
-msgid "Date formatting"
-msgstr "Datoformatering"
 
 msgid "Date picker"
 msgstr "Datovælger"
@@ -344,9 +353,6 @@ msgstr ""
 
 msgid "Large"
 msgstr "Stor"
-
-msgid "Last month"
-msgstr "Sidste måned"
 
 msgid "Last name"
 msgstr ""
@@ -531,9 +537,6 @@ msgstr ""
 msgid "Short date"
 msgstr "Kort dato"
 
-msgid "Short date with time"
-msgstr "Kort dato med tid"
-
 msgid "Show toast"
 msgstr ""
 
@@ -659,9 +662,6 @@ msgstr "Med ikoner"
 
 msgid "Yesterday"
 msgstr "I går"
-
-msgid "You can go back to change earlier steps before saving."
-msgstr ""
 
 msgid "You have 3 unread notifications."
 msgstr "Du har 3 ulæste notifikationer."

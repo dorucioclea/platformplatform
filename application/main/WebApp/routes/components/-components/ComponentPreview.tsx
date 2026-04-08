@@ -4,7 +4,6 @@ import { SwitchField } from "@repo/ui/components/SwitchField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import {
-  CalendarIcon,
   MousePointerClickIcon,
   PanelsTopLeftIcon,
   SquareMousePointerIcon,
@@ -16,7 +15,6 @@ import { useEffect, useState } from "react";
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlRow, useChartItems } from "./ControlRow";
-import { DateFormatPreview } from "./DateFormatPreview";
 import { DialogsPreview } from "./DialogsPreview";
 import { EmptySkeletonPreview } from "./EmptySkeletonPreview";
 
@@ -64,10 +62,6 @@ export function ComponentPreview() {
         <TabsTrigger value="dialogs">
           <PanelsTopLeftIcon />
           <Trans>Dialogs and cards</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="dates">
-          <CalendarIcon />
-          <Trans>Date formatting</Trans>
         </TabsTrigger>
         <TabsTrigger value="empty">
           <SquareMousePointerIcon />
@@ -124,9 +118,6 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="dialogs">
         <DialogsPreview />
-      </TabsContent>
-      <TabsContent value="dates">
-        <DateFormatPreview />
       </TabsContent>
       <TabsContent value="empty">
         <EmptySkeletonPreview />

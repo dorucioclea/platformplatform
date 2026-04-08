@@ -117,11 +117,6 @@ export function ContactDetailsDialog({
           />
         )}
         {step === 2 && <RolePreferencesStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
-        {step < TOTAL_STEPS - 1 && (
-          <p className="px-6 pb-6 text-xs text-muted-foreground">
-            <Trans>You can go back to change earlier steps before saving.</Trans>
-          </p>
-        )}
       </DialogContent>
     </DirtyDialog>
   );
