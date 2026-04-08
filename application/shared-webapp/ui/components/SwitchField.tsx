@@ -41,11 +41,13 @@ export function SwitchField({
       : undefined;
 
   return (
-    <Field className={cn("inline-flex w-auto flex-col gap-1", className)}>
+    <Field className={cn("inline-flex w-auto flex-col", className)}>
       {label && (
-        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
+        <FieldLabel className="invisible" aria-hidden="true">
+          {"\u200D"}
+        </FieldLabel>
       )}
-      <div className="flex min-h-(--control-height) items-center">
+      <label className="flex min-h-(--control-height) items-center gap-2">
         <Switch
           name={name}
           disabled={disabled}
@@ -53,7 +55,12 @@ export function SwitchField({
           className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
-      </div>
+        {label && (
+          <span className="flex items-center gap-2 text-sm leading-snug font-medium">
+            {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
+          </span>
+        )}
+      </label>
       <FieldError errors={errors} />
     </Field>
   );

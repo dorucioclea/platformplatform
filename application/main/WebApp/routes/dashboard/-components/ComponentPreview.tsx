@@ -1,18 +1,14 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { SwitchField } from "@repo/ui/components/SwitchField";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import {
-  AlertCircleIcon,
-  BanIcon,
   CalendarIcon,
-  EyeIcon,
-  InfoIcon,
   MousePointerClickIcon,
   PanelsTopLeftIcon,
-  SearchIcon,
   SquareMousePointerIcon,
   TagIcon,
-  TextCursorInputIcon,
-  ToggleLeftIcon
+  TextCursorInputIcon
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -27,10 +23,17 @@ export function ComponentPreview() {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedCharts, setSelectedCharts] = useState<string[]>([]);
   const chartItems = useChartItems();
-  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "tooltips");
+  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "controls");
+
+  const [showLabels, setShowLabels] = useState(true);
+  const [showTooltips, setShowTooltips] = useState(true);
+  const [showIcons, setShowIcons] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
-    const handleHashChange = () => setActiveTab(window.location.hash.replace("#", "") || "labels");
+    const handleHashChange = () => setActiveTab(window.location.hash.replace("#", "") || "controls");
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
@@ -46,33 +49,9 @@ export function ComponentPreview() {
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange}>
       <TabsList>
-        <TabsTrigger value="tooltips">
-          <InfoIcon />
-          <Trans>Controls</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="labels">
+        <TabsTrigger value="controls">
           <TextCursorInputIcon />
-          <Trans>With labels</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="icons">
-          <SearchIcon />
-          <Trans>With icons</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="no-labels">
-          <ToggleLeftIcon />
-          <Trans>Without labels</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="readonly">
-          <EyeIcon />
-          <Trans>Read only</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="disabled">
-          <BanIcon />
-          <Trans>Disabled</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="errors">
-          <AlertCircleIcon />
-          <Trans>Validation errors</Trans>
+          <Trans>Controls</Trans>
         </TabsTrigger>
         <TabsTrigger value="buttons">
           <MousePointerClickIcon />
@@ -95,26 +74,44 @@ export function ComponentPreview() {
           <Trans>Empty and skeleton</Trans>
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="labels">
-        <ControlRow suffix="labeled" label {...shared} />
-      </TabsContent>
-      <TabsContent value="tooltips">
-        <ControlRow suffix="tooltip" label tooltip {...shared} />
-      </TabsContent>
-      <TabsContent value="icons">
-        <ControlRow suffix="icon" label showIcon {...shared} />
-      </TabsContent>
-      <TabsContent value="no-labels">
-        <ControlRow suffix="bare" {...shared} />
-      </TabsContent>
-      <TabsContent value="readonly">
-        <ControlRow suffix="readonly" label readOnly {...shared} />
-      </TabsContent>
-      <TabsContent value="disabled">
-        <ControlRow suffix="disabled" label disabled {...shared} />
-      </TabsContent>
-      <TabsContent value="errors">
-        <ControlRow suffix="error" label error {...shared} />
+      <TabsContent value="controls">
+        <div className="flex flex-wrap gap-x-6 gap-y-2 pb-6">
+          <SwitchField label={t`Labels`} checked={showLabels} onCheckedChange={setShowLabels} />
+          <SwitchField
+            label={t`Tooltips`}
+            checked={showTooltips && showLabels}
+            onCheckedChange={setShowTooltips}
+            disabled={!showLabels}
+          />
+          <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
+          <SwitchField
+            label={t`Disabled`}
+            checked={isDisabled}
+            onCheckedChange={(checked) => {
+              setIsDisabled(checked);
+              if (checked) setIsReadOnly(false);
+            }}
+          />
+          <SwitchField
+            label={t`Read only`}
+            checked={isReadOnly}
+            onCheckedChange={(checked) => {
+              setIsReadOnly(checked);
+              if (checked) setIsDisabled(false);
+            }}
+          />
+          <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
+        </div>
+        <ControlRow
+          suffix="controls"
+          label={showLabels}
+          tooltip={showTooltips && showLabels}
+          showIcon={showIcons}
+          disabled={isDisabled}
+          readOnly={isReadOnly}
+          error={showErrors}
+          {...shared}
+        />
       </TabsContent>
       <TabsContent value="buttons">
         <ButtonsPreview />

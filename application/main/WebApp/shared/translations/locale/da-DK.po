@@ -165,6 +165,9 @@ msgstr "Tom tilstand og skelet"
 msgid "Empty states"
 msgstr "Tomme tilstande"
 
+msgid "Errors"
+msgstr ""
+
 msgid "Extra small"
 msgstr "Ekstra lille"
 
@@ -207,6 +210,9 @@ msgstr "Her er dit overblik over hvad der sker."
 msgid "Icon-only buttons"
 msgstr "Knapper kun med ikon"
 
+msgid "Icons"
+msgstr ""
+
 msgid "Info alert"
 msgstr "Informationsadvarsel"
 
@@ -221,6 +227,9 @@ msgstr "Kursiv"
 
 msgid "Just now"
 msgstr "Lige nu"
+
+msgid "Labels"
+msgstr ""
 
 msgid "Large"
 msgstr "Stor"
@@ -414,6 +423,9 @@ msgstr "Skifteknapper"
 msgid "Toggle sidebar"
 msgstr "Skift sidepanel"
 
+msgid "Tooltips"
+msgstr ""
+
 msgid "Try adjusting your search or filter to find what you are looking for."
 msgstr "Prøv at justere din søgning eller dit filter for at finde det du leder efter."
 
@@ -426,9 +438,6 @@ msgstr "Understregning"
 msgid "Usage"
 msgstr "Forbrug"
 
-msgid "Validation errors"
-msgstr "Valideringsfejl"
-
 msgid "View all"
 msgstr "Se alle"
 
@@ -440,12 +449,6 @@ msgstr "Velkommen til PlatformPlatform"
 
 msgid "With icons"
 msgstr "Med ikoner"
-
-msgid "With labels"
-msgstr "Med etiketter"
-
-msgid "Without labels"
-msgstr "Uden etiketter"
 
 msgid "Yesterday"
 msgstr "I går"

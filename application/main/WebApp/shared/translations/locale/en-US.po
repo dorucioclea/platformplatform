@@ -165,6 +165,9 @@ msgstr "Empty and skeleton"
 msgid "Empty states"
 msgstr "Empty states"
 
+msgid "Errors"
+msgstr "Errors"
+
 msgid "Extra small"
 msgstr "Extra small"
 
@@ -207,6 +210,9 @@ msgstr "Here's your overview of what's happening."
 msgid "Icon-only buttons"
 msgstr "Icon-only buttons"
 
+msgid "Icons"
+msgstr "Icons"
+
 msgid "Info alert"
 msgstr "Info alert"
 
@@ -221,6 +227,9 @@ msgstr "Italic"
 
 msgid "Just now"
 msgstr "Just now"
+
+msgid "Labels"
+msgstr "Labels"
 
 msgid "Large"
 msgstr "Large"
@@ -414,6 +423,9 @@ msgstr "Toggle buttons"
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
 
+msgid "Tooltips"
+msgstr "Tooltips"
+
 msgid "Try adjusting your search or filter to find what you are looking for."
 msgstr "Try adjusting your search or filter to find what you are looking for."
 
@@ -426,9 +438,6 @@ msgstr "Underline"
 msgid "Usage"
 msgstr "Usage"
 
-msgid "Validation errors"
-msgstr "Validation errors"
-
 msgid "View all"
 msgstr "View all"
 
@@ -440,12 +449,6 @@ msgstr "Welcome to PlatformPlatform"
 
 msgid "With icons"
 msgstr "With icons"
-
-msgid "With labels"
-msgstr "With labels"
-
-msgid "Without labels"
-msgstr "Without labels"
 
 msgid "Yesterday"
 msgstr "Yesterday"
