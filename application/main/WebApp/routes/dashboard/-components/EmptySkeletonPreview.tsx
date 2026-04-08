@@ -11,7 +11,7 @@ export function EmptySkeletonPreview() {
         <h4>
           <Trans>Empty states</Trans>
         </h4>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -49,7 +49,7 @@ export function EmptySkeletonPreview() {
         <h4>
           <Trans>Skeleton loading states</Trans>
         </h4>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div className="flex flex-col gap-3 rounded-lg border p-4">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-4 w-1/2" />

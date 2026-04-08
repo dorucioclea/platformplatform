@@ -39,7 +39,7 @@ export function ControlRow({
   const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, errorMessage };
 
   return (
-    <div className="grid grid-cols-4 gap-x-6 gap-y-4">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       <TextField
         label={label ? t`Text field` : undefined}
         tooltip={tooltip ? tooltips.textField : undefined}

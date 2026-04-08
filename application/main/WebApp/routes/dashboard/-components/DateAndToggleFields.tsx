@@ -33,15 +33,6 @@ export function DateAndToggleFields({
 
   return (
     <>
-      <DateField
-        label={label ? t`Native date` : undefined}
-        tooltip={tooltip ? tooltips.dateField : undefined}
-        name={`datefield-${suffix}`}
-        defaultValue={hasValues ? "2025-06-15" : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      />
       <DatePicker
         label={label ? t`Date picker` : undefined}
         tooltip={tooltip ? tooltips.datePicker : undefined}
@@ -60,6 +51,15 @@ export function DateAndToggleFields({
         value={dateRangeValue}
         onChange={setDateRangeValue}
         disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      />
+      <DateField
+        label={label ? t`Native date` : undefined}
+        tooltip={tooltip ? tooltips.dateField : undefined}
+        name={`datefield-${suffix}`}
+        defaultValue={hasValues ? "2025-06-15" : undefined}
+        isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />

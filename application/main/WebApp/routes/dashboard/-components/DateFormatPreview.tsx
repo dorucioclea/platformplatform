@@ -64,7 +64,7 @@ export function DateFormatPreview() {
       <h4>
         <Trans>Date and time formatting</Trans>
       </h4>
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
         <SmartDateDisplay date={justNow} label={t`Just now`} />
         <SmartDateDisplay date={threeMinutesAgo} label={t`3 minutes ago`} />
         <SmartDateDisplay date={twoHoursAgo} label={t`2 hours ago`} />
