@@ -125,13 +125,13 @@ export function MultiSelect({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <label
+        <span
           data-slot="field-label"
-          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </label>
+        </span>
       )}
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>

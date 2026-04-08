@@ -68,13 +68,13 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <label
+        <span
           data-slot="field-label"
-          className="flex items-center gap-2 text-sm leading-snug font-medium select-none"
+          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
           onClick={focusTrigger}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </label>
+        </span>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
         <SelectReadOnlyContext.Provider value={!!isReadOnly}>

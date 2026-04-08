@@ -3,7 +3,7 @@ import { createContext, use, useState } from "react";
 
 import { cn } from "../utils";
 
-function TooltipProvider({ delay = 0, ...props }: TooltipPrimitive.Provider.Props) {
+function TooltipProvider({ delay = 300, ...props }: TooltipPrimitive.Provider.Props) {
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delay={delay} {...props} />;
 }
 
