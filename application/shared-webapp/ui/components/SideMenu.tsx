@@ -51,11 +51,11 @@ const _handleFocusTrap = (e: KeyboardEvent, containerRef: React.RefObject<HTMLEl
 
 // NOTE: Menu items have active:bg-hover-background for press feedback on interactive menu buttons.
 const menuButtonStyles = cva(
-  "menu-item relative flex h-11 items-center justify-start gap-0 overflow-visible rounded-md py-2 text-sm font-normal outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-hover-background",
+  "menu-item relative flex h-[var(--control-height)] items-center justify-start gap-0 overflow-visible rounded-md py-2 text-sm font-normal outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-hover-background",
   {
     variants: {
       isCollapsed: {
-        true: "ml-1.5 w-11 justify-center",
+        true: "ml-1.5 w-[var(--control-height)] justify-center",
         false: "w-full pr-2 pl-4"
       },
       isActive: {
