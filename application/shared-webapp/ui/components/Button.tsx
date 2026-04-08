@@ -26,10 +26,10 @@ const buttonVariants = cva(
       // NOTE: This diverges from stock ShadCN to use CSS variable heights for Apple HIG compliance (44px default tap targets).
       size: {
         default:
-          "h-[var(--control-height)] w-fit min-w-11 gap-1.5 px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-[var(--control-height-xs)] min-w-7 gap-1 rounded-[min(var(--radius-md),0.5rem)] px-2 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-[var(--control-height-sm)] min-w-9 gap-1 rounded-[min(var(--radius-md),0.625rem)] px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
-        lg: "h-[var(--control-height-lg)] w-fit min-w-12 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
+          "h-[var(--control-height)] w-fit min-w-11 gap-1.5 px-6 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4 max-sm:w-full",
+        xs: "h-[var(--control-height-xs)] min-w-7 gap-1 rounded-[min(var(--radius-md),0.5rem)] px-3 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 max-sm:w-full [&_svg:not([class*='size-'])]:size-3",
+        sm: "h-[var(--control-height-sm)] min-w-9 gap-1 rounded-[min(var(--radius-md),0.625rem)] px-4 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 max-sm:w-full",
+        lg: "h-[var(--control-height-lg)] w-fit min-w-12 gap-1.5 px-7 has-data-[icon=inline-end]:pr-5 has-data-[icon=inline-start]:pl-5 max-sm:w-full",
         icon: "h-11 w-11 min-w-11 p-0",
         "icon-xs":
           "h-7 w-7 min-w-7 rounded-[min(var(--radius-md),0.5rem)] p-0 in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3",
