@@ -16,7 +16,6 @@ import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@
 import { Form } from "@repo/ui/components/Form";
 import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
-import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TextField } from "@repo/ui/components/TextField";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { useMutation } from "@tanstack/react-query";
@@ -135,17 +134,7 @@ export function SendInvitationDialog({
                 </RadioGroup>
               </div>
               <InlineFieldGroup>
-                <SwitchField
-                  name="notify"
-                  label={t`Send welcome email`}
-                  defaultChecked
-                  onCheckedChange={markDirty}
-                />
-                <CheckboxField
-                  name="admin-access"
-                  label={t`Grant admin access`}
-                  onCheckedChange={markDirty}
-                />
+                <CheckboxField name="notify" label={t`Send welcome email`} defaultChecked onCheckedChange={markDirty} />
               </InlineFieldGroup>
             </div>
           </DialogBody>

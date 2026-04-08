@@ -288,9 +288,6 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
-msgid "Grant admin access"
-msgstr ""
-
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
