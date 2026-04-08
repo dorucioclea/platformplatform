@@ -36,8 +36,8 @@ export function SelectAndComboboxFields({
   setSelectedCharts,
   chartItems
 }: SelectAndComboboxFieldsProps) {
-  const [localColor, setLocalColor] = useState(hasValues ? "bar" : "");
-  const [localCharts, setLocalCharts] = useState<string[]>(hasValues ? ["bar", "pie"] : []);
+  const [localColor, setLocalColor] = useState("bar");
+  const [localCharts, setLocalCharts] = useState<string[]>(["bar", "pie"]);
   const chartSelectItems = [
     { value: "bar", label: t`Bar chart`, icon: <BarChart3Icon /> },
     { value: "line", label: t`Line chart`, icon: <LineChartIcon /> },

@@ -59,7 +59,7 @@ export function UserProfileFields({
         name="email"
         label={t`Email`}
         value={user?.email}
-        isDisabled={true}
+        isReadOnly={true}
         startIcon={<MailIcon className="size-4" />}
       />
 

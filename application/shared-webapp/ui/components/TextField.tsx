@@ -83,7 +83,7 @@ export function TextField({
         </FieldLabel>
       )}
       {startIcon ? (
-        <InputGroup>
+        <InputGroup data-disabled={isDisabled || undefined}>
           <InputGroupAddon>{startIcon}</InputGroupAddon>
           <InputGroupInput className={inputClassName} {...inputProps} />
         </InputGroup>
