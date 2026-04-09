@@ -24,7 +24,7 @@ export function ControlsPreview() {
         <SwitchField label={t`Labels`} checked={showLabels} onCheckedChange={setShowLabels} />
         <SwitchField
           label={t`Tooltips`}
-          checked={showTooltips && showLabels}
+          checked={showTooltips}
           onCheckedChange={setShowTooltips}
           disabled={!showLabels}
         />
