@@ -19,13 +19,13 @@ import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { TextField } from "@repo/ui/components/TextField";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { useMutation } from "@tanstack/react-query";
-import { MailIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { ChefHatIcon, EyeIcon, PencilIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { type DialogSize, getDialogSizeClassName } from "./dialogSize";
 
-export interface SendInvitationDialogProps {
+export interface ShareRecipeDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   dirtyDialog: boolean;
@@ -34,14 +34,14 @@ export interface SendInvitationDialogProps {
   size: DialogSize;
 }
 
-export function SendInvitationDialog({
+export function ShareRecipeDialog({
   isOpen,
   onOpenChange,
   dirtyDialog,
   showToasts,
   simulateErrors,
   size
-}: Readonly<SendInvitationDialogProps>) {
+}: Readonly<ShareRecipeDialogProps>) {
   const [isDirty, setIsDirty] = useState(false);
 
   const mutation = useMutation({
@@ -51,7 +51,7 @@ export function SendInvitationDialog({
     onSuccess: () => {
       setIsDirty(false);
       onOpenChange(false);
-      if (showToasts) toast.success(t`Invitation sent`);
+      if (showToasts) toast.success(t`Recipe shared`);
     }
   });
 
@@ -62,15 +62,15 @@ export function SendInvitationDialog({
       open={isOpen}
       onOpenChange={onOpenChange}
       hasUnsavedChanges={dirtyDialog && isDirty}
-      trackingTitle="Send invitation"
+      trackingTitle="Share recipe"
     >
       <DialogContent className={getDialogSizeClassName(size)}>
         <DialogHeader>
           <DialogTitle>
-            <Trans>Send invitation</Trans>
+            <Trans>Share recipe</Trans>
           </DialogTitle>
           <DialogDescription>
-            <Trans>Invite a new member to join your workspace.</Trans>
+            <Trans>Share this recipe with a friend or family member.</Trans>
           </DialogDescription>
         </DialogHeader>
         <Form
@@ -85,52 +85,52 @@ export function SendInvitationDialog({
                 name="email"
                 label={t`Email address`}
                 type="email"
-                placeholder={t`colleague@company.com`}
+                placeholder={t`friend@example.com`}
                 onChange={markDirty}
               />
               <div className="flex flex-col gap-2">
                 <p className="text-sm font-medium">
-                  <Trans>Role</Trans>
+                  <Trans>Share permission</Trans>
                 </p>
-                <RadioGroup defaultValue="member" onValueChange={markDirty}>
+                <RadioGroup defaultValue="view" onValueChange={markDirty}>
                   <FieldLabel>
                     <Field orientation="horizontal">
-                      <RadioGroupItem value="owner" />
+                      <RadioGroupItem value="coauthor" />
                       <FieldContent>
                         <FieldTitle>
-                          <ShieldIcon />
-                          <Trans>Owner</Trans>
+                          <ChefHatIcon />
+                          <Trans>Co-author</Trans>
                         </FieldTitle>
                         <FieldDescription>
-                          <Trans>Full access including user roles and account settings</Trans>
+                          <Trans>Full access, can edit and share with others</Trans>
                         </FieldDescription>
                       </FieldContent>
                     </Field>
                   </FieldLabel>
                   <FieldLabel>
                     <Field orientation="horizontal">
-                      <RadioGroupItem value="admin" />
+                      <RadioGroupItem value="edit" />
                       <FieldContent>
                         <FieldTitle>
-                          <UserIcon />
-                          <Trans>Admin</Trans>
+                          <PencilIcon />
+                          <Trans>Can edit</Trans>
                         </FieldTitle>
                         <FieldDescription>
-                          <Trans>Full access except changing user roles and account settings</Trans>
+                          <Trans>Can change ingredients and instructions</Trans>
                         </FieldDescription>
                       </FieldContent>
                     </Field>
                   </FieldLabel>
                   <FieldLabel>
                     <Field orientation="horizontal">
-                      <RadioGroupItem value="member" />
+                      <RadioGroupItem value="view" />
                       <FieldContent>
                         <FieldTitle>
-                          <MailIcon />
-                          <Trans>Member</Trans>
+                          <EyeIcon />
+                          <Trans>Can view</Trans>
                         </FieldTitle>
                         <FieldDescription>
-                          <Trans>Standard user access</Trans>
+                          <Trans>Read only access to the recipe</Trans>
                         </FieldDescription>
                       </FieldContent>
                     </Field>
@@ -138,7 +138,12 @@ export function SendInvitationDialog({
                 </RadioGroup>
               </div>
               <InlineFieldGroup>
-                <CheckboxField name="notify" label={t`Send welcome email`} defaultChecked onCheckedChange={markDirty} />
+                <CheckboxField
+                  name="includeNotes"
+                  label={t`Include cooking notes`}
+                  defaultChecked
+                  onCheckedChange={markDirty}
+                />
               </InlineFieldGroup>
             </div>
           </DialogBody>
@@ -147,7 +152,7 @@ export function SendInvitationDialog({
               <Trans>Cancel</Trans>
             </DialogClose>
             <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? <Trans>Sending...</Trans> : <Trans>Send invitation</Trans>}
+              {mutation.isPending ? <Trans>Sharing...</Trans> : <Trans>Share recipe</Trans>}
             </Button>
           </DialogFooter>
         </Form>

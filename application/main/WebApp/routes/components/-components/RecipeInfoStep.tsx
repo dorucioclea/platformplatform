@@ -8,14 +8,14 @@ import { ChevronRightIcon } from "lucide-react";
 
 import { AvatarUpload } from "./AvatarUpload";
 
-interface ContactInfoStepProps {
+interface RecipeInfoStepProps {
   simulateErrors: boolean;
   onNext: () => void;
   onCancel: () => void;
   onChange: () => void;
 }
 
-export function ContactInfoStep({ simulateErrors, onNext, onCancel, onChange }: Readonly<ContactInfoStepProps>) {
+export function RecipeInfoStep({ simulateErrors, onNext, onCancel, onChange }: Readonly<RecipeInfoStepProps>) {
   return (
     <Form className="flex min-h-0 flex-1 flex-col">
       <DialogBody>
@@ -25,35 +25,35 @@ export function ContactInfoStep({ simulateErrors, onNext, onCancel, onChange }: 
           </div>
           <TextField
             autoFocus
-            name="firstName"
-            label={t`First name`}
-            defaultValue="Alex"
-            placeholder={t`E.g., Alex`}
-            errorMessage={simulateErrors ? t`First name is required` : undefined}
+            name="dishName"
+            label={t`Dish name`}
+            defaultValue="Spaghetti Carbonara"
+            placeholder={t`E.g., Spaghetti Carbonara`}
+            errorMessage={simulateErrors ? t`Dish name is required` : undefined}
             onChange={onChange}
           />
           <TextField
-            name="lastName"
-            label={t`Last name`}
-            defaultValue="Taylor"
-            placeholder={t`E.g., Taylor`}
+            name="chef"
+            label={t`Chef`}
+            defaultValue="Maria Rossi"
+            placeholder={t`E.g., Maria Rossi`}
             onChange={onChange}
           />
           <TextField
-            name="email"
-            label={t`Email`}
+            name="sourceUrl"
+            label={t`Source`}
             type="email"
-            defaultValue="alex.taylor@example.com"
-            placeholder={t`email@example.com`}
+            defaultValue="recipes@trattoria.example"
+            placeholder={t`recipes@example.com`}
             errorMessage={simulateErrors ? t`Please enter a valid email address` : undefined}
             onChange={onChange}
           />
           <TextField
             name="phone"
-            label={t`Phone number`}
+            label={t`Restaurant phone`}
             type="tel"
-            defaultValue="+1 555 123 4567"
-            placeholder={t`+1 555 000 0000`}
+            defaultValue="+39 06 555 0123"
+            placeholder={t`+39 06 555 0000`}
             onChange={onChange}
           />
         </div>

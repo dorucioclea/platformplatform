@@ -21,7 +21,7 @@ msgstr "for {0} timer siden"
 msgid "{0} minutes ago"
 msgstr "for {0} minutter siden"
 
-msgid "+1 555 000 0000"
+msgid "+39 06 555 0000"
 msgstr ""
 
 msgid ""
@@ -49,11 +49,14 @@ msgstr "75% af kvoten brugt"
 msgid "About this feature"
 msgstr ""
 
-msgid "Add notes about this contact"
-msgstr ""
+msgid "Add notes about this recipe"
+msgstr "Tilføj noter om denne opskrift"
 
 msgid "Add notes here"
 msgstr "Tilføj noter her"
+
+msgid "Add to favorites"
+msgstr "Tilføj til favoritter"
 
 msgid "Added"
 msgstr ""
@@ -61,8 +64,8 @@ msgstr ""
 msgid "Address (fixed 2 lines)"
 msgstr "Adresse (fast 2 linjer)"
 
-msgid "Admin"
-msgstr "Administrator"
+msgid "Advanced techniques, over 60 minutes"
+msgstr "Avancerede teknikker, over 60 minutter"
 
 msgid "Alert dialogs"
 msgstr ""
@@ -88,9 +91,6 @@ msgstr ""
 msgid "Area chart"
 msgstr "Områdediagram"
 
-msgid "Availability"
-msgstr ""
-
 msgid "Back"
 msgstr ""
 
@@ -100,14 +100,11 @@ msgstr "Badges"
 msgid "Bar chart"
 msgstr "Søjlediagram"
 
-msgid "Basic contact information and profile photo."
-msgstr ""
+msgid "Basic recipe information and cover photo."
+msgstr "Grundlæggende opskriftsinformation og forsidebillede."
 
-msgid "Birthday"
-msgstr ""
-
-msgid "Birthday must be in the past"
-msgstr ""
+msgid "Basic skills, under 30 minutes"
+msgstr "Grundlæggende færdigheder, under 30 minutter"
 
 msgid "Bold"
 msgstr "Fed"
@@ -130,11 +127,23 @@ msgstr "Knapvarianter"
 msgid "Buttons"
 msgstr "Knapper"
 
+msgid "Can change ingredients and instructions"
+msgstr "Kan ændre ingredienser og instruktioner"
+
+msgid "Can edit"
+msgstr "Kan redigere"
+
+msgid "Can view"
+msgstr "Kan se"
+
 msgid "Cancel"
 msgstr "Annuller"
 
 msgid "Cards"
 msgstr "Kort"
+
+msgid "Categorization"
+msgstr "Kategorisering"
 
 msgid "Category"
 msgstr ""
@@ -154,11 +163,14 @@ msgstr ""
 msgid "Checkbox"
 msgstr "Afkrydsningsfelt"
 
+msgid "Chef"
+msgstr "Kok"
+
 msgid "Close"
 msgstr ""
 
-msgid "colleague@company.com"
-msgstr ""
+msgid "Co-author"
+msgstr "Medforfatter"
 
 msgid "Combobox"
 msgstr "Kombinationsboks"
@@ -178,14 +190,14 @@ msgstr "Komponenter"
 msgid "Confirm action"
 msgstr ""
 
-msgid "Contact details saved"
-msgstr ""
-
-msgid "Contact info"
-msgstr ""
-
 msgid "Controls"
 msgstr ""
+
+msgid "Cooking details"
+msgstr "Tilberedningsdetaljer"
+
+msgid "Cooking notes"
+msgstr "Tilberedningsnoter"
 
 msgid "Create"
 msgstr "Opret"
@@ -202,14 +214,17 @@ msgstr "Dato og tid"
 msgid "Date and time formatting"
 msgstr "Dato- og tidsformatering"
 
+msgid "Date must be in the past"
+msgstr "Datoen skal være i fortiden"
+
 msgid "Date picker"
 msgstr "Datovælger"
 
 msgid "Date range"
 msgstr "Datointerval"
 
-msgid "Dates and additional notes about this contact."
-msgstr ""
+msgid "Dates and personal notes about this recipe."
+msgstr "Datoer og personlige noter om denne opskrift."
 
 msgid "Default"
 msgstr "Standard"
@@ -244,31 +259,34 @@ msgstr "Deaktiveret"
 msgid "Disabled buttons"
 msgstr "Deaktiverede knapper"
 
-msgid "Duplicate"
-msgstr ""
+msgid "Dish name"
+msgstr "Rettens navn"
 
-msgid "E.g., Alex"
+msgid "Dish name is required"
+msgstr "Rettens navn er påkrævet"
+
+msgid "Duplicate"
 msgstr ""
 
 msgid "E.g., Alex Taylor"
 msgstr "F.eks. Alex Taylor"
 
-msgid "E.g., Taylor"
-msgstr ""
+msgid "E.g., Maria Rossi"
+msgstr "F.eks. Maria Rossi"
 
-msgid "Edit contact"
-msgstr ""
+msgid "E.g., Spaghetti Carbonara"
+msgstr "F.eks. Spaghetti Carbonara"
+
+msgid "Easy"
+msgstr "Let"
 
 msgid "Edit product"
 msgstr ""
 
-msgid "Email"
-msgstr ""
+msgid "Edit recipe"
+msgstr "Rediger opskrift"
 
 msgid "Email address"
-msgstr ""
-
-msgid "email@example.com"
 msgstr ""
 
 msgid "Empty and skeleton"
@@ -289,11 +307,8 @@ msgstr "Ekstra stor"
 msgid "Extra small"
 msgstr "Ekstra lille"
 
-msgid "First name"
-msgstr ""
-
-msgid "First name is required"
-msgstr ""
+msgid "First cooked"
+msgstr "Første gang tilberedt"
 
 msgid "Fixed columns"
 msgstr ""
@@ -301,11 +316,11 @@ msgstr ""
 msgid "Form dialogs"
 msgstr ""
 
-msgid "Full access except changing user roles and account settings"
-msgstr "Fuld adgang undtagen ændring af brugerroller og kontoindstillinger"
+msgid "friend@example.com"
+msgstr ""
 
-msgid "Full access including user roles and account settings"
-msgstr "Fuld adgang inklusiv brugerroller og kontoindstillinger"
+msgid "Full access, can edit and share with others"
+msgstr "Fuld adgang, kan redigere og dele med andre"
 
 msgid "Get started"
 msgstr "Kom i gang"
@@ -334,6 +349,9 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
+msgid "Hard"
+msgstr "Svær"
+
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
@@ -343,17 +361,14 @@ msgstr "Knapper kun med ikon"
 msgid "Icons"
 msgstr ""
 
+msgid "Include cooking notes"
+msgstr "Inkluder tilberedningsnoter"
+
 msgid "Info alert"
 msgstr "Informationsadvarsel"
 
-msgid "Invitation sent"
-msgstr ""
-
 msgid "Invite"
 msgstr "Inviter"
-
-msgid "Invite a new member to join your workspace."
-msgstr ""
 
 msgid "Invite and manage your team."
 msgstr "Inviter og administrer dit team."
@@ -379,9 +394,6 @@ msgstr ""
 msgid "Large"
 msgstr "Stor"
 
-msgid "Last name"
-msgstr ""
-
 msgid "Learn more"
 msgstr ""
 
@@ -403,14 +415,14 @@ msgstr "Lang dato"
 msgid "Manage your notification preferences."
 msgstr "Administrer dine notifikationsindstillinger."
 
+msgid "Meal plan period"
+msgstr "Måltidsplanperiode"
+
 msgid "Medium"
 msgstr "Mellem"
 
 msgid "Meeting notes from last week"
 msgstr "Mødenoter fra sidste uge"
-
-msgid "Member"
-msgstr "Medlem"
 
 msgid "More information"
 msgstr "Mere information"
@@ -442,9 +454,6 @@ msgstr "Ingen"
 msgid "Not yet"
 msgstr ""
 
-msgid "Notes"
-msgstr ""
-
 msgid "Notifications"
 msgstr "Notifikationer"
 
@@ -468,12 +477,6 @@ msgstr "Mulighed B"
 
 msgid "Outline"
 msgstr "Kontur"
-
-msgid "Owner"
-msgstr "Ejer"
-
-msgid "Phone number"
-msgstr ""
 
 msgid "Pick a chart"
 msgstr "Vælg et diagram"
@@ -520,7 +523,22 @@ msgstr ""
 msgid "Read only"
 msgstr "Skrivebeskyttet"
 
+msgid "Read only access to the recipe"
+msgstr "Skrivebeskyttet adgang til opskriften"
+
 msgid "Ready to publish?"
+msgstr ""
+
+msgid "Recipe info"
+msgstr "Opskriftsinfo"
+
+msgid "Recipe saved"
+msgstr "Opskrift gemt"
+
+msgid "Recipe shared"
+msgstr "Opskrift delt"
+
+msgid "recipes@example.com"
 msgstr ""
 
 msgid "Relative"
@@ -532,19 +550,13 @@ msgstr ""
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
-msgid "Role"
-msgstr ""
-
-msgid "Role & preferences"
-msgstr ""
+msgid "Restaurant phone"
+msgstr "Restauranttelefon"
 
 msgid "Save changes"
 msgstr "Gem ændringer"
 
 msgid "Saving..."
-msgstr ""
-
-msgid "Schedule & notes"
 msgstr ""
 
 msgid "Search"
@@ -562,20 +574,23 @@ msgstr "Vælg"
 msgid "Select charts"
 msgstr ""
 
-msgid "Send invitation"
-msgstr ""
-
 msgid "Send invite"
 msgstr "Send invitation"
 
-msgid "Send welcome email"
-msgstr ""
+msgid "Set the recipe's difficulty and favorite status."
+msgstr "Angiv opskriftens sværhedsgrad og favoritstatus."
 
-msgid "Sending..."
-msgstr ""
+msgid "Share permission"
+msgstr "Delingstilladelse"
 
-msgid "Set the contact's role and communication preferences."
-msgstr ""
+msgid "Share recipe"
+msgstr "Del opskrift"
+
+msgid "Share this recipe with a friend or family member."
+msgstr "Del denne opskrift med en ven eller et familiemedlem."
+
+msgid "Sharing..."
+msgstr "Deler..."
 
 msgid "Short date"
 msgstr "Kort dato"
@@ -592,14 +607,17 @@ msgstr "Skelet-indlæsningstilstande"
 msgid "Small"
 msgstr "Lille"
 
+msgid "Some cooking experience, 30 to 60 minutes"
+msgstr "Noget tilberedningserfaring, 30 til 60 minutter"
+
 msgid "Something went wrong. Please try again."
 msgstr "Noget gik galt. Prøv venligst igen."
 
+msgid "Source"
+msgstr "Kilde"
+
 msgid "Spacious rows"
 msgstr ""
-
-msgid "Standard user access"
-msgstr "Standard brugeradgang"
 
 msgid "Status"
 msgstr ""
@@ -609,9 +627,6 @@ msgstr ""
 
 msgid "Street address"
 msgstr "Vejnavn"
-
-msgid "Subscribe to newsletter"
-msgstr ""
 
 msgid "Switch"
 msgstr "Kontakt"

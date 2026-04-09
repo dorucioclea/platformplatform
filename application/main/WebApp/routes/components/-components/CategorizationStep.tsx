@@ -9,61 +9,61 @@ import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { type UseMutationResult } from "@tanstack/react-query";
-import { ChevronLeftIcon, MailIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { ChefHatIcon, ChevronLeftIcon, FlameIcon, UtensilsIcon } from "lucide-react";
 import { useState } from "react";
 
-interface RolePreferencesStepProps {
+interface CategorizationStepProps {
   mutation: UseMutationResult<void, unknown, { body?: unknown }>;
   onBack: () => void;
   onChange: () => void;
 }
 
-export function RolePreferencesStep({ mutation, onBack, onChange }: Readonly<RolePreferencesStepProps>) {
-  const [newsletterChecked, setNewsletterChecked] = useState(false);
+export function CategorizationStep({ mutation, onBack, onChange }: Readonly<CategorizationStepProps>) {
+  const [favoriteChecked, setFavoriteChecked] = useState(false);
 
   return (
     <Form onSubmit={mutationSubmitter(mutation)} className="flex min-h-0 flex-1 flex-col">
       <DialogBody>
         <div className="flex flex-col gap-4">
-          <RadioGroup defaultValue="member" onValueChange={onChange}>
+          <RadioGroup defaultValue="medium" onValueChange={onChange}>
             <FieldLabel>
               <Field orientation="horizontal">
-                <RadioGroupItem value="owner" />
+                <RadioGroupItem value="easy" />
                 <FieldContent>
                   <FieldTitle>
-                    <ShieldIcon />
-                    <Trans>Owner</Trans>
+                    <UtensilsIcon />
+                    <Trans>Easy</Trans>
                   </FieldTitle>
                   <FieldDescription>
-                    <Trans>Full access including user roles and account settings</Trans>
+                    <Trans>Basic skills, under 30 minutes</Trans>
                   </FieldDescription>
                 </FieldContent>
               </Field>
             </FieldLabel>
             <FieldLabel>
               <Field orientation="horizontal">
-                <RadioGroupItem value="admin" />
+                <RadioGroupItem value="medium" />
                 <FieldContent>
                   <FieldTitle>
-                    <UserIcon />
-                    <Trans>Admin</Trans>
+                    <ChefHatIcon />
+                    <Trans>Medium</Trans>
                   </FieldTitle>
                   <FieldDescription>
-                    <Trans>Full access except changing user roles and account settings</Trans>
+                    <Trans>Some cooking experience, 30 to 60 minutes</Trans>
                   </FieldDescription>
                 </FieldContent>
               </Field>
             </FieldLabel>
             <FieldLabel>
               <Field orientation="horizontal">
-                <RadioGroupItem value="member" />
+                <RadioGroupItem value="hard" />
                 <FieldContent>
                   <FieldTitle>
-                    <MailIcon />
-                    <Trans>Member</Trans>
+                    <FlameIcon />
+                    <Trans>Hard</Trans>
                   </FieldTitle>
                   <FieldDescription>
-                    <Trans>Standard user access</Trans>
+                    <Trans>Advanced techniques, over 60 minutes</Trans>
                   </FieldDescription>
                 </FieldContent>
               </Field>
@@ -71,11 +71,11 @@ export function RolePreferencesStep({ mutation, onBack, onChange }: Readonly<Rol
           </RadioGroup>
           <InlineFieldGroup>
             <SwitchField
-              name="newsletter"
-              label={t`Subscribe to newsletter`}
-              checked={newsletterChecked}
+              name="favorite"
+              label={t`Add to favorites`}
+              checked={favoriteChecked}
               onCheckedChange={(v) => {
-                setNewsletterChecked(!!v);
+                setFavoriteChecked(!!v);
                 onChange();
               }}
             />

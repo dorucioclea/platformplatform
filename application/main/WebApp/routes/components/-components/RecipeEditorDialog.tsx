@@ -8,10 +8,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { ContactInfoStep } from "./ContactInfoStep";
+import { CategorizationStep } from "./CategorizationStep";
+import { CookingDetailsStep } from "./CookingDetailsStep";
 import { type DialogSize, getDialogSizeClassName } from "./dialogSize";
-import { RolePreferencesStep } from "./RolePreferencesStep";
-import { ScheduleNotesStep } from "./ScheduleNotesStep";
+import { RecipeInfoStep } from "./RecipeInfoStep";
 
 const TOTAL_STEPS = 3;
 
@@ -31,14 +31,14 @@ function StepIndicator({ current, total }: Readonly<{ current: number; total: nu
   );
 }
 
-const stepTitles = () => [t`Contact info`, t`Schedule & notes`, t`Role & preferences`];
+const stepTitles = () => [t`Recipe info`, t`Cooking details`, t`Categorization`];
 const stepDescriptions = () => [
-  t`Basic contact information and profile photo.`,
-  t`Dates and additional notes about this contact.`,
-  t`Set the contact's role and communication preferences.`
+  t`Basic recipe information and cover photo.`,
+  t`Dates and personal notes about this recipe.`,
+  t`Set the recipe's difficulty and favorite status.`
 ];
 
-export interface ContactDetailsDialogProps {
+export interface RecipeEditorDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   dirtyDialog: boolean;
@@ -47,18 +47,18 @@ export interface ContactDetailsDialogProps {
   size: DialogSize;
 }
 
-export function ContactDetailsDialog({
+export function RecipeEditorDialog({
   isOpen,
   onOpenChange,
   dirtyDialog,
   showToasts,
   simulateErrors,
   size
-}: Readonly<ContactDetailsDialogProps>) {
+}: Readonly<RecipeEditorDialogProps>) {
   const [step, setStep] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
-  const [birthday, setBirthday] = useState<string | undefined>(undefined);
-  const [availability, setAvailability] = useState<DateRangeValue | null>(null);
+  const [firstCooked, setFirstCooked] = useState<string | undefined>(undefined);
+  const [mealPlan, setMealPlan] = useState<DateRangeValue | null>(null);
 
   const mutation = useMutation({
     mutationFn: async (_data: { body?: unknown }) => {
@@ -67,7 +67,7 @@ export function ContactDetailsDialog({
     onSuccess: () => {
       setIsDirty(false);
       onOpenChange(false);
-      if (showToasts) toast.success(t`Contact details saved`);
+      if (showToasts) toast.success(t`Recipe saved`);
     }
   });
 
@@ -91,7 +91,7 @@ export function ContactDetailsDialog({
       leaveLabel={t`Leave`}
       stayLabel={t`Stay`}
       onCloseComplete={handleCloseComplete}
-      trackingTitle="Edit contact"
+      trackingTitle="Edit recipe"
     >
       <DialogContent className={getDialogSizeClassName(size)}>
         <DialogHeader>
@@ -100,7 +100,7 @@ export function ContactDetailsDialog({
           <DialogDescription>{descriptions[step]}</DialogDescription>
         </DialogHeader>
         {step === 0 && (
-          <ContactInfoStep
+          <RecipeInfoStep
             simulateErrors={simulateErrors}
             onNext={() => setStep(1)}
             onCancel={() => onOpenChange(false)}
@@ -108,18 +108,18 @@ export function ContactDetailsDialog({
           />
         )}
         {step === 1 && (
-          <ScheduleNotesStep
+          <CookingDetailsStep
             simulateErrors={simulateErrors}
-            birthday={birthday}
-            onBirthdayChange={setBirthday}
-            availability={availability}
-            onAvailabilityChange={setAvailability}
+            firstCooked={firstCooked}
+            onFirstCookedChange={setFirstCooked}
+            mealPlan={mealPlan}
+            onMealPlanChange={setMealPlan}
             onBack={() => setStep(0)}
             onNext={() => setStep(2)}
             onChange={markDirty}
           />
         )}
-        {step === 2 && <RolePreferencesStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
+        {step === 2 && <CategorizationStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
       </DialogContent>
     </DirtyDialog>
   );

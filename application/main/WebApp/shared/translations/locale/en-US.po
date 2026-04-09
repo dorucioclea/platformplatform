@@ -21,8 +21,8 @@ msgstr "{0} hours ago"
 msgid "{0} minutes ago"
 msgstr "{0} minutes ago"
 
-msgid "+1 555 000 0000"
-msgstr "+1 555 000 0000"
+msgid "+39 06 555 0000"
+msgstr "+39 06 555 0000"
 
 msgid ""
 "1 Infinite Loop\n"
@@ -49,11 +49,14 @@ msgstr "75% of quota used"
 msgid "About this feature"
 msgstr "About this feature"
 
-msgid "Add notes about this contact"
-msgstr "Add notes about this contact"
+msgid "Add notes about this recipe"
+msgstr "Add notes about this recipe"
 
 msgid "Add notes here"
 msgstr "Add notes here"
+
+msgid "Add to favorites"
+msgstr "Add to favorites"
 
 msgid "Added"
 msgstr "Added"
@@ -61,8 +64,8 @@ msgstr "Added"
 msgid "Address (fixed 2 lines)"
 msgstr "Address (fixed 2 lines)"
 
-msgid "Admin"
-msgstr "Admin"
+msgid "Advanced techniques, over 60 minutes"
+msgstr "Advanced techniques, over 60 minutes"
 
 msgid "Alert dialogs"
 msgstr "Alert dialogs"
@@ -88,9 +91,6 @@ msgstr "Archive this item?"
 msgid "Area chart"
 msgstr "Area chart"
 
-msgid "Availability"
-msgstr "Availability"
-
 msgid "Back"
 msgstr "Back"
 
@@ -100,14 +100,11 @@ msgstr "Badges"
 msgid "Bar chart"
 msgstr "Bar chart"
 
-msgid "Basic contact information and profile photo."
-msgstr "Basic contact information and profile photo."
+msgid "Basic recipe information and cover photo."
+msgstr "Basic recipe information and cover photo."
 
-msgid "Birthday"
-msgstr "Birthday"
-
-msgid "Birthday must be in the past"
-msgstr "Birthday must be in the past"
+msgid "Basic skills, under 30 minutes"
+msgstr "Basic skills, under 30 minutes"
 
 msgid "Bold"
 msgstr "Bold"
@@ -130,11 +127,23 @@ msgstr "Button variants"
 msgid "Buttons"
 msgstr "Buttons"
 
+msgid "Can change ingredients and instructions"
+msgstr "Can change ingredients and instructions"
+
+msgid "Can edit"
+msgstr "Can edit"
+
+msgid "Can view"
+msgstr "Can view"
+
 msgid "Cancel"
 msgstr "Cancel"
 
 msgid "Cards"
 msgstr "Cards"
+
+msgid "Categorization"
+msgstr "Categorization"
 
 msgid "Category"
 msgstr "Category"
@@ -154,11 +163,14 @@ msgstr "Changes published"
 msgid "Checkbox"
 msgstr "Checkbox"
 
+msgid "Chef"
+msgstr "Chef"
+
 msgid "Close"
 msgstr "Close"
 
-msgid "colleague@company.com"
-msgstr "colleague@company.com"
+msgid "Co-author"
+msgstr "Co-author"
 
 msgid "Combobox"
 msgstr "Combobox"
@@ -178,14 +190,14 @@ msgstr "Components"
 msgid "Confirm action"
 msgstr "Confirm action"
 
-msgid "Contact details saved"
-msgstr "Contact details saved"
-
-msgid "Contact info"
-msgstr "Contact info"
-
 msgid "Controls"
 msgstr "Controls"
+
+msgid "Cooking details"
+msgstr "Cooking details"
+
+msgid "Cooking notes"
+msgstr "Cooking notes"
 
 msgid "Create"
 msgstr "Create"
@@ -202,14 +214,17 @@ msgstr "Date and time"
 msgid "Date and time formatting"
 msgstr "Date and time formatting"
 
+msgid "Date must be in the past"
+msgstr "Date must be in the past"
+
 msgid "Date picker"
 msgstr "Date picker"
 
 msgid "Date range"
 msgstr "Date range"
 
-msgid "Dates and additional notes about this contact."
-msgstr "Dates and additional notes about this contact."
+msgid "Dates and personal notes about this recipe."
+msgstr "Dates and personal notes about this recipe."
 
 msgid "Default"
 msgstr "Default"
@@ -244,32 +259,35 @@ msgstr "Disabled"
 msgid "Disabled buttons"
 msgstr "Disabled buttons"
 
+msgid "Dish name"
+msgstr "Dish name"
+
+msgid "Dish name is required"
+msgstr "Dish name is required"
+
 msgid "Duplicate"
 msgstr "Duplicate"
-
-msgid "E.g., Alex"
-msgstr "E.g., Alex"
 
 msgid "E.g., Alex Taylor"
 msgstr "E.g., Alex Taylor"
 
-msgid "E.g., Taylor"
-msgstr "E.g., Taylor"
+msgid "E.g., Maria Rossi"
+msgstr "E.g., Maria Rossi"
 
-msgid "Edit contact"
-msgstr "Edit contact"
+msgid "E.g., Spaghetti Carbonara"
+msgstr "E.g., Spaghetti Carbonara"
+
+msgid "Easy"
+msgstr "Easy"
 
 msgid "Edit product"
 msgstr "Edit product"
 
-msgid "Email"
-msgstr "Email"
+msgid "Edit recipe"
+msgstr "Edit recipe"
 
 msgid "Email address"
 msgstr "Email address"
-
-msgid "email@example.com"
-msgstr "email@example.com"
 
 msgid "Empty and skeleton"
 msgstr "Empty and skeleton"
@@ -289,11 +307,8 @@ msgstr "Extra large"
 msgid "Extra small"
 msgstr "Extra small"
 
-msgid "First name"
-msgstr "First name"
-
-msgid "First name is required"
-msgstr "First name is required"
+msgid "First cooked"
+msgstr "First cooked"
 
 msgid "Fixed columns"
 msgstr "Fixed columns"
@@ -301,11 +316,11 @@ msgstr "Fixed columns"
 msgid "Form dialogs"
 msgstr "Form dialogs"
 
-msgid "Full access except changing user roles and account settings"
-msgstr "Full access except changing user roles and account settings"
+msgid "friend@example.com"
+msgstr "friend@example.com"
 
-msgid "Full access including user roles and account settings"
-msgstr "Full access including user roles and account settings"
+msgid "Full access, can edit and share with others"
+msgstr "Full access, can edit and share with others"
 
 msgid "Get started"
 msgstr "Get started"
@@ -334,6 +349,9 @@ msgstr "Good morning"
 msgid "Good morning, {firstName}"
 msgstr "Good morning, {firstName}"
 
+msgid "Hard"
+msgstr "Hard"
+
 msgid "Here's your overview of what's happening."
 msgstr "Here's your overview of what's happening."
 
@@ -343,17 +361,14 @@ msgstr "Icon-only buttons"
 msgid "Icons"
 msgstr "Icons"
 
+msgid "Include cooking notes"
+msgstr "Include cooking notes"
+
 msgid "Info alert"
 msgstr "Info alert"
 
-msgid "Invitation sent"
-msgstr "Invitation sent"
-
 msgid "Invite"
 msgstr "Invite"
-
-msgid "Invite a new member to join your workspace."
-msgstr "Invite a new member to join your workspace."
 
 msgid "Invite and manage your team."
 msgstr "Invite and manage your team."
@@ -379,9 +394,6 @@ msgstr "Labels"
 msgid "Large"
 msgstr "Large"
 
-msgid "Last name"
-msgstr "Last name"
-
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -403,14 +415,14 @@ msgstr "Long date"
 msgid "Manage your notification preferences."
 msgstr "Manage your notification preferences."
 
+msgid "Meal plan period"
+msgstr "Meal plan period"
+
 msgid "Medium"
 msgstr "Medium"
 
 msgid "Meeting notes from last week"
 msgstr "Meeting notes from last week"
-
-msgid "Member"
-msgstr "Member"
 
 msgid "More information"
 msgstr "More information"
@@ -442,9 +454,6 @@ msgstr "None"
 msgid "Not yet"
 msgstr "Not yet"
 
-msgid "Notes"
-msgstr "Notes"
-
 msgid "Notifications"
 msgstr "Notifications"
 
@@ -468,12 +477,6 @@ msgstr "Option B"
 
 msgid "Outline"
 msgstr "Outline"
-
-msgid "Owner"
-msgstr "Owner"
-
-msgid "Phone number"
-msgstr "Phone number"
 
 msgid "Pick a chart"
 msgstr "Pick a chart"
@@ -520,8 +523,23 @@ msgstr "Read docs"
 msgid "Read only"
 msgstr "Read only"
 
+msgid "Read only access to the recipe"
+msgstr "Read only access to the recipe"
+
 msgid "Ready to publish?"
 msgstr "Ready to publish?"
+
+msgid "Recipe info"
+msgstr "Recipe info"
+
+msgid "Recipe saved"
+msgstr "Recipe saved"
+
+msgid "Recipe shared"
+msgstr "Recipe shared"
+
+msgid "recipes@example.com"
+msgstr "recipes@example.com"
 
 msgid "Relative"
 msgstr "Relative"
@@ -532,20 +550,14 @@ msgstr "Remove"
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
 
-msgid "Role"
-msgstr "Role"
-
-msgid "Role & preferences"
-msgstr "Role & preferences"
+msgid "Restaurant phone"
+msgstr "Restaurant phone"
 
 msgid "Save changes"
 msgstr "Save changes"
 
 msgid "Saving..."
 msgstr "Saving..."
-
-msgid "Schedule & notes"
-msgstr "Schedule & notes"
 
 msgid "Search"
 msgstr "Search"
@@ -562,20 +574,23 @@ msgstr "Select"
 msgid "Select charts"
 msgstr "Select charts"
 
-msgid "Send invitation"
-msgstr "Send invitation"
-
 msgid "Send invite"
 msgstr "Send invite"
 
-msgid "Send welcome email"
-msgstr "Send welcome email"
+msgid "Set the recipe's difficulty and favorite status."
+msgstr "Set the recipe's difficulty and favorite status."
 
-msgid "Sending..."
-msgstr "Sending..."
+msgid "Share permission"
+msgstr "Share permission"
 
-msgid "Set the contact's role and communication preferences."
-msgstr "Set the contact's role and communication preferences."
+msgid "Share recipe"
+msgstr "Share recipe"
+
+msgid "Share this recipe with a friend or family member."
+msgstr "Share this recipe with a friend or family member."
+
+msgid "Sharing..."
+msgstr "Sharing..."
 
 msgid "Short date"
 msgstr "Short date"
@@ -592,14 +607,17 @@ msgstr "Skeleton loading states"
 msgid "Small"
 msgstr "Small"
 
+msgid "Some cooking experience, 30 to 60 minutes"
+msgstr "Some cooking experience, 30 to 60 minutes"
+
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
+msgid "Source"
+msgstr "Source"
+
 msgid "Spacious rows"
 msgstr "Spacious rows"
-
-msgid "Standard user access"
-msgstr "Standard user access"
 
 msgid "Status"
 msgstr "Status"
@@ -609,9 +627,6 @@ msgstr "Stay"
 
 msgid "Street address"
 msgstr "Street address"
-
-msgid "Subscribe to newsletter"
-msgstr "Subscribe to newsletter"
 
 msgid "Switch"
 msgstr "Switch"

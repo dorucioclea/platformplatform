@@ -11,27 +11,27 @@ import { Form } from "@repo/ui/components/Form";
 import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-interface ScheduleNotesStepProps {
+interface CookingDetailsStepProps {
   simulateErrors: boolean;
-  birthday: string | undefined;
-  onBirthdayChange: (value: string) => void;
-  availability: DateRangeValue | null;
-  onAvailabilityChange: (value: DateRangeValue | null) => void;
+  firstCooked: string | undefined;
+  onFirstCookedChange: (value: string) => void;
+  mealPlan: DateRangeValue | null;
+  onMealPlanChange: (value: DateRangeValue | null) => void;
   onBack: () => void;
   onNext: () => void;
   onChange: () => void;
 }
 
-export function ScheduleNotesStep({
+export function CookingDetailsStep({
   simulateErrors,
-  birthday,
-  onBirthdayChange,
-  availability,
-  onAvailabilityChange,
+  firstCooked,
+  onFirstCookedChange,
+  mealPlan,
+  onMealPlanChange,
   onBack,
   onNext,
   onChange
-}: Readonly<ScheduleNotesStepProps>) {
+}: Readonly<CookingDetailsStepProps>) {
   const { i18n } = useLingui();
 
   return (
@@ -39,32 +39,32 @@ export function ScheduleNotesStep({
       <DialogBody>
         <div className="grid grid-cols-2 gap-4">
           <DatePicker
-            name="birthday"
-            label={t`Birthday`}
+            name="firstCooked"
+            label={t`First cooked`}
             placeholder={t`Pick a date`}
-            value={birthday}
-            errorMessage={simulateErrors ? t`Birthday must be in the past` : undefined}
+            value={firstCooked}
+            errorMessage={simulateErrors ? t`Date must be in the past` : undefined}
             onChange={(v) => {
-              onBirthdayChange(v);
+              onFirstCookedChange(v);
               onChange();
             }}
             locale={i18n.locale}
           />
           <DateRangePicker
-            name="availability"
-            label={t`Availability`}
-            value={availability}
+            name="mealPlan"
+            label={t`Meal plan period`}
+            value={mealPlan}
             onChange={(v) => {
-              onAvailabilityChange(v);
+              onMealPlanChange(v);
               onChange();
             }}
           />
           <TextAreaField
             autoFocus
-            name="notes"
-            label={t`Notes`}
-            defaultValue="Met at conference in March."
-            placeholder={t`Add notes about this contact`}
+            name="cookingNotes"
+            label={t`Cooking notes`}
+            defaultValue="Family favorite since childhood. Best served with fresh basil."
+            placeholder={t`Add notes about this recipe`}
             className="col-span-2"
             onChange={onChange}
           />

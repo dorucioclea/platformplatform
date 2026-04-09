@@ -3,19 +3,19 @@ import { Trans } from "@lingui/react/macro";
 import { Button } from "@repo/ui/components/Button";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
-import { MailIcon, UserIcon } from "lucide-react";
+import { ChefHatIcon, Share2Icon } from "lucide-react";
 import { useState } from "react";
 
 import { AlertDialogsPreview } from "./AlertDialogsPreview";
 import { CardsPreview } from "./CardsPreview";
-import { ContactDetailsDialog } from "./ContactDetailsDialog";
 import { DateFormatPreview } from "./DateFormatPreview";
 import { type DialogSize } from "./dialogSize";
-import { SendInvitationDialog } from "./SendInvitationDialog";
+import { RecipeEditorDialog } from "./RecipeEditorDialog";
+import { ShareRecipeDialog } from "./ShareRecipeDialog";
 
 export function DialogsPreview() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-  const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isRecipeOpen, setIsRecipeOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const [dirtyDialog, setDirtyDialog] = useState(true);
   const [showToasts, setShowToasts] = useState(true);
   const [simulateErrors, setSimulateErrors] = useState(false);
@@ -75,17 +75,17 @@ export function DialogsPreview() {
           </ToggleGroup>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="outline" onClick={() => setIsContactOpen(true)}>
-            <UserIcon />
-            <Trans>Edit contact</Trans>
+          <Button variant="outline" onClick={() => setIsRecipeOpen(true)}>
+            <ChefHatIcon />
+            <Trans>Edit recipe</Trans>
           </Button>
-          <Button variant="outline" onClick={() => setIsInviteOpen(true)}>
-            <MailIcon />
-            <Trans>Send invitation</Trans>
+          <Button variant="outline" onClick={() => setIsShareOpen(true)}>
+            <Share2Icon />
+            <Trans>Share recipe</Trans>
           </Button>
         </div>
-        <ContactDetailsDialog isOpen={isContactOpen} onOpenChange={setIsContactOpen} {...options} />
-        <SendInvitationDialog isOpen={isInviteOpen} onOpenChange={setIsInviteOpen} {...options} />
+        <RecipeEditorDialog isOpen={isRecipeOpen} onOpenChange={setIsRecipeOpen} {...options} />
+        <ShareRecipeDialog isOpen={isShareOpen} onOpenChange={setIsShareOpen} {...options} />
       </div>
       <AlertDialogsPreview showToasts={showToasts} />
       <CardsPreview />
