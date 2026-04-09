@@ -208,7 +208,9 @@ export function NumberField({
         </FieldLabel>
       )}
       <InputGroup data-disabled={isDisabled || undefined}>
-        {startIcon && <InputGroupAddon>{startIcon}</InputGroupAddon>}
+        {startIcon && (
+          <InputGroupAddon className={cn(displayValue !== "" && "text-foreground")}>{startIcon}</InputGroupAddon>
+        )}
         <InputGroupInput
           id={name}
           name={name}

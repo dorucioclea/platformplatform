@@ -48,16 +48,18 @@ function ComboboxInput({
   showTrigger = true,
   showClear = false,
   startIcon,
+  startIconClassName,
   ...props
 }: ComboboxPrimitive.Input.Props & {
   readOnly?: boolean;
   showTrigger?: boolean;
   showClear?: boolean;
   startIcon?: React.ReactNode;
+  startIconClassName?: string;
 }) {
   return (
     <InputGroup data-disabled={disabled || undefined} className={cn("w-auto", className)}>
-      {startIcon && <InputGroupAddon>{startIcon}</InputGroupAddon>}
+      {startIcon && <InputGroupAddon className={startIconClassName}>{startIcon}</InputGroupAddon>}
       <ComboboxPrimitive.Input render={<InputGroupInput disabled={disabled} readOnly={readOnly} />} {...props} />
       <InputGroupAddon align="inline-end">
         {readOnly ? (

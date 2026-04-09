@@ -161,7 +161,14 @@ export function MultiSelect({
             }
           >
             {startIcon && (
-              <span className="shrink-0 text-muted-foreground [&_svg:not([class*='size-'])]:size-4">{startIcon}</span>
+              <span
+                className={cn(
+                  "shrink-0 [&_svg:not([class*='size-'])]:size-4",
+                  value.length === 0 && "text-muted-foreground"
+                )}
+              >
+                {startIcon}
+              </span>
             )}
             <span className={cn("flex-1 truncate text-left", value.length === 0 && "text-muted-foreground")}>
               {displayLabel}

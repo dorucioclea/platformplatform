@@ -155,6 +155,7 @@ export function ComboboxField({
           disabled={isDisabled}
           readOnly={isReadOnly}
           startIcon={selectedIcon ?? startIconProp}
+          startIconClassName={value ? "text-foreground" : undefined}
           aria-invalid={isInvalid || undefined}
         />
         <ComboboxContent>
