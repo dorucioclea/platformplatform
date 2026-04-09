@@ -271,6 +271,9 @@ msgstr "Slet element"
 msgid "Delete this item?"
 msgstr "Slet dette element?"
 
+msgid "Description"
+msgstr "Beskrivelse"
+
 msgid "Destructive"
 msgstr "Destruktiv"
 
@@ -300,6 +303,9 @@ msgstr "Rettens navn"
 
 msgid "Dish name is required"
 msgstr "Rettens navn er påkrævet"
+
+msgid "Done"
+msgstr "Udført"
 
 msgid "Duplicate"
 msgstr "Dupliker"
@@ -337,6 +343,9 @@ msgstr "Aktiveret"
 msgid "Errors"
 msgstr "Fejl"
 
+msgid "Escape to close"
+msgstr "Tryk Escape for at lukke"
+
 msgid "Examples"
 msgstr "Eksempler"
 
@@ -358,6 +367,9 @@ msgstr "Ekstra stor"
 msgid "Extra small"
 msgstr "Ekstra lille"
 
+msgid "Features"
+msgstr "Funktioner"
+
 msgid "First cooked"
 msgstr "Første gang tilberedt"
 
@@ -372,6 +384,9 @@ msgstr "friend@example.com"
 
 msgid "Full access, can edit and share with others"
 msgstr "Fuld adgang, kan redigere og dele med andre"
+
+msgid "Fullscreen on mobile"
+msgstr "Fuldskærm på mobil"
 
 msgid "Get started"
 msgstr "Kom i gang"
@@ -441,6 +456,9 @@ msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
 
 msgid "Just now"
 msgstr "Lige nu"
+
+msgid "Keyboard accessible"
+msgstr "Tilgængelig via tastatur"
 
 msgid "Labels"
 msgstr "Etiketter"
@@ -541,6 +559,9 @@ msgstr "Tal (heltal)"
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
+msgid "Open side pane"
+msgstr "Åbn sidepanel"
+
 msgid "Opened documentation"
 msgstr "Åbnet dokumentation"
 
@@ -613,6 +634,9 @@ msgstr "Klar til at udgive?"
 msgid "Rebase and merge"
 msgstr "Rebase og flet"
 
+msgid "Recipe details"
+msgstr "Opskriftsdetaljer"
+
 msgid "Recipe info"
 msgstr "Opskriftsinfo"
 
@@ -636,6 +660,9 @@ msgstr "Fjern"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
+
+msgid "Responsive layout"
+msgstr "Responsivt layout"
 
 msgid "Restaurant phone"
 msgstr "Restauranttelefon"
@@ -721,6 +748,9 @@ msgstr "Vis statuslinje"
 msgid "Show toast"
 msgstr "Vis meddelelse"
 
+msgid "Side pane"
+msgstr "Sidepanel"
+
 msgid "Simulate errors"
 msgstr "Simuler fejl"
 
@@ -792,6 +822,9 @@ msgstr "Dette felt er påkrævet"
 
 msgid "This is a default informational alert."
 msgstr "Dette er en standard informationsadvarsel."
+
+msgid "This is a side pane component that slides in from the right. It can adapt to fullscreen mode on smaller screens."
+msgstr "Dette er en sidepanel-komponent, der glider ind fra højre. Den kan tilpasses fuldskærmstilstand på mindre skærme."
 
 msgid "This is an informational message."
 msgstr "Dette er en informationsmeddelelse."

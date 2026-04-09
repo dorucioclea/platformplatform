@@ -271,6 +271,9 @@ msgstr "Delete item"
 msgid "Delete this item?"
 msgstr "Delete this item?"
 
+msgid "Description"
+msgstr "Description"
+
 msgid "Destructive"
 msgstr "Destructive"
 
@@ -300,6 +303,9 @@ msgstr "Dish name"
 
 msgid "Dish name is required"
 msgstr "Dish name is required"
+
+msgid "Done"
+msgstr "Done"
 
 msgid "Duplicate"
 msgstr "Duplicate"
@@ -337,6 +343,9 @@ msgstr "Enabled"
 msgid "Errors"
 msgstr "Errors"
 
+msgid "Escape to close"
+msgstr "Escape to close"
+
 msgid "Examples"
 msgstr "Examples"
 
@@ -358,6 +367,9 @@ msgstr "Extra large"
 msgid "Extra small"
 msgstr "Extra small"
 
+msgid "Features"
+msgstr "Features"
+
 msgid "First cooked"
 msgstr "First cooked"
 
@@ -372,6 +384,9 @@ msgstr "friend@example.com"
 
 msgid "Full access, can edit and share with others"
 msgstr "Full access, can edit and share with others"
+
+msgid "Fullscreen on mobile"
+msgstr "Fullscreen on mobile"
 
 msgid "Get started"
 msgstr "Get started"
@@ -441,6 +456,9 @@ msgstr "JPEG, PNG or WebP. Max 1 MB."
 
 msgid "Just now"
 msgstr "Just now"
+
+msgid "Keyboard accessible"
+msgstr "Keyboard accessible"
 
 msgid "Labels"
 msgstr "Labels"
@@ -541,6 +559,9 @@ msgstr "Number (integer)"
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 
+msgid "Open side pane"
+msgstr "Open side pane"
+
 msgid "Opened documentation"
 msgstr "Opened documentation"
 
@@ -613,6 +634,9 @@ msgstr "Ready to publish?"
 msgid "Rebase and merge"
 msgstr "Rebase and merge"
 
+msgid "Recipe details"
+msgstr "Recipe details"
+
 msgid "Recipe info"
 msgstr "Recipe info"
 
@@ -636,6 +660,9 @@ msgstr "Remove"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
+
+msgid "Responsive layout"
+msgstr "Responsive layout"
 
 msgid "Restaurant phone"
 msgstr "Restaurant phone"
@@ -721,6 +748,9 @@ msgstr "Show status bar"
 msgid "Show toast"
 msgstr "Show toast"
 
+msgid "Side pane"
+msgstr "Side pane"
+
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
@@ -792,6 +822,9 @@ msgstr "This field is required"
 
 msgid "This is a default informational alert."
 msgstr "This is a default informational alert."
+
+msgid "This is a side pane component that slides in from the right. It can adapt to fullscreen mode on smaller screens."
+msgstr "This is a side pane component that slides in from the right. It can adapt to fullscreen mode on smaller screens."
 
 msgid "This is an informational message."
 msgstr "This is an informational message."

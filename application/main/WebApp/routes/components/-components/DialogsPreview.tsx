@@ -9,6 +9,7 @@ import { useState } from "react";
 import { type DialogSize } from "./dialogSize";
 import { RecipeEditorDialog } from "./RecipeEditorDialog";
 import { ShareRecipeDialog } from "./ShareRecipeDialog";
+import { SidePanePreview } from "./SidePanePreview";
 
 export function DialogsPreview() {
   const [isRecipeOpen, setIsRecipeOpen] = useState(false);
@@ -81,6 +82,7 @@ export function DialogsPreview() {
         <RecipeEditorDialog isOpen={isRecipeOpen} onOpenChange={setIsRecipeOpen} {...options} />
         <ShareRecipeDialog isOpen={isShareOpen} onOpenChange={setIsShareOpen} {...options} />
       </div>
+      <SidePanePreview />
     </div>
   );
 }
