@@ -78,7 +78,7 @@ function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
 // data-[active] selectors instead of data-[selected] (BaseUI uses data-active, not data-selected like Radix),
 // and active:bg-muted/50 for press feedback.
 const tabTriggerVariants = cva(
-  "relative inline-flex cursor-pointer scroll-mx-12 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold whitespace-nowrap outline-ring transition-colors not-data-[active]:text-muted-foreground after:absolute after:right-1 after:-bottom-px after:left-1 after:h-0.5 after:transition-colors not-data-[active]:after:bg-transparent not-data-[active]:hover:text-muted-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-muted/50 disabled:pointer-events-none disabled:opacity-50 data-[active]:text-foreground data-[active]:after:bg-primary",
+  "relative inline-flex cursor-pointer scroll-mx-12 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold whitespace-nowrap outline-ring transition-colors not-data-[active]:text-muted-foreground after:absolute after:right-1 after:-bottom-1 after:left-1 after:h-0.5 after:transition-colors not-data-[active]:after:bg-transparent not-data-[active]:hover:text-muted-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-muted/50 disabled:pointer-events-none disabled:opacity-50 data-[active]:text-foreground data-[active]:after:bg-primary",
   {
     variants: {
       size: {
