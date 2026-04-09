@@ -16,11 +16,15 @@ import { pageSize, sampleProducts } from "./sampleProductData";
 
 type SortDirection = "ascending" | "descending";
 
+interface TablePreviewProps {
+  onProductSelect?: (product: SampleProduct | null) => void;
+}
+
 function SortIndicator({ direction }: Readonly<{ direction: SortDirection }>) {
   return direction === "ascending" ? <ArrowUpIcon className="size-3.5" /> : <ArrowDownIcon className="size-3.5" />;
 }
 
-export function TablePreview() {
+export function TablePreview({ onProductSelect }: TablePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
@@ -48,6 +52,12 @@ export function TablePreview() {
     }
   };
 
+  const handleRowSelect = (index: number) => {
+    setSelectedIndex(index);
+    const product = paginatedProducts[index];
+    onProductSelect?.(product);
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-2">
       <div className="flex items-center justify-between">
@@ -66,7 +76,7 @@ export function TablePreview() {
           />
         </div>
       </div>
-      <Table rowSize={rowSize} aria-label={t`Products`} selectedIndex={selectedIndex} onNavigate={setSelectedIndex}>
+      <Table rowSize={rowSize} aria-label={t`Products`} selectedIndex={selectedIndex} onNavigate={handleRowSelect}>
         <TableHeader>
           <TableRow>
             <TableHead data-column="name" onClick={() => handleSort("name")}>
@@ -112,7 +122,7 @@ export function TablePreview() {
               index={index}
               isSelected={index === selectedIndex}
               rowSize={rowSize}
-              onSelect={setSelectedIndex}
+              onSelect={handleRowSelect}
               formatDate={formatDate}
             />
           ))}

@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import type { SampleProduct } from "./sampleProductData";
+
 import { AlertDialogsPreview } from "./AlertDialogsPreview";
 import { CardsPreview } from "./CardsPreview";
 import { DateFormatPreview } from "./DateFormatPreview";
@@ -18,7 +20,11 @@ import { EmptyPreview } from "./EmptyPreview";
 import { SkeletonPreview } from "./SkeletonPreview";
 import { TablePreview } from "./TablePreview";
 
-export function ExamplesPreview() {
+interface ExamplesPreviewProps {
+  onProductSelect?: (product: SampleProduct | null) => void;
+}
+
+export function ExamplesPreview({ onProductSelect }: ExamplesPreviewProps) {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "dialogs");
 
   useEffect(() => {
@@ -29,6 +35,9 @@ export function ExamplesPreview() {
 
   const handleTabChange = (value: string | number) => {
     const tab = String(value);
+    if (activeTab === "tables" && tab !== "tables") {
+      onProductSelect?.(null);
+    }
     setActiveTab(tab);
     window.location.hash = tab;
   };
@@ -74,7 +83,7 @@ export function ExamplesPreview() {
         </div>
       </TabsContent>
       <TabsContent value="tables" className="flex flex-1 flex-col">
-        <TablePreview />
+        <TablePreview onProductSelect={onProductSelect} />
       </TabsContent>
       <TabsContent value="empty" className="flex flex-1 flex-col">
         <EmptyPreview />

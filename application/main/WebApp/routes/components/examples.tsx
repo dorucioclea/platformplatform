@@ -2,10 +2,14 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
 import { createFileRoute } from "@tanstack/react-router";
+import { useCallback, useState } from "react";
+
+import type { SampleProduct } from "./-components/sampleProductData";
 
 import { ComponentsSideMenu } from "./-components/ComponentsSideMenu";
 import { ExamplesPreview } from "./-components/ExamplesPreview";
 import { PreviewHeader } from "./-components/PreviewHeader";
+import { ProductDetailsSidePane } from "./-components/ProductDetailsSidePane";
 
 export const Route = createFileRoute("/components/examples")({
   staticData: { trackingTitle: "Examples" },
@@ -13,6 +17,19 @@ export const Route = createFileRoute("/components/examples")({
 });
 
 function ExamplesPage() {
+  const [selectedProduct, setSelectedProduct] = useState<SampleProduct | null>(null);
+
+  const handleCloseProduct = useCallback(() => {
+    setSelectedProduct(null);
+  }, []);
+
+  const getSidePane = () => {
+    if (!selectedProduct) {
+      return undefined;
+    }
+    return <ProductDetailsSidePane product={selectedProduct} isOpen={true} onClose={handleCloseProduct} />;
+  };
+
   return (
     <>
       <ComponentsSideMenu />
@@ -32,8 +49,9 @@ function ExamplesPage() {
             }}
           />
         }
+        sidePane={getSidePane()}
       >
-        <ExamplesPreview />
+        <ExamplesPreview onProductSelect={setSelectedProduct} />
       </AppLayout>
     </>
   );

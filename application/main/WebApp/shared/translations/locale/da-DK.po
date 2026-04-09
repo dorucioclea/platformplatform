@@ -181,6 +181,9 @@ msgstr "Kok"
 msgid "Close"
 msgstr "Luk"
 
+msgid "Close product details"
+msgstr ""
+
 msgid "Co-author"
 msgstr "Medforfatter"
 
@@ -267,6 +270,9 @@ msgstr "Slet"
 
 msgid "Delete item"
 msgstr "Slet element"
+
+msgid "Delete product"
+msgstr ""
 
 msgid "Delete this item?"
 msgstr "Slet dette element?"
@@ -603,6 +609,12 @@ msgstr "Produkt"
 
 msgid "Product actions"
 msgstr "Produkthandlinger"
+
+msgid "Product details"
+msgstr ""
+
+msgid "Product ID"
+msgstr ""
 
 msgid "Products"
 msgstr "Produkter"

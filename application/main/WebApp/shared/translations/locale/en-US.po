@@ -181,6 +181,9 @@ msgstr "Chef"
 msgid "Close"
 msgstr "Close"
 
+msgid "Close product details"
+msgstr "Close product details"
+
 msgid "Co-author"
 msgstr "Co-author"
 
@@ -267,6 +270,9 @@ msgstr "Delete"
 
 msgid "Delete item"
 msgstr "Delete item"
+
+msgid "Delete product"
+msgstr "Delete product"
 
 msgid "Delete this item?"
 msgstr "Delete this item?"
@@ -603,6 +609,12 @@ msgstr "Product"
 
 msgid "Product actions"
 msgstr "Product actions"
+
+msgid "Product details"
+msgstr "Product details"
+
+msgid "Product ID"
+msgstr "Product ID"
 
 msgid "Products"
 msgstr "Products"
