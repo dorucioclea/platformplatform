@@ -18,10 +18,18 @@ function Tooltip({ open: controlledOpen, onOpenChange, ...props }: TooltipPrimit
   const open = isControlled ? controlledOpen : internalOpen;
 
   const handleOpenChange: TooltipPrimitive.Root.Props["onOpenChange"] = (newOpen, eventDetails) => {
-    // On touch devices, prevent the close on trigger-press since we handle toggle via onClick
-    if (!newOpen && eventDetails.reason === "trigger-press") {
-      eventDetails.cancel();
-      return;
+    if (eventDetails.reason === "trigger-press") {
+      // On hover-capable devices, ignore press entirely so clicks never affect tooltip visibility.
+      // On touch devices, allow open via press but prevent close via press (we toggle via onClick instead).
+      if (window.matchMedia("(hover: none)").matches) {
+        if (!newOpen) {
+          eventDetails.cancel();
+          return;
+        }
+      } else {
+        eventDetails.cancel();
+        return;
+      }
     }
     if (!isControlled) {
       setInternalOpen(newOpen);
