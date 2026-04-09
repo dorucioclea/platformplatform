@@ -58,18 +58,13 @@ export function UserProfileFields({
       <TextField
         name="email"
         label={t`Email`}
+        tooltip={t`Your email address cannot be changed. An owner must delete your account and reinvite you with the new email address.`}
         value={user?.email}
         isReadOnly={true}
         startIcon={<MailIcon className="size-4" />}
       />
 
-      <TextField
-        name="title"
-        label={t`Title`}
-        tooltip={t`Your professional title or role`}
-        defaultValue={user?.title}
-        placeholder={t`E.g. Software engineer`}
-      />
+      <TextField name="title" label={t`Title`} defaultValue={user?.title} placeholder={t`E.g. Software engineer`} />
     </>
   );
 

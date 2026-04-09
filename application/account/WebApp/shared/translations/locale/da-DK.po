@@ -1532,6 +1532,9 @@ msgstr "Dine data forbliver i den Azure region du vælger ved tilmelding"
 msgid "Your downgrade has been scheduled."
 msgstr "Din nedgradering er blevet planlagt."
 
+msgid "Your email address cannot be changed. An owner must delete your account and reinvite you with the new email address."
+msgstr "Din e-mailadresse kan ikke ændres. En ejer skal slette din konto og invitere dig igen med den nye e-mailadresse."
+
 msgid "Your payment card is expired or expiring soon. Please update your payment method to avoid service interruption."
 msgstr "Dit betalingskort er udløbet eller udløber snart. Opdater venligst din betalingsmetode for at undgå afbrydelse af tjenesten."
 
@@ -1546,9 +1549,6 @@ msgstr "Din plan vil blive nedgraderet til {planName} ved udgangen af din nuvær
 
 msgid "Your plan will be downgraded to {planName} at the end of your current billing period. You will keep your current plan features until then."
 msgstr "Din plan vil blive nedgraderet til {planName} ved udgangen af din nuværende faktureringsperiode. Du beholder dine nuværende planfunktioner indtil da."
-
-msgid "Your professional title or role"
-msgstr "Din professionelle titel eller rolle"
 
 msgid "Your scheduled downgrade has been cancelled."
 msgstr "Din planlagte nedgradering er blevet afbrudt."
