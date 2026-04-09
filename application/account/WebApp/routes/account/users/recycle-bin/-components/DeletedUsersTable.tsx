@@ -121,7 +121,7 @@ export function DeletedUsersTable({
   return (
     <>
       <div className="deleted-users-table min-h-48 flex-1 overflow-auto">
-        <Table aria-label={t`Deleted users`}>
+        <Table rowSize="spacious" aria-label={t`Deleted users`}>
           <TableHeader className="sticky top-0 z-10 bg-inherit">
             <TableRow>
               {isMultiSelectMode && (
@@ -135,29 +135,21 @@ export function DeletedUsersTable({
                 </TableHead>
               )}
               <TableHead className={isSmallViewportOrLarger() ? "min-w-[16rem]" : ""}>
-                <span className="text-xs font-bold">
-                  <Trans>Name</Trans>
-                </span>
+                <Trans>Name</Trans>
               </TableHead>
               {isSmallViewportOrLarger() && (
                 <TableHead className="min-w-[10rem]">
-                  <span className="text-xs font-bold">
-                    <Trans>Email</Trans>
-                  </span>
+                  <Trans>Email</Trans>
                 </TableHead>
               )}
               {isMediumViewportOrLarger() && (
                 <TableHead className="w-[9rem] min-w-[7.5rem]">
-                  <span className="text-xs font-bold">
-                    <Trans>Deleted</Trans>
-                  </span>
+                  <Trans>Deleted</Trans>
                 </TableHead>
               )}
               {isSmallViewportOrLarger() && (
                 <TableHead className="w-[6rem]">
-                  <span className="text-xs font-bold">
-                    <Trans>Role</Trans>
-                  </span>
+                  <Trans>Role</Trans>
                 </TableHead>
               )}
             </TableRow>

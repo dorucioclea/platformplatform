@@ -4,6 +4,7 @@ import {
   MousePointerClickIcon,
   PanelsTopLeftIcon,
   SquareMousePointerIcon,
+  TableIcon,
   TagIcon,
   TextCursorInputIcon
 } from "lucide-react";
@@ -14,6 +15,7 @@ import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { DialogsPreview } from "./DialogsPreview";
 import { EmptySkeletonPreview } from "./EmptySkeletonPreview";
+import { TableSidePanePreview } from "./TableSidePanePreview";
 
 export function ComponentPreview() {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "controls");
@@ -49,6 +51,10 @@ export function ComponentPreview() {
           <PanelsTopLeftIcon />
           <Trans>Dialogs and cards</Trans>
         </TabsTrigger>
+        <TabsTrigger value="tables">
+          <TableIcon />
+          <Trans>Tables and panes</Trans>
+        </TabsTrigger>
         <TabsTrigger value="empty">
           <SquareMousePointerIcon />
           <Trans>Empty and skeleton</Trans>
@@ -65,6 +71,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="dialogs">
         <DialogsPreview />
+      </TabsContent>
+      <TabsContent value="tables">
+        <TableSidePanePreview />
       </TabsContent>
       <TabsContent value="empty">
         <EmptySkeletonPreview />

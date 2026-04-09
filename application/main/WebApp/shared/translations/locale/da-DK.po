@@ -123,6 +123,9 @@ msgstr "Kort"
 msgid "Change language"
 msgstr "Skift sprog"
 
+msgid "Change role"
+msgstr ""
+
 msgid "Change theme"
 msgstr "Skift tema"
 
@@ -138,7 +141,13 @@ msgstr "Afkrydsningsfelt"
 msgid "Checkbox (off)"
 msgstr "Afkrydsningsfelt (fra)"
 
+msgid "Click a row in the table above to open the side pane."
+msgstr ""
+
 msgid "Close"
+msgstr ""
+
+msgid "Close user details"
 msgstr ""
 
 msgid "colleague@company.com"
@@ -176,6 +185,9 @@ msgstr "Opret"
 
 msgid "Create item"
 msgstr "Opret element"
+
+msgid "Created"
+msgstr ""
 
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -238,6 +250,9 @@ msgid "E.g., Taylor"
 msgstr ""
 
 msgid "Edit contact"
+msgstr ""
+
+msgid "Edit profile"
 msgstr ""
 
 msgid "Email"
@@ -354,6 +369,9 @@ msgstr "Stor"
 msgid "Last name"
 msgstr ""
 
+msgid "Last seen"
+msgstr ""
+
 msgid "Learn more"
 msgstr ""
 
@@ -386,6 +404,9 @@ msgstr "Mere information"
 
 msgid "Multi select"
 msgstr "Flervalg"
+
+msgid "Name"
+msgstr ""
 
 msgid "Native date"
 msgstr "Native dato"
@@ -456,6 +477,9 @@ msgstr "Cirkeldiagram"
 msgid "Please enter a valid email address"
 msgstr ""
 
+msgid "Previous"
+msgstr ""
+
 msgid "Profile picture preview"
 msgstr ""
 
@@ -516,6 +540,9 @@ msgstr "Vælg"
 msgid "Select charts"
 msgstr ""
 
+msgid "Send email"
+msgstr ""
+
 msgid "Send invitation"
 msgstr ""
 
@@ -535,6 +562,9 @@ msgid "Short date"
 msgstr "Kort dato"
 
 msgid "Show toast"
+msgstr ""
+
+msgid "Side pane"
 msgstr ""
 
 msgid "Simulate errors"
@@ -563,6 +593,12 @@ msgstr "Kontakt"
 
 msgid "Switch (off)"
 msgstr "Kontakt (fra)"
+
+msgid "Table with sorting and pagination"
+msgstr ""
+
+msgid "Tables and panes"
+msgstr ""
 
 msgid "Team members"
 msgstr "Teammedlemmer"
@@ -645,8 +681,20 @@ msgstr ""
 msgid "Usage"
 msgstr "Forbrug"
 
+msgid "User actions"
+msgstr ""
+
+msgid "User details"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
 msgid "View all"
 msgstr "Se alle"
+
+msgid "View profile"
+msgstr ""
 
 msgid "Warning alert"
 msgstr "Advarselsbesked"

@@ -4,14 +4,18 @@ import { createContext, use, useEffect, useRef, useState } from "react";
 
 import { cn } from "../utils";
 
+type TableRowSize = "compact" | "spacious";
+
 interface TableKeyboardNavigationContext {
   focusedRowIndex: number;
   setFocusedRowIndex: (index: number) => void;
 }
 
 const TableKeyboardNavigationContext = createContext<TableKeyboardNavigationContext | null>(null);
+const TableRowSizeContext = createContext<TableRowSize>("compact");
 
 interface TableProps extends React.ComponentProps<"table"> {
+  rowSize: TableRowSize;
   selectedIndex?: number;
   onNavigate?: (index: number) => void;
   onActivate?: (index: number) => void;
@@ -20,7 +24,7 @@ interface TableProps extends React.ComponentProps<"table"> {
 // NOTE: This diverges from stock ShadCN to add optional keyboard navigation with roving tabindex.
 // Pass selectedIndex, onNavigate, and onActivate to enable arrow key navigation between body rows.
 // TableRow accepts an optional index prop to participate in keyboard navigation via context.
-function Table({ className, selectedIndex, onNavigate, onActivate, ...props }: TableProps) {
+function Table({ className, rowSize, selectedIndex, onNavigate, onActivate, ...props }: TableProps) {
   const hasKeyboardNavigation = onNavigate != null;
   const containerRef = useRef<HTMLDivElement>(null);
   const [focusedRowIndex, setFocusedRowIndex] = useState<number>(0);
@@ -126,13 +130,15 @@ function Table({ className, selectedIndex, onNavigate, onActivate, ...props }: T
     </div>
   );
 
+  const withRowSize = <TableRowSizeContext value={rowSize}>{table}</TableRowSizeContext>;
+
   if (!hasKeyboardNavigation) {
-    return table;
+    return withRowSize;
   }
 
   return (
     <TableKeyboardNavigationContext value={{ focusedRowIndex, setFocusedRowIndex }}>
-      {table}
+      {withRowSize}
     </TableKeyboardNavigationContext>
   );
 }
@@ -159,8 +165,14 @@ interface TableRowProps extends React.ComponentProps<"tr"> {
   index?: number;
 }
 
+const rowSizeStyles: Record<TableRowSize, string> = {
+  compact: "h-11",
+  spacious: "h-[4.5rem]"
+};
+
 function TableRow({ className, index, ...props }: TableRowProps) {
   const keyboardNavigation = use(TableKeyboardNavigationContext);
+  const rowSize = use(TableRowSizeContext);
   const hasNavigation = keyboardNavigation != null && index != null;
 
   return (
@@ -170,6 +182,7 @@ function TableRow({ className, index, ...props }: TableRowProps) {
       // active:bg-muted for press feedback, and keyboard navigation via roving tabindex when an index prop and navigation context are present.
       className={cn(
         "rounded-md border-b outline-ring transition-colors hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-muted",
+        rowSizeStyles[rowSize],
         className
       )}
       tabIndex={hasNavigation ? (index === keyboardNavigation.focusedRowIndex ? 0 : -1) : undefined}
@@ -181,7 +194,7 @@ function TableRow({ className, index, ...props }: TableRowProps) {
 
 // NOTE: This diverges from stock ShadCN to make clickable column headers keyboard-accessible.
 // When onClick is present, the header gets tabIndex={0} and responds to Enter/Space.
-function TableHead({ className, onClick, onKeyDown, ...props }: React.ComponentProps<"th">) {
+function TableHead({ className, onClick, onKeyDown, children, ...props }: React.ComponentProps<"th">) {
   const isInteractive = onClick != null;
 
   const handleKeyDown = isInteractive
@@ -199,14 +212,17 @@ function TableHead({ className, onClick, onKeyDown, ...props }: React.ComponentP
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 [&:has([role=checkbox])]:pr-0",
+        "h-10 rounded-sm px-2 text-left align-middle text-xs font-bold whitespace-nowrap text-foreground outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 [&:has([role=checkbox])]:pr-0",
+        isInteractive && "cursor-pointer select-none",
         className
       )}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       tabIndex={isInteractive ? 0 : undefined}
       {...props}
-    />
+    >
+      <span className="inline-flex items-center gap-1">{children}</span>
+    </th>
   );
 }
 
@@ -227,3 +243,4 @@ function TableCaption({ className, ...props }: React.ComponentProps<"caption">) 
 }
 
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+export type { TableRowSize };
