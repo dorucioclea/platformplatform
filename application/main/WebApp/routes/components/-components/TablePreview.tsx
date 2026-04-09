@@ -51,9 +51,6 @@ export function TablePreview() {
   return (
     <div className="flex flex-1 flex-col gap-2">
       <div className="flex items-center justify-between">
-        <h4>
-          <Trans>Table with sorting, pagination, and dropdown menu</Trans>
-        </h4>
         <div className="flex items-center gap-4">
           <SwitchField
             label={t`Fixed columns`}

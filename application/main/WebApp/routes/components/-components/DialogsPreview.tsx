@@ -6,9 +6,6 @@ import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { ChefHatIcon, Share2Icon } from "lucide-react";
 import { useState } from "react";
 
-import { AlertDialogsPreview } from "./AlertDialogsPreview";
-import { CardsPreview } from "./CardsPreview";
-import { DateFormatPreview } from "./DateFormatPreview";
 import { type DialogSize } from "./dialogSize";
 import { RecipeEditorDialog } from "./RecipeEditorDialog";
 import { ShareRecipeDialog } from "./ShareRecipeDialog";
@@ -26,9 +23,6 @@ export function DialogsPreview() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h4>
-          <Trans>Form dialogs</Trans>
-        </h4>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <SwitchField
             label={t`Dirty dialog`}
@@ -87,9 +81,6 @@ export function DialogsPreview() {
         <RecipeEditorDialog isOpen={isRecipeOpen} onOpenChange={setIsRecipeOpen} {...options} />
         <ShareRecipeDialog isOpen={isShareOpen} onOpenChange={setIsShareOpen} {...options} />
       </div>
-      <AlertDialogsPreview showToasts={showToasts} />
-      <CardsPreview />
-      <DateFormatPreview />
     </div>
   );
 }

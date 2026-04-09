@@ -22,7 +22,7 @@ msgid "{0} minutes ago"
 msgstr "for {0} minutter siden"
 
 msgid "+39 06 555 0000"
-msgstr ""
+msgstr "+39 06 555 0000"
 
 msgid ""
 "1 Infinite Loop\n"
@@ -47,7 +47,7 @@ msgid "75% of quota used"
 msgstr "75% af kvoten brugt"
 
 msgid "About this feature"
-msgstr ""
+msgstr "Om denne funktion"
 
 msgid "Add notes about this recipe"
 msgstr "Tilføj noter om denne opskrift"
@@ -59,7 +59,7 @@ msgid "Add to favorites"
 msgstr "Tilføj til favoritter"
 
 msgid "Added"
-msgstr ""
+msgstr "Tilføjet"
 
 msgid "Address (fixed 2 lines)"
 msgstr "Adresse (fast 2 linjer)"
@@ -68,7 +68,7 @@ msgid "Advanced techniques, over 60 minutes"
 msgstr "Avancerede teknikker, over 60 minutter"
 
 msgid "Alert dialogs"
-msgstr ""
+msgstr "Advarselsdialoger"
 
 msgid "Alerts"
 msgstr "Advarsler"
@@ -80,25 +80,25 @@ msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
 msgid "Archive"
-msgstr ""
+msgstr "Arkiver"
 
 msgid "Archive item"
-msgstr ""
+msgstr "Arkiver element"
 
 msgid "Archive this item?"
-msgstr ""
+msgstr "Arkiver dette element?"
 
 msgid "Area chart"
 msgstr "Områdediagram"
 
 msgid "Back"
-msgstr ""
+msgstr "Tilbage"
 
 msgid "Badges"
 msgstr "Badges"
 
 msgid "Banners"
-msgstr ""
+msgstr "Bannere"
 
 msgid "Bar chart"
 msgstr "Søjlediagram"
@@ -113,13 +113,13 @@ msgid "Bold"
 msgstr "Fed"
 
 msgid "Breadcrumb — custom separator"
-msgstr ""
+msgstr "Brødkrumme — brugerdefineret skilletegn"
 
 msgid "Breadcrumb — multi-level with auto-collapse"
-msgstr ""
+msgstr "Brødkrumme — flere niveauer med automatisk sammenklapning"
 
 msgid "Breadcrumb — simple"
-msgstr ""
+msgstr "Brødkrumme — enkel"
 
 msgid "Browse and test all UI components."
 msgstr "Gennemse og test alle UI-komponenter."
@@ -137,7 +137,7 @@ msgid "Button variants"
 msgstr "Knapvarianter"
 
 msgid "Buttons and links"
-msgstr ""
+msgstr "Knapper og links"
 
 msgid "Can change ingredients and instructions"
 msgstr "Kan ændre ingredienser og instruktioner"
@@ -158,7 +158,7 @@ msgid "Categorization"
 msgstr "Kategorisering"
 
 msgid "Category"
-msgstr ""
+msgstr "Kategori"
 
 msgid "Change language"
 msgstr "Skift sprog"
@@ -170,7 +170,7 @@ msgid "Change zoom level"
 msgstr "Skift zoomniveau"
 
 msgid "Changes published"
-msgstr ""
+msgstr "Ændringer udgivet"
 
 msgid "Checkbox"
 msgstr "Afkrydsningsfelt"
@@ -179,13 +179,13 @@ msgid "Chef"
 msgstr "Kok"
 
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 msgid "Co-author"
 msgstr "Medforfatter"
 
 msgid "Colm Tuite"
-msgstr ""
+msgstr "Colm Tuite"
 
 msgid "Combobox"
 msgstr "Kombinationsboks"
@@ -203,16 +203,16 @@ msgid "Components"
 msgstr "Komponenter"
 
 msgid "Composed real-world flows using the UI components."
-msgstr ""
+msgstr "Sammensatte virkelige flows med UI-komponenterne."
 
 msgid "Confirm action"
-msgstr ""
+msgstr "Bekræft handling"
 
 msgid "Context menu"
-msgstr ""
+msgstr "Kontekstmenu"
 
 msgid "Controls"
-msgstr ""
+msgstr "Kontroller"
 
 msgid "Cooking details"
 msgstr "Tilberedningsdetaljer"
@@ -227,16 +227,16 @@ msgid "Create item"
 msgstr "Opret element"
 
 msgid "Create shortcut..."
-msgstr ""
+msgstr "Opret genvej..."
 
 msgid "Current page"
-msgstr ""
+msgstr "Nuværende side"
 
 msgid "Dashboard"
 msgstr "Dashboard"
 
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 msgid "Date and time"
 msgstr "Dato og tid"
@@ -269,7 +269,7 @@ msgid "Delete item"
 msgstr "Slet element"
 
 msgid "Delete this item?"
-msgstr ""
+msgstr "Slet dette element?"
 
 msgid "Destructive"
 msgstr "Destruktiv"
@@ -278,13 +278,16 @@ msgid "Destructive alert"
 msgstr "Destruktiv advarsel"
 
 msgid "Developer tools"
-msgstr ""
+msgstr "Udviklerværktøjer"
+
+msgid "Dialogs"
+msgstr "Dialoger"
 
 msgid "Dialogs and cards"
 msgstr "Dialoger og kort"
 
 msgid "Dirty dialog"
-msgstr ""
+msgstr "Uren dialog"
 
 msgid "Disabled"
 msgstr "Deaktiveret"
@@ -299,7 +302,7 @@ msgid "Dish name is required"
 msgstr "Rettens navn er påkrævet"
 
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliker"
 
 msgid "E.g., Alex Taylor"
 msgstr "F.eks. Alex Taylor"
@@ -314,28 +317,40 @@ msgid "Easy"
 msgstr "Let"
 
 msgid "Edit product"
-msgstr ""
+msgstr "Rediger produkt"
 
 msgid "Edit recipe"
 msgstr "Rediger opskrift"
 
 msgid "Email address"
-msgstr ""
+msgstr "E-mailadresse"
+
+msgid "Empty"
+msgstr "Tom"
 
 msgid "Empty and skeleton"
 msgstr "Tom tilstand og skelet"
-
-msgid "Empty states"
-msgstr "Tomme tilstande"
 
 msgid "Enabled"
 msgstr "Aktiveret"
 
 msgid "Errors"
-msgstr ""
+msgstr "Fejl"
 
 msgid "Examples"
-msgstr ""
+msgstr "Eksempler"
+
+msgid "Export"
+msgstr "Eksporter"
+
+msgid "Export as CSV"
+msgstr "Eksporter som CSV"
+
+msgid "Export as JSON"
+msgstr "Eksporter som JSON"
+
+msgid "Export as PDF"
+msgstr "Eksporter som PDF"
 
 msgid "Extra large"
 msgstr "Ekstra stor"
@@ -347,16 +362,13 @@ msgid "First cooked"
 msgstr "Første gang tilberedt"
 
 msgid "Fixed columns"
-msgstr ""
-
-msgid "Form dialogs"
-msgstr ""
+msgstr "Faste kolonner"
 
 msgid "Forward"
-msgstr ""
+msgstr "Fremad"
 
 msgid "friend@example.com"
-msgstr ""
+msgstr "friend@example.com"
 
 msgid "Full access, can edit and share with others"
 msgstr "Fuld adgang, kan redigere og dele med andre"
@@ -395,13 +407,13 @@ msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
 
 msgid "Home"
-msgstr ""
+msgstr "Hjem"
 
 msgid "Icon-only buttons"
 msgstr "Knapper kun med ikon"
 
 msgid "Icons"
-msgstr ""
+msgstr "Ikoner"
 
 msgid "Include cooking notes"
 msgstr "Inkluder tilberedningsnoter"
@@ -419,31 +431,31 @@ msgid "Italic"
 msgstr "Kursiv"
 
 msgid "Item archived"
-msgstr ""
+msgstr "Element arkiveret"
 
 msgid "Item deleted"
-msgstr ""
+msgstr "Element slettet"
 
 msgid "JPEG, PNG or WebP. Max 1 MB."
-msgstr ""
+msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
 
 msgid "Just now"
 msgstr "Lige nu"
 
 msgid "Labels"
-msgstr ""
+msgstr "Etiketter"
 
 msgid "Large"
 msgstr "Stor"
 
 msgid "Learn more"
-msgstr ""
+msgstr "Lær mere"
 
 msgid "Leave"
-msgstr ""
+msgstr "Forlad"
 
 msgid "Library"
-msgstr ""
+msgstr "Bibliotek"
 
 msgid "Line chart"
 msgstr "Linjediagram"
@@ -469,11 +481,26 @@ msgstr "Mellem"
 msgid "Meeting notes from last week"
 msgstr "Mødenoter fra sidste uge"
 
+msgid "Merge"
+msgstr "Flet"
+
+msgid "Merge commit"
+msgstr "Flet commit"
+
+msgid "More export options"
+msgstr "Flere eksportmuligheder"
+
 msgid "More information"
 msgstr "Mere information"
 
+msgid "More merge options"
+msgstr "Flere fletmuligheder"
+
+msgid "More save options"
+msgstr "Flere gemgemuligheder"
+
 msgid "More tools"
-msgstr ""
+msgstr "Flere værktøjer"
 
 msgid "Multi select"
 msgstr "Flervalg"
@@ -488,7 +515,7 @@ msgid "Navigation"
 msgstr "Navigation"
 
 msgid "Next"
-msgstr ""
+msgstr "Næste"
 
 msgid "No data yet"
 msgstr "Ingen data endnu"
@@ -500,7 +527,7 @@ msgid "None"
 msgstr "Ingen"
 
 msgid "Not yet"
-msgstr ""
+msgstr "Ikke endnu"
 
 msgid "Notifications"
 msgstr "Notifikationer"
@@ -515,7 +542,7 @@ msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
 msgid "Opened documentation"
-msgstr ""
+msgstr "Åbnet dokumentation"
 
 msgid "Option A"
 msgstr "Mulighed A"
@@ -527,10 +554,10 @@ msgid "Outline"
 msgstr "Kontur"
 
 msgid "Pedro Duarte"
-msgstr ""
+msgstr "Pedro Duarte"
 
 msgid "People"
-msgstr ""
+msgstr "Mennesker"
 
 msgid "Pick a chart"
 msgstr "Vælg et diagram"
@@ -542,28 +569,28 @@ msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Indtast en gyldig e-mailadresse"
 
 msgid "Previous"
-msgstr ""
+msgstr "Forrige"
 
 msgid "Price"
-msgstr ""
+msgstr "Pris"
 
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 msgid "Product actions"
-msgstr ""
+msgstr "Produkthandlinger"
 
 msgid "Products"
-msgstr ""
+msgstr "Produkter"
 
 msgid "Profile picture preview"
-msgstr ""
+msgstr "Profilbilledeksempel"
 
 msgid "Publish now"
-msgstr ""
+msgstr "Udgiv nu"
 
 msgid "Radar chart"
 msgstr "Radardiagram"
@@ -572,7 +599,7 @@ msgid "Radio group"
 msgstr "Radiogruppe"
 
 msgid "Read docs"
-msgstr ""
+msgstr "Læs dokumentation"
 
 msgid "Read only"
 msgstr "Skrivebeskyttet"
@@ -581,7 +608,10 @@ msgid "Read only access to the recipe"
 msgstr "Skrivebeskyttet adgang til opskriften"
 
 msgid "Ready to publish?"
-msgstr ""
+msgstr "Klar til at udgive?"
+
+msgid "Rebase and merge"
+msgstr "Rebase og flet"
 
 msgid "Recipe info"
 msgstr "Opskriftsinfo"
@@ -593,16 +623,16 @@ msgid "Recipe shared"
 msgstr "Opskrift delt"
 
 msgid "recipes@example.com"
-msgstr ""
+msgstr "recipes@example.com"
 
 msgid "Relative"
 msgstr "Relativ"
 
 msgid "Reload"
-msgstr ""
+msgstr "Genindlæs"
 
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
@@ -611,22 +641,31 @@ msgid "Restaurant phone"
 msgstr "Restauranttelefon"
 
 msgid "Right-click area"
-msgstr ""
+msgstr "Højreklik-område"
 
 msgid "Right-click here"
-msgstr ""
+msgstr "Højreklik her"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Save and close"
+msgstr "Gem og luk"
+
+msgid "Save as..."
+msgstr "Gem som..."
 
 msgid "Save changes"
 msgstr "Gem ændringer"
 
 msgid "Save page as..."
-msgstr ""
+msgstr "Gem side som..."
 
 msgid "Saving..."
-msgstr ""
+msgstr "Gemmer..."
 
 msgid "Scheduled maintenance on Sunday 2:00 AM — 4:00 AM UTC. Some features may be unavailable."
-msgstr ""
+msgstr "Planlagt vedligeholdelse søndag kl. 02:00—04:00 UTC. Nogle funktioner er muligvis utilgængelige."
 
 msgid "Search"
 msgstr "Søg"
@@ -641,7 +680,7 @@ msgid "Select"
 msgstr "Vælg"
 
 msgid "Select charts"
-msgstr ""
+msgstr "Vælg diagrammer"
 
 msgid "Send invite"
 msgstr "Send invitation"
@@ -665,28 +704,28 @@ msgid "Short date"
 msgstr "Kort dato"
 
 msgid "Show banner"
-msgstr ""
+msgstr "Vis banner"
 
 msgid "Show banner with action"
-msgstr ""
+msgstr "Vis banner med handling"
 
 msgid "Show bookmarks"
-msgstr ""
+msgstr "Vis bogmærker"
 
 msgid "Show dismissable banner"
-msgstr ""
+msgstr "Vis afliveligt banner"
 
 msgid "Show status bar"
-msgstr ""
+msgstr "Vis statuslinje"
 
 msgid "Show toast"
-msgstr ""
+msgstr "Vis meddelelse"
 
 msgid "Simulate errors"
-msgstr ""
+msgstr "Simuler fejl"
 
-msgid "Skeleton loading states"
-msgstr "Skelet-indlæsningstilstande"
+msgid "Skeleton"
+msgstr "Skelet"
 
 msgid "Small"
 msgstr "Lille"
@@ -701,13 +740,19 @@ msgid "Source"
 msgstr "Kilde"
 
 msgid "Spacious rows"
-msgstr ""
+msgstr "Rummeligt rækker"
+
+msgid "Split buttons"
+msgstr "Delte knapper"
+
+msgid "Squash and merge"
+msgstr "Squash og flet"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "Stay"
-msgstr ""
+msgstr "Bliv"
 
 msgid "Street address"
 msgstr "Vejnavn"
@@ -715,11 +760,8 @@ msgstr "Vejnavn"
 msgid "Switch"
 msgstr "Kontakt"
 
-msgid "Table with sorting, pagination, and dropdown menu"
-msgstr ""
-
 msgid "Tables"
-msgstr ""
+msgstr "Tabeller"
 
 msgid "Team members"
 msgstr "Teammedlemmer"
@@ -731,19 +773,19 @@ msgid "Text field"
 msgstr "Tekstfelt"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
-msgstr ""
+msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
 
 msgid "There is nothing to display here. Create your first item to get started."
 msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
 
 msgid "This action cannot be undone. The item will be permanently removed."
-msgstr ""
+msgstr "Denne handling kan ikke fortryde. Elementet fjernes permanent."
 
 msgid "This action may have unintended consequences."
 msgstr "Denne handling kan have utilsigtede konsekvenser."
 
 msgid "This feature helps you manage your workspace more efficiently. All changes are synced across your team in real time."
-msgstr ""
+msgstr "Denne funktion hjælper dig med at administrere dit arbejdsområde mere effektivt. Alle ændringer synkroniseres på tværs af dit team i realtid."
 
 msgid "This field is required"
 msgstr "Dette felt er påkrævet"
@@ -779,10 +821,7 @@ msgid "Toggle underline"
 msgstr "Skift understregning"
 
 msgid "Tooltips"
-msgstr ""
-
-msgid "Try adjusting your search or filter to find what you are looking for."
-msgstr "Prøv at justere din søgning eller dit filter for at finde det du leder efter."
+msgstr "Værktøjstip"
 
 msgid "Type or search..."
 msgstr "Skriv eller søg..."
@@ -791,16 +830,16 @@ msgid "Underline"
 msgstr "Understregning"
 
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Ugemte ændringer"
 
 msgid "Upgrade now"
-msgstr ""
+msgstr "Opgrader nu"
 
 msgid "Upload photo"
-msgstr ""
+msgstr "Upload foto"
 
 msgid "Upload profile picture"
-msgstr ""
+msgstr "Upload profilbillede"
 
 msgid "Usage"
 msgstr "Forbrug"
@@ -827,7 +866,7 @@ msgid "You have 3 unread notifications."
 msgstr "Du har 3 ulæste notifikationer."
 
 msgid "You have unsaved changes. If you leave now, your changes will be lost."
-msgstr ""
+msgstr "Du har ugemte ændringer. Hvis du forlader nu, går dine ændringer tabt."
 
 msgid "You successfully deployed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
@@ -836,7 +875,7 @@ msgid "You successfully installed PlatformPlatform! 🎉"
 msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 
 msgid "Your changes will be published and visible to all team members immediately."
-msgstr ""
+msgstr "Dine ændringer udgives og er synlige for alle teammedlemmer med det samme."
 
 msgid "Your current plan usage this month."
 msgstr "Dit nuværende planforbrug denne måned."
@@ -845,4 +884,4 @@ msgid "Your dashboard is empty"
 msgstr "Dit dashboard er tomt"
 
 msgid "Your trial expires in 3 days."
-msgstr ""
+msgstr "Din prøveperiode udløber om 3 dage."

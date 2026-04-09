@@ -181,9 +181,6 @@ function ConfirmActionDialog({ showToasts }: Readonly<{ showToasts: boolean }>) 
 export function AlertDialogsPreview({ showToasts }: Readonly<{ showToasts: boolean }>) {
   return (
     <div className="flex flex-col gap-2">
-      <h4>
-        <Trans>Alert dialogs</Trans>
-      </h4>
       <div className="flex flex-wrap items-center gap-3">
         <DeleteItemDialog showToasts={showToasts} />
         <ArchiveItemDialog showToasts={showToasts} />

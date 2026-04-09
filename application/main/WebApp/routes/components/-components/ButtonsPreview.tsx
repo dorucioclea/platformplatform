@@ -4,6 +4,8 @@ import { Button } from "@repo/ui/components/Button";
 import { Toggle } from "@repo/ui/components/Toggle";
 import { BoldIcon, ItalicIcon, MailIcon, PlusIcon, SearchIcon, TrashIcon, UnderlineIcon } from "lucide-react";
 
+import { SplitButtons } from "./SplitButtons";
+
 export function ButtonsPreview() {
   return (
     <div className="flex flex-col gap-6">
@@ -124,6 +126,13 @@ export function ButtonsPreview() {
             <Trans>Destructive</Trans>
           </Button>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h4>
+          <Trans>Split buttons</Trans>
+        </h4>
+        <SplitButtons />
       </div>
 
       <div className="flex flex-col gap-2">

@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 
 import { t } from "@lingui/core/macro";
 import { NumberField } from "@repo/ui/components/NumberField";
-import { TextAreaField } from "@repo/ui/components/TextAreaField";
 import { TextField } from "@repo/ui/components/TextField";
 import { EuroIcon, HashIcon, SearchIcon } from "lucide-react";
 
@@ -91,28 +90,6 @@ export function ControlRow({
         {...derived}
       />
       <DateAndToggleFields {...derived} />
-      <TextAreaField
-        label={label ? t`Text area` : undefined}
-        tooltip={tooltip ? tooltips.textArea : undefined}
-        name={`textarea-${suffix}`}
-        placeholder={t`Add notes here`}
-        defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      />
-      <TextAreaField
-        label={label ? t`Address (fixed 2 lines)` : undefined}
-        tooltip={tooltip ? tooltips.textAreaFixed : undefined}
-        name={`textarea-fixed-${suffix}`}
-        placeholder={t`Street address`}
-        defaultValue={hasValues ? t`1 Infinite Loop\nCupertino, CA 95014` : undefined}
-        lines={2}
-        resizable={false}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      />
     </div>
   );
 }

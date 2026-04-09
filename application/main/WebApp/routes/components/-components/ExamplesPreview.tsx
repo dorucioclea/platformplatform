@@ -1,10 +1,21 @@
 import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
-import { PanelsTopLeftIcon, SquareMousePointerIcon, TableIcon } from "lucide-react";
+import {
+  LayoutDashboardIcon,
+  LayoutTemplateIcon,
+  PanelsTopLeftIcon,
+  SquareDashedIcon,
+  TableIcon,
+  TriangleAlertIcon
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { AlertDialogsPreview } from "./AlertDialogsPreview";
+import { CardsPreview } from "./CardsPreview";
+import { DateFormatPreview } from "./DateFormatPreview";
 import { DialogsPreview } from "./DialogsPreview";
-import { EmptySkeletonPreview } from "./EmptySkeletonPreview";
+import { EmptyPreview } from "./EmptyPreview";
+import { SkeletonPreview } from "./SkeletonPreview";
 import { TablePreview } from "./TablePreview";
 
 export function ExamplesPreview() {
@@ -27,25 +38,49 @@ export function ExamplesPreview() {
       <TabsList>
         <TabsTrigger value="dialogs">
           <PanelsTopLeftIcon />
-          <Trans>Dialogs and cards</Trans>
+          <Trans>Dialogs</Trans>
+        </TabsTrigger>
+        <TabsTrigger value="alert-dialogs">
+          <TriangleAlertIcon />
+          <Trans>Alert dialogs</Trans>
+        </TabsTrigger>
+        <TabsTrigger value="cards">
+          <LayoutTemplateIcon />
+          <Trans>Cards</Trans>
         </TabsTrigger>
         <TabsTrigger value="tables">
           <TableIcon />
           <Trans>Tables</Trans>
         </TabsTrigger>
         <TabsTrigger value="empty">
-          <SquareMousePointerIcon />
-          <Trans>Empty and skeleton</Trans>
+          <LayoutDashboardIcon />
+          <Trans>Empty</Trans>
+        </TabsTrigger>
+        <TabsTrigger value="skeleton">
+          <SquareDashedIcon />
+          <Trans>Skeleton</Trans>
         </TabsTrigger>
       </TabsList>
       <TabsContent value="dialogs">
         <DialogsPreview />
       </TabsContent>
+      <TabsContent value="alert-dialogs">
+        <AlertDialogsPreview showToasts={true} />
+      </TabsContent>
+      <TabsContent value="cards">
+        <div className="flex flex-col gap-6">
+          <CardsPreview />
+          <DateFormatPreview />
+        </div>
+      </TabsContent>
       <TabsContent value="tables" className="flex flex-1 flex-col">
         <TablePreview />
       </TabsContent>
-      <TabsContent value="empty">
-        <EmptySkeletonPreview />
+      <TabsContent value="empty" className="flex flex-1 flex-col">
+        <EmptyPreview />
+      </TabsContent>
+      <TabsContent value="skeleton">
+        <SkeletonPreview />
       </TabsContent>
     </Tabs>
   );

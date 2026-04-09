@@ -1,9 +1,10 @@
 import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
-import { CompassIcon, MousePointerClickIcon, TagIcon, TextCursorInputIcon } from "lucide-react";
+import { CompassIcon, MegaphoneIcon, MousePointerClickIcon, TagIcon, TextCursorInputIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
+import { BannersPreview } from "./BannersPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { NavigationPreview } from "./NavigationPreview";
@@ -38,6 +39,10 @@ export function ComponentPreview() {
           <TagIcon />
           <Trans>Alerts and badges</Trans>
         </TabsTrigger>
+        <TabsTrigger value="banners">
+          <MegaphoneIcon />
+          <Trans>Banners</Trans>
+        </TabsTrigger>
         <TabsTrigger value="navigation">
           <CompassIcon />
           <Trans>Navigation</Trans>
@@ -51,6 +56,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="alerts">
         <AlertsBadgesPreview />
+      </TabsContent>
+      <TabsContent value="banners">
+        <BannersPreview />
       </TabsContent>
       <TabsContent value="navigation">
         <NavigationPreview />

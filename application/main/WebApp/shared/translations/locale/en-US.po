@@ -280,6 +280,9 @@ msgstr "Destructive alert"
 msgid "Developer tools"
 msgstr "Developer tools"
 
+msgid "Dialogs"
+msgstr "Dialogs"
+
 msgid "Dialogs and cards"
 msgstr "Dialogs and cards"
 
@@ -322,11 +325,11 @@ msgstr "Edit recipe"
 msgid "Email address"
 msgstr "Email address"
 
+msgid "Empty"
+msgstr "Empty"
+
 msgid "Empty and skeleton"
 msgstr "Empty and skeleton"
-
-msgid "Empty states"
-msgstr "Empty states"
 
 msgid "Enabled"
 msgstr "Enabled"
@@ -336,6 +339,18 @@ msgstr "Errors"
 
 msgid "Examples"
 msgstr "Examples"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Export as CSV"
+msgstr "Export as CSV"
+
+msgid "Export as JSON"
+msgstr "Export as JSON"
+
+msgid "Export as PDF"
+msgstr "Export as PDF"
 
 msgid "Extra large"
 msgstr "Extra large"
@@ -348,9 +363,6 @@ msgstr "First cooked"
 
 msgid "Fixed columns"
 msgstr "Fixed columns"
-
-msgid "Form dialogs"
-msgstr "Form dialogs"
 
 msgid "Forward"
 msgstr "Forward"
@@ -469,8 +481,23 @@ msgstr "Medium"
 msgid "Meeting notes from last week"
 msgstr "Meeting notes from last week"
 
+msgid "Merge"
+msgstr "Merge"
+
+msgid "Merge commit"
+msgstr "Merge commit"
+
+msgid "More export options"
+msgstr "More export options"
+
 msgid "More information"
 msgstr "More information"
+
+msgid "More merge options"
+msgstr "More merge options"
+
+msgid "More save options"
+msgstr "More save options"
 
 msgid "More tools"
 msgstr "More tools"
@@ -583,6 +610,9 @@ msgstr "Read only access to the recipe"
 msgid "Ready to publish?"
 msgstr "Ready to publish?"
 
+msgid "Rebase and merge"
+msgstr "Rebase and merge"
+
 msgid "Recipe info"
 msgstr "Recipe info"
 
@@ -615,6 +645,15 @@ msgstr "Right-click area"
 
 msgid "Right-click here"
 msgstr "Right-click here"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Save and close"
+msgstr "Save and close"
+
+msgid "Save as..."
+msgstr "Save as..."
 
 msgid "Save changes"
 msgstr "Save changes"
@@ -685,8 +724,8 @@ msgstr "Show toast"
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
-msgid "Skeleton loading states"
-msgstr "Skeleton loading states"
+msgid "Skeleton"
+msgstr "Skeleton"
 
 msgid "Small"
 msgstr "Small"
@@ -703,6 +742,12 @@ msgstr "Source"
 msgid "Spacious rows"
 msgstr "Spacious rows"
 
+msgid "Split buttons"
+msgstr "Split buttons"
+
+msgid "Squash and merge"
+msgstr "Squash and merge"
+
 msgid "Status"
 msgstr "Status"
 
@@ -714,9 +759,6 @@ msgstr "Street address"
 
 msgid "Switch"
 msgstr "Switch"
-
-msgid "Table with sorting, pagination, and dropdown menu"
-msgstr "Table with sorting, pagination, and dropdown menu"
 
 msgid "Tables"
 msgstr "Tables"
@@ -780,9 +822,6 @@ msgstr "Toggle underline"
 
 msgid "Tooltips"
 msgstr "Tooltips"
-
-msgid "Try adjusting your search or filter to find what you are looking for."
-msgstr "Try adjusting your search or filter to find what you are looking for."
 
 msgid "Type or search..."
 msgstr "Type or search..."

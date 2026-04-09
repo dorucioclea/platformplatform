@@ -6,9 +6,6 @@ import { PlusIcon } from "lucide-react";
 export function CardsPreview() {
   return (
     <div className="flex flex-col gap-2">
-      <h4>
-        <Trans>Cards</Trans>
-      </h4>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardHeader>
