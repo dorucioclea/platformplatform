@@ -11,6 +11,7 @@ import {
   ContextMenu,
   ContextMenuCheckboxItem,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
   ContextMenuLabel,
   ContextMenuRadioGroup,
@@ -152,17 +153,19 @@ export function NavigationPreview() {
               <Trans>Show status bar</Trans>
             </ContextMenuCheckboxItem>
             <ContextMenuSeparator />
-            <ContextMenuLabel>
-              <Trans>People</Trans>
-            </ContextMenuLabel>
-            <ContextMenuRadioGroup value={person} onValueChange={setPerson}>
-              <ContextMenuRadioItem value="pedro">
-                <Trans>Pedro Duarte</Trans>
-              </ContextMenuRadioItem>
-              <ContextMenuRadioItem value="colm">
-                <Trans>Colm Tuite</Trans>
-              </ContextMenuRadioItem>
-            </ContextMenuRadioGroup>
+            <ContextMenuGroup>
+              <ContextMenuLabel>
+                <Trans>People</Trans>
+              </ContextMenuLabel>
+              <ContextMenuRadioGroup value={person} onValueChange={setPerson}>
+                <ContextMenuRadioItem value="pedro">
+                  <Trans>Pedro Duarte</Trans>
+                </ContextMenuRadioItem>
+                <ContextMenuRadioItem value="colm">
+                  <Trans>Colm Tuite</Trans>
+                </ContextMenuRadioItem>
+              </ContextMenuRadioGroup>
+            </ContextMenuGroup>
             <ContextMenuSeparator />
             <ContextMenuItem variant="destructive">
               <Trans>Delete</Trans>

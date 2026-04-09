@@ -5,6 +5,7 @@ import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
@@ -63,11 +64,6 @@ export function MultiSelect({
   const isInvalid = errors && errors.length > 0;
   const [open, setOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-  const focusTrigger = () => {
-    if (!name) return;
-    const focusOptions = { preventScroll: true, focusVisible: true };
-    document.getElementById(name)?.focus(focusOptions);
-  };
   const displayLabel = value.length > 0 ? `${value.length} selected` : placeholder;
 
   const handleToggle = useCallback(
@@ -127,13 +123,9 @@ export function MultiSelect({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
-          onClick={focusTrigger}
-        >
+        <Label htmlFor={name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </Label>
       )}
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>

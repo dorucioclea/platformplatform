@@ -9,6 +9,7 @@ import { cn } from "../utils";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "./Combobox";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
 export interface ComboboxFieldItem {
@@ -90,18 +91,6 @@ export function ComboboxField({
   const isKnownItem = items.some((item) => item.id === value);
   const hasExactMatch = items.some((item) => item.label.toLowerCase() === search.toLowerCase());
 
-  const focusTrigger = () => {
-    const input = name
-      ? (document.getElementById(name) as HTMLElement | null)
-      : (fieldRef.current?.querySelector("input") as HTMLElement | null);
-    if (!input) return;
-    suppressOpenRef.current = true;
-    input.focus({ preventScroll: true });
-    requestAnimationFrame(() => {
-      suppressOpenRef.current = false;
-    });
-  };
-
   const handleOpenChange = (nextOpen: boolean) => {
     if (suppressOpenRef.current && nextOpen) return;
     setOpen(nextOpen);
@@ -127,13 +116,9 @@ export function ComboboxField({
   return (
     <Field ref={fieldRef} className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
-          onClick={focusTrigger}
-        >
+        <Label htmlFor={name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </Label>
       )}
       <Combobox
         disabled={isDisabled}

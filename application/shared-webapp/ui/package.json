@@ -42,7 +42,7 @@
     "dev": "tsc -p . -w",
     "dev:setup": "rimraf ./dist && npm run copyImages && tsc -p .",
     "format": "oxfmt && (oxlint --fix || true)",
-    "lint": "oxlint"
+    "lint": "oxlint --deny-warnings"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0"

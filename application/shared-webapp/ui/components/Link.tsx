@@ -119,8 +119,6 @@ export function Link({
     return (
       <button
         type="button"
-        // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Button with role="link" is intentional for click-only links
-        role="link"
         className={linkClassName}
         onClick={onClick as (event: MouseEvent<HTMLButtonElement>) => void}
         {...props}

@@ -6,6 +6,7 @@ import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Select, SelectReadOnlyContext } from "./Select";
 
@@ -59,22 +60,12 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       ? { ...formErrors, [name]: displayError ? [displayError] : fieldErrorMessages }
       : formErrors;
 
-  const focusTrigger = () => {
-    if (!name) return;
-    const focusOptions = { preventScroll: true, focusVisible: true };
-    document.getElementById(name)?.focus(focusOptions);
-  };
-
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
-          onClick={focusTrigger}
-        >
+        <Label htmlFor={name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </Label>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
         <SelectReadOnlyContext.Provider value={!!isReadOnly}>

@@ -9,6 +9,7 @@ import { Button } from "./Button";
 import { Calendar } from "./Calendar";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
@@ -74,11 +75,6 @@ export function DatePicker({
   const isInvalid = errors && errors.length > 0;
 
   const triggerId = id ?? name;
-  const focusTrigger = () => {
-    if (!triggerId) return;
-    const focusOptions = { preventScroll: true, focusVisible: true };
-    document.getElementById(triggerId)?.focus(focusOptions);
-  };
 
   const selectedDate = value ? new Date(`${value}T00:00:00`) : undefined;
   const maxDate = max ? new Date(`${max}T00:00:00`) : undefined;
@@ -106,13 +102,9 @@ export function DatePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
-          onClick={focusTrigger}
-        >
+        <Label htmlFor={triggerId} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </Label>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
       <div className="relative">

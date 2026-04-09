@@ -12,6 +12,7 @@ import { Button } from "./Button";
 import { Calendar } from "./Calendar";
 import { Field, FieldDescription, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 
@@ -74,11 +75,6 @@ export function DateRangePicker({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
   const isInvalid = errors && errors.length > 0;
-  const focusTrigger = () => {
-    if (!name) return;
-    const focusOptions = { preventScroll: true, focusVisible: true };
-    document.getElementById(name)?.focus(focusOptions);
-  };
   const [selectionsCount, setSelectionsCount] = useState(0);
   // Track the first clicked date separately since react-day-picker's onSelect
   // doesn't reliably tell us which date was clicked
@@ -155,13 +151,9 @@ export function DateRangePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
-          onClick={focusTrigger}
-        >
+        <Label htmlFor={name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </Label>
       )}
       <div className="relative">
         <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : handleOpenChange}>
