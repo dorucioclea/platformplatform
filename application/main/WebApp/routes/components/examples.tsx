@@ -44,8 +44,11 @@ function ExamplesPage() {
             defaultTab="dialogs"
             tabLabels={{
               dialogs: <Trans>Dialogs and cards</Trans>,
+              "alert-dialogs": <Trans>Alert dialogs</Trans>,
+              cards: <Trans>Cards</Trans>,
               tables: <Trans>Tables</Trans>,
-              empty: <Trans>Empty and skeleton</Trans>
+              empty: <Trans>Empty and skeleton</Trans>,
+              skeleton: <Trans>Skeleton</Trans>
             }}
           />
         }

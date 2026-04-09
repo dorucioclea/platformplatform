@@ -29,6 +29,7 @@ function ComponentsPage() {
               controls: <Trans>Controls</Trans>,
               buttons: <Trans>Buttons and links</Trans>,
               alerts: <Trans>Alerts and badges</Trans>,
+              banners: <Trans>Banners</Trans>,
               navigation: <Trans>Navigation</Trans>
             }}
           />

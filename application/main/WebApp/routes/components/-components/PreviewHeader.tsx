@@ -39,7 +39,18 @@ export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent
           </BreadcrumbItem>
           <BreadcrumbItem>
             {activeLabel ? (
-              <BreadcrumbLink render={<Link href={sectionHref} variant="secondary" underline={false} />}>
+              <BreadcrumbLink
+                render={
+                  <Link
+                    href={sectionHref}
+                    variant="secondary"
+                    underline={false}
+                    onClick={() => {
+                      window.location.hash = "";
+                    }}
+                  />
+                }
+              >
                 {currentPage === "components" ? <Trans>Components</Trans> : <Trans>Examples</Trans>}
               </BreadcrumbLink>
             ) : (
