@@ -139,9 +139,7 @@ export default function MobileMenu({ onNavigate }: Readonly<MobileMenuProps>) {
       {userInfo?.isAuthenticated && (
         <div className="-mx-3 -mt-5 mb-2 flex items-center justify-center gap-3 bg-muted px-3 py-2.5 dark:bg-transparent">
           <TenantLogo logoUrl={currentTenantLogoUrl} tenantName={currentTenantNameForLogo} size="sm" />
-          <h5 className="mb-0 min-w-0 overflow-hidden font-normal text-ellipsis whitespace-nowrap">
-            {currentTenantName}
-          </h5>
+          <h5 className="min-w-0 overflow-hidden font-normal text-ellipsis whitespace-nowrap">{currentTenantName}</h5>
         </div>
       )}
       <div className="flex-1 overflow-x-hidden overflow-y-auto px-1 py-1">

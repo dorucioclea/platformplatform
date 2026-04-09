@@ -39,7 +39,7 @@ export function SessionCard({
               <DeviceIcon className="size-6 text-muted-foreground" />
             </div>
             <div>
-              <h4 className="text-lg font-medium">{browser}</h4>
+              <h4 className="font-medium">{browser}</h4>
               <p className="text-muted-foreground">
                 {os} · {deviceType}
               </p>
