@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
 import { LocaleSwitcher } from "@repo/infrastructure/translations/LocaleSwitcher";
+import { AppLayout } from "@repo/ui/components/AppLayout";
 import { Button } from "@repo/ui/components/Button";
 import {
   DropdownMenu,
@@ -15,6 +15,7 @@ import { CheckIcon, ZoomInIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { ComponentPreview } from "./-components/ComponentPreview";
+import { ComponentsSideMenu } from "./-components/ComponentsSideMenu";
 
 export const Route = createFileRoute("/components/")({
   staticData: { trackingTitle: "Components" },
@@ -81,29 +82,29 @@ function ZoomSwitcher() {
   );
 }
 
-function ComponentsPage() {
-  useEffect(() => {
-    document.title = `${t`Components`} | ${document.title.split(" | ").pop()}`;
-  }, []);
-
+function PreviewToolbar() {
   return (
-    <main className="flex min-h-dvh flex-col bg-background px-6 pt-6 pb-8 sm:px-8 sm:pt-8">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1>
-            <Trans>Component preview</Trans>
-          </h1>
-          <p>
-            <Trans>Browse and test all UI components.</Trans>
-          </p>
-        </div>
-        <div className="flex gap-1 rounded-md bg-card p-1 shadow-md">
-          <ThemeModeSelector aria-label={t`Change theme`} />
-          <LocaleSwitcher aria-label={t`Change language`} />
-          <ZoomSwitcher />
-        </div>
-      </div>
-      <ComponentPreview />
-    </main>
+    <div className="fixed top-4 right-4 z-20 flex gap-1 rounded-md bg-card p-1 shadow-md">
+      <ThemeModeSelector aria-label={t`Change theme`} />
+      <LocaleSwitcher aria-label={t`Change language`} />
+      <ZoomSwitcher />
+    </div>
+  );
+}
+
+function ComponentsPage() {
+  return (
+    <>
+      <ComponentsSideMenu />
+      <PreviewToolbar />
+      <AppLayout
+        variant="full"
+        browserTitle={t`Components`}
+        title={t`Component preview`}
+        subtitle={t`Browse and test all UI components.`}
+      >
+        <ComponentPreview />
+      </AppLayout>
+    </>
   );
 }

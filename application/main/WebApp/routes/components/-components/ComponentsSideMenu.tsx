@@ -1,0 +1,16 @@
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
+import { MenuButton, SideMenu, SideMenuSeparator } from "@repo/ui/components/SideMenu";
+import { BlocksIcon } from "lucide-react";
+
+export function ComponentsSideMenu() {
+  return (
+    <SideMenu sidebarToggleAriaLabel={t`Toggle sidebar`} mobileMenuAriaLabel={t`Open navigation menu`}>
+      <SideMenuSeparator>
+        <Trans>Navigation</Trans>
+      </SideMenuSeparator>
+
+      <MenuButton icon={BlocksIcon} label={t`Components`} href="/components" />
+    </SideMenu>
+  );
+}
