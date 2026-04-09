@@ -235,6 +235,9 @@ msgstr "Create shortcut..."
 msgid "Current page"
 msgstr "Current page"
 
+msgid "Dark"
+msgstr "Dark"
+
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -330,6 +333,9 @@ msgstr "Easy"
 
 msgid "Edit product"
 msgstr "Edit product"
+
+msgid "Edit profile"
+msgstr "Edit profile"
 
 msgid "Edit recipe"
 msgstr "Edit recipe"
@@ -469,8 +475,14 @@ msgstr "Keyboard accessible"
 msgid "Labels"
 msgstr "Labels"
 
+msgid "Language"
+msgstr "Language"
+
 msgid "Large"
 msgstr "Large"
+
+msgid "Larger"
+msgstr "Larger"
 
 msgid "Learn more"
 msgstr "Learn more"
@@ -480,6 +492,9 @@ msgstr "Leave"
 
 msgid "Library"
 msgstr "Library"
+
+msgid "Light"
+msgstr "Light"
 
 msgid "Line chart"
 msgstr "Line chart"
@@ -595,8 +610,14 @@ msgstr "Pick a date"
 msgid "Pie chart"
 msgstr "Pie chart"
 
+msgid "PlatformPlatform"
+msgstr "PlatformPlatform"
+
 msgid "Please enter a valid email address"
 msgstr "Please enter a valid email address"
+
+msgid "Preview settings"
+msgstr "Preview settings"
 
 msgid "Previous"
 msgstr "Previous"
@@ -802,6 +823,9 @@ msgstr "Street address"
 msgid "Switch"
 msgstr "Switch"
 
+msgid "System"
+msgstr "System"
+
 msgid "Tables"
 msgstr "Tables"
 
@@ -816,6 +840,9 @@ msgstr "Text field"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "The item will be moved to the archive. You can restore it later from the archive."
+
+msgid "Theme"
+msgstr "Theme"
 
 msgid "There is nothing to display here. Create your first item to get started."
 msgstr "There is nothing to display here. Create your first item to get started."
@@ -930,3 +957,6 @@ msgstr "Your dashboard is empty"
 
 msgid "Your trial expires in 3 days."
 msgstr "Your trial expires in 3 days."
+
+msgid "Zoom"
+msgstr "Zoom"

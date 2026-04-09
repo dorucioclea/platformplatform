@@ -23,7 +23,7 @@ export function MainSideMenu() {
       sidebarToggleAriaLabel={t`Toggle sidebar`}
       mobileMenuAriaLabel={t`Open navigation menu`}
       topMenuContent={<MobileMenu onNavigate={handleNavigate} />}
-      logoContent={<LogoContent />}
+      headerContent={<LogoContent />}
     >
       <SideMenuSeparator>
         <Trans>Navigation</Trans>

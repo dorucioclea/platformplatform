@@ -1,6 +1,4 @@
-import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { LocaleSwitcher } from "@repo/infrastructure/translations/LocaleSwitcher";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +7,6 @@ import {
   BreadcrumbPage
 } from "@repo/ui/components/Breadcrumb";
 import { Link } from "@repo/ui/components/Link";
-import { ThemeModeSelector } from "@repo/ui/theme/ThemeModeSelector";
 import { useEffect, useState } from "react";
 
 type PreviewHeaderProps = Readonly<{
@@ -58,11 +55,7 @@ export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent
           )}
         </BreadcrumbList>
       </Breadcrumb>
-      <span className="flex items-center gap-2">
-        <ThemeModeSelector aria-label={t`Change theme`} />
-        <LocaleSwitcher aria-label={t`Change language`} />
-        {rightContent}
-      </span>
+      {rightContent && <span className="flex items-center gap-2">{rightContent}</span>}
     </nav>
   );
 }

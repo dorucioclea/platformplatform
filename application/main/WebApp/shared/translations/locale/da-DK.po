@@ -235,6 +235,9 @@ msgstr "Opret genvej..."
 msgid "Current page"
 msgstr "Nuværende side"
 
+msgid "Dark"
+msgstr ""
+
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -330,6 +333,9 @@ msgstr "Let"
 
 msgid "Edit product"
 msgstr "Rediger produkt"
+
+msgid "Edit profile"
+msgstr ""
 
 msgid "Edit recipe"
 msgstr "Rediger opskrift"
@@ -469,8 +475,14 @@ msgstr "Tilgængelig via tastatur"
 msgid "Labels"
 msgstr "Etiketter"
 
+msgid "Language"
+msgstr ""
+
 msgid "Large"
 msgstr "Stor"
+
+msgid "Larger"
+msgstr ""
 
 msgid "Learn more"
 msgstr "Lær mere"
@@ -480,6 +492,9 @@ msgstr "Forlad"
 
 msgid "Library"
 msgstr "Bibliotek"
+
+msgid "Light"
+msgstr ""
 
 msgid "Line chart"
 msgstr "Linjediagram"
@@ -595,8 +610,14 @@ msgstr "Vælg en dato"
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
+msgid "PlatformPlatform"
+msgstr ""
+
 msgid "Please enter a valid email address"
 msgstr "Indtast en gyldig e-mailadresse"
+
+msgid "Preview settings"
+msgstr ""
 
 msgid "Previous"
 msgstr "Forrige"
@@ -802,6 +823,9 @@ msgstr "Vejnavn"
 msgid "Switch"
 msgstr "Kontakt"
 
+msgid "System"
+msgstr ""
+
 msgid "Tables"
 msgstr "Tabeller"
 
@@ -816,6 +840,9 @@ msgstr "Tekstfelt"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
+
+msgid "Theme"
+msgstr ""
 
 msgid "There is nothing to display here. Create your first item to get started."
 msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
@@ -930,3 +957,6 @@ msgstr "Dit dashboard er tomt"
 
 msgid "Your trial expires in 3 days."
 msgstr "Din prøveperiode udløber om 3 dage."
+
+msgid "Zoom"
+msgstr ""

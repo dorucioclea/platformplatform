@@ -370,7 +370,7 @@ type SideMenuProps = {
   sidebarToggleAriaLabel: string;
   mobileMenuAriaLabel: string;
   topMenuContent?: React.ReactNode;
-  logoContent?: React.ReactNode;
+  headerContent?: React.ReactNode;
 };
 
 // Helper function to get initial menu width from localStorage (in rem)
@@ -771,7 +771,7 @@ const MenuNav = ({
   menuWidthRem,
   shouldShowResizeHandle,
   handleResizeStart,
-  logoContent,
+  headerContent,
   toggleButtonRef,
   toggleMenu,
   hasDraggedRef,
@@ -792,7 +792,7 @@ const MenuNav = ({
   menuWidthRem: number;
   shouldShowResizeHandle: boolean;
   handleResizeStart: (e: React.MouseEvent | React.TouchEvent) => void;
-  logoContent?: React.ReactNode;
+  headerContent?: React.ReactNode;
   toggleButtonRef: React.RefObject<HTMLButtonElement | HTMLDivElement | null>;
   toggleMenu: () => void;
   hasDraggedRef: React.RefObject<boolean>;
@@ -832,7 +832,7 @@ const MenuNav = ({
 
     {/* Fixed header section with logo */}
     <div className="relative flex h-[var(--side-menu-collapsed-width)] w-full shrink-0 items-center">
-      {logoContent || <DefaultLogoSection actualIsCollapsed={actualIsCollapsed} />}
+      {headerContent || <DefaultLogoSection actualIsCollapsed={actualIsCollapsed} />}
     </div>
 
     {/* Scrollable menu content */}
@@ -954,7 +954,7 @@ export function SideMenu({
   sidebarToggleAriaLabel,
   mobileMenuAriaLabel,
   topMenuContent,
-  logoContent
+  headerContent
 }: Readonly<SideMenuProps>) {
   const { className, forceCollapsed, overlayMode, isHidden } = useResponsiveMenu();
   const sideMenuRef = useRef<HTMLDivElement>(null);
@@ -1059,7 +1059,7 @@ export function SideMenu({
           menuWidthRem={menuWidthRem}
           shouldShowResizeHandle={shouldShowResizeHandle}
           handleResizeStart={handleResizeStart}
-          logoContent={logoContent}
+          headerContent={headerContent}
           toggleButtonRef={toggleButtonRef}
           toggleMenu={toggleMenu}
           hasDraggedRef={hasDraggedRef}
