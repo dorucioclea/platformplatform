@@ -1608,6 +1608,3 @@ msgstr "YouTube"
 
 msgid "Zoom"
 msgstr "Zoom"
-
-msgid "Zoom level"
-msgstr "Zoomniveau"
