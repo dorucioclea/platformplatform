@@ -24,7 +24,8 @@ export function ControlRow({
   disabled,
   readOnly,
   error,
-  showIcon
+  showIcon,
+  values
 }: ControlRowProps & {
   selectedColor: string;
   setSelectedColor: (value: string) => void;
@@ -32,12 +33,15 @@ export function ControlRow({
   setSelectedCharts: (value: string[]) => void;
   chartItems: { id: string; label: string; icon?: ReactNode }[];
 }) {
-  const hasValues = !!(disabled || readOnly);
+  const hasValues = !!values;
   const errorMessage = error ? t`This field is required` : undefined;
   const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, errorMessage };
 
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+    <div
+      key={String(hasValues)}
+      className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+    >
       <TextField
         label={label ? t`Text field` : undefined}
         tooltip={tooltip ? tooltips.textField : undefined}
@@ -48,16 +52,6 @@ export function ControlRow({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon ? <SearchIcon /> : undefined}
-      />
-      <TextAreaField
-        label={label ? t`Text area` : undefined}
-        tooltip={tooltip ? tooltips.textArea : undefined}
-        name={`textarea-${suffix}`}
-        placeholder={t`Add notes here`}
-        defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
       />
       <NumberField
         label={label ? t`Number (integer)` : undefined}
@@ -97,6 +91,28 @@ export function ControlRow({
         {...derived}
       />
       <DateAndToggleFields {...derived} />
+      <TextAreaField
+        label={label ? t`Text area` : undefined}
+        tooltip={tooltip ? tooltips.textArea : undefined}
+        name={`textarea-${suffix}`}
+        placeholder={t`Add notes here`}
+        defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      />
+      <TextAreaField
+        label={label ? t`Address (fixed 2 lines)` : undefined}
+        tooltip={tooltip ? tooltips.textAreaFixed : undefined}
+        name={`textarea-fixed-${suffix}`}
+        placeholder={t`Street address`}
+        defaultValue={hasValues ? t`1 Infinite Loop\nCupertino, CA 95014` : undefined}
+        lines={2}
+        resizable={false}
+        isDisabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 }

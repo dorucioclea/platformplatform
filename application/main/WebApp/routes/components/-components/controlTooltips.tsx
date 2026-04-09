@@ -13,8 +13,20 @@ export const tooltips = {
   textArea: (
     <PropList title="TextAreaField" description="Multi-line text input">
       <Prop name="placeholder">Ghost text when empty</Prop>
-      <Prop name="rows">Number of visible rows</Prop>
-      <PropNote>Resizable by the user. Use for notes, descriptions, or long-form content.</PropNote>
+      <Prop name="lines">Fixed height in lines (disables auto-grow)</Prop>
+      <Prop name="resizable">Allow user to resize (default true)</Prop>
+      <PropNote>Auto-grows with content when no fixed line count is set.</PropNote>
+    </PropList>
+  ),
+  textAreaFixed: (
+    <PropList title="TextAreaField" description="Fixed-height, non-resizable">
+      <Prop name="lines" value="2">
+        Exactly 2 lines tall
+      </Prop>
+      <Prop name="resizable" value="false">
+        User cannot resize
+      </Prop>
+      <PropNote>Good for addresses and other short multi-line fields.</PropNote>
     </PropList>
   ),
   numberInteger: (

@@ -15,6 +15,7 @@ export function ControlsPreview() {
   const [showLabels, setShowLabels] = useState(true);
   const [showTooltips, setShowTooltips] = useState(true);
   const [showIcons, setShowIcons] = useState(true);
+  const [showValues, setShowValues] = useState(false);
   const [controlState, setControlState] = useState<"enabled" | "disabled" | "readonly">("enabled");
   const [showErrors, setShowErrors] = useState(false);
 
@@ -29,6 +30,7 @@ export function ControlsPreview() {
           disabled={!showLabels}
         />
         <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
+        <SwitchField label={t`Values`} checked={showValues} onCheckedChange={setShowValues} />
         <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
         <ToggleGroup
           variant="outline"
@@ -55,6 +57,7 @@ export function ControlsPreview() {
         label={showLabels}
         tooltip={showTooltips && showLabels}
         showIcon={showIcons}
+        values={showValues}
         disabled={controlState === "disabled"}
         readOnly={controlState === "readonly"}
         error={showErrors}

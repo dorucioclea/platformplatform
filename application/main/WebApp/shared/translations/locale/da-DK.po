@@ -24,6 +24,13 @@ msgstr "for {0} minutter siden"
 msgid "+1 555 000 0000"
 msgstr ""
 
+msgid ""
+"1 Infinite Loop\n"
+"Cupertino, CA 95014"
+msgstr ""
+"1 Infinite Loop\n"
+"Cupertino, CA 95014"
+
 msgid "2 hours ago"
 msgstr "For 2 timer siden"
 
@@ -47,6 +54,9 @@ msgstr "Tilføj noter her"
 
 msgid "Added"
 msgstr ""
+
+msgid "Address (fixed 2 lines)"
+msgstr "Adresse (fast 2 linjer)"
 
 msgid "Admin"
 msgstr "Administrator"
@@ -140,9 +150,6 @@ msgstr ""
 
 msgid "Checkbox"
 msgstr "Afkrydsningsfelt"
-
-msgid "Checkbox (off)"
-msgstr "Afkrydsningsfelt (fra)"
 
 msgid "Close"
 msgstr ""
@@ -591,14 +598,14 @@ msgstr ""
 msgid "Stay"
 msgstr ""
 
+msgid "Street address"
+msgstr "Vejnavn"
+
 msgid "Subscribe to newsletter"
 msgstr ""
 
 msgid "Switch"
 msgstr "Kontakt"
-
-msgid "Switch (off)"
-msgstr "Kontakt (fra)"
 
 msgid "Table with sorting, pagination, and dropdown menu"
 msgstr ""
@@ -686,6 +693,9 @@ msgstr ""
 
 msgid "Usage"
 msgstr "Forbrug"
+
+msgid "Values"
+msgstr "Værdier"
 
 msgid "View all"
 msgstr "Se alle"

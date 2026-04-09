@@ -6,6 +6,7 @@ export type ControlRowProps = {
   readOnly?: boolean;
   error?: boolean;
   showIcon?: boolean;
+  values?: boolean;
 };
 
 export type ControlRowDerivedProps = ControlRowProps & {

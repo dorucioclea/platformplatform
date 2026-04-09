@@ -18,6 +18,8 @@ export interface TextAreaFieldProps extends Omit<React.ComponentProps<"textarea"
   isRequired?: boolean;
   isDisabled?: boolean;
   isReadOnly?: boolean;
+  lines?: number;
+  resizable?: boolean;
 }
 
 export function TextAreaField({
@@ -34,6 +36,8 @@ export function TextAreaField({
   isRequired,
   isDisabled,
   isReadOnly,
+  lines,
+  resizable,
   ...props
 }: Readonly<TextAreaFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -74,6 +78,8 @@ export function TextAreaField({
         disabled={isDisabled}
         readOnly={isReadOnly}
         aria-invalid={isInvalid || undefined}
+        lines={lines}
+        resizable={resizable}
         className={textareaClassName}
         {...props}
       />

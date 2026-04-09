@@ -101,9 +101,6 @@ export function DateAndToggleFields({
           isReadOnly={readOnly}
           errorMessage={errorMessage}
         />
-        {hasValues && !disabled && !readOnly && (
-          <SwitchField label={t`Switch (off)`} name={`switch-off-${suffix}`} checked={false} />
-        )}
       </InlineFieldGroup>
       <InlineFieldGroup alignWithLabel={label}>
         <CheckboxField
@@ -116,28 +113,7 @@ export function DateAndToggleFields({
           isReadOnly={readOnly}
           errorMessage={errorMessage}
         />
-        {hasValues && !disabled && !readOnly && (
-          <CheckboxField label={t`Checkbox (off)`} name={`checkbox-off-${suffix}`} checked={false} />
-        )}
       </InlineFieldGroup>
-      <RadioGroupField
-        label={label ? t`Radio group` : undefined}
-        tooltip={tooltip ? tooltips.radioGroup : undefined}
-        name={`radio-${suffix}`}
-        defaultValue={hasValues ? "option-a" : undefined}
-        disabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      >
-        <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
-          <RadioGroupItem id={`radio-${suffix}-a`} value="option-a" />
-          <Trans>Option A</Trans>
-        </label>
-        <label htmlFor={`radio-${suffix}-b`} className="flex items-center gap-2">
-          <RadioGroupItem id={`radio-${suffix}-b`} value="option-b" />
-          <Trans>Option B</Trans>
-        </label>
-      </RadioGroupField>
       <Field>
         {label && (
           <FieldLabel>
@@ -168,6 +144,24 @@ export function DateAndToggleFields({
           </ToggleGroupItem>
         </ToggleGroup>
       </Field>
+      <RadioGroupField
+        label={label ? t`Radio group` : undefined}
+        tooltip={tooltip ? tooltips.radioGroup : undefined}
+        name={`radio-${suffix}`}
+        defaultValue={hasValues ? "option-a" : undefined}
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      >
+        <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-a`} value="option-a" />
+          <Trans>Option A</Trans>
+        </label>
+        <label htmlFor={`radio-${suffix}-b`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-b`} value="option-b" />
+          <Trans>Option B</Trans>
+        </label>
+      </RadioGroupField>
     </>
   );
 }

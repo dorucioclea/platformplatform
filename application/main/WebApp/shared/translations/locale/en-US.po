@@ -24,6 +24,13 @@ msgstr "{0} minutes ago"
 msgid "+1 555 000 0000"
 msgstr "+1 555 000 0000"
 
+msgid ""
+"1 Infinite Loop\n"
+"Cupertino, CA 95014"
+msgstr ""
+"1 Infinite Loop\n"
+"Cupertino, CA 95014"
+
 msgid "2 hours ago"
 msgstr "2 hours ago"
 
@@ -47,6 +54,9 @@ msgstr "Add notes here"
 
 msgid "Added"
 msgstr "Added"
+
+msgid "Address (fixed 2 lines)"
+msgstr "Address (fixed 2 lines)"
 
 msgid "Admin"
 msgstr "Admin"
@@ -140,9 +150,6 @@ msgstr "Changes published"
 
 msgid "Checkbox"
 msgstr "Checkbox"
-
-msgid "Checkbox (off)"
-msgstr "Checkbox (off)"
 
 msgid "Close"
 msgstr "Close"
@@ -591,14 +598,14 @@ msgstr "Status"
 msgid "Stay"
 msgstr "Stay"
 
+msgid "Street address"
+msgstr "Street address"
+
 msgid "Subscribe to newsletter"
 msgstr "Subscribe to newsletter"
 
 msgid "Switch"
 msgstr "Switch"
-
-msgid "Switch (off)"
-msgstr "Switch (off)"
 
 msgid "Table with sorting, pagination, and dropdown menu"
 msgstr "Table with sorting, pagination, and dropdown menu"
@@ -686,6 +693,9 @@ msgstr "Upload profile picture"
 
 msgid "Usage"
 msgstr "Usage"
+
+msgid "Values"
+msgstr "Values"
 
 msgid "View all"
 msgstr "View all"
