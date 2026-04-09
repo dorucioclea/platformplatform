@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SearchParams } from "./userQueryingTypes";
 
-const THRESHOLD_FILTERS_EXPANDED_REM = 55.75;
+const THRESHOLD_FILTERS_EXPANDED_REM = 54;
 
 function getRemInPixels(): number {
   return parseFloat(getComputedStyle(document.documentElement).fontSize);
