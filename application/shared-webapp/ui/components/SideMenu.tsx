@@ -55,7 +55,7 @@ const menuButtonStyles = cva(
   {
     variants: {
       isCollapsed: {
-        true: "ml-1.5 w-[var(--control-height)] justify-center",
+        true: "ml-1.5 w-11 justify-center",
         false: "w-full pr-2 pl-4"
       },
       isActive: {
@@ -838,7 +838,7 @@ const MenuNav = ({
     {/* Scrollable menu content */}
     {/* Use consistent left padding in both states to prevent icon jump during collapse animation */}
     <div className="mt-2 flex-1 overflow-y-auto px-3">
-      <div className="-mx-1.5 flex flex-col gap-0 px-1.5 py-1 pt-1.5">{children}</div>
+      <div className="-mx-1.5 flex flex-col gap-1 px-1.5 py-1 pt-1.5">{children}</div>
     </div>
 
     {/* Toggle button centered on divider, at intersection with topbar border */}
