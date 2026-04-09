@@ -78,13 +78,7 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
         <SelectReadOnlyContext.Provider value={!!isReadOnly}>
-          <Select
-            name={name}
-            disabled={isDisabled}
-            open={isReadOnly ? false : undefined}
-            onValueChange={handleValueChange}
-            {...props}
-          >
+          <Select name={name} disabled={isDisabled} readOnly={isReadOnly} onValueChange={handleValueChange} {...props}>
             {children}
           </Select>
         </SelectReadOnlyContext.Provider>
