@@ -97,6 +97,9 @@ msgstr ""
 msgid "Badges"
 msgstr "Badges"
 
+msgid "Banners"
+msgstr ""
+
 msgid "Bar chart"
 msgstr "Søjlediagram"
 
@@ -559,6 +562,9 @@ msgstr "Gem ændringer"
 msgid "Saving..."
 msgstr ""
 
+msgid "Scheduled maintenance on Sunday 2:00 AM — 4:00 AM UTC. Some features may be unavailable."
+msgstr ""
+
 msgid "Search"
 msgstr "Søg"
 
@@ -594,6 +600,15 @@ msgstr "Deler..."
 
 msgid "Short date"
 msgstr "Kort dato"
+
+msgid "Show banner"
+msgstr ""
+
+msgid "Show banner with action"
+msgstr ""
+
+msgid "Show dismissable banner"
+msgstr ""
 
 msgid "Show toast"
 msgstr ""
@@ -709,6 +724,9 @@ msgstr "Understregning"
 msgid "Unsaved changes"
 msgstr ""
 
+msgid "Upgrade now"
+msgstr ""
+
 msgid "Upload photo"
 msgstr ""
 
@@ -756,3 +774,6 @@ msgstr "Dit nuværende planforbrug denne måned."
 
 msgid "Your dashboard is empty"
 msgstr "Dit dashboard er tomt"
+
+msgid "Your trial expires in 3 days."
+msgstr ""

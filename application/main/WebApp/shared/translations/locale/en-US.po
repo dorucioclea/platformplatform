@@ -97,6 +97,9 @@ msgstr "Back"
 msgid "Badges"
 msgstr "Badges"
 
+msgid "Banners"
+msgstr "Banners"
+
 msgid "Bar chart"
 msgstr "Bar chart"
 
@@ -559,6 +562,9 @@ msgstr "Save changes"
 msgid "Saving..."
 msgstr "Saving..."
 
+msgid "Scheduled maintenance on Sunday 2:00 AM — 4:00 AM UTC. Some features may be unavailable."
+msgstr "Scheduled maintenance on Sunday 2:00 AM — 4:00 AM UTC. Some features may be unavailable."
+
 msgid "Search"
 msgstr "Search"
 
@@ -594,6 +600,15 @@ msgstr "Sharing..."
 
 msgid "Short date"
 msgstr "Short date"
+
+msgid "Show banner"
+msgstr "Show banner"
+
+msgid "Show banner with action"
+msgstr "Show banner with action"
+
+msgid "Show dismissable banner"
+msgstr "Show dismissable banner"
 
 msgid "Show toast"
 msgstr "Show toast"
@@ -709,6 +724,9 @@ msgstr "Underline"
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
+msgid "Upgrade now"
+msgstr "Upgrade now"
+
 msgid "Upload photo"
 msgstr "Upload photo"
 
@@ -756,3 +774,6 @@ msgstr "Your current plan usage this month."
 
 msgid "Your dashboard is empty"
 msgstr "Your dashboard is empty"
+
+msgid "Your trial expires in 3 days."
+msgstr "Your trial expires in 3 days."
