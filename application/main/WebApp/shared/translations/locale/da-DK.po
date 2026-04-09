@@ -112,7 +112,13 @@ msgstr "Grundlæggende færdigheder, under 30 minutter"
 msgid "Bold"
 msgstr "Fed"
 
-msgid "Breadcrumb"
+msgid "Breadcrumb — custom separator"
+msgstr ""
+
+msgid "Breadcrumb — multi-level with auto-collapse"
+msgstr ""
+
+msgid "Breadcrumb — simple"
 msgstr ""
 
 msgid "Browse and test all UI components."
@@ -178,6 +184,9 @@ msgstr ""
 msgid "Co-author"
 msgstr "Medforfatter"
 
+msgid "Colm Tuite"
+msgstr ""
+
 msgid "Combobox"
 msgstr "Kombinationsboks"
 
@@ -186,9 +195,6 @@ msgstr "Kombinationsboks (oprettelig)"
 
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
-
-msgid "Coming soon."
-msgstr ""
 
 msgid "Component preview"
 msgstr "Komponentvisning"
@@ -220,8 +226,17 @@ msgstr "Opret"
 msgid "Create item"
 msgstr "Opret element"
 
+msgid "Create shortcut..."
+msgstr ""
+
+msgid "Current page"
+msgstr ""
+
 msgid "Dashboard"
 msgstr "Dashboard"
+
+msgid "Data"
+msgstr ""
 
 msgid "Date and time"
 msgstr "Dato og tid"
@@ -261,6 +276,9 @@ msgstr "Destruktiv"
 
 msgid "Destructive alert"
 msgstr "Destruktiv advarsel"
+
+msgid "Developer tools"
+msgstr ""
 
 msgid "Dialogs and cards"
 msgstr "Dialoger og kort"
@@ -332,6 +350,9 @@ msgid "Fixed columns"
 msgstr ""
 
 msgid "Form dialogs"
+msgstr ""
+
+msgid "Forward"
 msgstr ""
 
 msgid "friend@example.com"
@@ -421,6 +442,9 @@ msgstr ""
 msgid "Leave"
 msgstr ""
 
+msgid "Library"
+msgstr ""
+
 msgid "Line chart"
 msgstr "Linjediagram"
 
@@ -447,6 +471,9 @@ msgstr "Mødenoter fra sidste uge"
 
 msgid "More information"
 msgstr "Mere information"
+
+msgid "More tools"
+msgstr ""
 
 msgid "Multi select"
 msgstr "Flervalg"
@@ -498,6 +525,12 @@ msgstr "Mulighed B"
 
 msgid "Outline"
 msgstr "Kontur"
+
+msgid "Pedro Duarte"
+msgstr ""
+
+msgid "People"
+msgstr ""
 
 msgid "Pick a chart"
 msgstr "Vælg et diagram"
@@ -565,6 +598,9 @@ msgstr ""
 msgid "Relative"
 msgstr "Relativ"
 
+msgid "Reload"
+msgstr ""
+
 msgid "Remove"
 msgstr ""
 
@@ -574,8 +610,17 @@ msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding
 msgid "Restaurant phone"
 msgstr "Restauranttelefon"
 
+msgid "Right-click area"
+msgstr ""
+
+msgid "Right-click here"
+msgstr ""
+
 msgid "Save changes"
 msgstr "Gem ændringer"
+
+msgid "Save page as..."
+msgstr ""
 
 msgid "Saving..."
 msgstr ""
@@ -625,7 +670,13 @@ msgstr ""
 msgid "Show banner with action"
 msgstr ""
 
+msgid "Show bookmarks"
+msgstr ""
+
 msgid "Show dismissable banner"
+msgstr ""
+
+msgid "Show status bar"
 msgstr ""
 
 msgid "Show toast"

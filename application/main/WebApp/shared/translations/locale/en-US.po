@@ -112,8 +112,14 @@ msgstr "Basic skills, under 30 minutes"
 msgid "Bold"
 msgstr "Bold"
 
-msgid "Breadcrumb"
-msgstr "Breadcrumb"
+msgid "Breadcrumb — custom separator"
+msgstr "Breadcrumb — custom separator"
+
+msgid "Breadcrumb — multi-level with auto-collapse"
+msgstr "Breadcrumb — multi-level with auto-collapse"
+
+msgid "Breadcrumb — simple"
+msgstr "Breadcrumb — simple"
 
 msgid "Browse and test all UI components."
 msgstr "Browse and test all UI components."
@@ -178,6 +184,9 @@ msgstr "Close"
 msgid "Co-author"
 msgstr "Co-author"
 
+msgid "Colm Tuite"
+msgstr "Colm Tuite"
+
 msgid "Combobox"
 msgstr "Combobox"
 
@@ -186,9 +195,6 @@ msgstr "Combobox (creatable)"
 
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
-
-msgid "Coming soon."
-msgstr "Coming soon."
 
 msgid "Component preview"
 msgstr "Component preview"
@@ -220,8 +226,17 @@ msgstr "Create"
 msgid "Create item"
 msgstr "Create item"
 
+msgid "Create shortcut..."
+msgstr "Create shortcut..."
+
+msgid "Current page"
+msgstr "Current page"
+
 msgid "Dashboard"
 msgstr "Dashboard"
+
+msgid "Data"
+msgstr "Data"
 
 msgid "Date and time"
 msgstr "Date and time"
@@ -261,6 +276,9 @@ msgstr "Destructive"
 
 msgid "Destructive alert"
 msgstr "Destructive alert"
+
+msgid "Developer tools"
+msgstr "Developer tools"
 
 msgid "Dialogs and cards"
 msgstr "Dialogs and cards"
@@ -333,6 +351,9 @@ msgstr "Fixed columns"
 
 msgid "Form dialogs"
 msgstr "Form dialogs"
+
+msgid "Forward"
+msgstr "Forward"
 
 msgid "friend@example.com"
 msgstr "friend@example.com"
@@ -421,6 +442,9 @@ msgstr "Learn more"
 msgid "Leave"
 msgstr "Leave"
 
+msgid "Library"
+msgstr "Library"
+
 msgid "Line chart"
 msgstr "Line chart"
 
@@ -447,6 +471,9 @@ msgstr "Meeting notes from last week"
 
 msgid "More information"
 msgstr "More information"
+
+msgid "More tools"
+msgstr "More tools"
 
 msgid "Multi select"
 msgstr "Multi select"
@@ -498,6 +525,12 @@ msgstr "Option B"
 
 msgid "Outline"
 msgstr "Outline"
+
+msgid "Pedro Duarte"
+msgstr "Pedro Duarte"
+
+msgid "People"
+msgstr "People"
 
 msgid "Pick a chart"
 msgstr "Pick a chart"
@@ -565,6 +598,9 @@ msgstr "recipes@example.com"
 msgid "Relative"
 msgstr "Relative"
 
+msgid "Reload"
+msgstr "Reload"
+
 msgid "Remove"
 msgstr "Remove"
 
@@ -574,8 +610,17 @@ msgstr "Replace this sample page with your own product information and branding.
 msgid "Restaurant phone"
 msgstr "Restaurant phone"
 
+msgid "Right-click area"
+msgstr "Right-click area"
+
+msgid "Right-click here"
+msgstr "Right-click here"
+
 msgid "Save changes"
 msgstr "Save changes"
+
+msgid "Save page as..."
+msgstr "Save page as..."
 
 msgid "Saving..."
 msgstr "Saving..."
@@ -625,8 +670,14 @@ msgstr "Show banner"
 msgid "Show banner with action"
 msgstr "Show banner with action"
 
+msgid "Show bookmarks"
+msgstr "Show bookmarks"
+
 msgid "Show dismissable banner"
 msgstr "Show dismissable banner"
+
+msgid "Show status bar"
+msgstr "Show status bar"
 
 msgid "Show toast"
 msgstr "Show toast"
