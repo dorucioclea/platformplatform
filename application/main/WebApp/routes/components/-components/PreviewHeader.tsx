@@ -32,7 +32,7 @@ export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent
   const sectionHref = currentPage === "components" ? "/components" : "/components/examples";
 
   return (
-    <nav className="mt-[-0.625rem] mb-3 hidden h-11 w-full items-center justify-between gap-2 sm:mt-[-0.875rem] sm:flex">
+    <nav className="hidden w-full justify-between gap-2 sm:flex">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

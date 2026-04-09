@@ -141,7 +141,9 @@ interface HeaderContentProps {
 const HeaderContent = React.forwardRef<HTMLDivElement, HeaderContentProps>(
   ({ title, subtitle, beforeHeader, isSticky }, ref) => (
     <div ref={ref} className="mb-4">
-      {beforeHeader && <div className="mb-2">{beforeHeader}</div>}
+      {beforeHeader && (
+        <div className="-mt-[0.625rem] mb-3 flex h-11 items-center sm:-mt-[0.875rem]">{beforeHeader}</div>
+      )}
       <h1 className={cn("transition-opacity duration-200", isSticky ? "opacity-0 sm:opacity-100" : "opacity-100")}>
         {title}
       </h1>
@@ -195,7 +197,9 @@ function ScrollAwayContent({
     <>
       {/* Header - scrolls naturally with content */}
       <div ref={headerRef} className="scroll-away-header mb-4">
-        {beforeHeader && <div className="mb-2">{beforeHeader}</div>}
+        {beforeHeader && (
+          <div className="-mt-[0.625rem] mb-3 flex h-11 items-center sm:-mt-[0.875rem]">{beforeHeader}</div>
+        )}
         <h1>{title}</h1>
         {subtitle && <p className="mt-2 mb-0 text-muted-foreground">{subtitle}</p>}
       </div>
