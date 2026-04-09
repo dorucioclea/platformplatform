@@ -45,6 +45,9 @@ msgstr ""
 msgid "Add notes here"
 msgstr "Tilføj noter her"
 
+msgid "Added"
+msgstr ""
+
 msgid "Admin"
 msgstr "Administrator"
 
@@ -120,11 +123,11 @@ msgstr "Annuller"
 msgid "Cards"
 msgstr "Kort"
 
+msgid "Category"
+msgstr ""
+
 msgid "Change language"
 msgstr "Skift sprog"
-
-msgid "Change role"
-msgstr ""
 
 msgid "Change theme"
 msgstr "Skift tema"
@@ -141,13 +144,7 @@ msgstr "Afkrydsningsfelt"
 msgid "Checkbox (off)"
 msgstr "Afkrydsningsfelt (fra)"
 
-msgid "Click a row in the table above to open the side pane."
-msgstr ""
-
 msgid "Close"
-msgstr ""
-
-msgid "Close user details"
 msgstr ""
 
 msgid "colleague@company.com"
@@ -185,9 +182,6 @@ msgstr "Opret"
 
 msgid "Create item"
 msgstr "Opret element"
-
-msgid "Created"
-msgstr ""
 
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -240,6 +234,9 @@ msgstr "Deaktiveret"
 msgid "Disabled buttons"
 msgstr "Deaktiverede knapper"
 
+msgid "Duplicate"
+msgstr ""
+
 msgid "E.g., Alex"
 msgstr ""
 
@@ -252,7 +249,7 @@ msgstr ""
 msgid "Edit contact"
 msgstr ""
 
-msgid "Edit profile"
+msgid "Edit product"
 msgstr ""
 
 msgid "Email"
@@ -283,6 +280,9 @@ msgid "First name"
 msgstr ""
 
 msgid "First name is required"
+msgstr ""
+
+msgid "Fixed columns"
 msgstr ""
 
 msgid "Form dialogs"
@@ -369,9 +369,6 @@ msgstr "Stor"
 msgid "Last name"
 msgstr ""
 
-msgid "Last seen"
-msgstr ""
-
 msgid "Learn more"
 msgstr ""
 
@@ -404,9 +401,6 @@ msgstr "Mere information"
 
 msgid "Multi select"
 msgstr "Flervalg"
-
-msgid "Name"
-msgstr ""
 
 msgid "Native date"
 msgstr "Native dato"
@@ -480,6 +474,18 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
+msgid "Price"
+msgstr ""
+
+msgid "Product"
+msgstr ""
+
+msgid "Product actions"
+msgstr ""
+
+msgid "Products"
+msgstr ""
+
 msgid "Profile picture preview"
 msgstr ""
 
@@ -540,9 +546,6 @@ msgstr "Vælg"
 msgid "Select charts"
 msgstr ""
 
-msgid "Send email"
-msgstr ""
-
 msgid "Send invitation"
 msgstr ""
 
@@ -564,9 +567,6 @@ msgstr "Kort dato"
 msgid "Show toast"
 msgstr ""
 
-msgid "Side pane"
-msgstr ""
-
 msgid "Simulate errors"
 msgstr ""
 
@@ -579,8 +579,14 @@ msgstr "Lille"
 msgid "Something went wrong. Please try again."
 msgstr "Noget gik galt. Prøv venligst igen."
 
+msgid "Spacious rows"
+msgstr ""
+
 msgid "Standard user access"
 msgstr "Standard brugeradgang"
+
+msgid "Status"
+msgstr ""
 
 msgid "Stay"
 msgstr ""
@@ -594,10 +600,10 @@ msgstr "Kontakt"
 msgid "Switch (off)"
 msgstr "Kontakt (fra)"
 
-msgid "Table with sorting and pagination"
+msgid "Table with sorting, pagination, and dropdown menu"
 msgstr ""
 
-msgid "Tables and panes"
+msgid "Tables"
 msgstr ""
 
 msgid "Team members"
@@ -681,20 +687,8 @@ msgstr ""
 msgid "Usage"
 msgstr "Forbrug"
 
-msgid "User actions"
-msgstr ""
-
-msgid "User details"
-msgstr ""
-
-msgid "Users"
-msgstr ""
-
 msgid "View all"
 msgstr "Se alle"
-
-msgid "View profile"
-msgstr ""
 
 msgid "Warning alert"
 msgstr "Advarselsbesked"

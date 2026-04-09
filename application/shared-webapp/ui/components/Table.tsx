@@ -143,8 +143,14 @@ function Table({ className, rowSize, selectedIndex, onNavigate, onActivate, ...p
   );
 }
 
+// NOTE: This diverges from stock ShadCN to override the row size context so header rows
+// always use compact height, regardless of the Table's rowSize prop.
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return <thead data-slot="table-header" className={cn("[&_tr]:border-b", className)} {...props} />;
+  return (
+    <TableRowSizeContext value="compact">
+      <thead data-slot="table-header" className={cn("[&_tr]:border-b", className)} {...props} />
+    </TableRowSizeContext>
+  );
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {

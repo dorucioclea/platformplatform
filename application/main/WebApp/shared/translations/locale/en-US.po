@@ -45,6 +45,9 @@ msgstr "Add notes about this contact"
 msgid "Add notes here"
 msgstr "Add notes here"
 
+msgid "Added"
+msgstr "Added"
+
 msgid "Admin"
 msgstr "Admin"
 
@@ -120,11 +123,11 @@ msgstr "Cancel"
 msgid "Cards"
 msgstr "Cards"
 
+msgid "Category"
+msgstr "Category"
+
 msgid "Change language"
 msgstr "Change language"
-
-msgid "Change role"
-msgstr "Change role"
 
 msgid "Change theme"
 msgstr "Change theme"
@@ -141,14 +144,8 @@ msgstr "Checkbox"
 msgid "Checkbox (off)"
 msgstr "Checkbox (off)"
 
-msgid "Click a row in the table above to open the side pane."
-msgstr "Click a row in the table above to open the side pane."
-
 msgid "Close"
 msgstr "Close"
-
-msgid "Close user details"
-msgstr "Close user details"
 
 msgid "colleague@company.com"
 msgstr "colleague@company.com"
@@ -185,9 +182,6 @@ msgstr "Create"
 
 msgid "Create item"
 msgstr "Create item"
-
-msgid "Created"
-msgstr "Created"
 
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -240,6 +234,9 @@ msgstr "Disabled"
 msgid "Disabled buttons"
 msgstr "Disabled buttons"
 
+msgid "Duplicate"
+msgstr "Duplicate"
+
 msgid "E.g., Alex"
 msgstr "E.g., Alex"
 
@@ -252,8 +249,8 @@ msgstr "E.g., Taylor"
 msgid "Edit contact"
 msgstr "Edit contact"
 
-msgid "Edit profile"
-msgstr "Edit profile"
+msgid "Edit product"
+msgstr "Edit product"
 
 msgid "Email"
 msgstr "Email"
@@ -284,6 +281,9 @@ msgstr "First name"
 
 msgid "First name is required"
 msgstr "First name is required"
+
+msgid "Fixed columns"
+msgstr "Fixed columns"
 
 msgid "Form dialogs"
 msgstr "Form dialogs"
@@ -369,9 +369,6 @@ msgstr "Large"
 msgid "Last name"
 msgstr "Last name"
 
-msgid "Last seen"
-msgstr "Last seen"
-
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -404,9 +401,6 @@ msgstr "More information"
 
 msgid "Multi select"
 msgstr "Multi select"
-
-msgid "Name"
-msgstr "Name"
 
 msgid "Native date"
 msgstr "Native date"
@@ -480,6 +474,18 @@ msgstr "Please enter a valid email address"
 msgid "Previous"
 msgstr "Previous"
 
+msgid "Price"
+msgstr "Price"
+
+msgid "Product"
+msgstr "Product"
+
+msgid "Product actions"
+msgstr "Product actions"
+
+msgid "Products"
+msgstr "Products"
+
 msgid "Profile picture preview"
 msgstr "Profile picture preview"
 
@@ -540,9 +546,6 @@ msgstr "Select"
 msgid "Select charts"
 msgstr "Select charts"
 
-msgid "Send email"
-msgstr "Send email"
-
 msgid "Send invitation"
 msgstr "Send invitation"
 
@@ -564,9 +567,6 @@ msgstr "Short date"
 msgid "Show toast"
 msgstr "Show toast"
 
-msgid "Side pane"
-msgstr "Side pane"
-
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
@@ -579,8 +579,14 @@ msgstr "Small"
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
+msgid "Spacious rows"
+msgstr "Spacious rows"
+
 msgid "Standard user access"
 msgstr "Standard user access"
+
+msgid "Status"
+msgstr "Status"
 
 msgid "Stay"
 msgstr "Stay"
@@ -594,11 +600,11 @@ msgstr "Switch"
 msgid "Switch (off)"
 msgstr "Switch (off)"
 
-msgid "Table with sorting and pagination"
-msgstr "Table with sorting and pagination"
+msgid "Table with sorting, pagination, and dropdown menu"
+msgstr "Table with sorting, pagination, and dropdown menu"
 
-msgid "Tables and panes"
-msgstr "Tables and panes"
+msgid "Tables"
+msgstr "Tables"
 
 msgid "Team members"
 msgstr "Team members"
@@ -681,20 +687,8 @@ msgstr "Upload profile picture"
 msgid "Usage"
 msgstr "Usage"
 
-msgid "User actions"
-msgstr "User actions"
-
-msgid "User details"
-msgstr "User details"
-
-msgid "Users"
-msgstr "Users"
-
 msgid "View all"
 msgstr "View all"
-
-msgid "View profile"
-msgstr "View profile"
 
 msgid "Warning alert"
 msgstr "Warning alert"

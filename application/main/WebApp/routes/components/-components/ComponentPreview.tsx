@@ -15,7 +15,7 @@ import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { DialogsPreview } from "./DialogsPreview";
 import { EmptySkeletonPreview } from "./EmptySkeletonPreview";
-import { TableSidePanePreview } from "./TableSidePanePreview";
+import { TablePreview } from "./TablePreview";
 
 export function ComponentPreview() {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "controls");
@@ -33,7 +33,7 @@ export function ComponentPreview() {
   };
 
   return (
-    <Tabs value={activeTab} onValueChange={handleTabChange}>
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1">
       <TabsList>
         <TabsTrigger value="controls">
           <TextCursorInputIcon />
@@ -53,7 +53,7 @@ export function ComponentPreview() {
         </TabsTrigger>
         <TabsTrigger value="tables">
           <TableIcon />
-          <Trans>Tables and panes</Trans>
+          <Trans>Tables</Trans>
         </TabsTrigger>
         <TabsTrigger value="empty">
           <SquareMousePointerIcon />
@@ -72,8 +72,8 @@ export function ComponentPreview() {
       <TabsContent value="dialogs">
         <DialogsPreview />
       </TabsContent>
-      <TabsContent value="tables">
-        <TableSidePanePreview />
+      <TabsContent value="tables" className="flex flex-1 flex-col">
+        <TablePreview />
       </TabsContent>
       <TabsContent value="empty">
         <EmptySkeletonPreview />
