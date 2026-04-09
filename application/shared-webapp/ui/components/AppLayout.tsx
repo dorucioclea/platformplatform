@@ -14,6 +14,7 @@ type AppLayoutProps = {
   maxWidth?: string;
   balanceWidth?: string;
   sidePane?: React.ReactNode;
+  beforeHeader?: React.ReactNode;
   browserTitle?: string;
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
@@ -133,33 +134,38 @@ function useScrollAwayHeader(enabled: boolean, contentRef: React.RefObject<HTMLD
 interface HeaderContentProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
+  beforeHeader?: React.ReactNode;
   isSticky: boolean;
 }
 
-const HeaderContent = React.forwardRef<HTMLDivElement, HeaderContentProps>(({ title, subtitle, isSticky }, ref) => (
-  <div ref={ref} className="mb-4">
-    <h1 className={cn("transition-opacity duration-200", isSticky ? "opacity-0 sm:opacity-100" : "opacity-100")}>
-      {title}
-    </h1>
-    {subtitle && (
-      <p
-        className={cn(
-          "mt-2 mb-0 text-muted-foreground",
-          "transition-opacity duration-200",
-          isSticky ? "opacity-0 sm:opacity-100" : "opacity-100"
-        )}
-      >
-        {subtitle}
-      </p>
-    )}
-  </div>
-));
+const HeaderContent = React.forwardRef<HTMLDivElement, HeaderContentProps>(
+  ({ title, subtitle, beforeHeader, isSticky }, ref) => (
+    <div ref={ref} className="mb-4">
+      {beforeHeader && <div className="mb-2">{beforeHeader}</div>}
+      <h1 className={cn("transition-opacity duration-200", isSticky ? "opacity-0 sm:opacity-100" : "opacity-100")}>
+        {title}
+      </h1>
+      {subtitle && (
+        <p
+          className={cn(
+            "mt-2 mb-0 text-muted-foreground",
+            "transition-opacity duration-200",
+            isSticky ? "opacity-0 sm:opacity-100" : "opacity-100"
+          )}
+        >
+          {subtitle}
+        </p>
+      )}
+    </div>
+  )
+);
 
 HeaderContent.displayName = "HeaderContent";
 
 interface ScrollAwayContentProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
+  beforeHeader?: React.ReactNode;
   headerRef: React.RefObject<HTMLDivElement | null>;
   children: React.ReactNode;
   variant: AppLayoutVariant;
@@ -170,6 +176,7 @@ interface ScrollAwayContentProps {
 function ScrollAwayContent({
   title,
   subtitle,
+  beforeHeader,
   headerRef,
   children,
   variant,
@@ -188,6 +195,7 @@ function ScrollAwayContent({
     <>
       {/* Header - scrolls naturally with content */}
       <div ref={headerRef} className="scroll-away-header mb-4">
+        {beforeHeader && <div className="mb-2">{beforeHeader}</div>}
         <h1>{title}</h1>
         {subtitle && <p className="mt-2 mb-0 text-muted-foreground">{subtitle}</p>}
       </div>
@@ -215,6 +223,7 @@ interface StandardContentProps {
   balanceWidth?: string;
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
+  beforeHeader?: React.ReactNode;
   headerRef: React.RefObject<HTMLDivElement | null>;
   isSticky: boolean;
   children: React.ReactNode;
@@ -226,6 +235,7 @@ function StandardContent({
   balanceWidth,
   title,
   subtitle,
+  beforeHeader,
   headerRef,
   isSticky,
   children
@@ -242,7 +252,15 @@ function StandardContent({
     return (
       <div className="flex min-h-0 w-full flex-1 flex-col items-center">
         <div className="flex min-h-0 w-full flex-1 flex-col" style={{ maxWidth }}>
-          {title && <HeaderContent ref={headerRef} title={title} subtitle={subtitle} isSticky={isSticky} />}
+          {title && (
+            <HeaderContent
+              ref={headerRef}
+              title={title}
+              subtitle={subtitle}
+              beforeHeader={beforeHeader}
+              isSticky={isSticky}
+            />
+          )}
           {wrappedChildren}
         </div>
       </div>
@@ -251,7 +269,15 @@ function StandardContent({
 
   return (
     <>
-      {title && <HeaderContent ref={headerRef} title={title} subtitle={subtitle} isSticky={isSticky} />}
+      {title && (
+        <HeaderContent
+          ref={headerRef}
+          title={title}
+          subtitle={subtitle}
+          beforeHeader={beforeHeader}
+          isSticky={isSticky}
+        />
+      )}
       {wrappedChildren}
     </>
   );
@@ -267,6 +293,7 @@ export function AppLayout({
   maxWidth = "40rem",
   balanceWidth,
   sidePane,
+  beforeHeader,
   title,
   browserTitle,
   subtitle,
@@ -323,6 +350,7 @@ export function AppLayout({
             <ScrollAwayContent
               title={title}
               subtitle={subtitle}
+              beforeHeader={beforeHeader}
               headerRef={headerRef}
               variant={variant}
               maxWidth={maxWidth}
@@ -338,6 +366,7 @@ export function AppLayout({
               balanceWidth={balanceWidth}
               title={title}
               subtitle={subtitle}
+              beforeHeader={beforeHeader}
               headerRef={headerRef}
               isSticky={isSticky}
             >

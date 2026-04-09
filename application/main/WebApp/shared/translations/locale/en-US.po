@@ -112,6 +112,9 @@ msgstr "Basic skills, under 30 minutes"
 msgid "Bold"
 msgstr "Bold"
 
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
 msgid "Browse and test all UI components."
 msgstr "Browse and test all UI components."
 
@@ -127,8 +130,8 @@ msgstr "Button sizes"
 msgid "Button variants"
 msgstr "Button variants"
 
-msgid "Buttons"
-msgstr "Buttons"
+msgid "Buttons and links"
+msgstr "Buttons and links"
 
 msgid "Can change ingredients and instructions"
 msgstr "Can change ingredients and instructions"
@@ -184,14 +187,23 @@ msgstr "Combobox (creatable)"
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
 
+msgid "Coming soon."
+msgstr "Coming soon."
+
 msgid "Component preview"
 msgstr "Component preview"
 
 msgid "Components"
 msgstr "Components"
 
+msgid "Composed real-world flows using the UI components."
+msgstr "Composed real-world flows using the UI components."
+
 msgid "Confirm action"
 msgstr "Confirm action"
+
+msgid "Context menu"
+msgstr "Context menu"
 
 msgid "Controls"
 msgstr "Controls"
@@ -304,6 +316,9 @@ msgstr "Enabled"
 msgid "Errors"
 msgstr "Errors"
 
+msgid "Examples"
+msgstr "Examples"
+
 msgid "Extra large"
 msgstr "Extra large"
 
@@ -357,6 +372,9 @@ msgstr "Hard"
 
 msgid "Here's your overview of what's happening."
 msgstr "Here's your overview of what's happening."
+
+msgid "Home"
+msgstr "Home"
 
 msgid "Icon-only buttons"
 msgstr "Icon-only buttons"

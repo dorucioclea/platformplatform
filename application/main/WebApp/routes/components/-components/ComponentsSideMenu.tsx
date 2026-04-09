@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { MenuButton, SideMenu, SideMenuSeparator } from "@repo/ui/components/SideMenu";
-import { BlocksIcon } from "lucide-react";
+import { BlocksIcon, LayersIcon } from "lucide-react";
 
 export function ComponentsSideMenu() {
   return (
@@ -11,6 +11,7 @@ export function ComponentsSideMenu() {
       </SideMenuSeparator>
 
       <MenuButton icon={BlocksIcon} label={t`Components`} href="/components" />
+      <MenuButton icon={LayersIcon} label={t`Examples`} href="/components/examples" />
     </SideMenu>
   );
 }

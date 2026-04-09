@@ -1,5 +1,5 @@
 import { t } from "@lingui/core/macro";
-import { LocaleSwitcher } from "@repo/infrastructure/translations/LocaleSwitcher";
+import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
 import { Button } from "@repo/ui/components/Button";
 import {
@@ -9,13 +9,13 @@ import {
   DropdownMenuTrigger
 } from "@repo/ui/components/DropdownMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/Tooltip";
-import { ThemeModeSelector } from "@repo/ui/theme/ThemeModeSelector";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckIcon, ZoomInIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { ComponentPreview } from "./-components/ComponentPreview";
 import { ComponentsSideMenu } from "./-components/ComponentsSideMenu";
+import { PreviewHeader } from "./-components/PreviewHeader";
 
 export const Route = createFileRoute("/components/")({
   staticData: { trackingTitle: "Components" },
@@ -82,26 +82,28 @@ function ZoomSwitcher() {
   );
 }
 
-function PreviewToolbar() {
-  return (
-    <div className="fixed top-4 right-4 z-20 flex gap-1 rounded-md bg-card p-1 shadow-md">
-      <ThemeModeSelector aria-label={t`Change theme`} />
-      <LocaleSwitcher aria-label={t`Change language`} />
-      <ZoomSwitcher />
-    </div>
-  );
-}
-
 function ComponentsPage() {
   return (
     <>
       <ComponentsSideMenu />
-      <PreviewToolbar />
       <AppLayout
         variant="full"
         browserTitle={t`Components`}
         title={t`Component preview`}
         subtitle={t`Browse and test all UI components.`}
+        beforeHeader={
+          <PreviewHeader
+            currentPage="components"
+            defaultTab="controls"
+            tabLabels={{
+              controls: <Trans>Controls</Trans>,
+              buttons: <Trans>Buttons and links</Trans>,
+              alerts: <Trans>Alerts and badges</Trans>,
+              navigation: <Trans>Navigation</Trans>
+            }}
+            rightContent={<ZoomSwitcher />}
+          />
+        }
       >
         <ComponentPreview />
       </AppLayout>

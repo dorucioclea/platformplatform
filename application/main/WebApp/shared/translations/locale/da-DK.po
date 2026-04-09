@@ -112,6 +112,9 @@ msgstr "Grundlæggende færdigheder, under 30 minutter"
 msgid "Bold"
 msgstr "Fed"
 
+msgid "Breadcrumb"
+msgstr ""
+
 msgid "Browse and test all UI components."
 msgstr "Gennemse og test alle UI-komponenter."
 
@@ -127,8 +130,8 @@ msgstr "Knapstørrelser"
 msgid "Button variants"
 msgstr "Knapvarianter"
 
-msgid "Buttons"
-msgstr "Knapper"
+msgid "Buttons and links"
+msgstr ""
 
 msgid "Can change ingredients and instructions"
 msgstr "Kan ændre ingredienser og instruktioner"
@@ -184,13 +187,22 @@ msgstr "Kombinationsboks (oprettelig)"
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
 
+msgid "Coming soon."
+msgstr ""
+
 msgid "Component preview"
 msgstr "Komponentvisning"
 
 msgid "Components"
 msgstr "Komponenter"
 
+msgid "Composed real-world flows using the UI components."
+msgstr ""
+
 msgid "Confirm action"
+msgstr ""
+
+msgid "Context menu"
 msgstr ""
 
 msgid "Controls"
@@ -304,6 +316,9 @@ msgstr "Aktiveret"
 msgid "Errors"
 msgstr ""
 
+msgid "Examples"
+msgstr ""
+
 msgid "Extra large"
 msgstr "Ekstra stor"
 
@@ -357,6 +372,9 @@ msgstr "Svær"
 
 msgid "Here's your overview of what's happening."
 msgstr "Her er dit overblik over hvad der sker."
+
+msgid "Home"
+msgstr ""
 
 msgid "Icon-only buttons"
 msgstr "Knapper kun med ikon"
