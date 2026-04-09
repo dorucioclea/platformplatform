@@ -53,8 +53,11 @@ function TooltipTrigger({ className, onClick, ...props }: TooltipPrimitive.Trigg
   const toggleOpen = use(TooltipOpenContext);
 
   const handleClick: TooltipPrimitive.Trigger.Props["onClick"] = (event) => {
-    // Toggle tooltip on click/tap for touch device support
-    toggleOpen?.();
+    // Only toggle tooltip on click for devices without hover capability (pure touch devices).
+    // On hover-capable devices, the tooltip opens on hover and a click would cause a brief flash.
+    if (window.matchMedia("(hover: none)").matches) {
+      toggleOpen?.();
+    }
     onClick?.(event);
   };
 
