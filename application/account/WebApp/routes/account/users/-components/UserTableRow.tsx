@@ -22,7 +22,7 @@ interface UserTableRowProps {
   currentUserId: string | undefined;
   onRowClick: (user: UserDetails, event: React.MouseEvent) => void;
   onSelectedUsersChange: (users: UserDetails[]) => void;
-  onViewProfile: (user: UserDetails, isKeyboardOpen?: boolean) => void;
+  onViewProfile: (user: UserDetails) => void;
   onDeleteUser: (user: UserDetails) => void;
   onChangeRole: (user: UserDetails) => void;
 }

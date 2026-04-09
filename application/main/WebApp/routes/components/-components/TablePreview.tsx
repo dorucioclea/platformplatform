@@ -69,13 +69,7 @@ export function TablePreview() {
           />
         </div>
       </div>
-      <Table
-        rowSize={rowSize}
-        aria-label={t`Products`}
-        selectedIndex={selectedIndex}
-        onNavigate={setSelectedIndex}
-        onActivate={setSelectedIndex}
-      >
+      <Table rowSize={rowSize} aria-label={t`Products`} selectedIndex={selectedIndex} onNavigate={setSelectedIndex}>
         <TableHeader>
           <TableRow>
             <TableHead data-column="name" onClick={() => handleSort("name")}>

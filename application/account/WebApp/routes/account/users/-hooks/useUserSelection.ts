@@ -7,13 +7,15 @@ type UserDetails = components["schemas"]["UserDetails"];
 interface UseUserSelectionProps {
   usersList: UserDetails[];
   selectedUsers: UserDetails[];
+  profileUserId: string | undefined;
   onSelectedUsersChange: (users: UserDetails[]) => void;
-  onViewProfile: (user: UserDetails | null, isKeyboardOpen?: boolean) => void;
+  onViewProfile: (user: UserDetails | null) => void;
 }
 
 export function useUserSelection({
   usersList,
   selectedUsers,
+  profileUserId,
   onSelectedUsersChange,
   onViewProfile
 }: UseUserSelectionProps) {
@@ -46,15 +48,14 @@ export function useUserSelection({
         const rangeUsers = usersList.slice(start, end + 1);
         onSelectedUsersChange(rangeUsers);
         onViewProfile(null);
-      } else if (isSelected && selectedUsers.length === 1) {
-        onSelectedUsersChange([]);
+      } else if (profileUserId === user.id) {
         onViewProfile(null);
       } else {
         onSelectedUsersChange([user]);
-        onViewProfile(user, false);
+        onViewProfile(user);
       }
     },
-    [usersList, selectedUserIds, selectedUsers, onSelectedUsersChange, onViewProfile]
+    [usersList, selectedUserIds, selectedUsers, profileUserId, onSelectedUsersChange, onViewProfile]
   );
 
   const currentSelectedIndex =

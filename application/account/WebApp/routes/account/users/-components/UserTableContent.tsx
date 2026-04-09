@@ -19,7 +19,7 @@ type UserDetails = components["schemas"]["UserDetails"];
 export interface UserTableContentProps {
   selectedUsers: UserDetails[];
   onSelectedUsersChange: (users: UserDetails[]) => void;
-  onViewProfile: (user: UserDetails | null, isKeyboardOpen?: boolean) => void;
+  onViewProfile: (user: UserDetails | null) => void;
   onDeleteUser: (user: UserDetails) => void;
   onChangeRole: (user: UserDetails) => void;
   onUsersLoaded?: (users: UserDetails[]) => void;
@@ -52,7 +52,7 @@ export function UserTableContent({
   hasFilters = false
 }: Readonly<UserTableContentProps>) {
   const navigate = useNavigate();
-  const { orderBy, sortOrder, pageOffset } = useSearch({ strict: false });
+  const { orderBy, sortOrder, pageOffset, userId } = useSearch({ strict: false });
   const userInfo = useUserInfo();
 
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>(() => ({
@@ -62,6 +62,7 @@ export function UserTableContent({
   const { selectedUserIds, handleRowClick, currentSelectedIndex } = useUserSelection({
     usersList,
     selectedUsers,
+    profileUserId: userId,
     onSelectedUsersChange,
     onViewProfile
   });
@@ -149,7 +150,6 @@ export function UserTableContent({
           aria-label={t`Users`}
           selectedIndex={currentSelectedIndex}
           onNavigate={(index) => onSelectedUsersChange([usersList[index]])}
-          onActivate={(index) => onViewProfile(usersList[index], true)}
         >
           <UserTableHeader sortDescriptor={sortDescriptor} isMobile={isMobile} onSortChange={handleSortChange} />
           <TableBody>

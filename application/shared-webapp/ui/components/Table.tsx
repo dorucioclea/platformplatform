@@ -18,13 +18,14 @@ interface TableProps extends React.ComponentProps<"table"> {
   rowSize: TableRowSize;
   selectedIndex?: number;
   onNavigate?: (index: number) => void;
-  onActivate?: (index: number) => void;
 }
 
 // NOTE: This diverges from stock ShadCN to add optional keyboard navigation with roving tabindex.
-// Pass selectedIndex, onNavigate, and onActivate to enable arrow key navigation between body rows.
-// TableRow accepts an optional index prop to participate in keyboard navigation via context.
-function Table({ className, rowSize, selectedIndex, onNavigate, onActivate, ...props }: TableProps) {
+// Pass selectedIndex and onNavigate to enable arrow key navigation between body rows.
+// Enter/Space dispatches a click on the focused row, so the row's onClick handler drives activation
+// for both mouse and keyboard. TableRow accepts an optional index prop to participate in keyboard
+// navigation via context.
+function Table({ className, rowSize, selectedIndex, onNavigate, ...props }: TableProps) {
   const hasKeyboardNavigation = onNavigate != null;
   const containerRef = useRef<HTMLDivElement>(null);
   const [focusedRowIndex, setFocusedRowIndex] = useState<number>(0);
@@ -92,7 +93,7 @@ function Table({ className, rowSize, selectedIndex, onNavigate, onActivate, ...p
       if ((event.key === "Enter" || event.key === " ") && currentIndex >= 0) {
         event.preventDefault();
         event.stopPropagation();
-        onActivate?.(currentIndex);
+        (rows[currentIndex] as HTMLElement | undefined)?.click();
         return;
       }
 
@@ -122,7 +123,7 @@ function Table({ className, rowSize, selectedIndex, onNavigate, onActivate, ...p
 
     document.addEventListener("keydown", handleKeyDown, true);
     return () => document.removeEventListener("keydown", handleKeyDown, true);
-  }, [hasKeyboardNavigation, selectedIndex, onNavigate, onActivate]);
+  }, [hasKeyboardNavigation, selectedIndex, onNavigate]);
 
   const table = (
     <div ref={containerRef} data-slot="table-container" className="relative w-full overflow-x-auto">
