@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { ContactInfoStep } from "./ContactInfoStep";
+import { type DialogSize, getDialogSizeClassName } from "./dialogSize";
 import { RolePreferencesStep } from "./RolePreferencesStep";
 import { ScheduleNotesStep } from "./ScheduleNotesStep";
 
@@ -43,6 +44,7 @@ export interface ContactDetailsDialogProps {
   dirtyDialog: boolean;
   showToasts: boolean;
   simulateErrors: boolean;
+  size: DialogSize;
 }
 
 export function ContactDetailsDialog({
@@ -50,7 +52,8 @@ export function ContactDetailsDialog({
   onOpenChange,
   dirtyDialog,
   showToasts,
-  simulateErrors
+  simulateErrors,
+  size
 }: Readonly<ContactDetailsDialogProps>) {
   const [step, setStep] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
@@ -90,7 +93,7 @@ export function ContactDetailsDialog({
       onCloseComplete={handleCloseComplete}
       trackingTitle="Edit contact"
     >
-      <DialogContent className="sm:w-dialog-md">
+      <DialogContent className={getDialogSizeClassName(size)}>
         <DialogHeader>
           <StepIndicator current={step} total={TOTAL_STEPS} />
           <DialogTitle>{titles[step]}</DialogTitle>

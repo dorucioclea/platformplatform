@@ -34,6 +34,9 @@ msgstr ""
 msgid "2 hours ago"
 msgstr "2 hours ago"
 
+msgid "2X large"
+msgstr "2X large"
+
 msgid "3 minutes ago"
 msgstr "3 minutes ago"
 
@@ -280,6 +283,9 @@ msgstr "Enabled"
 msgid "Errors"
 msgstr "Errors"
 
+msgid "Extra large"
+msgstr "Extra large"
+
 msgid "Extra small"
 msgstr "Extra small"
 
@@ -396,6 +402,9 @@ msgstr "Long date"
 
 msgid "Manage your notification preferences."
 msgstr "Manage your notification preferences."
+
+msgid "Medium"
+msgstr "Medium"
 
 msgid "Meeting notes from last week"
 msgstr "Meeting notes from last week"

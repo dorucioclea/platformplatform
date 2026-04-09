@@ -23,12 +23,15 @@ import { MailIcon, ShieldIcon, UserIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { type DialogSize, getDialogSizeClassName } from "./dialogSize";
+
 export interface SendInvitationDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   dirtyDialog: boolean;
   showToasts: boolean;
   simulateErrors: boolean;
+  size: DialogSize;
 }
 
 export function SendInvitationDialog({
@@ -36,7 +39,8 @@ export function SendInvitationDialog({
   onOpenChange,
   dirtyDialog,
   showToasts,
-  simulateErrors
+  simulateErrors,
+  size
 }: Readonly<SendInvitationDialogProps>) {
   const [isDirty, setIsDirty] = useState(false);
 
@@ -60,7 +64,7 @@ export function SendInvitationDialog({
       hasUnsavedChanges={dirtyDialog && isDirty}
       trackingTitle="Send invitation"
     >
-      <DialogContent className="sm:w-dialog-md">
+      <DialogContent className={getDialogSizeClassName(size)}>
         <DialogHeader>
           <DialogTitle>
             <Trans>Send invitation</Trans>

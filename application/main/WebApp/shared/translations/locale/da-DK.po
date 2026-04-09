@@ -34,6 +34,9 @@ msgstr ""
 msgid "2 hours ago"
 msgstr "For 2 timer siden"
 
+msgid "2X large"
+msgstr "2X stor"
+
 msgid "3 minutes ago"
 msgstr "For 3 minutter siden"
 
@@ -280,6 +283,9 @@ msgstr "Aktiveret"
 msgid "Errors"
 msgstr ""
 
+msgid "Extra large"
+msgstr "Ekstra stor"
+
 msgid "Extra small"
 msgstr "Ekstra lille"
 
@@ -396,6 +402,9 @@ msgstr "Lang dato"
 
 msgid "Manage your notification preferences."
 msgstr "Administrer dine notifikationsindstillinger."
+
+msgid "Medium"
+msgstr "Mellem"
 
 msgid "Meeting notes from last week"
 msgstr "Mødenoter fra sidste uge"
