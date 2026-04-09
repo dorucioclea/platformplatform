@@ -12,8 +12,6 @@ import { tooltips } from "./controlTooltips";
 import { DateAndToggleFields } from "./DateAndToggleFields";
 import { SelectAndComboboxFields } from "./SelectAndComboboxFields";
 
-export { useChartItems } from "./SelectAndComboboxFields";
-
 export function ControlRow({
   suffix,
   selectedColor,

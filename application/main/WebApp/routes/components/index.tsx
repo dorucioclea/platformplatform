@@ -88,12 +88,12 @@ function ComponentsPage() {
 
   return (
     <main className="flex min-h-dvh flex-col bg-background px-6 pt-6 pb-8 sm:px-8 sm:pt-8">
-      <div className="mb-4 flex items-start justify-between">
+      <div className="flex items-start justify-between">
         <div>
           <h1>
             <Trans>Component preview</Trans>
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p>
             <Trans>Browse and test all UI components.</Trans>
           </p>
         </div>
