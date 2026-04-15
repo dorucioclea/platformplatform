@@ -104,7 +104,11 @@ export function DatePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <Label htmlFor={triggerId} data-slot="field-label" className="cursor-default leading-snug">
+        <Label
+          htmlFor={isDisabled ? undefined : triggerId}
+          data-slot="field-label"
+          className="cursor-default leading-snug"
+        >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}
@@ -118,8 +122,8 @@ export function DatePicker({
                 variant="outline"
                 aria-invalid={isInvalid || undefined}
                 className={cn(
-                  "w-full justify-start border border-input px-2.5 font-normal hover:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30",
-                  !value && "text-muted-foreground",
+                  "w-full justify-start border border-input px-2.5 font-normal hover:bg-white hover:text-foreground aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30",
+                  !value && "text-muted-foreground hover:text-muted-foreground",
                   hasValue && !isReadOnly && !isDisabled && "pr-9",
                   isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
