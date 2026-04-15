@@ -24,7 +24,8 @@ export function ControlRow({
   readOnly,
   error,
   showIcon,
-  values
+  values,
+  placeholders
 }: ControlRowProps & {
   selectedColor: string;
   setSelectedColor: (value: string) => void;
@@ -34,7 +35,18 @@ export function ControlRow({
 }) {
   const hasValues = !!values;
   const errorMessage = error ? t`This field is required` : undefined;
-  const derived = { suffix, label, tooltip, disabled, readOnly, error, showIcon, hasValues, errorMessage };
+  const derived = {
+    suffix,
+    label,
+    tooltip,
+    disabled,
+    readOnly,
+    error,
+    showIcon,
+    hasValues,
+    placeholders,
+    errorMessage
+  };
 
   return (
     <div
@@ -45,7 +57,7 @@ export function ControlRow({
         label={label ? t`Text field` : undefined}
         tooltip={tooltip ? tooltips.textField : undefined}
         name={`text-${suffix}`}
-        placeholder={t`E.g., Alex Taylor`}
+        placeholder={placeholders ? t`E.g., Alex Taylor` : undefined}
         defaultValue={hasValues ? t`Alex Taylor` : undefined}
         isDisabled={disabled}
         isReadOnly={readOnly}

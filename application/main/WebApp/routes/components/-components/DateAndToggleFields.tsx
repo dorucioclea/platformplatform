@@ -28,6 +28,7 @@ export function DateAndToggleFields({
   disabled,
   readOnly,
   hasValues,
+  placeholders,
   errorMessage
 }: ControlRowDerivedProps) {
   const [switchChecked, setSwitchChecked] = useState(false);
@@ -46,7 +47,7 @@ export function DateAndToggleFields({
         label={label ? t`Date picker` : undefined}
         tooltip={tooltip ? tooltips.datePicker : undefined}
         name={`datepicker-${suffix}`}
-        placeholder={t`Pick a date`}
+        placeholder={placeholders ? t`Pick a date` : undefined}
         value={datePickerValue}
         onChange={setDatePickerValue}
         isDisabled={disabled}
@@ -57,6 +58,7 @@ export function DateAndToggleFields({
         label={label ? t`Date range` : undefined}
         tooltip={tooltip ? tooltips.dateRange : undefined}
         name={`daterange-${suffix}`}
+        placeholder={placeholders ? undefined : ""}
         value={dateRangeValue}
         onChange={setDateRangeValue}
         disabled={disabled}
@@ -85,13 +87,15 @@ export function DateAndToggleFields({
         label={label ? t`Time zone` : undefined}
         tooltip={tooltip ? tooltips.timeZonePicker : undefined}
         name={`timezone-${suffix}`}
+        placeholder={placeholders ? undefined : ""}
+        startIcon={timeZone || placeholders ? undefined : null}
         value={timeZone}
         onValueChange={setTimeZone}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <TextAreaFields {...{ suffix, label, tooltip, disabled, readOnly, hasValues, errorMessage }} />
+      <TextAreaFields {...{ suffix, label, tooltip, disabled, readOnly, hasValues, placeholders, errorMessage }} />
       <RadioGroupField
         label={label ? t`Radio group` : undefined}
         tooltip={tooltip ? tooltips.radioGroup : undefined}

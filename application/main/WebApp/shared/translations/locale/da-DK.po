@@ -610,6 +610,9 @@ msgstr "Vælg en dato"
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
+msgid "Placeholders"
+msgstr "Pladsholdere"
+
 msgid "PlatformPlatform"
 msgstr ""
 

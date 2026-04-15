@@ -12,6 +12,7 @@ export function TextAreaFields({
   disabled,
   readOnly,
   hasValues,
+  placeholders,
   errorMessage
 }: ControlRowDerivedProps) {
   return (
@@ -20,7 +21,7 @@ export function TextAreaFields({
         label={label ? t`Text area` : undefined}
         tooltip={tooltip ? tooltips.textArea : undefined}
         name={`textarea-${suffix}`}
-        placeholder={t`Add notes here`}
+        placeholder={placeholders ? t`Add notes here` : undefined}
         defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
         isDisabled={disabled}
         isReadOnly={readOnly}
@@ -30,7 +31,7 @@ export function TextAreaFields({
         label={label ? t`Address (fixed 2 lines)` : undefined}
         tooltip={tooltip ? tooltips.textAreaFixed : undefined}
         name={`textarea-fixed-${suffix}`}
-        placeholder={t`Street address`}
+        placeholder={placeholders ? t`Street address` : undefined}
         defaultValue={hasValues ? t`1 Infinite Loop\nCupertino, CA 95014` : undefined}
         lines={2}
         resizable={false}

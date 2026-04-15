@@ -1,5 +1,5 @@
 import { GlobeIcon } from "lucide-react";
-import { useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 
 import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./Select";
 import { SelectField } from "./SelectField";
@@ -65,6 +65,7 @@ export interface TimeZonePickerProps {
   errorMessage?: string;
   tooltip?: React.ReactNode;
   placeholder?: string;
+  startIcon?: ReactNode;
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   className?: string;
@@ -74,6 +75,7 @@ export interface TimeZonePickerProps {
 
 export function TimeZonePicker({
   placeholder = "Select time zone",
+  startIcon = <GlobeIcon />,
   value,
   onValueChange,
   ...props
@@ -87,7 +89,7 @@ export function TimeZonePicker({
   return (
     <SelectField items={items} value={value ?? undefined} onValueChange={(v) => onValueChange?.(v ?? null)} {...props}>
       <SelectTrigger>
-        <GlobeIcon />
+        {startIcon}
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

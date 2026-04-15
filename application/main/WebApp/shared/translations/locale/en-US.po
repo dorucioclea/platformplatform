@@ -610,6 +610,9 @@ msgstr "Pick a date"
 msgid "Pie chart"
 msgstr "Pie chart"
 
+msgid "Placeholders"
+msgstr "Placeholders"
+
 msgid "PlatformPlatform"
 msgstr "PlatformPlatform"
 

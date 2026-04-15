@@ -29,6 +29,7 @@ export function SelectAndComboboxFields({
   readOnly,
   showIcon,
   hasValues,
+  placeholders,
   errorMessage,
   selectedColor,
   setSelectedColor,
@@ -45,6 +46,8 @@ export function SelectAndComboboxFields({
   ];
   const currentColor = hasValues ? localColor : selectedColor;
   const selectedChartIcon = chartSelectItems.find((i) => i.value === currentColor)?.icon;
+  const currentCharts = hasValues ? localCharts : selectedCharts;
+  const hasCharts = currentCharts.length > 0;
 
   return (
     <>
@@ -60,8 +63,8 @@ export function SelectAndComboboxFields({
         errorMessage={errorMessage}
       >
         <SelectTrigger>
-          {showIcon ? (selectedChartIcon ?? <TrendingUpIcon />) : null}
-          <SelectValue placeholder={t`Pick a chart`} />
+          {showIcon && (selectedChartIcon ? selectedChartIcon : placeholders ? <TrendingUpIcon /> : null)}
+          <SelectValue placeholder={placeholders ? t`Pick a chart` : undefined} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={null}>
@@ -81,8 +84,8 @@ export function SelectAndComboboxFields({
         label={label ? t`Multi select` : undefined}
         tooltip={tooltip ? tooltips.multiSelect : undefined}
         name={`multi-${suffix}`}
-        placeholder={t`Select charts`}
-        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
+        placeholder={placeholders ? t`Select charts` : undefined}
+        startIcon={showIcon && (hasCharts || placeholders) ? <TrendingUpIcon /> : undefined}
         items={showIcon ? chartItems : chartItems.map(({ icon: _, ...rest }) => rest)}
         value={hasValues ? localCharts : selectedCharts}
         onChange={hasValues ? setLocalCharts : setSelectedCharts}
@@ -98,6 +101,7 @@ export function SelectAndComboboxFields({
         readOnly={readOnly}
         showIcon={showIcon}
         hasValues={hasValues}
+        placeholders={placeholders}
         errorMessage={errorMessage}
         chartItems={chartItems}
       />

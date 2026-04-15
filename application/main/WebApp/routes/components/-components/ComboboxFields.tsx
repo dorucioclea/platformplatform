@@ -22,6 +22,7 @@ export function ComboboxFields({
   readOnly,
   showIcon,
   hasValues,
+  placeholders,
   errorMessage,
   chartItems
 }: ComboboxFieldsProps) {
@@ -37,7 +38,7 @@ export function ComboboxFields({
       <ComboboxField
         label={label ? t`Combobox` : undefined}
         tooltip={tooltip ? tooltips.combobox : undefined}
-        placeholder={t`Search charts...`}
+        placeholder={placeholders ? t`Search charts...` : undefined}
         emptyMessage={t`No results found`}
         items={items}
         value={selectValue}
@@ -45,32 +46,32 @@ export function ComboboxFields({
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
-        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
+        startIcon={showIcon && (selectValue || placeholders) ? <TrendingUpIcon /> : undefined}
       />
       <ComboboxField
         label={label ? t`Combobox (free text)` : undefined}
         tooltip={tooltip ? tooltips.comboboxFreeText : undefined}
-        placeholder={t`Type or search...`}
+        placeholder={placeholders ? t`Type or search...` : undefined}
         items={items}
         value={freeTextValue}
         onValueChange={setFreeTextValue}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
-        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
+        startIcon={showIcon && (freeTextValue || placeholders) ? <TrendingUpIcon /> : undefined}
         allowCustomValue
       />
       <ComboboxField
         label={label ? t`Combobox (creatable)` : undefined}
         tooltip={tooltip ? tooltips.comboboxCreatable : undefined}
-        placeholder={t`Type or search...`}
+        placeholder={placeholders ? t`Type or search...` : undefined}
         items={allCreatableItems}
         value={creatableValue}
         onValueChange={setCreatableValue}
         isDisabled={disabled}
         isReadOnly={readOnly}
         errorMessage={errorMessage}
-        startIcon={showIcon ? <TrendingUpIcon /> : undefined}
+        startIcon={showIcon && (creatableValue || placeholders) ? <TrendingUpIcon /> : undefined}
         allowCreate
         onCreateItem={(itemLabel) => {
           const newId = itemLabel.toLowerCase().replace(/\s+/g, "-");
