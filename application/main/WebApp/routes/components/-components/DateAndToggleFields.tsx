@@ -13,7 +13,7 @@ import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TimeField } from "@repo/ui/components/TimeField";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
 
@@ -31,6 +31,19 @@ export function DateAndToggleFields({
   placeholders,
   errorMessage
 }: ControlRowDerivedProps) {
+  const toggleGroupRef = useRef<HTMLDivElement>(null);
+  const focusToggle = () => {
+    if (disabled) return;
+    const group = toggleGroupRef.current;
+    if (!group) return;
+    const active = group.querySelector<HTMLElement>("[data-slot=toggle-group-item][data-pressed]");
+    const fallback = group.querySelector<HTMLElement>("[data-slot=toggle-group-item]");
+    const target = active ?? fallback;
+    if (!target) return;
+    target.setAttribute("data-label-focus", "");
+    target.addEventListener("blur", () => target.removeAttribute("data-label-focus"), { once: true });
+    target.focus({ preventScroll: true });
+  };
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [toggleValues, setToggleValues] = useState<string[]>(hasValues ? ["bold"] : []);
@@ -126,9 +139,17 @@ export function DateAndToggleFields({
           <Trans>Option B</Trans>
         </label>
       </RadioGroupField>
-      <Field>
+      <Field ref={toggleGroupRef}>
         {label && (
-          <FieldLabel>
+          <FieldLabel
+            onClick={focusToggle}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                focusToggle();
+              }
+            }}
+          >
             {tooltip ? (
               <LabelWithTooltip tooltip={tooltips.toggleGroup}>
                 <Trans>Toggle group</Trans>

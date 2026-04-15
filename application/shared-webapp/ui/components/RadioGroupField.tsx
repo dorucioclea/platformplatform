@@ -1,6 +1,6 @@
 import type { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
@@ -46,15 +46,40 @@ export function RadioGroupField({
       ? fieldErrorMessages.map((error) => ({ message: error }))
       : undefined;
 
+  const groupRef = useRef<HTMLDivElement>(null);
+
   const handleValueChange: typeof onValueChange = (value, event) => {
     clearNow();
     onValueChange?.(value, event);
   };
 
+  const focusRadio = () => {
+    if (disabled) return;
+    const group = groupRef.current;
+    if (!group) return;
+    const checked = group.querySelector<HTMLElement>("[data-slot=radio-group-item][data-checked]");
+    const fallback = group.querySelector<HTMLElement>("[data-slot=radio-group-item]");
+    const target = checked ?? fallback;
+    if (!target) return;
+    target.setAttribute("data-label-focus", "");
+    target.addEventListener("blur", () => target.removeAttribute("data-label-focus"), { once: true });
+    target.focus({ preventScroll: true });
+  };
+
   return (
-    <Field className={cn("flex flex-col", className)}>
+    <Field ref={groupRef} className={cn("flex flex-col", className)}>
       {label && (
-        <FieldLabel>{tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}</FieldLabel>
+        <FieldLabel
+          onClick={focusRadio}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              focusRadio();
+            }
+          }}
+        >
+          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
+        </FieldLabel>
       )}
       <RadioGroup
         name={name}

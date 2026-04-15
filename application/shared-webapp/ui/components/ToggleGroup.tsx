@@ -93,7 +93,7 @@ function ToggleGroupItem({
       data-slot="toggle-group-item"
       className={cn(
         toggleVariants({ variant, size }),
-        "shrink-0 focus:z-10 focus-visible:z-10",
+        "shrink-0 focus:z-10 focus-visible:z-10 data-[label-focus]:outline data-[label-focus]:outline-2 data-[label-focus]:outline-offset-2",
         isConnected && [
           "px-2",
           isHorizontal && !isFirst && "rounded-l-none",
