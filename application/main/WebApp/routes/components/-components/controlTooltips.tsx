@@ -131,6 +131,13 @@ export const tooltips = {
       <PropNote>Groups by continent. Uses browser Intl API for offset display.</PropNote>
     </PropList>
   ),
+  selectWithGroups: (
+    <PropList title="SelectField with groups" description="Select with grouped options">
+      <Prop name="SelectGroup">Wraps a group of items</Prop>
+      <Prop name="SelectLabel">Sticky group label inside the dropdown</Prop>
+      <PropNote>Use sticky labels to keep the group visible while scrolling long lists.</PropNote>
+    </PropList>
+  ),
   switchField: (
     <PropList title="SwitchField" description="Toggle for on/off settings">
       <Prop name="checked / onCheckedChange">Controlled toggle state</Prop>

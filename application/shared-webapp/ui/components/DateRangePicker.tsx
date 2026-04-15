@@ -4,7 +4,7 @@ import { useLingui } from "@lingui/react";
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { type ReactNode, useContext, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
@@ -39,6 +39,7 @@ export interface DateRangePickerProps {
   value?: DateRangeValue | null;
   onChange?: (value: DateRangeValue | null) => void;
   placeholder?: string;
+  startIcon?: ReactNode;
   className?: string;
   disabled?: boolean;
   isReadOnly?: boolean;
@@ -53,6 +54,7 @@ export function DateRangePicker({
   value,
   onChange,
   placeholder = "Select dates",
+  startIcon = <CalendarIcon className="shrink-0" />,
   className,
   disabled,
   isReadOnly
@@ -178,7 +180,7 @@ export function DateRangePicker({
                 }}
               >
                 <div className={cn("flex min-w-0 items-center gap-2", !hasValue && "text-muted-foreground")}>
-                  <CalendarIcon className="shrink-0" />
+                  {startIcon}
                   <span className="truncate">{formatDateRange()}</span>
                 </div>
               </Button>

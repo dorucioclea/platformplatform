@@ -109,6 +109,9 @@ msgstr "Grundlæggende opskriftsinformation og forsidebillede."
 msgid "Basic skills, under 30 minutes"
 msgstr "Grundlæggende færdigheder, under 30 minutter"
 
+msgid "Boeuf bourguignon"
+msgstr "Boeuf bourguignon"
+
 msgid "Bold"
 msgstr "Fed"
 
@@ -129,6 +132,9 @@ msgstr "Sidder du stadig oppe, {firstName}?"
 
 msgid "Burning the midnight oil?"
 msgstr "Sidder du stadig oppe?"
+
+msgid "Butter chicken"
+msgstr "Butter chicken"
 
 msgid "Button sizes"
 msgstr "Knapstørrelser"
@@ -178,11 +184,17 @@ msgstr "Afkrydsningsfelt"
 msgid "Chef"
 msgstr "Kok"
 
+msgid "Chicken katsu"
+msgstr "Chicken katsu"
+
+msgid "Chiles rellenos"
+msgstr "Chiles rellenos"
+
 msgid "Close"
 msgstr "Luk"
 
 msgid "Close product details"
-msgstr ""
+msgstr "Luk produktdetaljer"
 
 msgid "Co-author"
 msgstr "Medforfatter"
@@ -223,6 +235,9 @@ msgstr "Tilberedningsdetaljer"
 msgid "Cooking notes"
 msgstr "Tilberedningsnoter"
 
+msgid "Coq au vin"
+msgstr "Coq au vin"
+
 msgid "Create"
 msgstr "Opret"
 
@@ -232,11 +247,14 @@ msgstr "Opret element"
 msgid "Create shortcut..."
 msgstr "Opret genvej..."
 
+msgid "Creme brulee"
+msgstr "Creme brulee"
+
 msgid "Current page"
 msgstr "Nuværende side"
 
 msgid "Dark"
-msgstr ""
+msgstr "Mørk"
 
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -275,7 +293,7 @@ msgid "Delete item"
 msgstr "Slet element"
 
 msgid "Delete product"
-msgstr ""
+msgstr "Slet produkt"
 
 msgid "Delete this item?"
 msgstr "Slet dette element?"
@@ -335,7 +353,7 @@ msgid "Edit product"
 msgstr "Rediger produkt"
 
 msgid "Edit profile"
-msgstr ""
+msgstr "Rediger profil"
 
 msgid "Edit recipe"
 msgstr "Rediger opskrift"
@@ -351,6 +369,9 @@ msgstr "Tom tilstand og skelet"
 
 msgid "Enabled"
 msgstr "Aktiveret"
+
+msgid "Enchiladas verdes"
+msgstr "Enchiladas verdes"
 
 msgid "Errors"
 msgstr "Fejl"
@@ -391,6 +412,9 @@ msgstr "Faste kolonner"
 msgid "Forward"
 msgstr "Fremad"
 
+msgid "French"
+msgstr "Fransk"
+
 msgid "friend@example.com"
 msgstr "friend@example.com"
 
@@ -427,6 +451,9 @@ msgstr "God morgen"
 msgid "Good morning, {firstName}"
 msgstr "God morgen, {firstName}"
 
+msgid "Green curry"
+msgstr "Grøn karry"
+
 msgid "Hard"
 msgstr "Svær"
 
@@ -445,6 +472,9 @@ msgstr "Ikoner"
 msgid "Include cooking notes"
 msgstr "Inkluder tilberedningsnoter"
 
+msgid "Indian"
+msgstr "Indisk"
+
 msgid "Info alert"
 msgstr "Informationsadvarsel"
 
@@ -454,6 +484,9 @@ msgstr "Inviter"
 msgid "Invite and manage your team."
 msgstr "Inviter og administrer dit team."
 
+msgid "Italian"
+msgstr "Italiensk"
+
 msgid "Italic"
 msgstr "Kursiv"
 
@@ -462,6 +495,9 @@ msgstr "Element arkiveret"
 
 msgid "Item deleted"
 msgstr "Element slettet"
+
+msgid "Japanese"
+msgstr "Japansk"
 
 msgid "JPEG, PNG or WebP. Max 1 MB."
 msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
@@ -475,14 +511,20 @@ msgstr "Tilgængelig via tastatur"
 msgid "Labels"
 msgstr "Etiketter"
 
+msgid "Lamb biryani"
+msgstr "Lammebiryani"
+
 msgid "Language"
-msgstr ""
+msgstr "Sprog"
 
 msgid "Large"
 msgstr "Stor"
 
 msgid "Larger"
-msgstr ""
+msgstr "Større"
+
+msgid "Lasagna bolognese"
+msgstr "Lasagne bolognese"
 
 msgid "Learn more"
 msgstr "Lær mere"
@@ -494,7 +536,7 @@ msgid "Library"
 msgstr "Bibliotek"
 
 msgid "Light"
-msgstr ""
+msgstr "Lys"
 
 msgid "Line chart"
 msgstr "Linjediagram"
@@ -511,6 +553,9 @@ msgstr "Lang dato"
 msgid "Manage your notification preferences."
 msgstr "Administrer dine notifikationsindstillinger."
 
+msgid "Masala dosa"
+msgstr "Masala dosa"
+
 msgid "Meal plan period"
 msgstr "Måltidsplanperiode"
 
@@ -525,6 +570,12 @@ msgstr "Flet"
 
 msgid "Merge commit"
 msgstr "Flet commit"
+
+msgid "Mexican"
+msgstr "Mexicansk"
+
+msgid "Mole poblano"
+msgstr "Mole poblano"
 
 msgid "More export options"
 msgstr "Flere eksportmuligheder"
@@ -556,6 +607,9 @@ msgstr "Navigation"
 msgid "Next"
 msgstr "Næste"
 
+msgid "Nigiri sushi"
+msgstr "Nigiri-sushi"
+
 msgid "No data yet"
 msgstr "Ingen data endnu"
 
@@ -577,6 +631,9 @@ msgstr "Tal (decimal)"
 msgid "Number (integer)"
 msgstr "Tal (heltal)"
 
+msgid "Okonomiyaki"
+msgstr "Okonomiyaki"
+
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
@@ -592,8 +649,17 @@ msgstr "Mulighed A"
 msgid "Option B"
 msgstr "Mulighed B"
 
+msgid "Osso buco"
+msgstr "Osso buco"
+
 msgid "Outline"
 msgstr "Kontur"
+
+msgid "Pad thai"
+msgstr "Pad thai"
+
+msgid "Palak paneer"
+msgstr "Palak paneer"
 
 msgid "Pedro Duarte"
 msgstr "Pedro Duarte"
@@ -607,20 +673,29 @@ msgstr "Vælg et diagram"
 msgid "Pick a date"
 msgstr "Vælg en dato"
 
+msgid "Pick a recipe"
+msgstr "Vælg en opskrift"
+
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
+
+msgid "Pizza margherita"
+msgstr "Pizza margherita"
 
 msgid "Placeholders"
 msgstr "Pladsholdere"
 
 msgid "PlatformPlatform"
-msgstr ""
+msgstr "PlatformPlatform"
 
 msgid "Please enter a valid email address"
 msgstr "Indtast en gyldig e-mailadresse"
 
+msgid "Pozole rojo"
+msgstr "Pozole rojo"
+
 msgid "Preview settings"
-msgstr ""
+msgstr "Forhåndsvisningsindstillinger"
 
 msgid "Previous"
 msgstr "Forrige"
@@ -635,10 +710,10 @@ msgid "Product actions"
 msgstr "Produkthandlinger"
 
 msgid "Product details"
-msgstr ""
+msgstr "Produktdetaljer"
 
 msgid "Product ID"
-msgstr ""
+msgstr "Produkt-ID"
 
 msgid "Products"
 msgstr "Produkter"
@@ -654,6 +729,9 @@ msgstr "Radardiagram"
 
 msgid "Radio group"
 msgstr "Radiogruppe"
+
+msgid "Ratatouille"
+msgstr "Ratatouille"
 
 msgid "Read docs"
 msgstr "Læs dokumentation"
@@ -709,6 +787,12 @@ msgstr "Højreklik-område"
 msgid "Right-click here"
 msgstr "Højreklik her"
 
+msgid "Risotto alla milanese"
+msgstr "Risotto alla milanese"
+
+msgid "Rogan josh"
+msgstr "Rogan josh"
+
 msgid "Save"
 msgstr "Gem"
 
@@ -744,6 +828,9 @@ msgstr "Vælg"
 
 msgid "Select charts"
 msgstr "Vælg diagrammer"
+
+msgid "Select with groups"
+msgstr "Vælg med grupper"
 
 msgid "Send invite"
 msgstr "Send invitation"
@@ -796,6 +883,9 @@ msgstr "Skelet"
 msgid "Small"
 msgstr "Lille"
 
+msgid "Som tam salad"
+msgstr "Som tam-salat"
+
 msgid "Some cooking experience, 30 to 60 minutes"
 msgstr "Noget tilberedningserfaring, 30 til 60 minutter"
 
@@ -807,6 +897,9 @@ msgstr "Kilde"
 
 msgid "Spacious rows"
 msgstr "Rummeligt rækker"
+
+msgid "Spaghetti carbonara"
+msgstr "Spaghetti carbonara"
 
 msgid "Split buttons"
 msgstr "Delte knapper"
@@ -827,10 +920,13 @@ msgid "Switch"
 msgstr "Kontakt"
 
 msgid "System"
-msgstr ""
+msgstr "System"
 
 msgid "Tables"
 msgstr "Tabeller"
+
+msgid "Tacos al pastor"
+msgstr "Tacos al pastor"
 
 msgid "Team members"
 msgstr "Teammedlemmer"
@@ -841,11 +937,14 @@ msgstr "Tekstområde"
 msgid "Text field"
 msgstr "Tekstfelt"
 
+msgid "Thai"
+msgstr "Thai"
+
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
 
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 msgid "There is nothing to display here. Create your first item to get started."
 msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
@@ -877,6 +976,9 @@ msgstr "Her vil dit personlige dashboard-indhold blive vist. Hold dig opdateret.
 msgid "Time zone"
 msgstr "Tidszone"
 
+msgid "Tiramisu"
+msgstr "Tiramisu"
+
 msgid "Toggle bold"
 msgstr "Skift fed"
 
@@ -894,6 +996,12 @@ msgstr "Skift sidepanel"
 
 msgid "Toggle underline"
 msgstr "Skift understregning"
+
+msgid "Tom yum soup"
+msgstr "Tom yum-suppe"
+
+msgid "Tonkotsu ramen"
+msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Værktøjstip"
@@ -922,6 +1030,9 @@ msgstr "Forbrug"
 msgid "Values"
 msgstr "Værdier"
 
+msgid "Vegetable tempura"
+msgstr "Grøntsagstempura"
+
 msgid "View all"
 msgstr "Se alle"
 
@@ -933,6 +1044,9 @@ msgstr "Velkommen til PlatformPlatform"
 
 msgid "With icons"
 msgstr "Med ikoner"
+
+msgid "Yakitori skewers"
+msgstr "Yakitori-spyd"
 
 msgid "Yesterday"
 msgstr "I går"
@@ -962,4 +1076,4 @@ msgid "Your trial expires in 3 days."
 msgstr "Din prøveperiode udløber om 3 dage."
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"

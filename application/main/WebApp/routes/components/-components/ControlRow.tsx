@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import { t } from "@lingui/core/macro";
 import { NumberField } from "@repo/ui/components/NumberField";
 import { TextField } from "@repo/ui/components/TextField";
@@ -13,11 +11,6 @@ import { SelectAndComboboxFields } from "./SelectAndComboboxFields";
 
 export function ControlRow({
   suffix,
-  selectedColor,
-  setSelectedColor,
-  selectedCharts,
-  setSelectedCharts,
-  chartItems,
   label,
   tooltip,
   disabled,
@@ -26,13 +19,7 @@ export function ControlRow({
   showIcon,
   values,
   placeholders
-}: ControlRowProps & {
-  selectedColor: string;
-  setSelectedColor: (value: string) => void;
-  selectedCharts: string[];
-  setSelectedCharts: (value: string[]) => void;
-  chartItems: { id: string; label: string; icon?: ReactNode }[];
-}) {
+}: ControlRowProps) {
   const hasValues = !!values;
   const errorMessage = error ? t`This field is required` : undefined;
   const derived = {
@@ -93,14 +80,7 @@ export function ControlRow({
         errorMessage={errorMessage}
         startIcon={showIcon ? <EuroIcon /> : undefined}
       />
-      <SelectAndComboboxFields
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        selectedCharts={selectedCharts}
-        setSelectedCharts={setSelectedCharts}
-        chartItems={chartItems}
-        {...derived}
-      />
+      <SelectAndComboboxFields {...derived} />
       <DateAndToggleFields {...derived} />
     </div>
   );

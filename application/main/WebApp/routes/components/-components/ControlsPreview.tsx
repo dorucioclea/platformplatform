@@ -5,13 +5,8 @@ import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { useState } from "react";
 
 import { ControlRow } from "./ControlRow";
-import { useChartItems } from "./SelectAndComboboxFields";
 
 export function ControlsPreview() {
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedCharts, setSelectedCharts] = useState<string[]>([]);
-  const chartItems = useChartItems();
-
   const [showLabels, setShowLabels] = useState(true);
   const [showTooltips, setShowTooltips] = useState(true);
   const [showIcons, setShowIcons] = useState(true);
@@ -68,11 +63,6 @@ export function ControlsPreview() {
         disabled={controlState === "disabled"}
         readOnly={controlState === "readonly"}
         error={showErrors}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        selectedCharts={selectedCharts}
-        setSelectedCharts={setSelectedCharts}
-        chartItems={chartItems}
       />
     </>
   );

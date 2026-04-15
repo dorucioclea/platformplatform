@@ -11,7 +11,6 @@ import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TimeField } from "@repo/ui/components/TimeField";
-import { TimeZonePicker } from "@repo/ui/components/TimeZonePicker";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
 import { useState } from "react";
@@ -27,6 +26,7 @@ export function DateAndToggleFields({
   tooltip,
   disabled,
   readOnly,
+  showIcon,
   hasValues,
   placeholders,
   errorMessage
@@ -38,8 +38,6 @@ export function DateAndToggleFields({
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
     hasValues ? { start: new Date(2025, 5, 1), end: new Date(2025, 5, 15) } : null
   );
-  const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const [timeZone, setTimeZone] = useState<string | null>(hasValues ? browserTimeZone : null);
 
   return (
     <>
@@ -48,6 +46,7 @@ export function DateAndToggleFields({
         tooltip={tooltip ? tooltips.datePicker : undefined}
         name={`datepicker-${suffix}`}
         placeholder={placeholders ? t`Pick a date` : undefined}
+        startIcon={showIcon ? undefined : null}
         value={datePickerValue}
         onChange={setDatePickerValue}
         isDisabled={disabled}
@@ -59,6 +58,7 @@ export function DateAndToggleFields({
         tooltip={tooltip ? tooltips.dateRange : undefined}
         name={`daterange-${suffix}`}
         placeholder={placeholders ? undefined : ""}
+        startIcon={showIcon ? undefined : null}
         value={dateRangeValue}
         onChange={setDateRangeValue}
         disabled={disabled}
@@ -83,37 +83,7 @@ export function DateAndToggleFields({
         isReadOnly={readOnly}
         errorMessage={errorMessage}
       />
-      <TimeZonePicker
-        label={label ? t`Time zone` : undefined}
-        tooltip={tooltip ? tooltips.timeZonePicker : undefined}
-        name={`timezone-${suffix}`}
-        placeholder={placeholders ? undefined : ""}
-        startIcon={timeZone || placeholders ? undefined : null}
-        value={timeZone}
-        onValueChange={setTimeZone}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      />
       <TextAreaFields {...{ suffix, label, tooltip, disabled, readOnly, hasValues, placeholders, errorMessage }} />
-      <RadioGroupField
-        label={label ? t`Radio group` : undefined}
-        tooltip={tooltip ? tooltips.radioGroup : undefined}
-        name={`radio-${suffix}`}
-        defaultValue={hasValues ? "option-a" : undefined}
-        disabled={disabled}
-        isReadOnly={readOnly}
-        errorMessage={errorMessage}
-      >
-        <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
-          <RadioGroupItem id={`radio-${suffix}-a`} value="option-a" />
-          <Trans>Option A</Trans>
-        </label>
-        <label htmlFor={`radio-${suffix}-b`} className="flex items-center gap-2">
-          <RadioGroupItem id={`radio-${suffix}-b`} value="option-b" />
-          <Trans>Option B</Trans>
-        </label>
-      </RadioGroupField>
       <InlineFieldGroup alignWithLabel={label}>
         <SwitchField
           label={t`Switch`}
@@ -138,6 +108,24 @@ export function DateAndToggleFields({
           errorMessage={errorMessage}
         />
       </InlineFieldGroup>
+      <RadioGroupField
+        label={label ? t`Radio group` : undefined}
+        tooltip={tooltip ? tooltips.radioGroup : undefined}
+        name={`radio-${suffix}`}
+        defaultValue={hasValues ? "option-a" : undefined}
+        disabled={disabled}
+        isReadOnly={readOnly}
+        errorMessage={errorMessage}
+      >
+        <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-a`} value="option-a" />
+          <Trans>Option A</Trans>
+        </label>
+        <label htmlFor={`radio-${suffix}-b`} className="flex items-center gap-2">
+          <RadioGroupItem id={`radio-${suffix}-b`} value="option-b" />
+          <Trans>Option B</Trans>
+        </label>
+      </RadioGroupField>
       <Field>
         {label && (
           <FieldLabel>

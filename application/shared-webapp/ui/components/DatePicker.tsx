@@ -1,7 +1,7 @@
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { type ReactNode, useContext, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
@@ -29,6 +29,7 @@ export interface DatePickerProps {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  startIcon?: ReactNode;
   isRequired?: boolean;
   isDisabled?: boolean;
   isReadOnly?: boolean;
@@ -49,6 +50,7 @@ export function DatePicker({
   value,
   onChange,
   placeholder,
+  startIcon = <CalendarIcon className="shrink-0" />,
   isDisabled,
   isReadOnly,
   max,
@@ -129,7 +131,7 @@ export function DatePicker({
                   }
                 }}
               >
-                <CalendarIcon className="shrink-0" />
+                {startIcon}
                 <span className="truncate">
                   {selectedDate ? format(selectedDate, "PPP", { locale: dateLocale }) : placeholder}
                 </span>
