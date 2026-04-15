@@ -50,6 +50,8 @@ export function CheckboxField({
   };
 
   return (
+    // alignWithLabel offset = FieldLabel height (0.875rem text-sm * 1.375 leading-snug = 1.203125rem) + Field gap-3 (0.75rem) = 1.953125rem.
+    // Pushes a label-less checkbox down by exactly a label+gap, so it lines up with the input of a sibling field.
     <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
       <label className="flex min-h-(--control-height) items-center gap-2">
         <Checkbox
