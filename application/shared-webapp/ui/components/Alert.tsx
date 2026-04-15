@@ -23,16 +23,16 @@ function Alert({ className, variant, ...props }: React.ComponentProps<"div"> & V
   return <div data-slot="alert" role="alert" className={cn(alertVariants({ variant }), className)} {...props} />;
 }
 
-function AlertTitle({ className, children, ...props }: React.ComponentProps<"h5">) {
+function AlertTitle({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
-    <h5 data-slot="alert-title" className={cn("mb-1 leading-none font-medium tracking-tight", className)} {...props}>
+    <div data-slot="alert-title" className={cn("mb-1 leading-none font-medium tracking-tight", className)} {...props}>
       {children}
-    </h5>
+    </div>
   );
 }
 
-function AlertDescription({ className, ...props }: React.ComponentProps<"p">) {
-  return <p data-slot="alert-description" className={cn("text-sm", className)} {...props} />;
+function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="alert-description" className={cn("text-sm", className)} {...props} />;
 }
 
 export { Alert, AlertTitle, AlertDescription, alertVariants };
