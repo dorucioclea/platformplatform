@@ -84,6 +84,7 @@ export function RadioGroupField({
       <RadioGroup
         name={name}
         disabled={disabled}
+        inert={disabled}
         readOnly={isReadOnly}
         onValueChange={handleValueChange}
         className={
