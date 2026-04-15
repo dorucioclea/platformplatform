@@ -1,3 +1,5 @@
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { type ReactNode, useCallback } from "react";
 
 import { useUnsavedChangesGuard } from "../hooks/useUnsavedChangesGuard";
@@ -20,18 +22,15 @@ export type DirtyDialogProps = Omit<DialogProps, "onOpenChange"> & {
 /**
  * A Dialog wrapper that warns users about unsaved changes before closing.
  * Encapsulates the useUnsavedChangesGuard hook and UnsavedChangesAlertDialog.
- *
- * Translation strings are passed as props to allow each SCS to provide
- * their own translations. English defaults are provided for convenience.
  */
 export function DirtyDialog({
   open,
   onOpenChange,
   hasUnsavedChanges,
-  unsavedChangesTitle = "Unsaved changes",
-  unsavedChangesMessage = "You have unsaved changes. If you leave now, your changes will be lost.",
-  leaveLabel = "Leave",
-  stayLabel = "Stay",
+  unsavedChangesTitle = t`Unsaved changes`,
+  unsavedChangesMessage = <Trans>You have unsaved changes. If you leave now, your changes will be lost.</Trans>,
+  leaveLabel = t`Leave`,
+  stayLabel = t`Stay`,
   onCloseComplete,
   children,
   ...dialogProps

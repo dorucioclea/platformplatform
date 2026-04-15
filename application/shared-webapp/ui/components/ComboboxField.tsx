@@ -1,6 +1,7 @@
 import type { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import type * as React from "react";
 
+import { Trans } from "@lingui/react/macro";
 import { PlusIcon } from "lucide-react";
 import { useContext, useRef, useState } from "react";
 
@@ -168,7 +169,7 @@ export function ComboboxField({
           <ComboboxList>
             {filtered.length === 0 && !allowCreate && (
               <div className="flex w-full justify-center py-2 text-center text-sm text-muted-foreground">
-                {emptyMessage ?? "No results found"}
+                {emptyMessage ?? <Trans>No results found</Trans>}
               </div>
             )}
             {filtered.map((item) => (
@@ -189,7 +190,9 @@ export function ComboboxField({
                 className="font-medium whitespace-nowrap text-primary"
               >
                 <PlusIcon />
-                Create <span className="font-bold">{search}</span>
+                <Trans>
+                  Create <span className="font-bold">{search}</span>
+                </Trans>
               </ComboboxItem>
             )}
           </ComboboxList>

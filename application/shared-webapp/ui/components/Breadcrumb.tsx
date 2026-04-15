@@ -2,6 +2,7 @@ import type * as React from "react";
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { t } from "@lingui/core/macro";
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { Children, isValidElement, useEffect, useLayoutEffect, useRef, useState } from "react";
 
@@ -9,7 +10,7 @@ import { cn } from "../utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./DropdownMenu";
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
-  return <nav aria-label="breadcrumb" data-slot="breadcrumb" className={cn(className)} {...props} />;
+  return <nav aria-label={t`Breadcrumb`} data-slot="breadcrumb" className={cn(className)} {...props} />;
 }
 
 type BreadcrumbListProps = React.ComponentProps<"ol"> & {
@@ -114,7 +115,7 @@ function BreadcrumbList({ className, children, separator, ...props }: Breadcrumb
       rendered.push(
         <BreadcrumbItem key="__ellipsis">
           <DropdownMenu>
-            <DropdownMenuTrigger render={<BreadcrumbEllipsis />} />
+            <DropdownMenuTrigger render={<BreadcrumbEllipsis aria-label={t`Show more`} />} />
             <DropdownMenuContent align="start">
               {hiddenItems.map((item, index) => (
                 <DropdownMenuItem key={item.key ?? index}>
@@ -195,12 +196,12 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
   );
 }
 
-function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"button">) {
+function BreadcrumbEllipsis({ className, "aria-label": ariaLabel, ...props }: React.ComponentProps<"button">) {
   return (
     <button
       type="button"
       data-slot="breadcrumb-ellipsis"
-      aria-label="Show more"
+      aria-label={ariaLabel}
       className={cn(
         "flex size-5 cursor-pointer items-center justify-center rounded transition-colors hover:text-foreground [&>svg]:size-4",
         className
@@ -208,7 +209,6 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"butto
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className="sr-only">More</span>
     </button>
   );
 }

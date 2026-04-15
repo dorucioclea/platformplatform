@@ -1,6 +1,5 @@
 import type * as React from "react";
 
-import { t } from "@lingui/core/macro";
 import { InfoIcon } from "lucide-react";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip";
@@ -21,7 +20,6 @@ function LabelWithTooltip({ tooltip, children }: Readonly<LabelWithTooltipProps>
       <Tooltip>
         <TooltipTrigger
           tabIndex={-1}
-          aria-label={t`More information`}
           className="inline-flex size-4 shrink-0 items-center justify-center rounded-full p-0 outline-ring hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
         >
           <InfoIcon className="size-4 text-muted-foreground" />

@@ -27,11 +27,7 @@ export function ControlsPreview() {
         />
         <SwitchField label={t`Icons`} checked={showIcons} onCheckedChange={setShowIcons} />
         <SwitchField label={t`Values`} checked={showValues} onCheckedChange={setShowValues} />
-        <SwitchField
-          label={t`Placeholders`}
-          checked={showPlaceholders}
-          onCheckedChange={setShowPlaceholders}
-        />
+        <SwitchField label={t`Placeholders`} checked={showPlaceholders} onCheckedChange={setShowPlaceholders} />
         <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
         <ToggleGroup
           variant="outline"

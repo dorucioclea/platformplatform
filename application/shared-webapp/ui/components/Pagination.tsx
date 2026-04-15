@@ -1,5 +1,7 @@
 import type * as React from "react";
 
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 
 import { cn } from "../utils";
@@ -8,7 +10,7 @@ import { Button } from "./Button";
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
-      aria-label="pagination"
+      aria-label={t`Pagination`}
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
       {...props}
@@ -47,17 +49,21 @@ function PaginationLink({ className, isActive, size = "icon", children, ...props
 
 function PaginationPrevious({ className, ...props }: React.ComponentProps<typeof PaginationLink>) {
   return (
-    <PaginationLink aria-label="Go to previous page" size="default" className={cn("pl-2!", className)} {...props}>
+    <PaginationLink aria-label={t`Go to previous page`} size="default" className={cn("pl-2!", className)} {...props}>
       <ChevronLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">Previous</span>
+      <span className="hidden sm:block">
+        <Trans>Previous</Trans>
+      </span>
     </PaginationLink>
   );
 }
 
 function PaginationNext({ className, ...props }: React.ComponentProps<typeof PaginationLink>) {
   return (
-    <PaginationLink aria-label="Go to next page" size="default" className={cn("pr-2!", className)} {...props}>
-      <span className="hidden sm:block">Next</span>
+    <PaginationLink aria-label={t`Go to next page`} size="default" className={cn("pr-2!", className)} {...props}>
+      <span className="hidden sm:block">
+        <Trans>Next</Trans>
+      </span>
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );
@@ -76,7 +82,9 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className="sr-only">More pages</span>
+      <span className="sr-only">
+        <Trans>More pages</Trans>
+      </span>
     </span>
   );
 }

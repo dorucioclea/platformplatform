@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
@@ -183,7 +184,7 @@ export function DatePicker({
             size="icon-xs"
             className="absolute top-1/2 right-1 -translate-y-1/2"
             onClick={handleClear}
-            aria-label="Clear date"
+            aria-label={t`Clear date`}
           >
             <XIcon className="size-5" />
           </Button>

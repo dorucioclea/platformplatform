@@ -63,11 +63,7 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <Label
-          htmlFor={isDisabled ? undefined : name}
-          data-slot="field-label"
-          className="cursor-default leading-snug"
-        >
+        <Label htmlFor={isDisabled ? undefined : name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}

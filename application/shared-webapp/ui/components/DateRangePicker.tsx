@@ -1,6 +1,7 @@
 import type { DateRange } from "react-day-picker";
 
-import { useLingui } from "@lingui/react";
+import { t } from "@lingui/core/macro";
+import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { format, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
@@ -53,14 +54,14 @@ export function DateRangePicker({
   tooltip,
   value,
   onChange,
-  placeholder = "Select dates",
+  placeholder = t`Select dates`,
   startIcon = <CalendarIcon className="shrink-0" />,
   className,
   disabled,
   isReadOnly
 }: Readonly<DateRangePickerProps>) {
-  const { i18n } = useLingui();
-  const dateLocale = dateFnsLocaleMap[i18n.locale] ?? enUS;
+  const { currentLocale } = useContext(translationContext);
+  const dateLocale = dateFnsLocaleMap[currentLocale] ?? enUS;
   const [open, setOpen] = useState(false);
 
   const formErrors = useContext(FormValidationContext);
@@ -153,11 +154,7 @@ export function DateRangePicker({
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <Label
-          htmlFor={disabled ? undefined : name}
-          data-slot="field-label"
-          className="cursor-default leading-snug"
-        >
+        <Label htmlFor={disabled ? undefined : name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}
@@ -217,7 +214,7 @@ export function DateRangePicker({
             size="icon-xs"
             className="absolute top-1/2 right-1 -translate-y-1/2"
             onClick={handleClear}
-            aria-label="Clear dates"
+            aria-label={t`Clear dates`}
           >
             <XIcon className="size-5" />
           </Button>

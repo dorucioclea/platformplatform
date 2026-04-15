@@ -1,4 +1,5 @@
-import { useLingui } from "@lingui/react";
+import { t } from "@lingui/core/macro";
+import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
@@ -66,13 +67,13 @@ export function NumberField({
       : undefined;
   const isInvalid = errors && errors.length > 0;
 
-  const { i18n } = useLingui();
+  const { currentLocale } = useContext(translationContext);
   const decimalSeparator = useMemo(
     () =>
-      Intl.NumberFormat(i18n.locale)
+      Intl.NumberFormat(currentLocale)
         .formatToParts(1.1)
         .find((p) => p.type === "decimal")?.value ?? ".",
-    [i18n.locale]
+    [currentLocale]
   );
 
   const stepDecimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
@@ -241,7 +242,7 @@ export function NumberField({
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
             disabled={isDisabled || isReadOnly || atMax}
-            aria-label="Increase"
+            aria-label={t`Increase`}
             className="flex w-7 flex-1 items-center justify-center rounded-tr-[calc(var(--radius)-1px)] border-b border-input text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
           >
             <ChevronUpIcon className="size-3" />
@@ -257,7 +258,7 @@ export function NumberField({
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
             disabled={isDisabled || isReadOnly || atMin}
-            aria-label="Decrease"
+            aria-label={t`Decrease`}
             className="flex w-7 flex-1 items-center justify-center rounded-br-[calc(var(--radius)-1px)] text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
           >
             <ChevronDownIcon className="size-3" />

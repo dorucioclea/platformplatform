@@ -1,5 +1,6 @@
 import type React from "react";
 
+import { t } from "@lingui/core/macro";
 import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { cva } from "class-variance-authority";
 import { ChevronsLeftIcon, type LucideIcon, Menu, X } from "lucide-react";
@@ -658,7 +659,7 @@ const OverlayBackdrop = ({ closeOverlay }: { closeOverlay: () => void }) => (
     type="button"
     className="fixed top-0 right-0 bottom-0 left-[var(--side-menu-collapsed-width)] z-[35] bg-black/50 transition-opacity duration-100"
     onClick={closeOverlay}
-    aria-label="Close menu"
+    aria-label={t`Close menu`}
   />
 );
 
@@ -816,7 +817,7 @@ const MenuNav = ({
       className
     )}
     style={canResize ? { width: `${menuWidthRem}rem`, transition: isResizing ? "none" : undefined } : undefined}
-    aria-label="Main navigation"
+    aria-label={t`Main navigation`}
   >
     {/* Resize handle - draggable on XL screens */}
     {shouldShowResizeHandle && (
@@ -826,7 +827,7 @@ const MenuNav = ({
         className="absolute top-0 right-0 h-full w-2 cursor-col-resize bg-transparent p-0"
         onMouseDown={handleResizeStart}
         onTouchStart={handleResizeStart}
-        aria-label="Resize sidebar"
+        aria-label={t`Resize sidebar`}
       />
     )}
 
@@ -1081,7 +1082,7 @@ export function SideMenu({
         href="#main-content"
         className="sr-only outline-primary focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 max-sm:hidden"
       >
-        Skip to main content
+        {t`Skip to main content`}
       </a>
       {overlayMode && isOverlayOpen && <OverlayBackdrop closeOverlay={closeOverlay} />}
       {menuContent}
@@ -1196,7 +1197,7 @@ function MobileMenu({ ariaLabel, topMenuContent }: { ariaLabel: string; topMenuC
           <dialog
             className="fixed top-[calc(var(--past-due-banner-height,0rem)+var(--invitation-banner-height,0rem))] right-0 bottom-0 left-0 z-40 h-auto w-full bg-sidebar"
             style={{ margin: 0, padding: 0, border: "none", display: "flex" }}
-            aria-label="Mobile navigation menu"
+            aria-label={ariaLabel}
             open={true}
             onTouchStart={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}
@@ -1212,7 +1213,7 @@ function MobileMenu({ ariaLabel, topMenuContent }: { ariaLabel: string; topMenuC
               className="flex h-full w-full flex-col bg-sidebar"
               ref={dialogRef}
               style={{ margin: 0, padding: 0 }}
-              aria-label="Mobile navigation"
+              aria-label={ariaLabel}
             >
               <div
                 className="flex-1 overflow-x-hidden overflow-y-auto px-3 pb-20 supports-[padding:max(0px)]:pb-[max(5rem,env(safe-area-inset-bottom))]"
@@ -1235,7 +1236,7 @@ function MobileMenu({ ariaLabel, topMenuContent }: { ariaLabel: string; topMenuC
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsOpen(false)}
-                  aria-label="Close menu"
+                  aria-label={t`Close menu`}
                   className="size-14 rounded-full border border-border bg-background/80 shadow-lg backdrop-blur-sm hover:bg-background/90 active:bg-muted"
                 >
                   <X className="size-7" />

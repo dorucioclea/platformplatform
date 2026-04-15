@@ -1,4 +1,4 @@
-import { useLingui } from "@lingui/react";
+import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as React from "react";
 import { type DayButton, DayPicker, getDefaultClassNames, type Locale } from "react-day-picker";
@@ -38,8 +38,8 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
-  const { i18n } = useLingui();
-  const locale = localeProp ?? localeMap[i18n.locale] ?? enUS;
+  const { currentLocale } = React.useContext(translationContext);
+  const locale = localeProp ?? localeMap[currentLocale] ?? enUS;
   const defaultClassNames = getDefaultClassNames();
 
   return (

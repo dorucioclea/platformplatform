@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import React, { useEffect, useRef, useState } from "react";
 
 import { useSideMenuLayout } from "../hooks/useSideMenuLayout";
@@ -343,11 +344,13 @@ export function AppLayout({
         )}
 
         {/* Main content area */}
+        {/* NOTE: horizontal padding is intentionally in px (not rem). Outer margins should stay fixed when the user */}
+        {/* scales UI via --zoom-level -- growing content should consume extra space inward, not push against the viewport edges. */}
         <main
           ref={contentRef}
           className="flex min-h-0 w-full flex-1 flex-col overflow-y-auto bg-background px-[16px] pt-4 transition-all duration-100 ease-in-out [-webkit-overflow-scrolling:touch] focus:outline-none sm:px-[32px] sm:pt-8"
           id="main-content"
-          aria-label="Main content"
+          aria-label={t`Main content`}
           tabIndex={-1}
         >
           {scrollAwayHeader && title ? (
@@ -384,7 +387,7 @@ export function AppLayout({
         {sidePane && (
           <aside
             className="fixed top-[var(--banner-offset,0rem)] right-0 bottom-0 left-0 z-40 bg-card md:left-auto md:z-10 md:w-96"
-            aria-label="Side panel"
+            aria-label={t`Side panel`}
           >
             {sidePane}
           </aside>

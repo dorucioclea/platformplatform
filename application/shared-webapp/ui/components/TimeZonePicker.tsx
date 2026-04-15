@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { GlobeIcon } from "lucide-react";
 import { type ReactNode, useMemo } from "react";
 
@@ -74,7 +75,7 @@ export interface TimeZonePickerProps {
 }
 
 export function TimeZonePicker({
-  placeholder = "Select time zone",
+  placeholder = t`Select time zone`,
   startIcon = <GlobeIcon />,
   value,
   onValueChange,
