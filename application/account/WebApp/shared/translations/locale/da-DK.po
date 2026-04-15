@@ -292,6 +292,9 @@ msgstr "Faktureringsfaner"
 msgid "billing@company.com"
 msgstr "fakturering@firma.dk"
 
+msgid "Breadcrumb"
+msgstr "Brødkrumme"
+
 msgid "Built on <0>PlatformPlatform<1/></0> - an open-source platform by industry experts showcasing how to build enterprise-grade B2B SaaS products"
 msgstr "Bygget på <0>PlatformPlatform<1/></0> - en open-source platform af brancheeksperter til professionel B2B SaaS udvikling"
 
@@ -379,6 +382,12 @@ msgstr "By"
 msgid "Clear"
 msgstr "Ryd"
 
+msgid "Clear date"
+msgstr "Ryd dato"
+
+msgid "Clear dates"
+msgstr "Ryd datoer"
+
 msgid "Clear filters"
 msgstr "Ryd filtre"
 
@@ -387,6 +396,9 @@ msgstr "Ryd søgning"
 
 msgid "Close"
 msgstr "Luk"
+
+msgid "Close menu"
+msgstr "Luk menu"
 
 msgid "Close user profile"
 msgstr "Luk brugerprofil"
@@ -414,6 +426,9 @@ msgstr "Fortsæt"
 
 msgid "Country"
 msgstr "Land"
+
+msgid "Create <0>{search}</0>"
+msgstr "Opret <0>{search}</0>"
 
 msgid "Create new account"
 msgstr "Opret ny konto"
@@ -468,6 +483,9 @@ msgstr "Afslå"
 
 msgid "Declining..."
 msgstr "Afslår..."
+
+msgid "Decrease"
+msgstr "Formindsk"
 
 msgid "Default"
 msgstr "Standard"
@@ -653,6 +671,12 @@ msgstr "Gå til kontoindstillinger"
 msgid "Go to home"
 msgstr "Gå til forsiden"
 
+msgid "Go to next page"
+msgstr "Gå til næste side"
+
+msgid "Go to previous page"
+msgstr "Gå til forrige side"
+
 msgid "Google"
 msgstr "Google"
 
@@ -673,6 +697,9 @@ msgstr "Identitetsuoverensstemmelse"
 
 msgid "Image must be smaller than 1 MB."
 msgstr "Billedet skal være mindre end 1 MB."
+
+msgid "Increase"
+msgstr "Forøg"
 
 msgid "Invalid request"
 msgstr "Ugyldig anmodning"
@@ -770,6 +797,12 @@ msgstr "Login-bekræftelseskode"
 msgid "Logo"
 msgstr "Logo"
 
+msgid "Main content"
+msgstr "Hovedindhold"
+
+msgid "Main navigation"
+msgstr "Hovednavigation"
+
 msgid "Manage subscription"
 msgstr "Administrer abonnement"
 
@@ -815,8 +848,8 @@ msgstr "Mobil"
 msgid "Modified date"
 msgstr "Ændret dato"
 
-msgid "More information"
-msgstr "Mere information"
+msgid "More pages"
+msgstr "Flere sider"
 
 msgid "Name"
 msgstr "Navn"
@@ -853,6 +886,9 @@ msgstr "Ingen betalingshistorik tilgængelig."
 
 msgid "No payment method on file"
 msgstr "Ingen betalingsmetode registreret"
+
+msgid "No results found"
+msgstr "Ingen resultater fundet"
 
 msgid "No users found"
 msgstr "Ingen brugere fundet"
@@ -892,6 +928,9 @@ msgstr "Ejer"
 
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
+
+msgid "Pagination"
+msgstr "Paginering"
 
 msgid "Passwordless deployments"
 msgstr "Adgangskodeløse implementeringer"
@@ -1056,6 +1095,9 @@ msgstr "Fjern profilbillede"
 msgid "Request a new code"
 msgstr "Anmod om en ny kode"
 
+msgid "Resize sidebar"
+msgstr "Juster sidebjælkens bredde"
+
 msgid "Restore"
 msgstr "Gendan"
 
@@ -1122,6 +1164,9 @@ msgstr "Vælg land"
 msgid "Select dates"
 msgstr "Vælg datoer"
 
+msgid "Select time zone"
+msgstr "Vælg tidszone"
+
 msgid "Select your preferred language. Saved to your profile."
 msgstr "Vælg dit foretrukne sprog. Gemt på din profil."
 
@@ -1152,8 +1197,14 @@ msgstr "Indstillinger"
 msgid "Show details"
 msgstr "Vis detaljer"
 
+msgid "Show more"
+msgstr "Vis flere"
+
 msgid "Show search filters"
 msgstr "Vis søgefiltre"
+
+msgid "Side panel"
+msgstr "Sidepanel"
 
 msgid "Sign up"
 msgstr "Tilmeld dig"
@@ -1169,6 +1220,9 @@ msgstr "Tilmeld dig med Google"
 
 msgid "Signup verification code"
 msgstr "Tilmeldingsbekræftelseskode"
+
+msgid "Skip to main content"
+msgstr "Spring til hovedindhold"
 
 msgid "SLA"
 msgstr "SLA"

@@ -115,6 +115,9 @@ msgstr "Boeuf bourguignon"
 msgid "Bold"
 msgstr "Fed"
 
+msgid "Breadcrumb"
+msgstr "Brødkrumme"
+
 msgid "Breadcrumb — custom separator"
 msgstr "Brødkrumme — brugerdefineret skilletegn"
 
@@ -190,8 +193,17 @@ msgstr "Chicken katsu"
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
 
+msgid "Clear date"
+msgstr "Ryd dato"
+
+msgid "Clear dates"
+msgstr "Ryd datoer"
+
 msgid "Close"
 msgstr "Luk"
+
+msgid "Close menu"
+msgstr "Luk menu"
 
 msgid "Close product details"
 msgstr "Luk produktdetaljer"
@@ -241,6 +253,9 @@ msgstr "Coq au vin"
 msgid "Create"
 msgstr "Opret"
 
+msgid "Create <0>{search}</0>"
+msgstr "Opret <0>{search}</0>"
+
 msgid "Create item"
 msgstr "Opret element"
 
@@ -279,6 +294,9 @@ msgstr "Datointerval"
 
 msgid "Dates and personal notes about this recipe."
 msgstr "Datoer og personlige noter om denne opskrift."
+
+msgid "Decrease"
+msgstr "Formindsk"
 
 msgid "Default"
 msgstr "Standard"
@@ -433,6 +451,12 @@ msgstr "Gennemsigtig"
 msgid "Go to app"
 msgstr "Gå til app"
 
+msgid "Go to next page"
+msgstr "Gå til næste side"
+
+msgid "Go to previous page"
+msgstr "Gå til forrige side"
+
 msgid "Good afternoon"
 msgstr "God eftermiddag"
 
@@ -471,6 +495,9 @@ msgstr "Ikoner"
 
 msgid "Include cooking notes"
 msgstr "Inkluder tilberedningsnoter"
+
+msgid "Increase"
+msgstr "Forøg"
 
 msgid "Indian"
 msgstr "Indisk"
@@ -550,6 +577,12 @@ msgstr "Log ind"
 msgid "Long date"
 msgstr "Lang dato"
 
+msgid "Main content"
+msgstr "Hovedindhold"
+
+msgid "Main navigation"
+msgstr "Hovednavigation"
+
 msgid "Manage your notification preferences."
 msgstr "Administrer dine notifikationsindstillinger."
 
@@ -580,11 +613,11 @@ msgstr "Mole poblano"
 msgid "More export options"
 msgstr "Flere eksportmuligheder"
 
-msgid "More information"
-msgstr "Mere information"
-
 msgid "More merge options"
 msgstr "Flere fletmuligheder"
+
+msgid "More pages"
+msgstr "Flere sider"
 
 msgid "More save options"
 msgstr "Flere gemgemuligheder"
@@ -657,6 +690,9 @@ msgstr "Kontur"
 
 msgid "Pad thai"
 msgstr "Pad thai"
+
+msgid "Pagination"
+msgstr "Paginering"
 
 msgid "Palak paneer"
 msgstr "Palak paneer"
@@ -775,6 +811,9 @@ msgstr "Fjern"
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
 
+msgid "Resize sidebar"
+msgstr "Juster sidebjælkens bredde"
+
 msgid "Responsive layout"
 msgstr "Responsivt layout"
 
@@ -829,6 +868,12 @@ msgstr "Vælg"
 msgid "Select charts"
 msgstr "Vælg diagrammer"
 
+msgid "Select dates"
+msgstr "Vælg datoer"
+
+msgid "Select time zone"
+msgstr "Vælg tidszone"
+
 msgid "Select with groups"
 msgstr "Vælg med grupper"
 
@@ -865,6 +910,9 @@ msgstr "Vis bogmærker"
 msgid "Show dismissable banner"
 msgstr "Vis afliveligt banner"
 
+msgid "Show more"
+msgstr "Vis flere"
+
 msgid "Show status bar"
 msgstr "Vis statuslinje"
 
@@ -874,11 +922,17 @@ msgstr "Vis meddelelse"
 msgid "Side pane"
 msgstr "Sidepanel"
 
+msgid "Side panel"
+msgstr "Sidepanel"
+
 msgid "Simulate errors"
 msgstr "Simuler fejl"
 
 msgid "Skeleton"
 msgstr "Skelet"
+
+msgid "Skip to main content"
+msgstr "Spring til hovedindhold"
 
 msgid "Small"
 msgstr "Lille"

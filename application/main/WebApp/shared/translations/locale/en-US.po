@@ -115,6 +115,9 @@ msgstr "Boeuf bourguignon"
 msgid "Bold"
 msgstr "Bold"
 
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
 msgid "Breadcrumb — custom separator"
 msgstr "Breadcrumb — custom separator"
 
@@ -190,8 +193,17 @@ msgstr "Chicken katsu"
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
 
+msgid "Clear date"
+msgstr "Clear date"
+
+msgid "Clear dates"
+msgstr "Clear dates"
+
 msgid "Close"
 msgstr "Close"
+
+msgid "Close menu"
+msgstr "Close menu"
 
 msgid "Close product details"
 msgstr "Close product details"
@@ -241,6 +253,9 @@ msgstr "Coq au vin"
 msgid "Create"
 msgstr "Create"
 
+msgid "Create <0>{search}</0>"
+msgstr "Create <0>{search}</0>"
+
 msgid "Create item"
 msgstr "Create item"
 
@@ -279,6 +294,9 @@ msgstr "Date range"
 
 msgid "Dates and personal notes about this recipe."
 msgstr "Dates and personal notes about this recipe."
+
+msgid "Decrease"
+msgstr "Decrease"
 
 msgid "Default"
 msgstr "Default"
@@ -433,6 +451,12 @@ msgstr "Ghost"
 msgid "Go to app"
 msgstr "Go to app"
 
+msgid "Go to next page"
+msgstr "Go to next page"
+
+msgid "Go to previous page"
+msgstr "Go to previous page"
+
 msgid "Good afternoon"
 msgstr "Good afternoon"
 
@@ -471,6 +495,9 @@ msgstr "Icons"
 
 msgid "Include cooking notes"
 msgstr "Include cooking notes"
+
+msgid "Increase"
+msgstr "Increase"
 
 msgid "Indian"
 msgstr "Indian"
@@ -550,6 +577,12 @@ msgstr "Log in"
 msgid "Long date"
 msgstr "Long date"
 
+msgid "Main content"
+msgstr "Main content"
+
+msgid "Main navigation"
+msgstr "Main navigation"
+
 msgid "Manage your notification preferences."
 msgstr "Manage your notification preferences."
 
@@ -580,11 +613,11 @@ msgstr "Mole poblano"
 msgid "More export options"
 msgstr "More export options"
 
-msgid "More information"
-msgstr "More information"
-
 msgid "More merge options"
 msgstr "More merge options"
+
+msgid "More pages"
+msgstr "More pages"
 
 msgid "More save options"
 msgstr "More save options"
@@ -657,6 +690,9 @@ msgstr "Outline"
 
 msgid "Pad thai"
 msgstr "Pad thai"
+
+msgid "Pagination"
+msgstr "Pagination"
 
 msgid "Palak paneer"
 msgstr "Palak paneer"
@@ -775,6 +811,9 @@ msgstr "Remove"
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
 
+msgid "Resize sidebar"
+msgstr "Resize sidebar"
+
 msgid "Responsive layout"
 msgstr "Responsive layout"
 
@@ -829,6 +868,12 @@ msgstr "Select"
 msgid "Select charts"
 msgstr "Select charts"
 
+msgid "Select dates"
+msgstr "Select dates"
+
+msgid "Select time zone"
+msgstr "Select time zone"
+
 msgid "Select with groups"
 msgstr "Select with groups"
 
@@ -865,6 +910,9 @@ msgstr "Show bookmarks"
 msgid "Show dismissable banner"
 msgstr "Show dismissable banner"
 
+msgid "Show more"
+msgstr "Show more"
+
 msgid "Show status bar"
 msgstr "Show status bar"
 
@@ -874,11 +922,17 @@ msgstr "Show toast"
 msgid "Side pane"
 msgstr "Side pane"
 
+msgid "Side panel"
+msgstr "Side panel"
+
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
 msgid "Skeleton"
 msgstr "Skeleton"
+
+msgid "Skip to main content"
+msgstr "Skip to main content"
 
 msgid "Small"
 msgstr "Small"

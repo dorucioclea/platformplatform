@@ -292,6 +292,9 @@ msgstr "Billing tabs"
 msgid "billing@company.com"
 msgstr "billing@company.com"
 
+msgid "Breadcrumb"
+msgstr "Breadcrumb"
+
 msgid "Built on <0>PlatformPlatform<1/></0> - an open-source platform by industry experts showcasing how to build enterprise-grade B2B SaaS products"
 msgstr "Built on <0>PlatformPlatform<1/></0> - an open-source platform by industry experts showcasing how to build enterprise-grade B2B SaaS products"
 
@@ -379,6 +382,12 @@ msgstr "City"
 msgid "Clear"
 msgstr "Clear"
 
+msgid "Clear date"
+msgstr "Clear date"
+
+msgid "Clear dates"
+msgstr "Clear dates"
+
 msgid "Clear filters"
 msgstr "Clear filters"
 
@@ -387,6 +396,9 @@ msgstr "Clear search"
 
 msgid "Close"
 msgstr "Close"
+
+msgid "Close menu"
+msgstr "Close menu"
 
 msgid "Close user profile"
 msgstr "Close user profile"
@@ -414,6 +426,9 @@ msgstr "Continue"
 
 msgid "Country"
 msgstr "Country"
+
+msgid "Create <0>{search}</0>"
+msgstr "Create <0>{search}</0>"
 
 msgid "Create new account"
 msgstr "Create new account"
@@ -468,6 +483,9 @@ msgstr "Decline"
 
 msgid "Declining..."
 msgstr "Declining..."
+
+msgid "Decrease"
+msgstr "Decrease"
 
 msgid "Default"
 msgstr "Default"
@@ -653,6 +671,12 @@ msgstr "Go to account settings"
 msgid "Go to home"
 msgstr "Go to home"
 
+msgid "Go to next page"
+msgstr "Go to next page"
+
+msgid "Go to previous page"
+msgstr "Go to previous page"
+
 msgid "Google"
 msgstr "Google"
 
@@ -673,6 +697,9 @@ msgstr "Identity mismatch"
 
 msgid "Image must be smaller than 1 MB."
 msgstr "Image must be smaller than 1 MB."
+
+msgid "Increase"
+msgstr "Increase"
 
 msgid "Invalid request"
 msgstr "Invalid request"
@@ -770,6 +797,12 @@ msgstr "Login verification code"
 msgid "Logo"
 msgstr "Logo"
 
+msgid "Main content"
+msgstr "Main content"
+
+msgid "Main navigation"
+msgstr "Main navigation"
+
 msgid "Manage subscription"
 msgstr "Manage subscription"
 
@@ -815,8 +848,8 @@ msgstr "Mobile"
 msgid "Modified date"
 msgstr "Modified date"
 
-msgid "More information"
-msgstr "More information"
+msgid "More pages"
+msgstr "More pages"
 
 msgid "Name"
 msgstr "Name"
@@ -853,6 +886,9 @@ msgstr "No payment history available."
 
 msgid "No payment method on file"
 msgstr "No payment method on file"
+
+msgid "No results found"
+msgstr "No results found"
 
 msgid "No users found"
 msgstr "No users found"
@@ -892,6 +928,9 @@ msgstr "Owner"
 
 msgid "Page not found"
 msgstr "Page not found"
+
+msgid "Pagination"
+msgstr "Pagination"
 
 msgid "Passwordless deployments"
 msgstr "Passwordless deployments"
@@ -1056,6 +1095,9 @@ msgstr "Remove profile picture"
 msgid "Request a new code"
 msgstr "Request a new code"
 
+msgid "Resize sidebar"
+msgstr "Resize sidebar"
+
 msgid "Restore"
 msgstr "Restore"
 
@@ -1122,6 +1164,9 @@ msgstr "Select country"
 msgid "Select dates"
 msgstr "Select dates"
 
+msgid "Select time zone"
+msgstr "Select time zone"
+
 msgid "Select your preferred language. Saved to your profile."
 msgstr "Select your preferred language. Saved to your profile."
 
@@ -1152,8 +1197,14 @@ msgstr "Settings"
 msgid "Show details"
 msgstr "Show details"
 
+msgid "Show more"
+msgstr "Show more"
+
 msgid "Show search filters"
 msgstr "Show search filters"
+
+msgid "Side panel"
+msgstr "Side panel"
 
 msgid "Sign up"
 msgstr "Sign up"
@@ -1169,6 +1220,9 @@ msgstr "Sign up with Google"
 
 msgid "Signup verification code"
 msgstr "Signup verification code"
+
+msgid "Skip to main content"
+msgstr "Skip to main content"
 
 msgid "SLA"
 msgstr "SLA"
