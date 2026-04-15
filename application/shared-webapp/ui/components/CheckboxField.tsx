@@ -7,6 +7,7 @@ import { cn } from "../utils";
 import { Checkbox } from "./Checkbox";
 import { Field, FieldError } from "./Field";
 import { FormValidationContext } from "./Form";
+import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
 export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
@@ -53,7 +54,7 @@ export function CheckboxField({
     // alignWithLabel offset = FieldLabel height (0.875rem text-sm * 1.375 leading-snug = 1.203125rem) + Field gap-3 (0.75rem) = 1.953125rem.
     // Pushes a label-less checkbox down by exactly a label+gap, so it lines up with the input of a sibling field.
     <Field inline className={cn("flex-col gap-1", alignWithLabel && "mt-[1.953rem]", className)}>
-      <label className="flex min-h-(--control-height) items-center gap-2">
+      <Label className="min-h-(--control-height) leading-snug">
         <Checkbox
           name={name}
           disabled={disabled}
@@ -61,12 +62,8 @@ export function CheckboxField({
           className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
-        {label && (
-          <span className="flex items-center gap-2 text-sm leading-snug font-medium">
-            {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-          </span>
-        )}
-      </label>
+        {label && (tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label)}
+      </Label>
       <FieldError errors={errors} />
     </Field>
   );
