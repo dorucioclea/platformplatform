@@ -8,7 +8,7 @@ import { useContext, useRef, useState } from "react";
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "./Combobox";
-import { Field, FieldDescription, FieldError } from "./Field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
 import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -128,9 +128,7 @@ export function ComboboxField({
   return (
     <Field ref={fieldRef} className={cn("flex flex-col", className)}>
       {label && (
-        <span
-          data-slot="field-label"
-          className="flex cursor-default items-center gap-2 text-sm leading-snug font-medium select-none"
+        <FieldLabel
           onClick={focusTrigger}
           onKeyDown={(event) => {
             if (event.key === "Enter" || event.key === " ") {
@@ -140,7 +138,7 @@ export function ComboboxField({
           }}
         >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </span>
+        </FieldLabel>
       )}
       <Combobox
         disabled={isDisabled}
