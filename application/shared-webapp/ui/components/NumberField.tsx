@@ -68,13 +68,17 @@ export function NumberField({
   const isInvalid = errors && errors.length > 0;
 
   const { currentLocale } = useContext(translationContext);
-  const decimalSeparator = useMemo(
-    () =>
-      Intl.NumberFormat(currentLocale)
-        .formatToParts(1.1)
-        .find((p) => p.type === "decimal")?.value ?? ".",
-    [currentLocale]
-  );
+  const decimalSeparator = useMemo(() => {
+    try {
+      return (
+        Intl.NumberFormat(currentLocale)
+          .formatToParts(1.1)
+          .find((p) => p.type === "decimal")?.value ?? "."
+      );
+    } catch {
+      return ".";
+    }
+  }, [currentLocale]);
 
   const stepDecimals = String(step).includes(".") ? String(step).split(".")[1].length : 0;
   const displayDecimals = decimalPlaces ?? stepDecimals;
