@@ -20,6 +20,18 @@ import type { ControlRowDerivedProps } from "./controlRowTypes";
 import { tooltips } from "./controlTooltips";
 import { TextAreaFields } from "./TextAreaFields";
 
+function focusToggleItem(ref: React.RefObject<HTMLDivElement | null>, isDisabled?: boolean) {
+  if (isDisabled) return;
+  const group = ref.current;
+  if (!group) return;
+  const active = group.querySelector<HTMLElement>("[data-slot=toggle-group-item][data-pressed]");
+  const target = active ?? group.querySelector<HTMLElement>("[data-slot=toggle-group-item]");
+  if (!target) return;
+  target.setAttribute("data-label-focus", "");
+  target.addEventListener("blur", () => target.removeAttribute("data-label-focus"), { once: true });
+  target.focus({ preventScroll: true });
+}
+
 export function DateAndToggleFields({
   suffix,
   label,
@@ -32,18 +44,7 @@ export function DateAndToggleFields({
   errorMessage
 }: ControlRowDerivedProps) {
   const toggleGroupRef = useRef<HTMLDivElement>(null);
-  const focusToggle = () => {
-    if (disabled) return;
-    const group = toggleGroupRef.current;
-    if (!group) return;
-    const active = group.querySelector<HTMLElement>("[data-slot=toggle-group-item][data-pressed]");
-    const fallback = group.querySelector<HTMLElement>("[data-slot=toggle-group-item]");
-    const target = active ?? fallback;
-    if (!target) return;
-    target.setAttribute("data-label-focus", "");
-    target.addEventListener("blur", () => target.removeAttribute("data-label-focus"), { once: true });
-    target.focus({ preventScroll: true });
-  };
+  const focusToggle = () => focusToggleItem(toggleGroupRef, disabled);
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [toggleValues, setToggleValues] = useState<string[]>(hasValues ? ["bold"] : []);
