@@ -17,9 +17,6 @@ export interface TextFieldProps extends Omit<React.ComponentProps<"input">, "cla
   inputClassName?: string;
   startIcon?: React.ReactNode;
   onChange?: (value: string) => void;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
 }
 
 export function TextField({
@@ -35,9 +32,9 @@ export function TextField({
   value,
   onChange,
   autoFocus,
-  isRequired,
-  isDisabled,
-  isReadOnly,
+  required,
+  disabled,
+  readOnly,
   ...props
 }: Readonly<TextFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -68,9 +65,9 @@ export function TextField({
     onChange: handleChange,
     onBlur: clearOnBlur,
     autoFocus,
-    required: isRequired,
-    disabled: isDisabled,
-    readOnly: isReadOnly,
+    required,
+    disabled,
+    readOnly,
     "aria-invalid": isInvalid || undefined,
     ...props
   };
@@ -83,7 +80,7 @@ export function TextField({
         </FieldLabel>
       )}
       {startIcon ? (
-        <InputGroup data-disabled={isDisabled || undefined}>
+        <InputGroup data-disabled={disabled || undefined}>
           <InputGroupAddon>{startIcon}</InputGroupAddon>
           <InputGroupInput className={inputClassName} {...inputProps} />
         </InputGroup>

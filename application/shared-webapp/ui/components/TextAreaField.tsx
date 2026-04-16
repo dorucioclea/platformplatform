@@ -15,9 +15,6 @@ export interface TextAreaFieldProps extends Omit<React.ComponentProps<"textarea"
   className?: string;
   textareaClassName?: string;
   onChange?: (value: string) => void;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
   lines?: number;
   resizable?: boolean;
 }
@@ -33,9 +30,9 @@ export function TextAreaField({
   value,
   onChange,
   autoFocus,
-  isRequired,
-  isDisabled,
-  isReadOnly,
+  required,
+  disabled,
+  readOnly,
   lines,
   resizable,
   ...props
@@ -74,9 +71,9 @@ export function TextAreaField({
         onChange={handleChange}
         onBlur={clearOnBlur}
         autoFocus={autoFocus}
-        required={isRequired}
-        disabled={isDisabled}
-        readOnly={isReadOnly}
+        required={required}
+        disabled={disabled}
+        readOnly={readOnly}
         aria-invalid={isInvalid || undefined}
         lines={lines}
         resizable={resizable}

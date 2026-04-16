@@ -30,8 +30,8 @@ export interface ComboboxFieldProps {
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   className?: string;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
   /** Allow typing custom values not in the items list */
   allowCustomValue?: boolean;
   /** Show a "Create" option when typed text doesn't match any item */
@@ -60,8 +60,8 @@ export function ComboboxField({
   value,
   onValueChange,
   className,
-  isDisabled,
-  isReadOnly,
+  disabled,
+  readOnly,
   allowCustomValue,
   allowCreate,
   onCreateItem,
@@ -141,8 +141,8 @@ export function ComboboxField({
         </FieldLabel>
       )}
       <Combobox
-        disabled={isDisabled}
-        open={isReadOnly ? false : open}
+        disabled={disabled}
+        open={readOnly ? false : open}
         onOpenChange={handleOpenChange}
         value={value ?? null}
         onValueChange={(v) => {
@@ -157,8 +157,8 @@ export function ComboboxField({
         <ComboboxInput
           id={name}
           placeholder={placeholder}
-          disabled={isDisabled}
-          readOnly={isReadOnly}
+          disabled={disabled}
+          readOnly={readOnly}
           startIcon={selectedIcon ?? startIconProp}
           startIconClassName={value ? "text-foreground" : undefined}
           aria-invalid={isInvalid || undefined}

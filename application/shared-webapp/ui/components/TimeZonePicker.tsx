@@ -70,8 +70,8 @@ export interface TimeZonePickerProps {
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   className?: string;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export function TimeZonePicker({

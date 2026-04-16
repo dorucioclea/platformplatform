@@ -31,9 +31,9 @@ export interface DatePickerProps {
   onChange?: (value: string) => void;
   placeholder?: string;
   startIcon?: ReactNode;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+  required?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
   max?: string;
   min?: string;
   showDropdowns?: boolean;
@@ -52,8 +52,8 @@ export function DatePicker({
   onChange,
   placeholder,
   startIcon = <CalendarIcon className="shrink-0" />,
-  isDisabled,
-  isReadOnly,
+  disabled,
+  readOnly,
   max,
   min,
   showDropdowns,
@@ -106,7 +106,7 @@ export function DatePicker({
     <Field className={cn("flex flex-col", className)}>
       {label && (
         <Label
-          htmlFor={isDisabled ? undefined : triggerId}
+          htmlFor={disabled ? undefined : triggerId}
           data-slot="field-label"
           className="cursor-default leading-snug"
         >
@@ -115,7 +115,7 @@ export function DatePicker({
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
       <div className="relative">
-        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : setOpen}>
+        <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : setOpen}>
           <PopoverTrigger
             render={
               <Button
@@ -125,10 +125,10 @@ export function DatePicker({
                 className={cn(
                   "w-full justify-start border border-input px-2.5 font-normal hover:bg-white hover:text-foreground active:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30 dark:active:bg-input/30",
                   !value && "text-muted-foreground hover:text-muted-foreground",
-                  hasValue && !isReadOnly && !isDisabled && "pr-9",
-                  isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
+                  hasValue && !readOnly && !disabled && "pr-9",
+                  readOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
-                disabled={isDisabled}
+                disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
                   if (e.key === "ArrowDown" && !open) {
                     e.preventDefault();
@@ -178,7 +178,7 @@ export function DatePicker({
             />
           </PopoverContent>
         </Popover>
-        {hasValue && !isReadOnly && !isDisabled && (
+        {hasValue && !readOnly && !disabled && (
           <Button
             variant="ghost"
             size="icon-xs"

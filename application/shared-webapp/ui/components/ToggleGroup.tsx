@@ -9,7 +9,7 @@ import { toggleVariants } from "./Toggle";
 type ToggleGroupContextValue = VariantProps<typeof toggleVariants> & {
   spacing?: number;
   orientation?: "horizontal" | "vertical";
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 };
 
 const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
@@ -17,7 +17,7 @@ const ToggleGroupContext = React.createContext<ToggleGroupContextValue>({
   variant: "default",
   spacing: 0,
   orientation: "horizontal",
-  isReadOnly: false
+  readOnly: false
 });
 
 function ToggleGroup({
@@ -26,7 +26,7 @@ function ToggleGroup({
   size,
   spacing = 0,
   orientation = "horizontal",
-  isReadOnly = false,
+  readOnly = false,
   value,
   onValueChange,
   children,
@@ -35,7 +35,7 @@ function ToggleGroup({
   VariantProps<typeof toggleVariants> & {
     spacing?: number;
     orientation?: "horizontal" | "vertical";
-    isReadOnly?: boolean;
+    readOnly?: boolean;
   }) {
   const childArray = React.Children.toArray(children);
 
@@ -43,7 +43,7 @@ function ToggleGroup({
     <ToggleGroupPrimitive
       data-slot="toggle-group"
       value={value}
-      onValueChange={isReadOnly ? undefined : onValueChange}
+      onValueChange={readOnly ? undefined : onValueChange}
       className={cn(
         "inline-flex w-fit items-center rounded-md",
         orientation === "vertical" ? "flex-col items-stretch" : "flex-row",
@@ -52,7 +52,7 @@ function ToggleGroup({
       style={spacing > 0 ? { gap: `${spacing * 0.25}rem` } : undefined}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation, isReadOnly }}>
+      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation, readOnly }}>
         {childArray.map((child, index) => {
           if (!React.isValidElement(child)) {
             return child;
@@ -86,7 +86,7 @@ function ToggleGroupItem({
   const isLast = position === "last" || position === "only";
   const isHorizontal = orientation === "horizontal";
   const isConnected = spacing === 0;
-  const isReadOnly = context.isReadOnly ?? false;
+  const readOnly = context.readOnly ?? false;
 
   return (
     <TogglePrimitive
@@ -104,7 +104,7 @@ function ToggleGroupItem({
           variant === "outline" && !isHorizontal && !isFirst && "border-t-0"
         ],
         "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground",
-        isReadOnly && "cursor-default hover:bg-transparent hover:text-current active:bg-transparent",
+        readOnly && "cursor-default hover:bg-transparent hover:text-current active:bg-transparent",
         className
       )}
       {...props}

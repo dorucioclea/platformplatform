@@ -15,9 +15,6 @@ export interface DateFieldProps extends Omit<React.ComponentProps<"input">, "cla
   className?: string;
   inputClassName?: string;
   onChange?: (value: string) => void;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
 }
 
 export function DateField({
@@ -32,9 +29,9 @@ export function DateField({
   defaultValue,
   onChange,
   autoFocus,
-  isRequired,
-  isDisabled,
-  isReadOnly,
+  required,
+  disabled,
+  readOnly,
   ...props
 }: Readonly<DateFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -76,13 +73,13 @@ export function DateField({
         onChange={handleChange}
         onBlur={clearOnBlur}
         autoFocus={autoFocus}
-        required={isRequired}
-        disabled={isDisabled}
-        readOnly={isReadOnly}
+        required={required}
+        disabled={disabled}
+        readOnly={readOnly}
         aria-invalid={isInvalid || undefined}
         className={cn(
           !hasValue && "text-muted-foreground",
-          isReadOnly && "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden",
+          readOnly && "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden",
           inputClassName
         )}
         {...props}

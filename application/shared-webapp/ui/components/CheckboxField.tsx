@@ -15,7 +15,7 @@ export interface CheckboxFieldProps extends CheckboxPrimitive.Root.Props {
   errorMessage?: string;
   tooltip?: React.ReactNode;
   className?: string;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
   alignWithLabel?: boolean;
 }
 
@@ -25,7 +25,7 @@ export function CheckboxField({
   tooltip,
   className,
   name,
-  isReadOnly,
+  readOnly,
   alignWithLabel,
   disabled,
   onCheckedChange,
@@ -58,8 +58,8 @@ export function CheckboxField({
         <Checkbox
           name={name}
           disabled={disabled}
-          onCheckedChange={isReadOnly ? undefined : handleCheckedChange}
-          className={isReadOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
+          onCheckedChange={readOnly ? undefined : handleCheckedChange}
+          className={readOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
         {label && (tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label)}

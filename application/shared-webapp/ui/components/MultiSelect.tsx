@@ -28,8 +28,8 @@ export interface MultiSelectProps {
   value: string[];
   onChange: (value: string[]) => void;
   className?: string;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export function MultiSelect({
@@ -45,8 +45,8 @@ export function MultiSelect({
   value,
   onChange,
   className,
-  isDisabled,
-  isReadOnly
+  disabled,
+  readOnly
 }: MultiSelectProps) {
   const formErrors = useContext(FormValidationContext);
   const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
@@ -68,7 +68,7 @@ export function MultiSelect({
 
   const handleToggle = useCallback(
     (itemId: string) => {
-      if (isReadOnly) return;
+      if (readOnly) return;
       clearNow();
       if (value.includes(itemId)) {
         onChange(value.filter((v) => v !== itemId));
@@ -76,7 +76,7 @@ export function MultiSelect({
         onChange([...value, itemId]);
       }
     },
-    [value, onChange, isReadOnly, clearNow]
+    [value, onChange, readOnly, clearNow]
   );
 
   const handleKeyDown = useCallback(
@@ -130,7 +130,7 @@ export function MultiSelect({
       {items.length === 0 ? (
         emptyMessage && <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
-        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? undefined : handleOpenChange}>
+        <Popover open={readOnly ? false : open} onOpenChange={readOnly ? undefined : handleOpenChange}>
           <PopoverTrigger
             render={
               <button
@@ -138,7 +138,7 @@ export function MultiSelect({
                 type="button"
                 aria-label={label ?? placeholder}
                 data-invalid={isInvalid || undefined}
-                disabled={isDisabled}
+                disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
                   if (e.key === "ArrowDown" && !open) {
                     e.preventDefault();
@@ -147,7 +147,7 @@ export function MultiSelect({
                 }}
                 className={cn(
                   "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[invalid]:outline data-[invalid]:outline-2 data-[invalid]:outline-offset-2 data-[invalid]:outline-destructive data-[invalid]:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:bg-input/30",
-                  isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
+                  readOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
               />
             }

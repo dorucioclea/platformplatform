@@ -15,7 +15,7 @@ export interface RadioGroupFieldProps extends RadioGroupPrimitive.Props {
   errorMessage?: string;
   tooltip?: React.ReactNode;
   className?: string;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
   children: React.ReactNode;
 }
 
@@ -26,7 +26,7 @@ export function RadioGroupField({
   tooltip,
   className,
   name,
-  isReadOnly,
+  readOnly,
   disabled,
   children,
   onValueChange,
@@ -85,10 +85,10 @@ export function RadioGroupField({
         name={name}
         disabled={disabled}
         inert={disabled}
-        readOnly={isReadOnly}
+        readOnly={readOnly}
         onValueChange={handleValueChange}
         className={
-          isReadOnly
+          readOnly
             ? "[&_[data-slot=radio-group-item]]:focus:outline [&_[data-slot=radio-group-item]]:focus:outline-2 [&_[data-slot=radio-group-item]]:focus:outline-offset-2"
             : undefined
         }

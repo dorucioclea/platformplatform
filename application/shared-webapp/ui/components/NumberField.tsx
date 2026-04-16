@@ -24,9 +24,6 @@ export interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "c
   step?: number;
   decimalPlaces?: number;
   allowEmpty?: boolean;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
 }
 
 export function NumberField({
@@ -47,9 +44,9 @@ export function NumberField({
   step = 1,
   decimalPlaces,
   allowEmpty,
-  isRequired,
-  isDisabled,
-  isReadOnly,
+  required,
+  disabled,
+  readOnly,
   ...props
 }: Readonly<NumberFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -192,7 +189,7 @@ export function NumberField({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isReadOnly) return;
+    if (readOnly) return;
     if (e.key === "ArrowUp") {
       e.preventDefault();
       handleIncrement();
@@ -212,7 +209,7 @@ export function NumberField({
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </FieldLabel>
       )}
-      <InputGroup data-disabled={isDisabled || undefined}>
+      <InputGroup data-disabled={disabled || undefined}>
         {startIcon && (
           <InputGroupAddon className={cn(displayValue !== "" && "text-foreground")}>{startIcon}</InputGroupAddon>
         )}
@@ -227,9 +224,9 @@ export function NumberField({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           autoFocus={autoFocus}
-          required={isRequired}
-          disabled={isDisabled}
-          readOnly={isReadOnly}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
           aria-invalid={isInvalid || undefined}
           className={cn("pr-10 text-right", inputClassName)}
           {...props}
@@ -245,7 +242,7 @@ export function NumberField({
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
-            disabled={isDisabled || isReadOnly || atMax}
+            disabled={disabled || readOnly || atMax}
             aria-label={t`Increase`}
             className="flex w-7 flex-1 items-center justify-center rounded-tr-[calc(var(--radius)-1px)] border-b border-input text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
           >
@@ -261,7 +258,7 @@ export function NumberField({
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
-            disabled={isDisabled || isReadOnly || atMin}
+            disabled={disabled || readOnly || atMin}
             aria-label={t`Decrease`}
             className="flex w-7 flex-1 items-center justify-center rounded-br-[calc(var(--radius)-1px)] text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
           >

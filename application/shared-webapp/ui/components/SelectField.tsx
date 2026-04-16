@@ -17,8 +17,6 @@ export interface SelectFieldProps<Value, Multiple extends boolean | undefined = 
   errorMessage?: string;
   tooltip?: React.ReactNode;
   className?: string;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
   children: React.ReactNode;
 }
 
@@ -29,8 +27,8 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   tooltip,
   className,
   name,
-  isDisabled,
-  isReadOnly,
+  disabled,
+  readOnly,
   children,
   onValueChange,
   ...props
@@ -63,13 +61,13 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <Label htmlFor={isDisabled ? undefined : name} data-slot="field-label" className="cursor-default leading-snug">
+        <Label htmlFor={disabled ? undefined : name} data-slot="field-label" className="cursor-default leading-snug">
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}
       <FormValidationContext.Provider value={triggerErrors}>
-        <SelectReadOnlyContext.Provider value={!!isReadOnly}>
-          <Select name={name} disabled={isDisabled} readOnly={isReadOnly} onValueChange={handleValueChange} {...props}>
+        <SelectReadOnlyContext.Provider value={!!readOnly}>
+          <Select name={name} disabled={disabled} readOnly={readOnly} onValueChange={handleValueChange} {...props}>
             {children}
           </Select>
         </SelectReadOnlyContext.Provider>

@@ -63,7 +63,7 @@ const menuButtonStyles = cva(
         true: "text-foreground",
         false: "text-muted-foreground hover:text-foreground"
       },
-      isDisabled: {
+      disabled: {
         true: "cursor-not-allowed opacity-50 hover:bg-sidebar",
         false: ""
       },
@@ -75,7 +75,7 @@ const menuButtonStyles = cva(
     defaultVariants: {
       isCollapsed: false,
       isActive: false,
-      isDisabled: false,
+      disabled: false,
       isMobileMenu: false
     }
   }
@@ -102,7 +102,7 @@ type MenuButtonProps = {
   icon: LucideIcon;
   label: string;
   ariaLabel?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
   matchPrefix?: boolean;
 } & (
   | {
@@ -171,7 +171,7 @@ export function MenuButton({
   label,
   ariaLabel,
   href: to,
-  isDisabled = false,
+  disabled = false,
   matchPrefix = false,
   ...props
 }: Readonly<MenuButtonProps>) {
@@ -190,10 +190,10 @@ export function MenuButton({
   const isMobileViewport = !window.matchMedia(MEDIA_QUERIES.sm).matches;
   const isMobileMenu = isMobileViewport && !!overlayCtx?.isOpen;
 
-  const linkClassName = menuButtonStyles({ isCollapsed, isActive, isDisabled, isMobileMenu });
+  const linkClassName = menuButtonStyles({ isCollapsed, isActive, disabled, isMobileMenu });
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (isDisabled) {
+    if (disabled) {
       e.preventDefault();
       return;
     }
@@ -246,7 +246,7 @@ export function MenuButton({
   }, [overlayCtx, federatedNavigation, onNavigate, router, to, isMobileViewport]);
 
   const handlePress = () => {
-    if (isDisabled) {
+    if (disabled) {
       return;
     }
 
@@ -267,7 +267,7 @@ export function MenuButton({
                 className={linkClassName}
                 variant="ghost"
                 underline={false}
-                disabled={isDisabled}
+                disabled={disabled}
                 aria-label={ariaLabel ?? label}
                 aria-current={isActive ? "page" : undefined}
                 onClick={handlePress}
@@ -295,7 +295,7 @@ export function MenuButton({
           className={linkClassName}
           variant="ghost"
           underline={false}
-          disabled={isDisabled}
+          disabled={disabled}
           aria-label={ariaLabel}
           aria-current={isActive ? "page" : undefined}
           onClick={handlePress}
@@ -314,7 +314,7 @@ export function MenuButton({
         to={to}
         className={linkClassName}
         onClick={handleClick}
-        disabled={isDisabled}
+        disabled={disabled}
         aria-label={ariaLabel}
         aria-current={isActive ? "page" : undefined}
       >

@@ -43,7 +43,7 @@ export interface DateRangePickerProps {
   startIcon?: ReactNode;
   className?: string;
   disabled?: boolean;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
 }
 
 export function DateRangePicker({
@@ -58,7 +58,7 @@ export function DateRangePicker({
   startIcon = <CalendarIcon className="shrink-0" />,
   className,
   disabled,
-  isReadOnly
+  readOnly
 }: Readonly<DateRangePickerProps>) {
   const { currentLocale } = useContext(translationContext);
   const dateLocale = dateFnsLocaleMap[currentLocale] ?? enUS;
@@ -159,7 +159,7 @@ export function DateRangePicker({
         </Label>
       )}
       <div className="relative">
-        <Popover open={isReadOnly ? false : open} onOpenChange={isReadOnly ? () => {} : handleOpenChange}>
+        <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : handleOpenChange}>
           <PopoverTrigger
             render={
               <Button
@@ -169,8 +169,8 @@ export function DateRangePicker({
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
                   "w-full justify-between border border-input px-2.5 font-normal hover:bg-white active:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30 dark:active:bg-input/30",
-                  hasValue && !isReadOnly && !disabled && "pr-9",
-                  isReadOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
+                  hasValue && !readOnly && !disabled && "pr-9",
+                  readOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
                 )}
                 disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
@@ -208,7 +208,7 @@ export function DateRangePicker({
             />
           </PopoverContent>
         </Popover>
-        {hasValue && !isReadOnly && !disabled && (
+        {hasValue && !readOnly && !disabled && (
           <Button
             variant="ghost"
             size="icon-xs"

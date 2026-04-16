@@ -19,9 +19,6 @@ export interface TimeFieldProps extends Omit<React.ComponentProps<"input">, "cla
   inputClassName?: string;
   onChange?: (value: string) => void;
   trailingContent?: ReactNode;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
 }
 
 export function TimeField({
@@ -37,9 +34,9 @@ export function TimeField({
   onChange,
   autoFocus,
   trailingContent,
-  isRequired,
-  isDisabled,
-  isReadOnly,
+  required,
+  disabled,
+  readOnly,
   ...props
 }: Readonly<TimeFieldProps>) {
   const formErrors = useContext(FormValidationContext);
@@ -66,7 +63,7 @@ export function TimeField({
   };
 
   const emptyClassName = !hasValue ? "text-muted-foreground" : undefined;
-  const readOnlyClassName = isReadOnly
+  const readOnlyClassName = readOnly
     ? "[&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
     : undefined;
 
@@ -79,9 +76,9 @@ export function TimeField({
     onChange: handleChange,
     onBlur: clearOnBlur,
     autoFocus,
-    required: isRequired,
-    disabled: isDisabled,
-    readOnly: isReadOnly,
+    required: required,
+    disabled: disabled,
+    readOnly: readOnly,
     "aria-invalid": isInvalid || undefined,
     ...props
   };
