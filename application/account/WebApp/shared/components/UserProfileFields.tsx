@@ -38,7 +38,7 @@ export function UserProfileFields({
       <div className="flex flex-col gap-4 sm:flex-row">
         <TextField
           autoFocus={autoFocus}
-          isRequired={true}
+          required={true}
           name="firstName"
           label={t`First name`}
           defaultValue={user?.firstName}
@@ -46,7 +46,7 @@ export function UserProfileFields({
           className="sm:flex-1"
         />
         <TextField
-          isRequired={true}
+          required={true}
           name="lastName"
           label={t`Last name`}
           defaultValue={user?.lastName}
@@ -60,7 +60,7 @@ export function UserProfileFields({
         label={t`Email`}
         tooltip={t`Your email address cannot be changed. An owner must delete your account and reinvite you with the new email address.`}
         value={user?.email}
-        isReadOnly={true}
+        readOnly={true}
         startIcon={<MailIcon className="size-4" />}
       />
 

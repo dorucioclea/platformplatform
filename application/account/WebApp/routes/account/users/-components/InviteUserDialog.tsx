@@ -69,7 +69,7 @@ export default function InviteUserDialog({ isOpen, onOpenChange }: Readonly<Invi
           <DialogBody>
             <TextField
               autoFocus={true}
-              isRequired={true}
+              required={true}
               name="email"
               label={t`Email`}
               placeholder={t`user@email.com`}

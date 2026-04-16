@@ -43,8 +43,8 @@ export function ComboboxFields({
         items={items}
         value={selectValue}
         onValueChange={setSelectValue}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon && (selectValue || placeholders) ? <TrendingUpIcon /> : undefined}
       />
@@ -55,8 +55,8 @@ export function ComboboxFields({
         items={items}
         value={freeTextValue}
         onValueChange={setFreeTextValue}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon && (freeTextValue || placeholders) ? <TrendingUpIcon /> : undefined}
         allowCustomValue
@@ -68,8 +68,8 @@ export function ComboboxFields({
         items={allCreatableItems}
         value={creatableValue}
         onValueChange={setCreatableValue}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon && (creatableValue || placeholders) ? <TrendingUpIcon /> : undefined}
         allowCreate

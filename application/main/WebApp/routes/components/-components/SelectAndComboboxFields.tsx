@@ -117,8 +117,8 @@ export function SelectAndComboboxFields({
         items={chartSelectItems}
         value={selectedColor || null}
         onValueChange={(value) => setSelectedColor(value ?? "")}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       >
         <SelectTrigger>
@@ -146,8 +146,8 @@ export function SelectAndComboboxFields({
         items={allRecipes}
         value={recipe}
         onValueChange={(value) => setRecipe(value ?? null)}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       >
         <SelectTrigger>
@@ -177,8 +177,8 @@ export function SelectAndComboboxFields({
         startIcon={showIcon ? undefined : null}
         value={timeZone}
         onValueChange={setTimeZone}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <MultiSelect
@@ -190,8 +190,8 @@ export function SelectAndComboboxFields({
         items={showIcon ? chartItems : chartItems.map(({ icon: _, ...rest }) => rest)}
         value={selectedCharts}
         onChange={setSelectedCharts}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <ComboboxFields

@@ -5,9 +5,9 @@ export const tooltips = {
     <PropList title="TextField" description="Single-line text input">
       <Prop name="placeholder">Ghost text when empty</Prop>
       <Prop name="startIcon">Icon before the input</Prop>
-      <Prop name="isRequired">Marks field as required</Prop>
-      <Prop name="isDisabled">Greyed out, not interactive</Prop>
-      <Prop name="isReadOnly">Visible but not editable</Prop>
+      <Prop name="required">Marks field as required</Prop>
+      <Prop name="disabled">Greyed out, not interactive</Prop>
+      <Prop name="readOnly">Visible but not editable</Prop>
     </PropList>
   ),
   textArea: (
@@ -141,19 +141,19 @@ export const tooltips = {
   switchField: (
     <PropList title="SwitchField" description="Toggle for on/off settings">
       <Prop name="checked / onCheckedChange">Controlled toggle state</Prop>
-      <Prop name="isReadOnly">Visible but not toggleable</Prop>
+      <Prop name="readOnly">Visible but not toggleable</Prop>
     </PropList>
   ),
   checkboxField: (
     <PropList title="CheckboxField" description="Tick box for boolean choices">
       <Prop name="checked / onCheckedChange">Controlled check state</Prop>
-      <Prop name="isReadOnly">Visible but not checkable</Prop>
+      <Prop name="readOnly">Visible but not checkable</Prop>
     </PropList>
   ),
   radioGroup: (
     <PropList title="RadioGroupField" description="Choose one from a small set">
       <Prop name="defaultValue">Initially selected option</Prop>
-      <Prop name="isReadOnly">Visible but not changeable</Prop>
+      <Prop name="readOnly">Visible but not changeable</Prop>
       <PropNote>Use for 2-5 mutually exclusive options. For more, use Select.</PropNote>
     </PropList>
   ),

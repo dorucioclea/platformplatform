@@ -46,8 +46,8 @@ export function ControlRow({
         name={`text-${suffix}`}
         placeholder={placeholders ? t`E.g., Alex Taylor` : undefined}
         defaultValue={hasValues ? t`Alex Taylor` : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon ? <SearchIcon /> : undefined}
       />
@@ -60,8 +60,8 @@ export function ControlRow({
         maxValue={100}
         step={1}
         allowEmpty
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon ? <HashIcon /> : undefined}
       />
@@ -75,8 +75,8 @@ export function ControlRow({
         step={0.1}
         decimalPlaces={2}
         allowEmpty
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
         startIcon={showIcon ? <EuroIcon /> : undefined}
       />

@@ -130,7 +130,7 @@ export function AccountSettings() {
             isPending={saveMutation.isPending}
             onLogoFileSelect={handleLogoFileSelect}
             onLogoRemove={handleLogoRemove}
-            isReadOnly={!isOwner}
+            readOnly={!isOwner}
             tooltip={isOwner ? t`The name of your account, shown to users and in email notifications` : undefined}
             description={!isOwner ? t`Only account owners can modify the account name` : undefined}
             onChange={() => setIsFormDirty(true)}

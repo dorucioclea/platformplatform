@@ -62,8 +62,8 @@ export function DateAndToggleFields({
         startIcon={showIcon ? undefined : null}
         value={datePickerValue}
         onChange={setDatePickerValue}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <DateRangePicker
@@ -75,7 +75,7 @@ export function DateAndToggleFields({
         value={dateRangeValue}
         onChange={setDateRangeValue}
         disabled={disabled}
-        isReadOnly={readOnly}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <DateField
@@ -83,8 +83,8 @@ export function DateAndToggleFields({
         tooltip={tooltip ? tooltips.dateField : undefined}
         name={`datefield-${suffix}`}
         defaultValue={hasValues ? "2025-06-15" : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <TimeField
@@ -92,8 +92,8 @@ export function DateAndToggleFields({
         tooltip={tooltip ? tooltips.timeField : undefined}
         name={`time-${suffix}`}
         defaultValue={hasValues ? "14:30" : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <TextAreaFields {...{ suffix, label, tooltip, disabled, readOnly, hasValues, placeholders, errorMessage }} />
@@ -105,7 +105,7 @@ export function DateAndToggleFields({
           checked={hasValues ? true : switchChecked}
           onCheckedChange={setSwitchChecked}
           disabled={disabled}
-          isReadOnly={readOnly}
+          readOnly={readOnly}
           errorMessage={errorMessage}
         />
       </InlineFieldGroup>
@@ -117,7 +117,7 @@ export function DateAndToggleFields({
           checked={hasValues ? true : checkboxChecked}
           onCheckedChange={setCheckboxChecked}
           disabled={disabled}
-          isReadOnly={readOnly}
+          readOnly={readOnly}
           errorMessage={errorMessage}
         />
       </InlineFieldGroup>
@@ -127,7 +127,7 @@ export function DateAndToggleFields({
         name={`radio-${suffix}`}
         defaultValue={hasValues ? "option-a" : undefined}
         disabled={disabled}
-        isReadOnly={readOnly}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       >
         <label htmlFor={`radio-${suffix}-a`} className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export function DateAndToggleFields({
           value={toggleValues}
           onValueChange={setToggleValues}
           disabled={disabled}
-          isReadOnly={readOnly}
+          readOnly={readOnly}
         >
           <ToggleGroupItem value="bold" aria-label={t`Toggle bold`}>
             <BoldIcon />

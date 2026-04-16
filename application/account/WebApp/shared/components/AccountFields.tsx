@@ -25,7 +25,7 @@ export interface AccountFieldsProps {
   isPending: boolean;
   onLogoFileSelect: (file: File | null) => void;
   onLogoRemove?: () => void;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
   tooltip?: string;
   description?: string;
   autoFocus?: boolean;
@@ -39,7 +39,7 @@ export function AccountFields({
   isPending,
   onLogoFileSelect,
   onLogoRemove,
-  isReadOnly,
+  readOnly,
   autoFocus,
   tooltip,
   description,
@@ -94,16 +94,16 @@ export function AccountFields({
       />
 
       <DropdownMenu open={logoMenuOpen} onOpenChange={setLogoMenuOpen} trackingTitle="Account logo menu">
-        <div className={`relative ${!isReadOnly ? "group" : ""}`}>
+        <div className={`relative ${!readOnly ? "group" : ""}`}>
           <DropdownMenuTrigger
-            disabled={isReadOnly}
+            disabled={readOnly}
             render={
               <Button
                 variant="ghost"
                 size="icon"
                 className={`rounded-md ${layout === "horizontal" ? "size-[7rem]" : "size-16"}`}
                 aria-label={t`Change logo`}
-                disabled={isReadOnly || isPending}
+                disabled={readOnly || isPending}
               >
                 <TenantLogo
                   key={logoPreviewUrl ?? (isLogoRemoved ? "no-logo" : (tenant?.logoUrl ?? "no-logo"))}
@@ -115,7 +115,7 @@ export function AccountFields({
               </Button>
             }
           />
-          {!isReadOnly && (
+          {!readOnly && (
             <div className="pointer-events-none absolute right-0 bottom-0 flex size-6 items-center justify-center rounded-full border border-border bg-popover opacity-0 group-hover:bg-primary group-hover:opacity-100">
               <PencilIcon
                 className="size-3 text-muted-foreground group-hover:text-primary-foreground"
@@ -151,11 +151,11 @@ export function AccountFields({
   const fieldsSection = (
     <TextField
       autoFocus={autoFocus}
-      isRequired={true}
+      required={true}
       name="name"
       defaultValue={tenant?.name ?? ""}
-      isDisabled={isPending}
-      isReadOnly={isReadOnly}
+      disabled={isPending}
+      readOnly={readOnly}
       label={t`Account name`}
       placeholder={t`E.g. Acme Corp`}
       tooltip={tooltip}

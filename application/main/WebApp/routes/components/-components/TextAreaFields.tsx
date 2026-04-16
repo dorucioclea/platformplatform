@@ -23,8 +23,8 @@ export function TextAreaFields({
         name={`textarea-${suffix}`}
         placeholder={placeholders ? t`Add notes here` : undefined}
         defaultValue={hasValues ? t`Meeting notes from last week` : undefined}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
       <TextAreaField
@@ -35,8 +35,8 @@ export function TextAreaFields({
         defaultValue={hasValues ? t`1 Infinite Loop\nCupertino, CA 95014` : undefined}
         lines={2}
         resizable={false}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly}
         errorMessage={errorMessage}
       />
     </>

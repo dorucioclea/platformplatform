@@ -46,14 +46,14 @@ export function UserProfileForm({ user }) {
     >
       <TextField
         autoFocus={true}
-        isRequired={true}
+        required={true}
         name="firstName"
         label={t`First name`}
         defaultValue={user?.firstName}
         placeholder={t`E.g., Alex`}
       />
       <TextField
-        isRequired={true}
+        required={true}
         name="lastName"
         label={t`Last name`}
         defaultValue={user?.lastName}
@@ -101,8 +101,8 @@ function BadUserProfileForm({ user }) {
   return (
     <Form onSubmit={handleSubmit}>
       {/* Missing proper validation and error handling */}
-      <TextField name="firstName" defaultValue={user?.firstName} isRequired />
-      <TextField name="lastName" defaultValue={user?.lastName} isRequired />
+      <TextField name="firstName" defaultValue={user?.firstName} required />
+      <TextField name="lastName" defaultValue={user?.lastName} required />
       <TextField name="title" defaultValue={user?.title} />
       
       <Button type="submit" disabled={isLoading}>
