@@ -144,6 +144,12 @@ export function NumberField({
 
   useEffect(() => () => clearTimeout(repeatTimerRef.current), []);
 
+  // Stop an in-flight long-press repeat when the button would become disabled (bounds reached, readOnly/disabled toggled).
+  // Without this, the timer keeps firing clamped no-op increments until the pointer is released.
+  useEffect(() => {
+    if (disabled || readOnly) stopRepeat();
+  }, [disabled, readOnly]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     markChanged();
     setInternalValue(e.target.value);
@@ -242,6 +248,7 @@ export function NumberField({
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
+            onPointerCancel={stopRepeat}
             disabled={disabled || readOnly || atMax}
             aria-label={t`Increase`}
             className="flex w-7 flex-1 items-center justify-center rounded-tr-[calc(var(--radius)-1px)] border-b border-input text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
@@ -258,6 +265,7 @@ export function NumberField({
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
+            onPointerCancel={stopRepeat}
             disabled={disabled || readOnly || atMin}
             aria-label={t`Decrease`}
             className="flex w-7 flex-1 items-center justify-center rounded-br-[calc(var(--radius)-1px)] text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
