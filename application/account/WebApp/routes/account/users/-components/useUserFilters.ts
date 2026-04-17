@@ -1,5 +1,4 @@
 import { trackInteraction } from "@repo/infrastructure/applicationInsights/ApplicationInsightsProvider";
-import { parseDateString } from "@repo/ui/components/DateRangePicker";
 import { useDebounce } from "@repo/ui/hooks/useDebounce";
 import { useSideMenuLayout } from "@repo/ui/hooks/useSideMenuLayout";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -37,7 +36,7 @@ export function useUserFilters({ onFiltersUpdated, onFiltersExpandedChange }: Us
 
   const dateRange =
     searchParams.startDate && searchParams.endDate
-      ? { start: parseDateString(searchParams.startDate), end: parseDateString(searchParams.endDate) }
+      ? { start: new Date(searchParams.startDate), end: new Date(searchParams.endDate) }
       : null;
 
   const updateFilter = useCallback(
