@@ -149,9 +149,9 @@ export function MultiSelect({
                   }
                 }}
                 className={cn(
-                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:bg-input/30",
+                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:bg-input/30",
                   readOnly &&
-                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)]"
+                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
                 )}
               />
             }

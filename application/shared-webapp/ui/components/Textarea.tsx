@@ -49,7 +49,7 @@ function Textarea({ className, lines, resizable, rows, onKeyDown, onPaste, ...pr
       className={cn(
         hasFixedLines ? "" : "[field-sizing:content] min-h-16",
         isResizable ? "resize-y" : "resize-none",
-        "w-full min-w-0 rounded-md border border-input bg-white px-2.5 pt-3 pb-2.5 text-sm shadow-xs outline-ring transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:bg-input/30",
+        "w-full min-w-0 rounded-md border border-input bg-white px-2.5 pt-3 pb-2.5 text-sm shadow-xs outline-ring transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:bg-input/30",
         className
       )}
       {...props}

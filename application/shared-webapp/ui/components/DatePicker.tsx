@@ -123,11 +123,11 @@ export function DatePicker({
                 variant="outline"
                 aria-invalid={isInvalid || undefined}
                 className={cn(
-                  "w-full justify-start border border-input px-2.5 font-normal hover:bg-white hover:text-foreground active:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:hover:bg-input/30 dark:active:bg-input/30",
+                  "w-full justify-start border border-input px-2.5 font-normal hover:bg-white hover:text-foreground active:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:hover:bg-input/30 dark:active:bg-input/30",
                   !value && "text-muted-foreground hover:text-muted-foreground",
                   hasValue && !readOnly && !disabled && "pr-9",
                   readOnly &&
-                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)]"
+                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
                 )}
                 disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {

@@ -122,6 +122,11 @@
     width: 52rem;
 }
 
+/* Soft destructive halo around a field when it is invalid and focused. Used with aria-invalid:focus-visible: and aria-invalid:focus: variants. */
+@utility shadow-error-halo {
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--destructive) 60%, transparent);
+}
+
 @layer base {
     * {
         @apply border-border;
