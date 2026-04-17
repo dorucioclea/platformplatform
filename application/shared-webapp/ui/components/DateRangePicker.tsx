@@ -131,7 +131,7 @@ export function DateRangePicker({
 
       // Close if we have a valid range with different dates
       if (newStart.getTime() !== newEnd.getTime()) {
-        setTimeout(() => setOpen(false), 100);
+        setOpen(false);
       }
     }
   };
