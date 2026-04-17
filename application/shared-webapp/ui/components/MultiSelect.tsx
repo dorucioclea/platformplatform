@@ -136,8 +136,11 @@ export function MultiSelect({
               <button
                 id={name}
                 type="button"
+                role="combobox"
                 aria-label={label ?? placeholder}
-                data-invalid={isInvalid || undefined}
+                aria-controls={`${name}-listbox`}
+                aria-expanded={open}
+                aria-invalid={isInvalid || undefined}
                 disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {
                   if (e.key === "ArrowDown" && !open) {
@@ -146,8 +149,9 @@ export function MultiSelect({
                   }
                 }}
                 className={cn(
-                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[invalid]:outline data-[invalid]:outline-2 data-[invalid]:outline-offset-2 data-[invalid]:outline-destructive data-[invalid]:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:bg-input/30",
-                  readOnly && "focus:outline focus:outline-2 focus:outline-offset-2"
+                  "flex h-[var(--control-height)] w-full cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white px-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)] dark:bg-input/30",
+                  readOnly &&
+                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-[0_0_0_2px_color-mix(in_oklch,var(--destructive)_40%,transparent)]"
                 )}
               />
             }
@@ -168,7 +172,13 @@ export function MultiSelect({
             <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
           </PopoverTrigger>
           <PopoverContent className="w-(--anchor-width) p-1" align="start">
-            <div ref={listRef} role="listbox" aria-multiselectable="true" className="flex flex-col">
+            <div
+              id={`${name}-listbox`}
+              ref={listRef}
+              role="listbox"
+              aria-multiselectable="true"
+              className="flex flex-col"
+            >
               {items.map((item) => {
                 const checked = value.includes(item.id);
                 return (
