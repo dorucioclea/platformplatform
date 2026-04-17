@@ -132,6 +132,14 @@ function useScrollAwayHeader(enabled: boolean, contentRef: React.RefObject<HTMLD
   return { isFullyScrolled };
 }
 
+// Shared wrapper for the slot above the h1 title (e.g. breadcrumbs). Negative top margin pulls it up toward the top of the
+// header area so the slot sits visually tight to the edge without inflating the header's total height. Hidden on mobile
+// because typical consumers (breadcrumbs) already hide their own content at that breakpoint, leaving the wrapper as wasted
+// vertical space -- collapsing it here reclaims that area without forcing every consumer to pass a responsive class.
+function BeforeHeader({ children }: { children: React.ReactNode }) {
+  return <div className="-mt-[0.625rem] mb-3 hidden h-11 items-center sm:-mt-[0.875rem] sm:flex">{children}</div>;
+}
+
 interface HeaderContentProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
@@ -142,9 +150,7 @@ interface HeaderContentProps {
 const HeaderContent = React.forwardRef<HTMLDivElement, HeaderContentProps>(
   ({ title, subtitle, beforeHeader, isSticky }, ref) => (
     <div ref={ref} className="mb-4">
-      {beforeHeader && (
-        <div className="-mt-[0.625rem] mb-3 flex h-11 items-center sm:-mt-[0.875rem]">{beforeHeader}</div>
-      )}
+      {beforeHeader && <BeforeHeader>{beforeHeader}</BeforeHeader>}
       <h1 className={cn("transition-opacity duration-200", isSticky ? "opacity-0 sm:opacity-100" : "opacity-100")}>
         {title}
       </h1>
@@ -198,9 +204,7 @@ function ScrollAwayContent({
     <>
       {/* Header - scrolls naturally with content */}
       <div ref={headerRef} className="scroll-away-header mb-4">
-        {beforeHeader && (
-          <div className="-mt-[0.625rem] mb-3 flex h-11 items-center sm:-mt-[0.875rem]">{beforeHeader}</div>
-        )}
+        {beforeHeader && <BeforeHeader>{beforeHeader}</BeforeHeader>}
         <h1>{title}</h1>
         {subtitle && <p className="mt-2 mb-0 text-muted-foreground">{subtitle}</p>}
       </div>
