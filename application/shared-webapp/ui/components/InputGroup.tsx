@@ -1,24 +1,31 @@
 import type * as React from "react";
 
 import { cva, type VariantProps } from "class-variance-authority";
+import { createContext, useContext, useRef } from "react";
 
 import { cn } from "../utils";
 import { Button } from "./Button";
 import { Input } from "./Input";
 
+// Shared ref so InputGroupAddon can focus the InputGroupInput without DOM queries (works regardless of wrapper depth).
+const InputGroupInputRefContext = createContext<React.RefObject<HTMLInputElement | null> | null>(null);
+
 // NOTE: This diverges from stock ShadCN to use CSS variable heights for Apple HIG compliance,
 // explicit bg-white background, outline-based focus ring, and removed combobox context styles.
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   return (
-    <div
-      data-slot="input-group"
-      role="group"
-      className={cn(
-        "group/input-group relative flex h-[var(--control-height)] w-full min-w-0 items-center rounded-md border border-input bg-white shadow-xs outline-ring transition-[color,box-shadow] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 has-[[data-slot][aria-invalid=true]]:outline has-[[data-slot][aria-invalid=true]]:outline-2 has-[[data-slot][aria-invalid=true]]:outline-offset-2 has-[[data-slot][aria-invalid=true]]:outline-destructive focus-within:has-[[data-slot][aria-invalid=true]]:shadow-error-halo has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:bg-input/30 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
-        className
-      )}
-      {...props}
-    />
+    <InputGroupInputRefContext.Provider value={inputRef}>
+      <div
+        data-slot="input-group"
+        role="group"
+        className={cn(
+          "group/input-group relative flex h-[var(--control-height)] w-full min-w-0 items-center rounded-md border border-input bg-white shadow-xs outline-ring transition-[color,box-shadow] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 has-[[data-slot][aria-invalid=true]]:outline has-[[data-slot][aria-invalid=true]]:outline-2 has-[[data-slot][aria-invalid=true]]:outline-offset-2 has-[[data-slot][aria-invalid=true]]:outline-destructive focus-within:has-[[data-slot][aria-invalid=true]]:shadow-error-halo has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:bg-input/30 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
+          className
+        )}
+        {...props}
+      />
+    </InputGroupInputRefContext.Provider>
   );
 }
 
@@ -45,21 +52,25 @@ function InputGroupAddon({
   align = "inline-start",
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
+  const inputRef = useContext(InputGroupInputRefContext);
   return (
     <div
       role="group"
       data-slot="input-group-addon"
       data-align={align}
       className={cn(inputGroupAddonVariants({ align }), className)}
+      // Clicking the addon area (icon slot, leading/trailing glyph) focuses the sibling input -- matches the UX of clicking
+      // a <label>, since the addon is not itself a labelable element. Skip when the click lands on a button so addon buttons
+      // (clear, submit) still fire their own action instead of stealing focus to the input.
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button")) {
           return;
         }
-        e.currentTarget.parentElement?.querySelector("input")?.focus();
+        inputRef?.current?.focus();
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
-          e.currentTarget.parentElement?.querySelector("input")?.focus();
+          inputRef?.current?.focus();
         }
       }}
       {...props}
@@ -120,9 +131,21 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
 
 // NOTE: This diverges from stock ShadCN to suppress the inner input focus ring,
 // since the parent InputGroup handles focus-within outline styling.
-function InputGroupInput({ className, ...props }: React.ComponentProps<"input">) {
+function InputGroupInput({ className, ref, ...props }: React.ComponentProps<"input">) {
+  const groupInputRef = useContext(InputGroupInputRefContext);
+  const handleRef = (node: HTMLInputElement | null) => {
+    if (groupInputRef) {
+      groupInputRef.current = node;
+    }
+    if (typeof ref === "function") {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  };
   return (
     <Input
+      ref={handleRef}
       data-slot="input-group-control"
       className={cn(
         "flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none disabled:opacity-100 aria-invalid:ring-0 aria-invalid:outline-none aria-invalid:focus-visible:!shadow-none dark:bg-transparent",
