@@ -58,8 +58,8 @@ export function SwitchField({
         <Switch
           name={name}
           disabled={disabled}
+          readOnly={readOnly}
           onCheckedChange={readOnly ? undefined : handleCheckedChange}
-          className={readOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
         {label && (tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label)}
