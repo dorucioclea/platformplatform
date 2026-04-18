@@ -1,18 +1,10 @@
 import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
-import {
-  LayoutDashboardIcon,
-  LayoutTemplateIcon,
-  PanelsTopLeftIcon,
-  SquareDashedIcon,
-  TableIcon,
-  TriangleAlertIcon
-} from "lucide-react";
+import { LayoutDashboardIcon, LayoutTemplateIcon, PanelsTopLeftIcon, SquareDashedIcon, TableIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { SampleProduct } from "./sampleProductData";
 
-import { AlertDialogsPreview } from "./AlertDialogsPreview";
 import { CardsPreview } from "./CardsPreview";
 import { DateFormatPreview } from "./DateFormatPreview";
 import { DialogsPreview } from "./DialogsPreview";
@@ -49,17 +41,13 @@ export function ExamplesPreview({ onProductSelect }: ExamplesPreviewProps) {
           <PanelsTopLeftIcon />
           <Trans>Dialogs</Trans>
         </TabsTrigger>
-        <TabsTrigger value="alert-dialogs">
-          <TriangleAlertIcon />
-          <Trans>Alert dialogs</Trans>
-        </TabsTrigger>
         <TabsTrigger value="cards">
           <LayoutTemplateIcon />
           <Trans>Cards</Trans>
         </TabsTrigger>
         <TabsTrigger value="tables">
           <TableIcon />
-          <Trans>Tables</Trans>
+          <Trans>Tables and side pane</Trans>
         </TabsTrigger>
         <TabsTrigger value="empty">
           <LayoutDashboardIcon />
@@ -72,9 +60,6 @@ export function ExamplesPreview({ onProductSelect }: ExamplesPreviewProps) {
       </TabsList>
       <TabsContent value="dialogs">
         <DialogsPreview />
-      </TabsContent>
-      <TabsContent value="alert-dialogs">
-        <AlertDialogsPreview showToasts={true} />
       </TabsContent>
       <TabsContent value="cards">
         <div className="flex flex-col gap-6">

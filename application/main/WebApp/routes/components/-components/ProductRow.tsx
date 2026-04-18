@@ -4,6 +4,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Badge } from "@repo/ui/components/Badge";
 import { Button } from "@repo/ui/components/Button";
+import { Checkbox } from "@repo/ui/components/Checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,9 +26,22 @@ interface ProductRowProps {
   rowSize: TableRowSize;
   onSelect: (index: number) => void;
   formatDate: (date: string) => string;
+  showCheckbox?: boolean;
+  isChecked?: boolean;
+  onToggleCheck?: () => void;
 }
 
-export function ProductRow({ product, index, isSelected, rowSize, onSelect, formatDate }: Readonly<ProductRowProps>) {
+export function ProductRow({
+  product,
+  index,
+  isSelected,
+  rowSize,
+  onSelect,
+  formatDate,
+  showCheckbox,
+  isChecked,
+  onToggleCheck
+}: Readonly<ProductRowProps>) {
   return (
     <TableRow
       index={index}
@@ -35,6 +49,15 @@ export function ProductRow({ product, index, isSelected, rowSize, onSelect, form
       className="cursor-pointer select-none"
       onClick={() => onSelect(index)}
     >
+      {showCheckbox && (
+        <TableCell onClick={(e) => e.stopPropagation()}>
+          <Checkbox
+            checked={isChecked ?? false}
+            onCheckedChange={() => onToggleCheck?.()}
+            aria-label={t`Select ${product.name}`}
+          />
+        </TableCell>
+      )}
       <TableCell>
         {rowSize === "spacious" ? (
           <div className="flex flex-col">

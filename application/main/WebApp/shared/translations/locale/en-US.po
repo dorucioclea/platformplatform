@@ -76,6 +76,9 @@ msgstr "Alerts"
 msgid "Alerts and badges"
 msgstr "Alerts and badges"
 
+msgid "Alerts, badges, and banners"
+msgstr "Alerts, badges, and banners"
+
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
@@ -198,6 +201,9 @@ msgstr "Clear date"
 
 msgid "Clear dates"
 msgstr "Clear dates"
+
+msgid "Click a row to open the side pane."
+msgstr "Click a row to open the side pane."
 
 msgid "Close"
 msgstr "Close"
@@ -331,8 +337,8 @@ msgstr "Developer tools"
 msgid "Dialogs"
 msgstr "Dialogs"
 
-msgid "Dialogs and cards"
-msgstr "Dialogs and cards"
+msgid "Dialogs and alert dialogs"
+msgstr "Dialogs and alert dialogs"
 
 msgid "Dirty dialog"
 msgstr "Dirty dialog"
@@ -634,6 +640,9 @@ msgstr "More tools"
 msgid "Multi select"
 msgstr "Multi select"
 
+msgid "Multi-select"
+msgstr "Multi-select"
+
 msgid "Native date"
 msgstr "Native date"
 
@@ -871,6 +880,13 @@ msgstr "Secondary"
 msgid "Select"
 msgstr "Select"
 
+#. placeholder {0}: product.name
+msgid "Select {0}"
+msgstr "Select {0}"
+
+msgid "Select all rows on this page"
+msgstr "Select all rows on this page"
+
 msgid "Select charts"
 msgstr "Select charts"
 
@@ -912,6 +928,9 @@ msgstr "Show banner with action"
 
 msgid "Show bookmarks"
 msgstr "Show bookmarks"
+
+msgid "Show checkboxes"
+msgstr "Show checkboxes"
 
 msgid "Show dismissable banner"
 msgstr "Show dismissable banner"
@@ -982,8 +1001,8 @@ msgstr "Switch"
 msgid "System"
 msgstr "System"
 
-msgid "Tables"
-msgstr "Tables"
+msgid "Tables and side pane"
+msgstr "Tables and side pane"
 
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"

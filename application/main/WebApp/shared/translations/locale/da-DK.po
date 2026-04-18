@@ -76,6 +76,9 @@ msgstr "Advarsler"
 msgid "Alerts and badges"
 msgstr "Advarsler og badges"
 
+msgid "Alerts, badges, and banners"
+msgstr "Advarsler, badges og bannere"
+
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
@@ -198,6 +201,9 @@ msgstr "Ryd dato"
 
 msgid "Clear dates"
 msgstr "Ryd datoer"
+
+msgid "Click a row to open the side pane."
+msgstr "Klik på en række for at åbne sidepanelet."
 
 msgid "Close"
 msgstr "Luk"
@@ -331,8 +337,8 @@ msgstr "Udviklerværktøjer"
 msgid "Dialogs"
 msgstr "Dialoger"
 
-msgid "Dialogs and cards"
-msgstr "Dialoger og kort"
+msgid "Dialogs and alert dialogs"
+msgstr "Dialoger og advarselsdialoger"
 
 msgid "Dirty dialog"
 msgstr "Uren dialog"
@@ -634,6 +640,9 @@ msgstr "Flere værktøjer"
 msgid "Multi select"
 msgstr "Flervalg"
 
+msgid "Multi-select"
+msgstr "Flervalg"
+
 msgid "Native date"
 msgstr "Native dato"
 
@@ -871,6 +880,13 @@ msgstr "Sekundær"
 msgid "Select"
 msgstr "Vælg"
 
+#. placeholder {0}: product.name
+msgid "Select {0}"
+msgstr "Vælg {0}"
+
+msgid "Select all rows on this page"
+msgstr "Vælg alle rækker på denne side"
+
 msgid "Select charts"
 msgstr "Vælg diagrammer"
 
@@ -912,6 +928,9 @@ msgstr "Vis banner med handling"
 
 msgid "Show bookmarks"
 msgstr "Vis bogmærker"
+
+msgid "Show checkboxes"
+msgstr "Vis afkrydsningsfelter"
 
 msgid "Show dismissable banner"
 msgstr "Vis afliveligt banner"
@@ -982,8 +1001,8 @@ msgstr "Kontakt"
 msgid "System"
 msgstr "System"
 
-msgid "Tables"
-msgstr "Tabeller"
+msgid "Tables and side pane"
+msgstr "Tabeller og sidepanel"
 
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"

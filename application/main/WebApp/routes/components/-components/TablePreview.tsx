@@ -2,7 +2,7 @@ import type { TableRowSize } from "@repo/ui/components/Table";
 
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { SwitchField } from "@repo/ui/components/SwitchField";
+import { Checkbox } from "@repo/ui/components/Checkbox";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@repo/ui/components/Table";
 import { TablePagination } from "@repo/ui/components/TablePagination";
 import { useFormatDate } from "@repo/ui/hooks/useSmartDate";
@@ -13,6 +13,7 @@ import type { SampleProduct } from "./sampleProductData";
 
 import { ProductRow } from "./ProductRow";
 import { pageSize, sampleProducts } from "./sampleProductData";
+import { TablePreviewToolbar } from "./TablePreviewToolbar";
 
 type SortDirection = "ascending" | "descending";
 
@@ -31,6 +32,9 @@ export function TablePreview({ onProductSelect }: TablePreviewProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [rowSize, setRowSize] = useState<TableRowSize>("compact");
   const [fixedColumns, setFixedColumns] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [multiSelect, setMultiSelect] = useState(false);
+  const [checkedIds, setCheckedIds] = useState<number[]>([]);
   const formatDate = useFormatDate();
 
   const sortedProducts = [...sampleProducts].sort((a, b) => {
@@ -58,27 +62,58 @@ export function TablePreview({ onProductSelect }: TablePreviewProps) {
     onProductSelect?.(product);
   };
 
+  const toggleCheck = (productId: number) => {
+    setCheckedIds((prev) => {
+      if (multiSelect) {
+        return prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId];
+      }
+      return prev.includes(productId) ? [] : [productId];
+    });
+  };
+
+  const pageIds = paginatedProducts.map((p) => p.id);
+  const allChecked = pageIds.length > 0 && pageIds.every((id) => checkedIds.includes(id));
+  const toggleAll = () => {
+    setCheckedIds((prev) =>
+      allChecked ? prev.filter((id) => !pageIds.includes(id)) : [...new Set([...prev, ...pageIds])]
+    );
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <SwitchField
-            label={t`Fixed columns`}
-            name="fixed-columns"
-            checked={fixedColumns}
-            onCheckedChange={setFixedColumns}
-          />
-          <SwitchField
-            label={t`Spacious rows`}
-            name="spacious-rows"
-            checked={rowSize === "spacious"}
-            onCheckedChange={(checked) => setRowSize(checked ? "spacious" : "compact")}
-          />
-        </div>
-      </div>
+      <p className="text-sm text-muted-foreground">
+        <Trans>Click a row to open the side pane.</Trans>
+      </p>
+      <TablePreviewToolbar
+        fixedColumns={fixedColumns}
+        setFixedColumns={setFixedColumns}
+        rowSize={rowSize}
+        setRowSize={setRowSize}
+        showCheckboxes={showCheckboxes}
+        onShowCheckboxesChange={(checked) => {
+          setShowCheckboxes(checked);
+          if (!checked) setCheckedIds([]);
+        }}
+        multiSelect={multiSelect}
+        onMultiSelectChange={(checked) => {
+          setMultiSelect(checked);
+          if (!checked && checkedIds.length > 1) setCheckedIds([checkedIds[0]]);
+        }}
+      />
       <Table rowSize={rowSize} aria-label={t`Products`} selectedIndex={selectedIndex} onNavigate={handleRowSelect}>
         <TableHeader>
           <TableRow>
+            {showCheckboxes && (
+              <TableHead className="w-[2.5rem]">
+                {multiSelect && (
+                  <Checkbox
+                    checked={allChecked}
+                    onCheckedChange={toggleAll}
+                    aria-label={t`Select all rows on this page`}
+                  />
+                )}
+              </TableHead>
+            )}
             <TableHead data-column="name" onClick={() => handleSort("name")}>
               <Trans>Product</Trans>
               {sortColumn === "name" && <SortIndicator direction={sortDirection} />}
@@ -124,6 +159,9 @@ export function TablePreview({ onProductSelect }: TablePreviewProps) {
               rowSize={rowSize}
               onSelect={handleRowSelect}
               formatDate={formatDate}
+              showCheckbox={showCheckboxes}
+              isChecked={checkedIds.includes(product.id)}
+              onToggleCheck={() => toggleCheck(product.id)}
             />
           ))}
         </TableBody>

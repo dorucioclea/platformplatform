@@ -43,10 +43,9 @@ function ExamplesPage() {
             currentPage="examples"
             defaultTab="dialogs"
             tabLabels={{
-              dialogs: <Trans>Dialogs and cards</Trans>,
-              "alert-dialogs": <Trans>Alert dialogs</Trans>,
+              dialogs: <Trans>Dialogs and alert dialogs</Trans>,
               cards: <Trans>Cards</Trans>,
-              tables: <Trans>Tables</Trans>,
+              tables: <Trans>Tables and side pane</Trans>,
               empty: <Trans>Empty and skeleton</Trans>,
               skeleton: <Trans>Skeleton</Trans>
             }}
