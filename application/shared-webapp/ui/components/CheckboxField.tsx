@@ -62,7 +62,7 @@ export function CheckboxField({
           // In read-only mode, clicking the wrapping <Label> can't toggle the state, so we surface a focus ring via `focus:`
           // (not `focus-visible:`) as click feedback. Editable mode relies on the Checkbox's built-in `focus-visible:` so
           // mouse clicks don't leave a lingering ring -- the state change is feedback enough.
-          className={readOnly ? "focus:outline focus:outline-2 focus:outline-offset-2" : undefined}
+          className={readOnly ? "focus:outline-2 focus:outline-offset-2" : undefined}
           {...props}
         />
         {label && (tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label)}

@@ -75,7 +75,7 @@ export function UserProfileFields({
           <span className="pb-2.75 text-sm font-medium">
             <Trans>Profile photo</Trans>
           </span>
-          <div className="flex h-[8.5rem] w-full flex-col items-center justify-center rounded-xl bg-card md:size-[8.5rem]">
+          <div className="flex h-34 w-full flex-col items-center justify-center rounded-xl bg-card md:size-34">
             {avatarSection}
           </div>
         </div>

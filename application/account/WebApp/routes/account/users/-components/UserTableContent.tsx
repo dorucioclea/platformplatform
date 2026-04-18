@@ -151,7 +151,7 @@ export function UserTableContent({
 
   return (
     <>
-      <div className="flex-1 overflow-visible rounded-md bg-background outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 max-sm:pb-18 sm:min-h-48 sm:overflow-auto">
+      <div className="flex-1 overflow-visible rounded-md bg-background outline-ring focus-visible:outline-2 focus-visible:outline-offset-2 max-sm:pb-18 sm:min-h-48 sm:overflow-auto">
         <Table
           rowSize="spacious"
           aria-label={t`Users`}
@@ -183,7 +183,7 @@ export function UserTableContent({
       </div>
 
       {!isMobile && (
-        <div className="flex-shrink-0 pt-4">
+        <div className="shrink-0 pt-4">
           <TablePagination
             currentPage={currentPage}
             totalPages={totalPages}

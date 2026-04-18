@@ -168,10 +168,9 @@ export function DateRangePicker({
                 aria-invalid={isInvalid || undefined}
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
-                  "w-full justify-between border border-input px-2.5 font-normal hover:bg-white active:bg-white aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:hover:bg-input/30 dark:active:bg-input/30",
+                  "w-full justify-between border border-input px-2.5 font-normal hover:bg-white active:bg-white aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:hover:bg-input/30 dark:active:bg-input/30",
                   hasValue && !readOnly && !disabled && "pr-9",
-                  readOnly &&
-                    "focus:outline focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
+                  readOnly && "focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
                 )}
                 disabled={disabled}
                 onKeyDown={(e: React.KeyboardEvent) => {

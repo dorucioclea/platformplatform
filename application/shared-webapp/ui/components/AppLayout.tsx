@@ -137,7 +137,7 @@ function useScrollAwayHeader(enabled: boolean, contentRef: React.RefObject<HTMLD
 // because typical consumers (breadcrumbs) already hide their own content at that breakpoint, leaving the wrapper as wasted
 // vertical space -- collapsing it here reclaims that area without forcing every consumer to pass a responsive class.
 function BeforeHeader({ children }: { children: React.ReactNode }) {
-  return <div className="-mt-[0.625rem] mb-3 hidden h-11 items-center sm:-mt-[0.875rem] sm:flex">{children}</div>;
+  return <div className="-mt-2.5 mb-3 hidden h-11 items-center sm:-mt-3.5 sm:flex">{children}</div>;
 }
 
 interface HeaderContentProps {
@@ -334,7 +334,7 @@ export function AppLayout({
         {title && (
           <div
             className={cn(
-              "fixed top-[var(--banner-offset,0rem)] right-0 left-0 z-30 border-b border-border bg-background px-[16px] py-3",
+              "fixed top-(--banner-offset,0rem) right-0 left-0 z-30 border-b border-border bg-background px-[16px] py-3",
               "flex flex-col items-center justify-center text-center sm:hidden",
               "transform transition-all duration-200",
               (scrollAwayHeader ? isFullyScrolled : isSticky)
@@ -390,7 +390,7 @@ export function AppLayout({
         {/* Side pane area - fullscreen mode uses portal, side-by-side uses this wrapper */}
         {sidePane && (
           <aside
-            className="fixed top-[var(--banner-offset,0rem)] right-0 bottom-0 left-0 z-40 bg-card md:left-auto md:z-10 md:w-96"
+            className="fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-40 bg-card md:left-auto md:z-10 md:w-96"
             aria-label={t`Side panel`}
           >
             {sidePane}

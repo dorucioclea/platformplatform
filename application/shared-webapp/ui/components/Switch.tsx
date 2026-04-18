@@ -12,8 +12,7 @@ function Switch({ className, readOnly, ...props }: SwitchPrimitive.Root.Props) {
     <span
       className={cn(
         "relative inline-flex",
-        readOnly &&
-          "rounded-full outline-ring focus-within:outline focus-within:outline-2 focus-within:outline-offset-2"
+        readOnly && "rounded-full outline-ring focus-within:outline-2 focus-within:outline-offset-2"
       )}
     >
       <SwitchPrimitive.Root
@@ -22,7 +21,7 @@ function Switch({ className, readOnly, ...props }: SwitchPrimitive.Root.Props) {
         className={cn(
           // NOTE: This diverges from stock ShadCN to use outline-based focus ring, add 44px tap target via after pseudo-element,
           // and active:bg-* for press feedback. Uses @base-ui/react/switch which provides role="switch" and aria-checked natively.
-          "peer relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-xs outline-ring transition-colors group-has-disabled/field:opacity-50 after:absolute after:-inset-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-checked:bg-primary data-checked:active:bg-primary/80 data-unchecked:bg-input data-unchecked:active:bg-input/80 dark:data-unchecked:bg-input/80",
+          "peer relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-xs outline-ring transition-colors group-has-disabled/field:opacity-50 after:absolute after:-inset-3 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-checked:bg-primary data-checked:active:bg-primary/80 data-unchecked:bg-input data-unchecked:active:bg-input/80 dark:data-unchecked:bg-input/80",
           className
         )}
         {...props}

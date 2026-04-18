@@ -453,7 +453,7 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
       // Selected rows use --active-background in both rest and hover states so a selected row never
       // acquires a secondary hover tint on top of its selection highlight.
       className={cn(
-        "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-active-background",
+        "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-active-background",
         rowSizeStyles[rowSize],
         isSelectable && "cursor-pointer select-none",
         className
@@ -484,7 +484,7 @@ function TableHead({ className, onClick, onKeyDown, children, ...props }: React.
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 rounded-sm px-2 text-left align-middle text-xs font-bold whitespace-nowrap text-foreground outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 [&:has([role=checkbox])]:pr-0",
+        "h-10 rounded-sm px-2 text-left align-middle text-xs font-bold whitespace-nowrap text-foreground outline-ring focus-visible:outline-2 focus-visible:-outline-offset-2 [&:has([role=checkbox])]:pr-0",
         isInteractive && "cursor-pointer select-none",
         className
       )}
