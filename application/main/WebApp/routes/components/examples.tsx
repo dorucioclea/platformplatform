@@ -11,6 +11,7 @@ import { DishDetailsSidePane } from "./-components/DishDetailsSidePane";
 import { DishMultiSelectSidePane } from "./-components/DishMultiSelectSidePane";
 import { ExamplesPreview } from "./-components/ExamplesPreview";
 import { PreviewHeader } from "./-components/PreviewHeader";
+import { sampleDishes } from "./-components/sampleDishData";
 
 export const Route = createFileRoute("/components/examples")({
   staticData: { trackingTitle: "Examples" },
@@ -42,7 +43,7 @@ function ExamplesPage() {
 
   const getSidePane = () => {
     if (showSummaryPane) {
-      return <DishMultiSelectSidePane dishes={selectedDishes} isOpen={true} />;
+      return <DishMultiSelectSidePane dishes={selectedDishes} totalCount={sampleDishes.length} isOpen={true} />;
     }
     if (showDetailsPane && selectedDish) {
       return <DishDetailsSidePane dish={selectedDish} isOpen={true} onClose={handleCloseDish} />;

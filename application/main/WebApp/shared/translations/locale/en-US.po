@@ -14,10 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: dishes.length
-msgid "{0, plural, one {# recipe selected} other {# recipes selected}}"
-msgstr "{0, plural, one {# recipe selected} other {# recipes selected}}"
-
-#. placeholder {0}: dishes.length
 msgid "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
 msgstr "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
 
@@ -28,6 +24,10 @@ msgstr "{0} hours ago"
 #. placeholder {0}: smartDate.value
 msgid "{0} minutes ago"
 msgstr "{0} minutes ago"
+
+#. placeholder {0}: dishes.length
+msgid "{0} of {totalCount} recipes selected"
+msgstr "{0} of {totalCount} recipes selected"
 
 msgid "+39 06 555 0000"
 msgstr "+39 06 555 0000"

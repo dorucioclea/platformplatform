@@ -100,22 +100,18 @@ export function TablePreview({
     }
   };
 
-  const pageIds = paginatedDishes.map((d) => d.id);
-  const allChecked = pageIds.length > 0 && pageIds.every((id) => selectedKeys.has(id));
-  const someChecked = pageIds.some((id) => selectedKeys.has(id));
+  // Select-all spans the whole dataset, not just the current page: checked means every row is
+  // selected, indeterminate means some but not all are selected. Toggling clears everything when
+  // fully selected, otherwise selects every row across all pages.
+  const allChecked = sampleDishes.length > 0 && selectedKeys.size === sampleDishes.length;
+  const someChecked = selectedKeys.size > 0;
   const headerIndeterminate = someChecked && !allChecked;
   const toggleAll = () => {
-    setSelectedKeys((prev) => {
-      const next = new Set<RowKey>(prev);
-      for (const id of pageIds) {
-        if (allChecked) {
-          next.delete(id);
-        } else {
-          next.add(id);
-        }
-      }
-      return next;
-    });
+    if (allChecked) {
+      setSelectedKeys(new Set<RowKey>());
+      return;
+    }
+    setSelectedKeys(new Set<RowKey>(sampleDishes.map((d) => d.id)));
   };
 
   return (

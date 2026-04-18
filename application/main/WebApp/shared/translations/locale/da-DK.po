@@ -14,10 +14,6 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 
 #. placeholder {0}: dishes.length
-msgid "{0, plural, one {# recipe selected} other {# recipes selected}}"
-msgstr "{0, plural, one {# opskrift valgt} other {# opskrifter valgt}}"
-
-#. placeholder {0}: dishes.length
 msgid "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
 msgstr "{0, plural, one {Slet # opskrift} other {Slet # opskrifter}}"
 
@@ -28,6 +24,10 @@ msgstr "for {0} timer siden"
 #. placeholder {0}: smartDate.value
 msgid "{0} minutes ago"
 msgstr "for {0} minutter siden"
+
+#. placeholder {0}: dishes.length
+msgid "{0} of {totalCount} recipes selected"
+msgstr "{0} af {totalCount} opskrifter valgt"
 
 msgid "+39 06 555 0000"
 msgstr "+39 06 555 0000"
@@ -559,7 +559,7 @@ msgid "Increase"
 msgstr "Forøg"
 
 msgid "Indeterminate"
-msgstr ""
+msgstr "Ubestemt"
 
 msgid "Indian"
 msgstr "Indisk"

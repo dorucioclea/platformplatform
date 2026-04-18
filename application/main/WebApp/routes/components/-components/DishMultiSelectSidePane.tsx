@@ -10,10 +10,11 @@ import { formatCookTime } from "./sampleDishData";
 
 interface DishMultiSelectSidePaneProps {
   dishes: SampleDish[];
+  totalCount: number;
   isOpen: boolean;
 }
 
-export function DishMultiSelectSidePane({ dishes, isOpen }: DishMultiSelectSidePaneProps) {
+export function DishMultiSelectSidePane({ dishes, totalCount, isOpen }: DishMultiSelectSidePaneProps) {
   const totalMinutes = dishes.reduce((sum, dish) => sum + dish.cookTime, 0);
 
   return (
@@ -27,7 +28,7 @@ export function DishMultiSelectSidePane({ dishes, isOpen }: DishMultiSelectSideP
     >
       <SidePaneHeader showCloseButton={false}>
         <Trans>
-          <Plural value={dishes.length} one="# recipe selected" other="# recipes selected" />
+          {dishes.length} of {totalCount} recipes selected
         </Trans>
       </SidePaneHeader>
 
