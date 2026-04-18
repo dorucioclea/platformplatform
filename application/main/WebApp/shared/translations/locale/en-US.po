@@ -90,6 +90,9 @@ msgstr "Alerts, badges, and banners"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
+msgid "Always underlined"
+msgstr "Always underlined"
+
 msgid "Archive"
 msgstr "Archive"
 
@@ -101,6 +104,15 @@ msgstr "Archive this item?"
 
 msgid "Area chart"
 msgstr "Area chart"
+
+msgid "Avatar fallback and badge"
+msgstr "Avatar fallback and badge"
+
+msgid "Avatar group"
+msgstr "Avatar group"
+
+msgid "Avatar sizes"
+msgstr "Avatar sizes"
 
 msgid "Back"
 msgstr "Back"
@@ -119,6 +131,9 @@ msgstr "Basic recipe information and cover photo."
 
 msgid "Basic skills, under 30 minutes"
 msgstr "Basic skills, under 30 minutes"
+
+msgid "Billing"
+msgstr "Billing"
 
 msgid "Boeuf bourguignon"
 msgstr "Boeuf bourguignon"
@@ -156,6 +171,9 @@ msgstr "Button sizes"
 msgid "Button variants"
 msgstr "Button variants"
 
+msgid "Button-styled links"
+msgstr "Button-styled links"
+
 msgid "Buttons and links"
 msgstr "Buttons and links"
 
@@ -173,6 +191,9 @@ msgstr "Cancel"
 
 msgid "Cards"
 msgstr "Cards"
+
+msgid "Casey Park"
+msgstr "Casey Park"
 
 msgid "Categorization"
 msgstr "Categorization"
@@ -432,6 +453,9 @@ msgstr "Export as JSON"
 msgid "Export as PDF"
 msgstr "Export as PDF"
 
+msgid "External"
+msgstr "External"
+
 msgid "Extra large"
 msgstr "Extra large"
 
@@ -507,6 +531,9 @@ msgstr "Here's your overview of what's happening."
 msgid "Home"
 msgstr "Home"
 
+msgid "Horizontal"
+msgstr "Horizontal"
+
 msgid "Icon-only buttons"
 msgstr "Icon-only buttons"
 
@@ -545,6 +572,9 @@ msgstr "Item deleted"
 
 msgid "Japanese"
 msgstr "Japanese"
+
+msgid "Jordan Lee"
+msgstr "Jordan Lee"
 
 msgid "JPEG, PNG or WebP. Max 1 MB."
 msgstr "JPEG, PNG or WebP. Max 1 MB."
@@ -590,6 +620,15 @@ msgstr "Line chart"
 
 msgid "Link"
 msgstr "Link"
+
+msgid "Link sizes"
+msgstr "Link sizes"
+
+msgid "Link underline"
+msgstr "Link underline"
+
+msgid "Link variants"
+msgstr "Link variants"
 
 msgid "Log in"
 msgstr "Log in"
@@ -651,6 +690,9 @@ msgstr "More save options"
 msgid "More tools"
 msgstr "More tools"
 
+msgid "Morgan Riley"
+msgstr "Morgan Riley"
+
 msgid "Multi select"
 msgstr "Multi select"
 
@@ -668,6 +710,9 @@ msgstr "Native time"
 
 msgid "Navigation"
 msgstr "Navigation"
+
+msgid "Never underlined"
+msgstr "Never underlined"
 
 msgid "Next"
 msgstr "Next"
@@ -698,6 +743,9 @@ msgstr "Number (integer)"
 
 msgid "Okonomiyaki"
 msgstr "Okonomiyaki"
+
+msgid "One-time code"
+msgstr "One-time code"
 
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
@@ -771,6 +819,9 @@ msgstr "Previous"
 msgid "Price"
 msgstr "Price"
 
+msgid "Primary"
+msgstr "Primary"
+
 msgid "Product"
 msgstr "Product"
 
@@ -785,6 +836,9 @@ msgstr "Product ID"
 
 msgid "Products"
 msgstr "Products"
+
+msgid "Profile"
+msgstr "Profile"
 
 msgid "Profile picture preview"
 msgstr "Profile picture preview"
@@ -922,8 +976,14 @@ msgstr "Selected products"
 msgid "Send invite"
 msgstr "Send invite"
 
+msgid "Separator"
+msgstr "Separator"
+
 msgid "Set the recipe's difficulty and favorite status."
 msgstr "Set the recipe's difficulty and favorite status."
+
+msgid "Settings"
+msgstr "Settings"
 
 msgid "Share permission"
 msgstr "Share permission"
@@ -1114,6 +1174,9 @@ msgstr "Type or search..."
 msgid "Underline"
 msgstr "Underline"
 
+msgid "Underline on hover"
+msgstr "Underline on hover"
+
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
@@ -1128,6 +1191,9 @@ msgstr "Upload profile picture"
 
 msgid "Usage"
 msgstr "Usage"
+
+msgid "Use a horizontal separator to group related sections in a column layout."
+msgstr "Use a horizontal separator to group related sections in a column layout."
 
 msgid "Values"
 msgstr "Values"

@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/Alert";
 import { Badge } from "@repo/ui/components/Badge";
 import { Button } from "@repo/ui/components/Button";
+import { Separator } from "@repo/ui/components/Separator";
 import { AlertCircleIcon, FlagIcon, InfoIcon, TriangleAlertIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -148,6 +149,34 @@ export function AlertsBadgesPreview() {
           <Badge variant="outline">
             <Trans>Outline</Trans>
           </Badge>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <h4>
+          <Trans>Separator</Trans>
+        </h4>
+        <div className="flex flex-col gap-3 rounded-md border border-border bg-card p-4">
+          <span className="text-sm font-medium">
+            <Trans>Horizontal</Trans>
+          </span>
+          <Separator />
+          <span className="text-sm text-muted-foreground">
+            <Trans>Use a horizontal separator to group related sections in a column layout.</Trans>
+          </span>
+        </div>
+        <div className="flex h-12 items-center gap-4 rounded-md border border-border bg-card px-4">
+          <span className="text-sm">
+            <Trans>Profile</Trans>
+          </span>
+          <Separator orientation="vertical" />
+          <span className="text-sm">
+            <Trans>Settings</Trans>
+          </span>
+          <Separator orientation="vertical" />
+          <span className="text-sm">
+            <Trans>Billing</Trans>
+          </span>
         </div>
       </div>
     </div>

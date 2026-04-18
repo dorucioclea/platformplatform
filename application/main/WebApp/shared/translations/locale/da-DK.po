@@ -90,6 +90,9 @@ msgstr "Advarsler, badges og bannere"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
+msgid "Always underlined"
+msgstr "Altid understreget"
+
 msgid "Archive"
 msgstr "Arkiver"
 
@@ -101,6 +104,15 @@ msgstr "Arkiver dette element?"
 
 msgid "Area chart"
 msgstr "Områdediagram"
+
+msgid "Avatar fallback and badge"
+msgstr "Reserveavatar og badge"
+
+msgid "Avatar group"
+msgstr "Avatargruppe"
+
+msgid "Avatar sizes"
+msgstr "Avatarstørrelser"
 
 msgid "Back"
 msgstr "Tilbage"
@@ -119,6 +131,9 @@ msgstr "Grundlæggende opskriftsinformation og forsidebillede."
 
 msgid "Basic skills, under 30 minutes"
 msgstr "Grundlæggende færdigheder, under 30 minutter"
+
+msgid "Billing"
+msgstr "Fakturering"
 
 msgid "Boeuf bourguignon"
 msgstr "Boeuf bourguignon"
@@ -156,6 +171,9 @@ msgstr "Knapstørrelser"
 msgid "Button variants"
 msgstr "Knapvarianter"
 
+msgid "Button-styled links"
+msgstr "Links med knapstil"
+
 msgid "Buttons and links"
 msgstr "Knapper og links"
 
@@ -173,6 +191,9 @@ msgstr "Annuller"
 
 msgid "Cards"
 msgstr "Kort"
+
+msgid "Casey Park"
+msgstr "Casey Park"
 
 msgid "Categorization"
 msgstr "Kategorisering"
@@ -432,6 +453,9 @@ msgstr "Eksporter som JSON"
 msgid "Export as PDF"
 msgstr "Eksporter som PDF"
 
+msgid "External"
+msgstr "Ekstern"
+
 msgid "Extra large"
 msgstr "Ekstra stor"
 
@@ -507,6 +531,9 @@ msgstr "Her er dit overblik over hvad der sker."
 msgid "Home"
 msgstr "Hjem"
 
+msgid "Horizontal"
+msgstr "Vandret"
+
 msgid "Icon-only buttons"
 msgstr "Knapper kun med ikon"
 
@@ -545,6 +572,9 @@ msgstr "Element slettet"
 
 msgid "Japanese"
 msgstr "Japansk"
+
+msgid "Jordan Lee"
+msgstr "Jordan Lee"
 
 msgid "JPEG, PNG or WebP. Max 1 MB."
 msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
@@ -590,6 +620,15 @@ msgstr "Linjediagram"
 
 msgid "Link"
 msgstr "Link"
+
+msgid "Link sizes"
+msgstr "Linkstørrelser"
+
+msgid "Link underline"
+msgstr "Linkunderstregning"
+
+msgid "Link variants"
+msgstr "Linkvarianter"
 
 msgid "Log in"
 msgstr "Log ind"
@@ -651,6 +690,9 @@ msgstr "Flere gemgemuligheder"
 msgid "More tools"
 msgstr "Flere værktøjer"
 
+msgid "Morgan Riley"
+msgstr "Morgan Riley"
+
 msgid "Multi select"
 msgstr "Flervalg"
 
@@ -668,6 +710,9 @@ msgstr "Native tid"
 
 msgid "Navigation"
 msgstr "Navigation"
+
+msgid "Never underlined"
+msgstr "Aldrig understreget"
 
 msgid "Next"
 msgstr "Næste"
@@ -698,6 +743,9 @@ msgstr "Tal (heltal)"
 
 msgid "Okonomiyaki"
 msgstr "Okonomiyaki"
+
+msgid "One-time code"
+msgstr "Engangskode"
 
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
@@ -771,6 +819,9 @@ msgstr "Forrige"
 msgid "Price"
 msgstr "Pris"
 
+msgid "Primary"
+msgstr "Primær"
+
 msgid "Product"
 msgstr "Produkt"
 
@@ -785,6 +836,9 @@ msgstr "Produkt-ID"
 
 msgid "Products"
 msgstr "Produkter"
+
+msgid "Profile"
+msgstr "Profil"
 
 msgid "Profile picture preview"
 msgstr "Profilbilledeksempel"
@@ -922,8 +976,14 @@ msgstr "Valgte produkter"
 msgid "Send invite"
 msgstr "Send invitation"
 
+msgid "Separator"
+msgstr "Separator"
+
 msgid "Set the recipe's difficulty and favorite status."
 msgstr "Angiv opskriftens sværhedsgrad og favoritstatus."
+
+msgid "Settings"
+msgstr "Indstillinger"
 
 msgid "Share permission"
 msgstr "Delingstilladelse"
@@ -1114,6 +1174,9 @@ msgstr "Skriv eller søg..."
 msgid "Underline"
 msgstr "Understregning"
 
+msgid "Underline on hover"
+msgstr "Understreg ved hover"
+
 msgid "Unsaved changes"
 msgstr "Ugemte ændringer"
 
@@ -1128,6 +1191,9 @@ msgstr "Upload profilbillede"
 
 msgid "Usage"
 msgstr "Forbrug"
+
+msgid "Use a horizontal separator to group related sections in a column layout."
+msgstr "Brug en vandret separator til at gruppere relaterede sektioner i en kolonnelayout."
 
 msgid "Values"
 msgstr "Værdier"

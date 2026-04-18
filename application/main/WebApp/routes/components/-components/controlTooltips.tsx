@@ -131,6 +131,14 @@ export const tooltips = {
       <PropNote>Groups by continent. Uses browser Intl API for offset display.</PropNote>
     </PropList>
   ),
+  inputOtp: (
+    <PropList title="InputOtp" description="Fixed-length one-time-code input">
+      <Prop name="maxLength">Number of slots (typically 4 or 6)</Prop>
+      <Prop name="value / onChange">Controlled code string</Prop>
+      <Prop name="pattern">Regex restricting accepted characters</Prop>
+      <PropNote>Accepts paste. Slots auto-advance as digits are entered.</PropNote>
+    </PropList>
+  ),
   selectWithGroups: (
     <PropList title="SelectField with groups" description="Select with grouped options">
       <Prop name="SelectGroup">Wraps a group of items</Prop>

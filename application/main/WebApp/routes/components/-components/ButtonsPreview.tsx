@@ -4,6 +4,8 @@ import { Button } from "@repo/ui/components/Button";
 import { Toggle } from "@repo/ui/components/Toggle";
 import { BoldIcon, ItalicIcon, MailIcon, PlusIcon, SearchIcon, TrashIcon, UnderlineIcon } from "lucide-react";
 
+import { AvatarPreview } from "./AvatarPreview";
+import { LinkPreview } from "./LinkPreview";
 import { SplitButtons } from "./SplitButtons";
 
 export function ButtonsPreview() {
@@ -154,6 +156,9 @@ export function ButtonsPreview() {
           </Toggle>
         </div>
       </div>
+
+      <LinkPreview />
+      <AvatarPreview />
     </div>
   );
 }

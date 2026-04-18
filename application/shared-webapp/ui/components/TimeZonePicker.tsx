@@ -23,6 +23,11 @@ const continentOrder = [
   "Pacific"
 ];
 
+// Display the Ukrainian spelling "Kyiv" instead of the Russian-derived "Kiev" still shipped by the IANA tz database.
+const cityLabelOverrides: Record<string, string> = {
+  Kiev: "Kyiv"
+};
+
 function buildTimeZoneGroups(): TimeZoneGroup[] {
   const zones = Intl.supportedValuesOf("timeZone");
   const now = new Date();
@@ -32,7 +37,8 @@ function buildTimeZoneGroups(): TimeZoneGroup[] {
     .map((zone) => {
       const parts = zone.split("/");
       const continent = parts[0];
-      const city = parts.slice(1).join("/").replace(/_/g, " ");
+      const rawCity = parts.slice(1).join("/").replace(/_/g, " ");
+      const city = cityLabelOverrides[rawCity] ?? rawCity;
       const offset =
         new Intl.DateTimeFormat("en-US", { timeZone: zone, timeZoneName: "longOffset" })
           .formatToParts(now)
