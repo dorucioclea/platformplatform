@@ -61,10 +61,8 @@ export function SelectAndComboboxFields({
           <SelectValue placeholder={placeholders ? t`Pick a chart` : undefined} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={null}>
-            <span className="text-muted-foreground">
-              <Trans>None</Trans>
-            </span>
+          <SelectItem value={null} className="text-muted-foreground">
+            <Trans>None</Trans>
           </SelectItem>
           {chartSelectItems.map((item) => (
             <SelectItem key={item.value} value={item.value}>
