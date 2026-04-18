@@ -13,6 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: products.length
+msgid "{0, plural, one {# product selected} other {# products selected}}"
+msgstr "{0, plural, one {# product selected} other {# products selected}}"
+
+#. placeholder {0}: products.length
+msgid "{0, plural, one {Delete # product} other {Delete # products}}"
+msgstr "{0, plural, one {Delete # product} other {Delete # products}}"
+
 #. placeholder {0}: smartDate.value
 msgid "{0} hours ago"
 msgstr "{0} hours ago"
@@ -214,6 +222,9 @@ msgstr "Close menu"
 msgid "Close product details"
 msgstr "Close product details"
 
+msgid "Close selection summary"
+msgstr "Close selection summary"
+
 msgid "Co-author"
 msgstr "Co-author"
 
@@ -318,6 +329,9 @@ msgstr "Delete item"
 
 msgid "Delete product"
 msgstr "Delete product"
+
+msgid "Delete selected products"
+msgstr "Delete selected products"
 
 msgid "Delete this item?"
 msgstr "Delete this item?"
@@ -899,6 +913,9 @@ msgstr "Select time zone"
 msgid "Select with groups"
 msgstr "Select with groups"
 
+msgid "Selected products"
+msgstr "Selected products"
+
 msgid "Send invite"
 msgstr "Send invite"
 
@@ -995,6 +1012,9 @@ msgstr "Stay"
 msgid "Street address"
 msgstr "Street address"
 
+msgid "Summary pane"
+msgstr "Summary pane"
+
 msgid "Switch"
 msgstr "Switch"
 
@@ -1084,6 +1104,9 @@ msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Tooltips"
+
+msgid "Total value"
+msgstr "Total value"
 
 msgid "Type or search..."
 msgstr "Type or search..."

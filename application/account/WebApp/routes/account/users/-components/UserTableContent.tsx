@@ -69,8 +69,9 @@ export function UserTableContent({
   const handleSelectionChange = useCallback(
     (keys: Set<RowKey>) => {
       onSelectedUsersChange(usersList.filter((user) => keys.has(user.id)));
+      if (keys.size > 1) onViewProfile(null);
     },
-    [onSelectedUsersChange, usersList]
+    [onSelectedUsersChange, onViewProfile, usersList]
   );
 
   const handleActivate = useCallback(

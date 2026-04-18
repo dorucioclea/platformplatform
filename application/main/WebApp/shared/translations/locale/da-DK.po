@@ -13,6 +13,14 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
+#. placeholder {0}: products.length
+msgid "{0, plural, one {# product selected} other {# products selected}}"
+msgstr "{0, plural, one {# produkt valgt} other {# produkter valgt}}"
+
+#. placeholder {0}: products.length
+msgid "{0, plural, one {Delete # product} other {Delete # products}}"
+msgstr "{0, plural, one {Slet # produkt} other {Slet # produkter}}"
+
 #. placeholder {0}: smartDate.value
 msgid "{0} hours ago"
 msgstr "for {0} timer siden"
@@ -214,6 +222,9 @@ msgstr "Luk menu"
 msgid "Close product details"
 msgstr "Luk produktdetaljer"
 
+msgid "Close selection summary"
+msgstr "Luk valgoversigt"
+
 msgid "Co-author"
 msgstr "Medforfatter"
 
@@ -318,6 +329,9 @@ msgstr "Slet element"
 
 msgid "Delete product"
 msgstr "Slet produkt"
+
+msgid "Delete selected products"
+msgstr "Slet valgte produkter"
 
 msgid "Delete this item?"
 msgstr "Slet dette element?"
@@ -899,6 +913,9 @@ msgstr "Vælg tidszone"
 msgid "Select with groups"
 msgstr "Vælg med grupper"
 
+msgid "Selected products"
+msgstr "Valgte produkter"
+
 msgid "Send invite"
 msgstr "Send invitation"
 
@@ -995,6 +1012,9 @@ msgstr "Bliv"
 msgid "Street address"
 msgstr "Vejnavn"
 
+msgid "Summary pane"
+msgstr "Oversigtspanel"
+
 msgid "Switch"
 msgstr "Kontakt"
 
@@ -1084,6 +1104,9 @@ msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Værktøjstip"
+
+msgid "Total value"
+msgstr "Samlet værdi"
 
 msgid "Type or search..."
 msgstr "Skriv eller søg..."

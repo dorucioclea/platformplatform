@@ -232,7 +232,9 @@ function Table({
     }
   }, [scrollToKey]);
 
-  // Keep focusedKey valid as rows/selection change (e.g. pagination, filtering).
+  // Keep focusedKey valid as rows/selection change (e.g. pagination, filtering). Prefer the current
+  // focused row so rapid keyboard actions aren't reset by selection updates; only fall back to
+  // scrollToKey / first selected / first row when the current focus is stale.
   useEffect(() => {
     if (!hasSelection) {
       return;
@@ -243,11 +245,11 @@ function Table({
     }
     const rowExists = (key: RowKey) => container.querySelector(rowSelector(key)) != null;
     setFocusedKey((current) => {
-      if (scrollToKey != null && rowExists(scrollToKey)) {
-        return scrollToKey;
-      }
       if (current != null && rowExists(current)) {
         return current;
+      }
+      if (scrollToKey != null && rowExists(scrollToKey)) {
+        return scrollToKey;
       }
       for (const key of effectiveSelectedKeys) {
         if (rowExists(key)) {
@@ -448,10 +450,10 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
       data-state={isSelected ? "selected" : undefined}
       // NOTE: This diverges from stock ShadCN to add outline-based focus ring, active:bg-muted press
       // feedback, and roving tabindex / cursor styles when the row participates in selection.
-      // Selected rows use --active-background, which is theme-tuned to stay visible against the
-      // table's --background in both light and dark modes.
+      // Selected rows use --active-background in both rest and hover states so a selected row never
+      // acquires a secondary hover tint on top of its selection highlight.
       className={cn(
-        "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-selected-hover-background",
+        "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-active-background",
         rowSizeStyles[rowSize],
         isSelectable && "cursor-pointer select-none",
         className

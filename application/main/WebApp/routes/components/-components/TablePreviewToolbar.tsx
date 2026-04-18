@@ -12,6 +12,8 @@ interface TablePreviewToolbarProps {
   onShowCheckboxesChange: (value: boolean) => void;
   multiSelect: boolean;
   onMultiSelectChange: (value: boolean) => void;
+  summaryPane: boolean;
+  onSummaryPaneChange: (value: boolean) => void;
 }
 
 export function TablePreviewToolbar({
@@ -22,7 +24,9 @@ export function TablePreviewToolbar({
   showCheckboxes,
   onShowCheckboxesChange,
   multiSelect,
-  onMultiSelectChange
+  onMultiSelectChange,
+  summaryPane,
+  onSummaryPaneChange
 }: Readonly<TablePreviewToolbarProps>) {
   return (
     <div className="flex items-center justify-between">
@@ -50,6 +54,13 @@ export function TablePreviewToolbar({
           name="multi-select"
           checked={multiSelect}
           onCheckedChange={onMultiSelectChange}
+        />
+        <SwitchField
+          label={t`Summary pane`}
+          name="summary-pane"
+          checked={summaryPane}
+          disabled={!multiSelect}
+          onCheckedChange={onSummaryPaneChange}
         />
       </div>
     </div>

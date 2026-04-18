@@ -5,7 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { Table, TableBody } from "@repo/ui/components/Table";
 import { TablePagination } from "@repo/ui/components/TablePagination";
 import { useFormatDate } from "@repo/ui/hooks/useSmartDate";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { SampleProduct } from "./sampleProductData";
 
@@ -19,9 +19,16 @@ type SortDirection = "ascending" | "descending";
 interface TablePreviewProps {
   selectedProduct?: SampleProduct | null;
   onProductSelect?: (product: SampleProduct | null) => void;
+  onSelectedProductsChange?: (products: SampleProduct[]) => void;
+  onSummaryPaneChange?: (enabled: boolean) => void;
 }
 
-export function TablePreview({ selectedProduct, onProductSelect }: TablePreviewProps) {
+export function TablePreview({
+  selectedProduct,
+  onProductSelect,
+  onSelectedProductsChange,
+  onSummaryPaneChange
+}: TablePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
@@ -29,8 +36,18 @@ export function TablePreview({ selectedProduct, onProductSelect }: TablePreviewP
   const [fixedColumns, setFixedColumns] = useState(false);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [multiSelect, setMultiSelect] = useState(false);
+  const [summaryPane, setSummaryPane] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<ReadonlySet<RowKey>>(() => new Set());
   const formatDate = useFormatDate();
+
+  useEffect(() => {
+    const selected = sampleProducts.filter((product) => selectedKeys.has(product.id));
+    onSelectedProductsChange?.(selected);
+  }, [selectedKeys, onSelectedProductsChange]);
+
+  useEffect(() => {
+    onSummaryPaneChange?.(summaryPane && multiSelect);
+  }, [summaryPane, multiSelect, onSummaryPaneChange]);
 
   const sortedProducts = useMemo(
     () =>
@@ -68,6 +85,7 @@ export function TablePreview({ selectedProduct, onProductSelect }: TablePreviewP
     setMultiSelect(checked);
     if (!checked) {
       setShowCheckboxes(false);
+      setSummaryPane(false);
       setSelectedKeys((prev) => {
         const first = prev.values().next().value;
         return first != null ? new Set<RowKey>([first]) : new Set<RowKey>();
@@ -112,6 +130,8 @@ export function TablePreview({ selectedProduct, onProductSelect }: TablePreviewP
         onShowCheckboxesChange={handleShowCheckboxesChange}
         multiSelect={multiSelect}
         onMultiSelectChange={handleMultiSelectChange}
+        summaryPane={summaryPane}
+        onSummaryPaneChange={setSummaryPane}
       />
       <Table
         rowSize={rowSize}

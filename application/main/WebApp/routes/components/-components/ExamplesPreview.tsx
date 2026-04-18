@@ -15,9 +15,16 @@ import { TablePreview } from "./TablePreview";
 interface ExamplesPreviewProps {
   selectedProduct?: SampleProduct | null;
   onProductSelect?: (product: SampleProduct | null) => void;
+  onSelectedProductsChange?: (products: SampleProduct[]) => void;
+  onSummaryPaneChange?: (enabled: boolean) => void;
 }
 
-export function ExamplesPreview({ selectedProduct, onProductSelect }: ExamplesPreviewProps) {
+export function ExamplesPreview({
+  selectedProduct,
+  onProductSelect,
+  onSelectedProductsChange,
+  onSummaryPaneChange
+}: ExamplesPreviewProps) {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "dialogs");
 
   useEffect(() => {
@@ -69,7 +76,12 @@ export function ExamplesPreview({ selectedProduct, onProductSelect }: ExamplesPr
         </div>
       </TabsContent>
       <TabsContent value="tables" className="flex flex-1 flex-col">
-        <TablePreview selectedProduct={selectedProduct} onProductSelect={onProductSelect} />
+        <TablePreview
+          selectedProduct={selectedProduct}
+          onProductSelect={onProductSelect}
+          onSelectedProductsChange={onSelectedProductsChange}
+          onSummaryPaneChange={onSummaryPaneChange}
+        />
       </TabsContent>
       <TabsContent value="empty" className="flex flex-1 flex-col">
         <EmptyPreview />
