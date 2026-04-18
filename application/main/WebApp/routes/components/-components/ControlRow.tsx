@@ -1,11 +1,7 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
-import { Field, FieldError, FieldLabel } from "@repo/ui/components/Field";
-import { InputOtp, InputOtpGroup, InputOtpSlot } from "@repo/ui/components/InputOtp";
-import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
+import { InputOtpField } from "@repo/ui/components/InputOtpField";
 import { NumberField } from "@repo/ui/components/NumberField";
 import { TextField } from "@repo/ui/components/TextField";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { EuroIcon, HashIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -89,38 +85,16 @@ export function ControlRow({
       />
       <SelectAndComboboxFields {...derived} />
       <DateAndToggleFields {...derived} />
-      <Field data-invalid={error || undefined}>
-        {label && (
-          <FieldLabel htmlFor={`otp-${suffix}`}>
-            {tooltip ? (
-              <LabelWithTooltip tooltip={tooltips.inputOtp}>
-                <Trans>One-time code</Trans>
-              </LabelWithTooltip>
-            ) : (
-              <Trans>One-time code</Trans>
-            )}
-          </FieldLabel>
-        )}
-        <InputOtp
-          id={`otp-${suffix}`}
-          maxLength={6}
-          value={otpValue}
-          onChange={setOtpValue}
-          disabled={disabled}
-          readOnly={readOnly}
-          aria-invalid={error || undefined}
-          aria-label={t`One-time code`}
-          pattern={REGEXP_ONLY_DIGITS}
-          autoComplete="one-time-code"
-        >
-          <InputOtpGroup>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <InputOtpSlot key={index} index={index} className="size-14" aria-invalid={error || undefined} />
-            ))}
-          </InputOtpGroup>
-        </InputOtp>
-        {error && <FieldError errors={[{ message: errorMessage }]} />}
-      </Field>
+      <InputOtpField
+        label={label ? t`One-time code` : undefined}
+        tooltip={tooltip ? tooltips.inputOtp : undefined}
+        name={`otp-${suffix}`}
+        value={otpValue}
+        onChange={setOtpValue}
+        disabled={disabled}
+        readOnly={readOnly}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 }
