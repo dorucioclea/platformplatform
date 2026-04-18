@@ -32,8 +32,8 @@ export function TablePreview({
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
-  const [rowSize, setRowSize] = useState<TableRowSize>("compact");
-  const [fixedColumns, setFixedColumns] = useState(false);
+  const [rowSize, setRowSize] = useState<TableRowSize>("spacious");
+  const [fixedColumns, setFixedColumns] = useState(true);
   const [showCheckboxes, setShowCheckboxes] = useState(true);
   const [multiSelect, setMultiSelect] = useState(true);
   const [summaryPane, setSummaryPane] = useState(true);
