@@ -7,26 +7,26 @@ import { TablePagination } from "@repo/ui/components/TablePagination";
 import { useFormatDate } from "@repo/ui/hooks/useSmartDate";
 import { useEffect, useMemo, useState } from "react";
 
-import type { SampleProduct } from "./sampleProductData";
+import type { SampleDish } from "./sampleDishData";
 
-import { ProductRow } from "./ProductRow";
-import { pageSize, sampleProducts } from "./sampleProductData";
+import { DishRow } from "./DishRow";
+import { pageSize, sampleDishes } from "./sampleDishData";
 import { TablePreviewHeader } from "./TablePreviewHeader";
 import { TablePreviewToolbar } from "./TablePreviewToolbar";
 
 type SortDirection = "ascending" | "descending";
 
 interface TablePreviewProps {
-  selectedProduct?: SampleProduct | null;
-  onProductSelect?: (product: SampleProduct | null) => void;
-  onSelectedProductsChange?: (products: SampleProduct[]) => void;
+  selectedDish?: SampleDish | null;
+  onDishSelect?: (dish: SampleDish | null) => void;
+  onSelectedDishesChange?: (dishes: SampleDish[]) => void;
   onSummaryPaneChange?: (enabled: boolean) => void;
 }
 
 export function TablePreview({
-  selectedProduct,
-  onProductSelect,
-  onSelectedProductsChange,
+  selectedDish,
+  onDishSelect,
+  onSelectedDishesChange,
   onSummaryPaneChange
 }: TablePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,9 +41,9 @@ export function TablePreview({
   const formatDate = useFormatDate();
 
   useEffect(() => {
-    const selected = sampleProducts.filter((product) => selectedKeys.has(product.id));
-    onSelectedProductsChange?.(selected);
-  }, [selectedKeys, onSelectedProductsChange]);
+    const selected = sampleDishes.filter((dish) => selectedKeys.has(dish.id));
+    onSelectedDishesChange?.(selected);
+  }, [selectedKeys, onSelectedDishesChange]);
 
   // Dependent toggles (Show checkboxes, Summary pane) stay disabled rather than unchecked when
   // Multi-select flips off, so turning Multi-select back on restores the previous preview. The
@@ -55,11 +55,11 @@ export function TablePreview({
     onSummaryPaneChange?.(effectiveSummaryPane);
   }, [effectiveSummaryPane, onSummaryPaneChange]);
 
-  const sortedProducts = useMemo(
+  const sortedDishes = useMemo(
     () =>
-      [...sampleProducts].sort((a, b) => {
-        const aValue = a[sortColumn as keyof SampleProduct];
-        const bValue = b[sortColumn as keyof SampleProduct];
+      [...sampleDishes].sort((a, b) => {
+        const aValue = a[sortColumn as keyof SampleDish];
+        const bValue = b[sortColumn as keyof SampleDish];
         const comparison =
           typeof aValue === "number" && typeof bValue === "number"
             ? aValue - bValue
@@ -69,8 +69,8 @@ export function TablePreview({
     [sortColumn, sortDirection]
   );
 
-  const totalPages = Math.ceil(sortedProducts.length / pageSize);
-  const paginatedProducts = sortedProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const totalPages = Math.ceil(sortedDishes.length / pageSize);
+  const paginatedDishes = sortedDishes.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -82,12 +82,12 @@ export function TablePreview({
   };
 
   const handleActivate = (key: RowKey) => {
-    if (selectedProduct?.id === Number(key)) {
-      onProductSelect?.(null);
+    if (selectedDish?.id === Number(key)) {
+      onDishSelect?.(null);
       return;
     }
-    const product = sampleProducts.find((p) => p.id === Number(key)) ?? null;
-    onProductSelect?.(product);
+    const dish = sampleDishes.find((d) => d.id === Number(key)) ?? null;
+    onDishSelect?.(dish);
   };
 
   const handleMultiSelectChange = (checked: boolean) => {
@@ -100,7 +100,7 @@ export function TablePreview({
     }
   };
 
-  const pageIds = paginatedProducts.map((p) => p.id);
+  const pageIds = paginatedDishes.map((d) => d.id);
   const allChecked = pageIds.length > 0 && pageIds.every((id) => selectedKeys.has(id));
   const toggleAll = () => {
     setSelectedKeys((prev) => {
@@ -138,13 +138,13 @@ export function TablePreview({
       />
       <Table
         rowSize={rowSize}
-        aria-label={t`Products`}
+        aria-label={t`Recipes`}
         selectionMode={multiSelect ? "multiple" : "single"}
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
         onActivate={handleActivate}
-        activateOnNavigate={selectedProduct != null}
-        scrollToKey={selectedProduct?.id}
+        activateOnNavigate={selectedDish != null}
+        scrollToKey={selectedDish?.id}
       >
         <TablePreviewHeader
           sortColumn={sortColumn}
@@ -157,14 +157,14 @@ export function TablePreview({
           onToggleAll={toggleAll}
         />
         <TableBody>
-          {paginatedProducts.map((product) => (
-            <ProductRow
-              key={product.id}
-              product={product}
+          {paginatedDishes.map((dish) => (
+            <DishRow
+              key={dish.id}
+              dish={dish}
               rowSize={rowSize}
               formatDate={formatDate}
               showCheckbox={effectiveShowCheckboxes}
-              isChecked={selectedKeys.has(product.id)}
+              isChecked={selectedKeys.has(dish.id)}
             />
           ))}
         </TableBody>
@@ -176,7 +176,7 @@ export function TablePreview({
           onPageChange={setCurrentPage}
           previousLabel={t`Previous`}
           nextLabel={t`Next`}
-          trackingTitle="Component preview products"
+          trackingTitle="Component preview recipes"
           className="w-full"
         />
       </div>

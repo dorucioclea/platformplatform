@@ -13,13 +13,13 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. placeholder {0}: products.length
-msgid "{0, plural, one {# product selected} other {# products selected}}"
-msgstr "{0, plural, one {# product selected} other {# products selected}}"
+#. placeholder {0}: dishes.length
+msgid "{0, plural, one {# recipe selected} other {# recipes selected}}"
+msgstr "{0, plural, one {# recipe selected} other {# recipes selected}}"
 
-#. placeholder {0}: products.length
-msgid "{0, plural, one {Delete # product} other {Delete # products}}"
-msgstr "{0, plural, one {Delete # product} other {Delete # products}}"
+#. placeholder {0}: dishes.length
+msgid "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
+msgstr "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
 
 #. placeholder {0}: smartDate.value
 msgid "{0} hours ago"
@@ -39,6 +39,9 @@ msgstr ""
 "1 Infinite Loop\n"
 "Cupertino, CA 95014"
 
+msgid "14 h 30 min logged"
+msgstr "14 h 30 min logged"
+
 msgid "2 hours ago"
 msgstr "2 hours ago"
 
@@ -48,8 +51,8 @@ msgstr "2X large"
 msgid "3 minutes ago"
 msgstr "3 minutes ago"
 
-msgid "5 active members"
-msgstr "5 active members"
+msgid "5 active co-cooks"
+msgstr "5 active co-cooks"
 
 msgid "75% of quota used"
 msgstr "75% of quota used"
@@ -63,8 +66,14 @@ msgstr "Add notes about this recipe"
 msgid "Add notes here"
 msgstr "Add notes here"
 
+msgid "Add recipe"
+msgstr "Add recipe"
+
 msgid "Add to favorites"
 msgstr "Add to favorites"
+
+msgid "Add your first recipe to start building your personal cookbook."
+msgstr "Add your first recipe to start building your personal cookbook."
 
 msgid "Added"
 msgstr "Added"
@@ -198,9 +207,6 @@ msgstr "Casey Park"
 msgid "Categorization"
 msgstr "Categorization"
 
-msgid "Category"
-msgstr "Category"
-
 msgid "Change language"
 msgstr "Change language"
 
@@ -240,14 +246,17 @@ msgstr "Close"
 msgid "Close menu"
 msgstr "Close menu"
 
-msgid "Close product details"
-msgstr "Close product details"
+msgid "Close recipe details"
+msgstr "Close recipe details"
 
 msgid "Close selection summary"
 msgstr "Close selection summary"
 
 msgid "Co-author"
 msgstr "Co-author"
+
+msgid "Co-cooks"
+msgstr "Co-cooks"
 
 msgid "Colm Tuite"
 msgstr "Colm Tuite"
@@ -279,11 +288,17 @@ msgstr "Context menu"
 msgid "Controls"
 msgstr "Controls"
 
+msgid "Cook time"
+msgstr "Cook time"
+
 msgid "Cooking details"
 msgstr "Cooking details"
 
 msgid "Cooking notes"
 msgstr "Cooking notes"
+
+msgid "Cooking time"
+msgstr "Cooking time"
 
 msgid "Coq au vin"
 msgstr "Coq au vin"
@@ -294,14 +309,14 @@ msgstr "Create"
 msgid "Create <0>{search}</0>"
 msgstr "Create <0>{search}</0>"
 
-msgid "Create item"
-msgstr "Create item"
-
 msgid "Create shortcut..."
 msgstr "Create shortcut..."
 
 msgid "Creme brulee"
 msgstr "Creme brulee"
+
+msgid "Cuisine"
+msgstr "Cuisine"
 
 msgid "Current page"
 msgstr "Current page"
@@ -348,11 +363,11 @@ msgstr "Delete"
 msgid "Delete item"
 msgstr "Delete item"
 
-msgid "Delete product"
-msgstr "Delete product"
+msgid "Delete recipe"
+msgstr "Delete recipe"
 
-msgid "Delete selected products"
-msgstr "Delete selected products"
+msgid "Delete selected recipes"
+msgstr "Delete selected recipes"
 
 msgid "Delete this item?"
 msgstr "Delete this item?"
@@ -374,6 +389,9 @@ msgstr "Dialogs"
 
 msgid "Dialogs and alert dialogs"
 msgstr "Dialogs and alert dialogs"
+
+msgid "Difficulty"
+msgstr "Difficulty"
 
 msgid "Dirty dialog"
 msgstr "Dirty dialog"
@@ -407,9 +425,6 @@ msgstr "E.g., Spaghetti Carbonara"
 
 msgid "Easy"
 msgstr "Easy"
-
-msgid "Edit product"
-msgstr "Edit product"
 
 msgid "Edit profile"
 msgstr "Edit profile"
@@ -555,9 +570,6 @@ msgstr "Info alert"
 msgid "Invite"
 msgstr "Invite"
 
-msgid "Invite and manage your team."
-msgstr "Invite and manage your team."
-
 msgid "Italian"
 msgstr "Italian"
 
@@ -642,9 +654,6 @@ msgstr "Main content"
 msgid "Main navigation"
 msgstr "Main navigation"
 
-msgid "Manage your notification preferences."
-msgstr "Manage your notification preferences."
-
 msgid "Masala dosa"
 msgstr "Masala dosa"
 
@@ -720,8 +729,8 @@ msgstr "Next"
 msgid "Nigiri sushi"
 msgstr "Nigiri sushi"
 
-msgid "No data yet"
-msgstr "No data yet"
+msgid "No recipes yet"
+msgstr "No recipes yet"
 
 msgid "No results found"
 msgstr "No results found"
@@ -731,9 +740,6 @@ msgstr "None"
 
 msgid "Not yet"
 msgstr "Not yet"
-
-msgid "Notifications"
-msgstr "Notifications"
 
 msgid "Number (decimal)"
 msgstr "Number (decimal)"
@@ -816,26 +822,8 @@ msgstr "Preview settings"
 msgid "Previous"
 msgstr "Previous"
 
-msgid "Price"
-msgstr "Price"
-
 msgid "Primary"
 msgstr "Primary"
-
-msgid "Product"
-msgstr "Product"
-
-msgid "Product actions"
-msgstr "Product actions"
-
-msgid "Product details"
-msgstr "Product details"
-
-msgid "Product ID"
-msgstr "Product ID"
-
-msgid "Products"
-msgstr "Products"
 
 msgid "Profile"
 msgstr "Profile"
@@ -870,8 +858,17 @@ msgstr "Ready to publish?"
 msgid "Rebase and merge"
 msgstr "Rebase and merge"
 
+msgid "Recipe"
+msgstr "Recipe"
+
+msgid "Recipe actions"
+msgstr "Recipe actions"
+
 msgid "Recipe details"
 msgstr "Recipe details"
+
+msgid "Recipe ID"
+msgstr "Recipe ID"
 
 msgid "Recipe info"
 msgstr "Recipe info"
@@ -881,6 +878,9 @@ msgstr "Recipe saved"
 
 msgid "Recipe shared"
 msgstr "Recipe shared"
+
+msgid "Recipes"
+msgstr "Recipes"
 
 msgid "recipes@example.com"
 msgstr "recipes@example.com"
@@ -933,6 +933,9 @@ msgstr "Save changes"
 msgid "Save page as..."
 msgstr "Save page as..."
 
+msgid "Saved recipes"
+msgstr "Saved recipes"
+
 msgid "Saving..."
 msgstr "Saving..."
 
@@ -951,7 +954,7 @@ msgstr "Secondary"
 msgid "Select"
 msgstr "Select"
 
-#. placeholder {0}: product.name
+#. placeholder {0}: dish.name
 msgid "Select {0}"
 msgstr "Select {0}"
 
@@ -970,8 +973,8 @@ msgstr "Select time zone"
 msgid "Select with groups"
 msgstr "Select with groups"
 
-msgid "Selected products"
-msgstr "Selected products"
+msgid "Selected recipes"
+msgstr "Selected recipes"
 
 msgid "Send invite"
 msgstr "Send invite"
@@ -990,6 +993,9 @@ msgstr "Share permission"
 
 msgid "Share recipe"
 msgstr "Share recipe"
+
+msgid "Share recipes with family and friends."
+msgstr "Share recipes with family and friends."
 
 msgid "Share this recipe with a friend or family member."
 msgstr "Share this recipe with a friend or family member."
@@ -1066,9 +1072,6 @@ msgstr "Split buttons"
 msgid "Squash and merge"
 msgstr "Squash and merge"
 
-msgid "Status"
-msgstr "Status"
-
 msgid "Stay"
 msgstr "Stay"
 
@@ -1087,9 +1090,6 @@ msgstr "Tables and side pane"
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"
 
-msgid "Team members"
-msgstr "Team members"
-
 msgid "Text area"
 msgstr "Text area"
 
@@ -1104,9 +1104,6 @@ msgstr "The item will be moved to the archive. You can restore it later from the
 
 msgid "Theme"
 msgstr "Theme"
-
-msgid "There is nothing to display here. Create your first item to get started."
-msgstr "There is nothing to display here. Create your first item to get started."
 
 msgid "This action cannot be undone. The item will be permanently removed."
 msgstr "This action cannot be undone. The item will be permanently removed."
@@ -1165,8 +1162,11 @@ msgstr "Tonkotsu ramen"
 msgid "Tooltips"
 msgstr "Tooltips"
 
-msgid "Total value"
-msgstr "Total value"
+msgid "Total cook time"
+msgstr "Total cook time"
+
+msgid "Total time spent cooking this month."
+msgstr "Total time spent cooking this month."
 
 msgid "Type or search..."
 msgstr "Type or search..."
@@ -1188,9 +1188,6 @@ msgstr "Upload photo"
 
 msgid "Upload profile picture"
 msgstr "Upload profile picture"
-
-msgid "Usage"
-msgstr "Usage"
 
 msgid "Use a horizontal separator to group related sections in a column layout."
 msgstr "Use a horizontal separator to group related sections in a column layout."
@@ -1219,8 +1216,8 @@ msgstr "Yakitori skewers"
 msgid "Yesterday"
 msgstr "Yesterday"
 
-msgid "You have 3 unread notifications."
-msgstr "You have 3 unread notifications."
+msgid "You have 12 saved recipes."
+msgstr "You have 12 saved recipes."
 
 msgid "You have unsaved changes. If you leave now, your changes will be lost."
 msgstr "You have unsaved changes. If you leave now, your changes will be lost."
@@ -1234,11 +1231,11 @@ msgstr "You successfully installed PlatformPlatform! 🎉"
 msgid "Your changes will be published and visible to all team members immediately."
 msgstr "Your changes will be published and visible to all team members immediately."
 
-msgid "Your current plan usage this month."
-msgstr "Your current plan usage this month."
-
 msgid "Your dashboard is empty"
 msgstr "Your dashboard is empty"
+
+msgid "Your personal cookbook library."
+msgstr "Your personal cookbook library."
 
 msgid "Your trial expires in 3 days."
 msgstr "Your trial expires in 3 days."

@@ -10,15 +10,15 @@ export function CardsPreview() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <Trans>Notifications</Trans>
+              <Trans>Saved recipes</Trans>
             </CardTitle>
             <CardDescription>
-              <Trans>Manage your notification preferences.</Trans>
+              <Trans>Your personal cookbook library.</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p>
-              <Trans>You have 3 unread notifications.</Trans>
+              <Trans>You have 12 saved recipes.</Trans>
             </p>
           </CardContent>
           <CardFooter>
@@ -30,15 +30,15 @@ export function CardsPreview() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <Trans>Team members</Trans>
+              <Trans>Co-cooks</Trans>
             </CardTitle>
             <CardDescription>
-              <Trans>Invite and manage your team.</Trans>
+              <Trans>Share recipes with family and friends.</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p>
-              <Trans>5 active members</Trans>
+              <Trans>5 active co-cooks</Trans>
             </p>
           </CardContent>
           <CardFooter>
@@ -51,15 +51,15 @@ export function CardsPreview() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <Trans>Usage</Trans>
+              <Trans>Cooking time</Trans>
             </CardTitle>
             <CardDescription>
-              <Trans>Your current plan usage this month.</Trans>
+              <Trans>Total time spent cooking this month.</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p>
-              <Trans>75% of quota used</Trans>
+              <Trans>14 h 30 min logged</Trans>
             </p>
           </CardContent>
         </Card>

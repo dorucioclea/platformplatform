@@ -57,20 +57,20 @@ export function TablePreviewHeader({
           </TableHead>
         )}
         <TableHead data-column="name" onClick={() => onSort("name")}>
-          <Trans>Product</Trans>
+          <Trans>Recipe</Trans>
           <SortIndicator column="name" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
-        <TableHead data-column="category" onClick={() => onSort("category")}>
-          <Trans>Category</Trans>
-          <SortIndicator column="category" sortColumn={sortColumn} direction={sortDirection} />
+        <TableHead data-column="cuisine" onClick={() => onSort("cuisine")}>
+          <Trans>Cuisine</Trans>
+          <SortIndicator column="cuisine" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
         <TableHead
-          data-column="price"
+          data-column="cookTime"
           className={fixedColumns ? "w-[7rem]" : undefined}
-          onClick={() => onSort("price")}
+          onClick={() => onSort("cookTime")}
         >
-          <Trans>Price</Trans>
-          <SortIndicator column="price" sortColumn={sortColumn} direction={sortDirection} />
+          <Trans>Cook time</Trans>
+          <SortIndicator column="cookTime" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
         <TableHead
           data-column="addedAt"
@@ -81,12 +81,12 @@ export function TablePreviewHeader({
           <SortIndicator column="addedAt" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
         <TableHead
-          data-column="status"
+          data-column="difficulty"
           className={fixedColumns ? "w-[9rem]" : undefined}
-          onClick={() => onSort("status")}
+          onClick={() => onSort("difficulty")}
         >
-          <Trans>Status</Trans>
-          <SortIndicator column="status" sortColumn={sortColumn} direction={sortDirection} />
+          <Trans>Difficulty</Trans>
+          <SortIndicator column="difficulty" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
         <TableHead className="w-[3rem]" />
       </TableRow>

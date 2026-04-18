@@ -4,13 +4,13 @@ import { AppLayout } from "@repo/ui/components/AppLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 
-import type { SampleProduct } from "./-components/sampleProductData";
+import type { SampleDish } from "./-components/sampleDishData";
 
 import { ComponentsSideMenu } from "./-components/ComponentsSideMenu";
+import { DishDetailsSidePane } from "./-components/DishDetailsSidePane";
+import { DishMultiSelectSidePane } from "./-components/DishMultiSelectSidePane";
 import { ExamplesPreview } from "./-components/ExamplesPreview";
 import { PreviewHeader } from "./-components/PreviewHeader";
-import { ProductDetailsSidePane } from "./-components/ProductDetailsSidePane";
-import { ProductMultiSelectSidePane } from "./-components/ProductMultiSelectSidePane";
 
 export const Route = createFileRoute("/components/examples")({
   staticData: { trackingTitle: "Examples" },
@@ -18,34 +18,34 @@ export const Route = createFileRoute("/components/examples")({
 });
 
 function ExamplesPage() {
-  const [selectedProduct, setSelectedProduct] = useState<SampleProduct | null>(null);
-  const [selectedProducts, setSelectedProducts] = useState<SampleProduct[]>([]);
+  const [selectedDish, setSelectedDish] = useState<SampleDish | null>(null);
+  const [selectedDishes, setSelectedDishes] = useState<SampleDish[]>([]);
   const [summaryPaneEnabled, setSummaryPaneEnabled] = useState(false);
 
-  const showSummaryPane = summaryPaneEnabled && selectedProducts.length > 1;
+  const showSummaryPane = summaryPaneEnabled && selectedDishes.length > 1;
 
-  // When multi-select grows past one row, the single-product details pane is no longer relevant —
+  // When multi-select grows past one row, the single-recipe details pane is no longer relevant —
   // either the summary pane takes over or the user opted out and wants no pane at all.
   useEffect(() => {
-    if (selectedProducts.length > 1 && selectedProduct != null) {
-      setSelectedProduct(null);
+    if (selectedDishes.length > 1 && selectedDish != null) {
+      setSelectedDish(null);
     }
-  }, [selectedProducts.length, selectedProduct]);
+  }, [selectedDishes.length, selectedDish]);
 
-  const handleCloseProduct = useCallback(() => {
-    setSelectedProduct(null);
+  const handleCloseDish = useCallback(() => {
+    setSelectedDish(null);
   }, []);
 
   const handleCloseSummary = useCallback(() => {
-    setSelectedProducts([]);
+    setSelectedDishes([]);
   }, []);
 
   const getSidePane = () => {
     if (showSummaryPane) {
-      return <ProductMultiSelectSidePane products={selectedProducts} isOpen={true} onClose={handleCloseSummary} />;
+      return <DishMultiSelectSidePane dishes={selectedDishes} isOpen={true} onClose={handleCloseSummary} />;
     }
-    if (selectedProduct) {
-      return <ProductDetailsSidePane product={selectedProduct} isOpen={true} onClose={handleCloseProduct} />;
+    if (selectedDish) {
+      return <DishDetailsSidePane dish={selectedDish} isOpen={true} onClose={handleCloseDish} />;
     }
     return undefined;
   };
@@ -74,9 +74,9 @@ function ExamplesPage() {
         sidePane={getSidePane()}
       >
         <ExamplesPreview
-          selectedProduct={selectedProduct}
-          onProductSelect={setSelectedProduct}
-          onSelectedProductsChange={setSelectedProducts}
+          selectedDish={selectedDish}
+          onDishSelect={setSelectedDish}
+          onSelectedDishesChange={setSelectedDishes}
           onSummaryPaneChange={setSummaryPaneEnabled}
         />
       </AppLayout>

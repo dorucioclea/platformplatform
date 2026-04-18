@@ -13,13 +13,13 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
-#. placeholder {0}: products.length
-msgid "{0, plural, one {# product selected} other {# products selected}}"
-msgstr "{0, plural, one {# produkt valgt} other {# produkter valgt}}"
+#. placeholder {0}: dishes.length
+msgid "{0, plural, one {# recipe selected} other {# recipes selected}}"
+msgstr "{0, plural, one {# opskrift valgt} other {# opskrifter valgt}}"
 
-#. placeholder {0}: products.length
-msgid "{0, plural, one {Delete # product} other {Delete # products}}"
-msgstr "{0, plural, one {Slet # produkt} other {Slet # produkter}}"
+#. placeholder {0}: dishes.length
+msgid "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
+msgstr "{0, plural, one {Slet # opskrift} other {Slet # opskrifter}}"
 
 #. placeholder {0}: smartDate.value
 msgid "{0} hours ago"
@@ -39,6 +39,9 @@ msgstr ""
 "1 Infinite Loop\n"
 "Cupertino, CA 95014"
 
+msgid "14 h 30 min logged"
+msgstr "14 t 30 min logget"
+
 msgid "2 hours ago"
 msgstr "For 2 timer siden"
 
@@ -48,8 +51,8 @@ msgstr "2X stor"
 msgid "3 minutes ago"
 msgstr "For 3 minutter siden"
 
-msgid "5 active members"
-msgstr "5 aktive medlemmer"
+msgid "5 active co-cooks"
+msgstr "5 aktive medkokke"
 
 msgid "75% of quota used"
 msgstr "75% af kvoten brugt"
@@ -63,8 +66,14 @@ msgstr "Tilføj noter om denne opskrift"
 msgid "Add notes here"
 msgstr "Tilføj noter her"
 
+msgid "Add recipe"
+msgstr "Tilføj opskrift"
+
 msgid "Add to favorites"
 msgstr "Tilføj til favoritter"
+
+msgid "Add your first recipe to start building your personal cookbook."
+msgstr "Tilføj din første opskrift for at begynde at opbygge din personlige kogebog."
 
 msgid "Added"
 msgstr "Tilføjet"
@@ -198,9 +207,6 @@ msgstr "Casey Park"
 msgid "Categorization"
 msgstr "Kategorisering"
 
-msgid "Category"
-msgstr "Kategori"
-
 msgid "Change language"
 msgstr "Skift sprog"
 
@@ -240,14 +246,17 @@ msgstr "Luk"
 msgid "Close menu"
 msgstr "Luk menu"
 
-msgid "Close product details"
-msgstr "Luk produktdetaljer"
+msgid "Close recipe details"
+msgstr "Luk opskriftsdetaljer"
 
 msgid "Close selection summary"
 msgstr "Luk valgoversigt"
 
 msgid "Co-author"
 msgstr "Medforfatter"
+
+msgid "Co-cooks"
+msgstr "Medkokke"
 
 msgid "Colm Tuite"
 msgstr "Colm Tuite"
@@ -279,11 +288,17 @@ msgstr "Kontekstmenu"
 msgid "Controls"
 msgstr "Kontroller"
 
+msgid "Cook time"
+msgstr "Tilberedningstid"
+
 msgid "Cooking details"
 msgstr "Tilberedningsdetaljer"
 
 msgid "Cooking notes"
 msgstr "Tilberedningsnoter"
+
+msgid "Cooking time"
+msgstr "Madlavningstid"
 
 msgid "Coq au vin"
 msgstr "Coq au vin"
@@ -294,14 +309,14 @@ msgstr "Opret"
 msgid "Create <0>{search}</0>"
 msgstr "Opret <0>{search}</0>"
 
-msgid "Create item"
-msgstr "Opret element"
-
 msgid "Create shortcut..."
 msgstr "Opret genvej..."
 
 msgid "Creme brulee"
 msgstr "Creme brulee"
+
+msgid "Cuisine"
+msgstr "Køkken"
 
 msgid "Current page"
 msgstr "Nuværende side"
@@ -348,11 +363,11 @@ msgstr "Slet"
 msgid "Delete item"
 msgstr "Slet element"
 
-msgid "Delete product"
-msgstr "Slet produkt"
+msgid "Delete recipe"
+msgstr "Slet opskrift"
 
-msgid "Delete selected products"
-msgstr "Slet valgte produkter"
+msgid "Delete selected recipes"
+msgstr "Slet valgte opskrifter"
 
 msgid "Delete this item?"
 msgstr "Slet dette element?"
@@ -374,6 +389,9 @@ msgstr "Dialoger"
 
 msgid "Dialogs and alert dialogs"
 msgstr "Dialoger og advarselsdialoger"
+
+msgid "Difficulty"
+msgstr "Sværhedsgrad"
 
 msgid "Dirty dialog"
 msgstr "Uren dialog"
@@ -407,9 +425,6 @@ msgstr "F.eks. Spaghetti Carbonara"
 
 msgid "Easy"
 msgstr "Let"
-
-msgid "Edit product"
-msgstr "Rediger produkt"
 
 msgid "Edit profile"
 msgstr "Rediger profil"
@@ -555,9 +570,6 @@ msgstr "Informationsadvarsel"
 msgid "Invite"
 msgstr "Inviter"
 
-msgid "Invite and manage your team."
-msgstr "Inviter og administrer dit team."
-
 msgid "Italian"
 msgstr "Italiensk"
 
@@ -642,9 +654,6 @@ msgstr "Hovedindhold"
 msgid "Main navigation"
 msgstr "Hovednavigation"
 
-msgid "Manage your notification preferences."
-msgstr "Administrer dine notifikationsindstillinger."
-
 msgid "Masala dosa"
 msgstr "Masala dosa"
 
@@ -720,8 +729,8 @@ msgstr "Næste"
 msgid "Nigiri sushi"
 msgstr "Nigiri-sushi"
 
-msgid "No data yet"
-msgstr "Ingen data endnu"
+msgid "No recipes yet"
+msgstr "Ingen opskrifter endnu"
 
 msgid "No results found"
 msgstr "Ingen resultater fundet"
@@ -731,9 +740,6 @@ msgstr "Ingen"
 
 msgid "Not yet"
 msgstr "Ikke endnu"
-
-msgid "Notifications"
-msgstr "Notifikationer"
 
 msgid "Number (decimal)"
 msgstr "Tal (decimal)"
@@ -816,26 +822,8 @@ msgstr "Forhåndsvisningsindstillinger"
 msgid "Previous"
 msgstr "Forrige"
 
-msgid "Price"
-msgstr "Pris"
-
 msgid "Primary"
 msgstr "Primær"
-
-msgid "Product"
-msgstr "Produkt"
-
-msgid "Product actions"
-msgstr "Produkthandlinger"
-
-msgid "Product details"
-msgstr "Produktdetaljer"
-
-msgid "Product ID"
-msgstr "Produkt-ID"
-
-msgid "Products"
-msgstr "Produkter"
 
 msgid "Profile"
 msgstr "Profil"
@@ -870,8 +858,17 @@ msgstr "Klar til at udgive?"
 msgid "Rebase and merge"
 msgstr "Rebase og flet"
 
+msgid "Recipe"
+msgstr "Opskrift"
+
+msgid "Recipe actions"
+msgstr "Opskriftshandlinger"
+
 msgid "Recipe details"
 msgstr "Opskriftsdetaljer"
+
+msgid "Recipe ID"
+msgstr "Opskrifts-ID"
 
 msgid "Recipe info"
 msgstr "Opskriftsinfo"
@@ -881,6 +878,9 @@ msgstr "Opskrift gemt"
 
 msgid "Recipe shared"
 msgstr "Opskrift delt"
+
+msgid "Recipes"
+msgstr "Opskrifter"
 
 msgid "recipes@example.com"
 msgstr "recipes@example.com"
@@ -933,6 +933,9 @@ msgstr "Gem ændringer"
 msgid "Save page as..."
 msgstr "Gem side som..."
 
+msgid "Saved recipes"
+msgstr "Gemte opskrifter"
+
 msgid "Saving..."
 msgstr "Gemmer..."
 
@@ -951,7 +954,7 @@ msgstr "Sekundær"
 msgid "Select"
 msgstr "Vælg"
 
-#. placeholder {0}: product.name
+#. placeholder {0}: dish.name
 msgid "Select {0}"
 msgstr "Vælg {0}"
 
@@ -970,8 +973,8 @@ msgstr "Vælg tidszone"
 msgid "Select with groups"
 msgstr "Vælg med grupper"
 
-msgid "Selected products"
-msgstr "Valgte produkter"
+msgid "Selected recipes"
+msgstr "Valgte opskrifter"
 
 msgid "Send invite"
 msgstr "Send invitation"
@@ -990,6 +993,9 @@ msgstr "Delingstilladelse"
 
 msgid "Share recipe"
 msgstr "Del opskrift"
+
+msgid "Share recipes with family and friends."
+msgstr "Del opskrifter med familie og venner."
 
 msgid "Share this recipe with a friend or family member."
 msgstr "Del denne opskrift med en ven eller et familiemedlem."
@@ -1066,9 +1072,6 @@ msgstr "Delte knapper"
 msgid "Squash and merge"
 msgstr "Squash og flet"
 
-msgid "Status"
-msgstr "Status"
-
 msgid "Stay"
 msgstr "Bliv"
 
@@ -1087,9 +1090,6 @@ msgstr "Tabeller og sidepanel"
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"
 
-msgid "Team members"
-msgstr "Teammedlemmer"
-
 msgid "Text area"
 msgstr "Tekstområde"
 
@@ -1104,9 +1104,6 @@ msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
 
 msgid "Theme"
 msgstr "Tema"
-
-msgid "There is nothing to display here. Create your first item to get started."
-msgstr "Der er intet at vise her. Opret dit første element for at komme i gang."
 
 msgid "This action cannot be undone. The item will be permanently removed."
 msgstr "Denne handling kan ikke fortryde. Elementet fjernes permanent."
@@ -1165,8 +1162,11 @@ msgstr "Tonkotsu ramen"
 msgid "Tooltips"
 msgstr "Værktøjstip"
 
-msgid "Total value"
-msgstr "Samlet værdi"
+msgid "Total cook time"
+msgstr "Samlet tilberedningstid"
+
+msgid "Total time spent cooking this month."
+msgstr "Samlet tid brugt på madlavning denne måned."
 
 msgid "Type or search..."
 msgstr "Skriv eller søg..."
@@ -1188,9 +1188,6 @@ msgstr "Upload foto"
 
 msgid "Upload profile picture"
 msgstr "Upload profilbillede"
-
-msgid "Usage"
-msgstr "Forbrug"
 
 msgid "Use a horizontal separator to group related sections in a column layout."
 msgstr "Brug en vandret separator til at gruppere relaterede sektioner i en kolonnelayout."
@@ -1219,8 +1216,8 @@ msgstr "Yakitori-spyd"
 msgid "Yesterday"
 msgstr "I går"
 
-msgid "You have 3 unread notifications."
-msgstr "Du har 3 ulæste notifikationer."
+msgid "You have 12 saved recipes."
+msgstr "Du har 12 gemte opskrifter."
 
 msgid "You have unsaved changes. If you leave now, your changes will be lost."
 msgstr "Du har ugemte ændringer. Hvis du forlader nu, går dine ændringer tabt."
@@ -1234,11 +1231,11 @@ msgstr "Du har installeret PlatformPlatform med succes! 🎉"
 msgid "Your changes will be published and visible to all team members immediately."
 msgstr "Dine ændringer udgives og er synlige for alle teammedlemmer med det samme."
 
-msgid "Your current plan usage this month."
-msgstr "Dit nuværende planforbrug denne måned."
-
 msgid "Your dashboard is empty"
 msgstr "Dit dashboard er tomt"
+
+msgid "Your personal cookbook library."
+msgstr "Dit personlige kogebogsbibliotek."
 
 msgid "Your trial expires in 3 days."
 msgstr "Din prøveperiode udløber om 3 dage."

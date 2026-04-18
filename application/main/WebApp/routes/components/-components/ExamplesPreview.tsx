@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Ta
 import { LayoutDashboardIcon, LayoutTemplateIcon, PanelsTopLeftIcon, SquareDashedIcon, TableIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { SampleProduct } from "./sampleProductData";
+import type { SampleDish } from "./sampleDishData";
 
 import { CardsPreview } from "./CardsPreview";
 import { DateFormatPreview } from "./DateFormatPreview";
@@ -13,16 +13,16 @@ import { SkeletonPreview } from "./SkeletonPreview";
 import { TablePreview } from "./TablePreview";
 
 interface ExamplesPreviewProps {
-  selectedProduct?: SampleProduct | null;
-  onProductSelect?: (product: SampleProduct | null) => void;
-  onSelectedProductsChange?: (products: SampleProduct[]) => void;
+  selectedDish?: SampleDish | null;
+  onDishSelect?: (dish: SampleDish | null) => void;
+  onSelectedDishesChange?: (dishes: SampleDish[]) => void;
   onSummaryPaneChange?: (enabled: boolean) => void;
 }
 
 export function ExamplesPreview({
-  selectedProduct,
-  onProductSelect,
-  onSelectedProductsChange,
+  selectedDish,
+  onDishSelect,
+  onSelectedDishesChange,
   onSummaryPaneChange
 }: ExamplesPreviewProps) {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "dialogs");
@@ -36,7 +36,7 @@ export function ExamplesPreview({
   const handleTabChange = (value: string | number) => {
     const tab = String(value);
     if (activeTab === "tables" && tab !== "tables") {
-      onProductSelect?.(null);
+      onDishSelect?.(null);
     }
     setActiveTab(tab);
     window.location.hash = tab;
@@ -77,9 +77,9 @@ export function ExamplesPreview({
       </TabsContent>
       <TabsContent value="tables" className="flex flex-1 flex-col">
         <TablePreview
-          selectedProduct={selectedProduct}
-          onProductSelect={onProductSelect}
-          onSelectedProductsChange={onSelectedProductsChange}
+          selectedDish={selectedDish}
+          onDishSelect={onDishSelect}
+          onSelectedDishesChange={onSelectedDishesChange}
           onSummaryPaneChange={onSummaryPaneChange}
         />
       </TabsContent>
