@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { createContext, use, useEffect, useRef, useState } from "react";
+import { createContext, use, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { cn } from "../utils";
 
@@ -233,9 +233,36 @@ function TableHead({ className, onClick, onKeyDown, children, ...props }: React.
   );
 }
 
+// Any focusable descendant of a body <TableCell> is pulled out of the tab order via DOM manipulation so large tables
+// don't force keyboard users to cycle through every row's action buttons, checkboxes, and dropdowns -- rows themselves
+// are focusable via the Table's roving tabindex, and activation happens on Enter/Space. Header <TableHead> is exempt,
+// keeping select-all checkboxes and sortable column headers reachable. Opt individual elements back in with
+// `data-keep-tab-stop` (e.g. an in-cell search input that genuinely needs its own tab stop).
+function useSuppressTabStops(cellRef: React.RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const cell = cellRef.current;
+    if (!cell) {
+      return;
+    }
+    const selector = 'button, [role="checkbox"], [role="switch"], [role="radio"], a[href], input, select, textarea, [tabindex]';
+    const focusable = cell.querySelectorAll<HTMLElement>(selector);
+    focusable.forEach((element) => {
+      if (element.dataset.keepTabStop !== undefined) {
+        return;
+      }
+      if (element.tabIndex !== -1) {
+        element.tabIndex = -1;
+      }
+    });
+  });
+}
+
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  useSuppressTabStops(cellRef);
   return (
     <td
+      ref={cellRef}
       data-slot="table-cell"
       className={cn("p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", className)}
       {...props}

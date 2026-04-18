@@ -78,7 +78,7 @@ export function ProductRow({
         <DropdownMenu trackingTitle="Product actions">
           <DropdownMenuTrigger
             render={
-              <Button variant="ghost" size="icon" tabIndex={-1} aria-label={t`Product actions`}>
+              <Button variant="ghost" size="icon" aria-label={t`Product actions`}>
                 <EllipsisVerticalIcon className="size-5 text-muted-foreground" />
               </Button>
             }
