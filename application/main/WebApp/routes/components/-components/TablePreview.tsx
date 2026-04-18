@@ -34,9 +34,9 @@ export function TablePreview({
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
   const [rowSize, setRowSize] = useState<TableRowSize>("compact");
   const [fixedColumns, setFixedColumns] = useState(false);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [multiSelect, setMultiSelect] = useState(false);
-  const [summaryPane, setSummaryPane] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(true);
+  const [multiSelect, setMultiSelect] = useState(true);
+  const [summaryPane, setSummaryPane] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState<ReadonlySet<RowKey>>(() => new Set());
   const formatDate = useFormatDate();
 
@@ -45,16 +45,25 @@ export function TablePreview({
     onSelectedProductsChange?.(selected);
   }, [selectedKeys, onSelectedProductsChange]);
 
+  // Dependent toggles (Show checkboxes, Summary pane) stay disabled rather than unchecked when
+  // Multi-select flips off, so turning Multi-select back on restores the previous preview. The
+  // effective booleans below mirror that pattern.
+  const effectiveShowCheckboxes = multiSelect && showCheckboxes;
+  const effectiveSummaryPane = multiSelect && summaryPane;
+
   useEffect(() => {
-    onSummaryPaneChange?.(summaryPane && multiSelect);
-  }, [summaryPane, multiSelect, onSummaryPaneChange]);
+    onSummaryPaneChange?.(effectiveSummaryPane);
+  }, [effectiveSummaryPane, onSummaryPaneChange]);
 
   const sortedProducts = useMemo(
     () =>
       [...sampleProducts].sort((a, b) => {
         const aValue = a[sortColumn as keyof SampleProduct];
         const bValue = b[sortColumn as keyof SampleProduct];
-        const comparison = String(aValue).localeCompare(String(bValue));
+        const comparison =
+          typeof aValue === "number" && typeof bValue === "number"
+            ? aValue - bValue
+            : String(aValue).localeCompare(String(bValue));
         return sortDirection === "ascending" ? comparison : -comparison;
       }),
     [sortColumn, sortDirection]
@@ -84,19 +93,10 @@ export function TablePreview({
   const handleMultiSelectChange = (checked: boolean) => {
     setMultiSelect(checked);
     if (!checked) {
-      setShowCheckboxes(false);
-      setSummaryPane(false);
       setSelectedKeys((prev) => {
         const first = prev.values().next().value;
         return first != null ? new Set<RowKey>([first]) : new Set<RowKey>();
       });
-    }
-  };
-
-  const handleShowCheckboxesChange = (checked: boolean) => {
-    setShowCheckboxes(checked);
-    if (checked) {
-      setMultiSelect(true);
     }
   };
 
@@ -119,7 +119,10 @@ export function TablePreview({
   return (
     <div className="flex flex-1 flex-col gap-2">
       <p className="text-sm text-muted-foreground">
-        <Trans>Click a row to open the side pane.</Trans>
+        <Trans>
+          Click a row to open the side pane. Use Shift or Cmd/Ctrl with click or arrow keys to multi-select, Enter to
+          open, and Space to toggle the selection.
+        </Trans>
       </p>
       <TablePreviewToolbar
         fixedColumns={fixedColumns}
@@ -127,7 +130,7 @@ export function TablePreview({
         rowSize={rowSize}
         setRowSize={setRowSize}
         showCheckboxes={showCheckboxes}
-        onShowCheckboxesChange={handleShowCheckboxesChange}
+        onShowCheckboxesChange={setShowCheckboxes}
         multiSelect={multiSelect}
         onMultiSelectChange={handleMultiSelectChange}
         summaryPane={summaryPane}
@@ -148,7 +151,7 @@ export function TablePreview({
           sortDirection={sortDirection}
           onSort={handleSort}
           fixedColumns={fixedColumns}
-          showCheckboxes={showCheckboxes}
+          showCheckboxes={effectiveShowCheckboxes}
           multiSelect={multiSelect}
           allChecked={allChecked}
           onToggleAll={toggleAll}
@@ -160,7 +163,7 @@ export function TablePreview({
               product={product}
               rowSize={rowSize}
               formatDate={formatDate}
-              showCheckbox={showCheckboxes}
+              showCheckbox={effectiveShowCheckboxes}
               isChecked={selectedKeys.has(product.id)}
             />
           ))}

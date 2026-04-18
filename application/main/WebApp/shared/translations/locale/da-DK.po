@@ -210,8 +210,8 @@ msgstr "Ryd dato"
 msgid "Clear dates"
 msgstr "Ryd datoer"
 
-msgid "Click a row to open the side pane."
-msgstr "Klik på en række for at åbne sidepanelet."
+msgid "Click a row to open the side pane. Use Shift or Cmd/Ctrl with click or arrow keys to multi-select, Enter to open, and Space to toggle the selection."
+msgstr "Klik på en række for at åbne sidepanelet. Brug Shift eller Cmd/Ctrl sammen med klik eller piletaster for flervalg, Enter for at åbne og mellemrum for at skifte markeringen."
 
 msgid "Close"
 msgstr "Luk"
@@ -657,6 +657,9 @@ msgstr "Flervalg"
 msgid "Multi-select"
 msgstr "Flervalg"
 
+msgid "Multi-select summary side pane"
+msgstr "Oversigtspanel for flervalg"
+
 msgid "Native date"
 msgstr "Native dato"
 
@@ -1011,9 +1014,6 @@ msgstr "Bliv"
 
 msgid "Street address"
 msgstr "Vejnavn"
-
-msgid "Summary pane"
-msgstr "Oversigtspanel"
 
 msgid "Switch"
 msgstr "Kontakt"

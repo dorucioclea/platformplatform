@@ -44,19 +44,20 @@ export function TablePreviewToolbar({
           onCheckedChange={(checked) => setRowSize(checked ? "spacious" : "compact")}
         />
         <SwitchField
-          label={t`Show checkboxes`}
-          name="show-checkboxes"
-          checked={showCheckboxes}
-          onCheckedChange={onShowCheckboxesChange}
-        />
-        <SwitchField
           label={t`Multi-select`}
           name="multi-select"
           checked={multiSelect}
           onCheckedChange={onMultiSelectChange}
         />
         <SwitchField
-          label={t`Summary pane`}
+          label={t`Show checkboxes`}
+          name="show-checkboxes"
+          checked={showCheckboxes}
+          disabled={!multiSelect}
+          onCheckedChange={onShowCheckboxesChange}
+        />
+        <SwitchField
+          label={t`Multi-select summary side pane`}
           name="summary-pane"
           checked={summaryPane}
           disabled={!multiSelect}

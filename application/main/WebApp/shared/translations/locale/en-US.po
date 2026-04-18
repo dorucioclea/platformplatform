@@ -210,8 +210,8 @@ msgstr "Clear date"
 msgid "Clear dates"
 msgstr "Clear dates"
 
-msgid "Click a row to open the side pane."
-msgstr "Click a row to open the side pane."
+msgid "Click a row to open the side pane. Use Shift or Cmd/Ctrl with click or arrow keys to multi-select, Enter to open, and Space to toggle the selection."
+msgstr "Click a row to open the side pane. Use Shift or Cmd/Ctrl with click or arrow keys to multi-select, Enter to open, and Space to toggle the selection."
 
 msgid "Close"
 msgstr "Close"
@@ -657,6 +657,9 @@ msgstr "Multi select"
 msgid "Multi-select"
 msgstr "Multi-select"
 
+msgid "Multi-select summary side pane"
+msgstr "Multi-select summary side pane"
+
 msgid "Native date"
 msgstr "Native date"
 
@@ -1011,9 +1014,6 @@ msgstr "Stay"
 
 msgid "Street address"
 msgstr "Street address"
-
-msgid "Summary pane"
-msgstr "Summary pane"
 
 msgid "Switch"
 msgstr "Switch"
