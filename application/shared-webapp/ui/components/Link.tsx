@@ -17,7 +17,7 @@ const linkVariants = cva(
         destructive: "text-destructive outline-ring hover:text-destructive/90",
         ghost: "text-accent-foreground outline-ring hover:bg-hover-background hover:text-accent-foreground/90",
         logo: "p-0 outline-ring hover:bg-transparent",
-        icon: "size-10 rounded-lg bg-background/50 text-muted-foreground outline-ring hover:bg-background hover:text-foreground",
+        icon: "size-[var(--control-height)] rounded-lg bg-background/50 text-muted-foreground outline-ring hover:bg-background hover:text-foreground",
         button: "outline-ring",
         "button-primary":
           "h-[var(--control-height)] bg-primary px-6 text-primary-foreground outline-primary hover:bg-primary/90 active:bg-primary/80 max-sm:w-full",
