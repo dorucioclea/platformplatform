@@ -57,17 +57,24 @@ function range(anchor: RowKey, target: RowKey, orderedKeys: RowKey[]): Set<RowKe
 // Each interaction produces an Outcome. A single apply step writes the outcome back to the
 // component (selection callback, focus state, anchor ref, activate callback). Keeping the
 // per-event logic as pure functions means each rule has one place to live.
+//
+// `transient` marks a selection that came from a plain click (or from a preceding transient arrow
+// replace). Arrow navigation replaces transient selections with the focused row, but preserves
+// explicit batches built via Cmd/Shift-click or Space toggle. An unselect-down-to-one via Space on
+// an explicit batch still counts as explicit, so the remaining row survives arrow navigation.
 interface Outcome {
   selection?: Set<RowKey>;
   focusKey?: RowKey;
   anchorKey?: RowKey | null;
   activate?: RowKey;
+  transient?: boolean;
 }
 
 // Clicking a row body vs. clicking its checkbox must feel different:
-//  - Row body click = "make this the current row" (replace + activate, even in multi).
+//  - Plain row click = "make this the current row" (replace selection + activate). In multi mode
+//    a plain click clears any prior batch; Cmd/Ctrl and Shift build it. On the next keyboard nav
+//    the single-row selection gives way to keyboard semantics (handled in outcomeForArrow).
 //  - Checkbox click = "add/remove from the batch" (toggle, never activates).
-// Modifier keys only apply to row clicks; the checkbox is already a toggle affordance.
 function outcomeForClick(
   key: RowKey,
   mode: SelectionMode,
@@ -82,23 +89,23 @@ function outcomeForClick(
     return {};
   }
   if (mode === "single") {
-    return { selection: new Set<RowKey>([key]), focusKey: key, anchorKey: key, activate: key };
+    return { selection: new Set<RowKey>([key]), focusKey: key, anchorKey: key, activate: key, transient: true };
   }
   // multiple
   if (isCheckboxClick) {
     if (shift && anchorKey != null) {
-      return { selection: range(anchorKey, key, orderedKeys), focusKey: key };
+      return { selection: range(anchorKey, key, orderedKeys), focusKey: key, transient: false };
     }
-    return { selection: toggle(selectedKeys, key), focusKey: key, anchorKey: key };
+    return { selection: toggle(selectedKeys, key), focusKey: key, anchorKey: key, transient: false };
   }
   // row body click
   if (shift && anchorKey != null) {
-    return { selection: range(anchorKey, key, orderedKeys), focusKey: key };
+    return { selection: range(anchorKey, key, orderedKeys), focusKey: key, transient: false };
   }
   if (modKey) {
-    return { selection: toggle(selectedKeys, key), focusKey: key, anchorKey: key };
+    return { selection: toggle(selectedKeys, key), focusKey: key, anchorKey: key, transient: false };
   }
-  return { selection: new Set<RowKey>([key]), focusKey: key, anchorKey: key, activate: key };
+  return { selection: new Set<RowKey>([key]), focusKey: key, anchorKey: key, activate: key, transient: true };
 }
 
 function outcomeForArrow(
@@ -108,6 +115,7 @@ function outcomeForArrow(
   orderedKeys: RowKey[],
   focusedKey: RowKey | null,
   anchorKey: RowKey | null,
+  isTransientSelection: boolean,
   activateOnNavigate: boolean
 ): Outcome {
   if (mode === "none" || orderedKeys.length === 0) {
@@ -133,10 +141,23 @@ function outcomeForArrow(
 
   if (shift && mode === "multiple") {
     const anchor = anchorKey ?? focusedKey ?? nextKey;
-    return { selection: range(anchor, nextKey, orderedKeys), focusKey: nextKey, anchorKey: anchor };
+    return {
+      selection: range(anchor, nextKey, orderedKeys),
+      focusKey: nextKey,
+      anchorKey: anchor,
+      transient: false
+    };
   }
 
   const outcome: Outcome = { focusKey: nextKey, anchorKey: nextKey };
+  // Selection follows keyboard focus when it represents a single row from a plain click or prior
+  // arrow replace (transient). In single mode this is always the case. Explicit multi-select
+  // batches built via Cmd/Shift-click or Space toggle are preserved even when the batch has been
+  // whittled down to one row, so the user doesn't lose their explicit selection.
+  if (mode === "single" || isTransientSelection) {
+    outcome.selection = new Set<RowKey>([nextKey]);
+    outcome.transient = true;
+  }
   if (activateOnNavigate) {
     outcome.activate = nextKey;
   }
@@ -154,7 +175,7 @@ function outcomeForSpace(mode: SelectionMode, focusedKey: RowKey | null, selecte
   if (mode === "single") {
     return { activate: focusedKey };
   }
-  return { selection: toggle(selectedKeys, focusedKey), anchorKey: focusedKey };
+  return { selection: toggle(selectedKeys, focusedKey), anchorKey: focusedKey, transient: false };
 }
 
 interface TableProps extends React.ComponentProps<"table"> {
@@ -187,6 +208,7 @@ function Table({
   const effectiveSelectedKeys = selectedKeys ?? EMPTY_KEYS;
   const [focusedKey, setFocusedKey] = useState<RowKey | null>(null);
   const anchorKeyRef = useRef<RowKey | null>(null);
+  const transientSelectionRef = useRef(false);
 
   const stateRef = useRef({
     selectionMode,
@@ -299,6 +321,9 @@ function Table({
       if (outcome.activate !== undefined) {
         state.onActivate?.(outcome.activate);
       }
+      if (outcome.transient !== undefined) {
+        transientSelectionRef.current = outcome.transient;
+      }
     };
 
     const handleClick = (event: MouseEvent) => {
@@ -364,6 +389,7 @@ function Table({
           readOrderedKeys(),
           state.focusedKey,
           anchorKeyRef.current,
+          transientSelectionRef.current,
           state.activateOnNavigate
         );
       }

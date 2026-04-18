@@ -249,9 +249,6 @@ msgstr "Close menu"
 msgid "Close recipe details"
 msgstr "Close recipe details"
 
-msgid "Close selection summary"
-msgstr "Close selection summary"
-
 msgid "Co-author"
 msgstr "Co-author"
 

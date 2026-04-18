@@ -249,9 +249,6 @@ msgstr "Luk menu"
 msgid "Close recipe details"
 msgstr "Luk opskriftsdetaljer"
 
-msgid "Close selection summary"
-msgstr "Luk valgoversigt"
-
 msgid "Co-author"
 msgstr "Medforfatter"
 

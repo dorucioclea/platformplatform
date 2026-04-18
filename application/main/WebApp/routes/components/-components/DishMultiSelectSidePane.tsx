@@ -11,20 +11,21 @@ import { formatCookTime } from "./sampleDishData";
 interface DishMultiSelectSidePaneProps {
   dishes: SampleDish[];
   isOpen: boolean;
-  onClose: () => void;
 }
 
-export function DishMultiSelectSidePane({ dishes, isOpen, onClose }: DishMultiSelectSidePaneProps) {
+export function DishMultiSelectSidePane({ dishes, isOpen }: DishMultiSelectSidePaneProps) {
   const totalMinutes = dishes.reduce((sum, dish) => sum + dish.cookTime, 0);
 
   return (
     <SidePane
       isOpen={isOpen}
-      onOpenChange={(open) => !open && onClose()}
+      // No-op: the summary pane is not dismissable -- it is driven purely by the current selection
+      // state. Esc and backdrop clicks should not close it.
+      onOpenChange={() => {}}
       trackingTitle="Recipe selection summary"
       aria-label={t`Selected recipes`}
     >
-      <SidePaneHeader closeButtonLabel={t`Close selection summary`}>
+      <SidePaneHeader showCloseButton={false}>
         <Trans>
           <Plural value={dishes.length} one="# recipe selected" other="# recipes selected" />
         </Trans>
