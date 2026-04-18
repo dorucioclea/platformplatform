@@ -558,6 +558,9 @@ msgstr "Inkluder tilberedningsnoter"
 msgid "Increase"
 msgstr "Forøg"
 
+msgid "Indeterminate"
+msgstr ""
+
 msgid "Indian"
 msgstr "Indisk"
 

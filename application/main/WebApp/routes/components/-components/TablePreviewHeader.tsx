@@ -14,6 +14,7 @@ interface TablePreviewHeaderProps {
   showCheckboxes: boolean;
   multiSelect: boolean;
   allChecked: boolean;
+  indeterminate: boolean;
   onToggleAll: () => void;
 }
 
@@ -40,6 +41,7 @@ export function TablePreviewHeader({
   showCheckboxes,
   multiSelect,
   allChecked,
+  indeterminate,
   onToggleAll
 }: Readonly<TablePreviewHeaderProps>) {
   return (
@@ -50,6 +52,7 @@ export function TablePreviewHeader({
             {multiSelect && (
               <Checkbox
                 checked={allChecked}
+                indeterminate={indeterminate}
                 onCheckedChange={onToggleAll}
                 aria-label={t`Select all rows on this page`}
               />

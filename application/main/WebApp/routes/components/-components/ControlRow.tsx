@@ -20,7 +20,8 @@ export function ControlRow({
   error,
   showIcon,
   values,
-  placeholders
+  placeholders,
+  indeterminate
 }: ControlRowProps) {
   const hasValues = !!values;
   const errorMessage = error ? t`This field is required` : undefined;
@@ -35,6 +36,7 @@ export function ControlRow({
     showIcon,
     hasValues,
     placeholders,
+    indeterminate,
     errorMessage
   };
 

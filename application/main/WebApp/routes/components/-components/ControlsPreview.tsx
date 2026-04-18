@@ -14,6 +14,7 @@ export function ControlsPreview() {
   const [showPlaceholders, setShowPlaceholders] = useState(true);
   const [controlState, setControlState] = useState<"enabled" | "disabled" | "readonly">("enabled");
   const [showErrors, setShowErrors] = useState(false);
+  const [showIndeterminate, setShowIndeterminate] = useState(false);
 
   return (
     <>
@@ -29,6 +30,7 @@ export function ControlsPreview() {
         <SwitchField label={t`Values`} checked={showValues} onCheckedChange={setShowValues} />
         <SwitchField label={t`Placeholders`} checked={showPlaceholders} onCheckedChange={setShowPlaceholders} />
         <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
+        <SwitchField label={t`Indeterminate`} checked={showIndeterminate} onCheckedChange={setShowIndeterminate} />
         <ToggleGroup
           variant="outline"
           value={[controlState]}
@@ -59,6 +61,7 @@ export function ControlsPreview() {
         disabled={controlState === "disabled"}
         readOnly={controlState === "readonly"}
         error={showErrors}
+        indeterminate={showIndeterminate}
       />
     </>
   );

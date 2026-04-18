@@ -102,6 +102,8 @@ export function TablePreview({
 
   const pageIds = paginatedDishes.map((d) => d.id);
   const allChecked = pageIds.length > 0 && pageIds.every((id) => selectedKeys.has(id));
+  const someChecked = pageIds.some((id) => selectedKeys.has(id));
+  const headerIndeterminate = someChecked && !allChecked;
   const toggleAll = () => {
     setSelectedKeys((prev) => {
       const next = new Set<RowKey>(prev);
@@ -154,6 +156,7 @@ export function TablePreview({
           showCheckboxes={effectiveShowCheckboxes}
           multiSelect={multiSelect}
           allChecked={allChecked}
+          indeterminate={headerIndeterminate}
           onToggleAll={toggleAll}
         />
         <TableBody>

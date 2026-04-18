@@ -41,6 +41,7 @@ export function DateAndToggleFields({
   showIcon,
   hasValues,
   placeholders,
+  indeterminate,
   errorMessage
 }: ControlRowDerivedProps) {
   const toggleGroupRef = useRef<HTMLDivElement>(null);
@@ -116,6 +117,7 @@ export function DateAndToggleFields({
           tooltip={tooltip ? tooltips.checkboxField : undefined}
           name={`checkbox-${suffix}`}
           checked={hasValues ? true : checkboxChecked}
+          indeterminate={indeterminate}
           onCheckedChange={setCheckboxChecked}
           disabled={disabled}
           readOnly={readOnly}

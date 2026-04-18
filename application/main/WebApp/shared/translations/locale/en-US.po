@@ -558,6 +558,9 @@ msgstr "Include cooking notes"
 msgid "Increase"
 msgstr "Increase"
 
+msgid "Indeterminate"
+msgstr "Indeterminate"
+
 msgid "Indian"
 msgstr "Indian"
 
