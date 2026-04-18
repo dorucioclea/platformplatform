@@ -49,7 +49,6 @@ export function TablePreviewToolbar({
           label={t`Multi-select`}
           name="multi-select"
           checked={multiSelect}
-          disabled={!showCheckboxes}
           onCheckedChange={onMultiSelectChange}
         />
       </div>

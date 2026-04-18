@@ -21,39 +21,22 @@ import { statusVariant } from "./sampleProductData";
 
 interface ProductRowProps {
   product: SampleProduct;
-  index: number;
-  isSelected: boolean;
   rowSize: TableRowSize;
-  onSelect: (index: number) => void;
   formatDate: (date: string) => string;
   showCheckbox?: boolean;
   isChecked?: boolean;
-  onToggleCheck?: () => void;
 }
 
-export function ProductRow({
-  product,
-  index,
-  isSelected,
-  rowSize,
-  onSelect,
-  formatDate,
-  showCheckbox,
-  isChecked,
-  onToggleCheck
-}: Readonly<ProductRowProps>) {
+export function ProductRow({ product, rowSize, formatDate, showCheckbox, isChecked }: Readonly<ProductRowProps>) {
   return (
-    <TableRow
-      index={index}
-      data-state={isSelected ? "selected" : undefined}
-      className="cursor-pointer select-none"
-      onClick={() => onSelect(index)}
-    >
+    <TableRow rowKey={product.id}>
       {showCheckbox && (
-        <TableCell onClick={(e) => e.stopPropagation()}>
+        <TableCell>
           <Checkbox
             checked={isChecked ?? false}
-            onCheckedChange={() => onToggleCheck?.()}
+            onCheckedChange={() => {
+              /* selection is driven by the Table click delegation */
+            }}
             aria-label={t`Select ${product.name}`}
           />
         </TableCell>

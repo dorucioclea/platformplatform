@@ -53,7 +53,7 @@ function ExamplesPage() {
         }
         sidePane={getSidePane()}
       >
-        <ExamplesPreview onProductSelect={setSelectedProduct} />
+        <ExamplesPreview selectedProduct={selectedProduct} onProductSelect={setSelectedProduct} />
       </AppLayout>
     </>
   );

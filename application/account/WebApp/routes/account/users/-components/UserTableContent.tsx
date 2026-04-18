@@ -1,14 +1,15 @@
+import type { RowKey } from "@repo/ui/components/Table";
+
 import { t } from "@lingui/core/macro";
 import { useUserInfo } from "@repo/infrastructure/auth/hooks";
 import { Table, TableBody } from "@repo/ui/components/Table";
 import { TablePagination } from "@repo/ui/components/TablePagination";
 import { useInfiniteScroll } from "@repo/ui/hooks/useInfiniteScroll";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { type components, SortableUserProperties, SortOrder } from "@/shared/lib/api/client";
 
-import { useUserSelection } from "../-hooks/useUserSelection";
 import { UserTableEmptyState } from "./UserTableEmptyState";
 import { type SortDescriptor, UserTableHeader } from "./UserTableHeader";
 import { UserTableRow } from "./UserTableRow";
@@ -59,13 +60,25 @@ export function UserTableContent({
     column: orderBy ?? SortableUserProperties.Name,
     direction: sortOrder === SortOrder.Descending ? "descending" : "ascending"
   }));
-  const { selectedUserIds, handleRowClick, currentSelectedIndex } = useUserSelection({
-    usersList,
-    selectedUsers,
-    profileUserId: userId,
-    onSelectedUsersChange,
-    onViewProfile
-  });
+
+  const selectedKeys = useMemo<ReadonlySet<RowKey>>(
+    () => new Set(selectedUsers.map((user) => user.id)),
+    [selectedUsers]
+  );
+
+  const handleSelectionChange = useCallback(
+    (keys: Set<RowKey>) => {
+      onSelectedUsersChange(usersList.filter((user) => keys.has(user.id)));
+    },
+    [onSelectedUsersChange, usersList]
+  );
+
+  const handleActivate = useCallback(
+    (key: RowKey) => {
+      onViewProfile(userId === key ? null : (usersList.find((user) => user.id === key) ?? null));
+    },
+    [userId, onViewProfile, usersList]
+  );
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -84,17 +97,10 @@ export function UserTableContent({
     (columnId: string) => {
       const newDirection =
         sortDescriptor.column === columnId && sortDescriptor.direction === "ascending" ? "descending" : "ascending";
-
-      const newSortDescriptor: SortDescriptor = {
-        column: columnId,
-        direction: newDirection
-      };
-      setSortDescriptor(newSortDescriptor);
+      setSortDescriptor({ column: columnId, direction: newDirection });
       onSelectedUsersChange([]);
-
       const newOrderBy = columnId as SortableUserProperties;
       const newSortOrder = newDirection === "ascending" ? SortOrder.Ascending : SortOrder.Descending;
-
       navigate({
         to: "/account/users",
         search: (prev) => ({
@@ -148,21 +154,22 @@ export function UserTableContent({
         <Table
           rowSize="spacious"
           aria-label={t`Users`}
-          selectedIndex={currentSelectedIndex}
-          onNavigate={(index) => onSelectedUsersChange([usersList[index]])}
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={handleSelectionChange}
+          onActivate={handleActivate}
+          activateOnNavigate={userId != null}
+          scrollToKey={userId}
         >
           <UserTableHeader sortDescriptor={sortDescriptor} isMobile={isMobile} onSortChange={handleSortChange} />
           <TableBody>
-            {usersList.map((user, index) => (
+            {usersList.map((user) => (
               <UserTableRow
                 key={user.id}
                 user={user}
-                index={index}
-                isSelected={selectedUserIds.has(user.id)}
                 isMobile={isMobile}
                 currentUserRole={userInfo?.role}
                 currentUserId={userInfo?.id}
-                onRowClick={handleRowClick}
                 onSelectedUsersChange={onSelectedUsersChange}
                 onViewProfile={onViewProfile}
                 onDeleteUser={onDeleteUser}

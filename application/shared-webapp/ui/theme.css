@@ -36,8 +36,8 @@
     --radius: 0.625rem;
     /* Custom variables */
     --hover-background: oklch(0.95 0.003 264);
-    --active-background: oklch(0.97 0.003 264);
-    --selected-hover-background: oklch(0.93 0.003 264);
+    --active-background: oklch(0.92 0.003 264);
+    --selected-hover-background: oklch(0.89 0.003 264);
     --input-background: oklch(1 0 0);
     --danger: var(--destructive);
     --danger-foreground: var(--destructive-foreground);
@@ -103,8 +103,8 @@
     --radius: 0.625rem;
     /* Custom variables */
     --hover-background: oklch(0.28 0 0);
-    --active-background: oklch(0.15 0 0);
-    --selected-hover-background: oklch(0.25 0 0);
+    --active-background: oklch(0.32 0 0);
+    --selected-hover-background: oklch(0.35 0 0);
     --input-background: oklch(0.25 0 0);
     --danger: var(--destructive);
     --danger-foreground: var(--destructive-foreground);

@@ -1,48 +1,47 @@
-import type { TableRowSize } from "@repo/ui/components/Table";
+import type { RowKey, TableRowSize } from "@repo/ui/components/Table";
 
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Checkbox } from "@repo/ui/components/Checkbox";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@repo/ui/components/Table";
+import { Table, TableBody } from "@repo/ui/components/Table";
 import { TablePagination } from "@repo/ui/components/TablePagination";
 import { useFormatDate } from "@repo/ui/hooks/useSmartDate";
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { SampleProduct } from "./sampleProductData";
 
 import { ProductRow } from "./ProductRow";
 import { pageSize, sampleProducts } from "./sampleProductData";
+import { TablePreviewHeader } from "./TablePreviewHeader";
 import { TablePreviewToolbar } from "./TablePreviewToolbar";
 
 type SortDirection = "ascending" | "descending";
 
 interface TablePreviewProps {
+  selectedProduct?: SampleProduct | null;
   onProductSelect?: (product: SampleProduct | null) => void;
 }
 
-function SortIndicator({ direction }: Readonly<{ direction: SortDirection }>) {
-  return direction === "ascending" ? <ArrowUpIcon className="size-3.5" /> : <ArrowDownIcon className="size-3.5" />;
-}
-
-export function TablePreview({ onProductSelect }: TablePreviewProps) {
+export function TablePreview({ selectedProduct, onProductSelect }: TablePreviewProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [rowSize, setRowSize] = useState<TableRowSize>("compact");
   const [fixedColumns, setFixedColumns] = useState(false);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [multiSelect, setMultiSelect] = useState(false);
-  const [checkedIds, setCheckedIds] = useState<number[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<ReadonlySet<RowKey>>(() => new Set());
   const formatDate = useFormatDate();
 
-  const sortedProducts = [...sampleProducts].sort((a, b) => {
-    const aValue = a[sortColumn as keyof SampleProduct];
-    const bValue = b[sortColumn as keyof SampleProduct];
-    const comparison = String(aValue).localeCompare(String(bValue));
-    return sortDirection === "ascending" ? comparison : -comparison;
-  });
+  const sortedProducts = useMemo(
+    () =>
+      [...sampleProducts].sort((a, b) => {
+        const aValue = a[sortColumn as keyof SampleProduct];
+        const bValue = b[sortColumn as keyof SampleProduct];
+        const comparison = String(aValue).localeCompare(String(bValue));
+        return sortDirection === "ascending" ? comparison : -comparison;
+      }),
+    [sortColumn, sortDirection]
+  );
 
   const totalPages = Math.ceil(sortedProducts.length / pageSize);
   const paginatedProducts = sortedProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
@@ -56,27 +55,47 @@ export function TablePreview({ onProductSelect }: TablePreviewProps) {
     }
   };
 
-  const handleRowSelect = (index: number) => {
-    setSelectedIndex(index);
-    const product = paginatedProducts[index];
+  const handleActivate = (key: RowKey) => {
+    if (selectedProduct?.id === Number(key)) {
+      onProductSelect?.(null);
+      return;
+    }
+    const product = sampleProducts.find((p) => p.id === Number(key)) ?? null;
     onProductSelect?.(product);
   };
 
-  const toggleCheck = (productId: number) => {
-    setCheckedIds((prev) => {
-      if (multiSelect) {
-        return prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId];
-      }
-      return prev.includes(productId) ? [] : [productId];
-    });
+  const handleMultiSelectChange = (checked: boolean) => {
+    setMultiSelect(checked);
+    if (!checked) {
+      setShowCheckboxes(false);
+      setSelectedKeys((prev) => {
+        const first = prev.values().next().value;
+        return first != null ? new Set<RowKey>([first]) : new Set<RowKey>();
+      });
+    }
+  };
+
+  const handleShowCheckboxesChange = (checked: boolean) => {
+    setShowCheckboxes(checked);
+    if (checked) {
+      setMultiSelect(true);
+    }
   };
 
   const pageIds = paginatedProducts.map((p) => p.id);
-  const allChecked = pageIds.length > 0 && pageIds.every((id) => checkedIds.includes(id));
+  const allChecked = pageIds.length > 0 && pageIds.every((id) => selectedKeys.has(id));
   const toggleAll = () => {
-    setCheckedIds((prev) =>
-      allChecked ? prev.filter((id) => !pageIds.includes(id)) : [...new Set([...prev, ...pageIds])]
-    );
+    setSelectedKeys((prev) => {
+      const next = new Set<RowKey>(prev);
+      for (const id of pageIds) {
+        if (allChecked) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+      }
+      return next;
+    });
   };
 
   return (
@@ -90,78 +109,39 @@ export function TablePreview({ onProductSelect }: TablePreviewProps) {
         rowSize={rowSize}
         setRowSize={setRowSize}
         showCheckboxes={showCheckboxes}
-        onShowCheckboxesChange={(checked) => {
-          setShowCheckboxes(checked);
-          if (!checked) setCheckedIds([]);
-        }}
+        onShowCheckboxesChange={handleShowCheckboxesChange}
         multiSelect={multiSelect}
-        onMultiSelectChange={(checked) => {
-          setMultiSelect(checked);
-          if (!checked && checkedIds.length > 1) setCheckedIds([checkedIds[0]]);
-        }}
+        onMultiSelectChange={handleMultiSelectChange}
       />
-      <Table rowSize={rowSize} aria-label={t`Products`} selectedIndex={selectedIndex} onNavigate={handleRowSelect}>
-        <TableHeader>
-          <TableRow>
-            {showCheckboxes && (
-              <TableHead className="w-[2.5rem]">
-                {multiSelect && (
-                  <Checkbox
-                    checked={allChecked}
-                    onCheckedChange={toggleAll}
-                    aria-label={t`Select all rows on this page`}
-                  />
-                )}
-              </TableHead>
-            )}
-            <TableHead data-column="name" onClick={() => handleSort("name")}>
-              <Trans>Product</Trans>
-              {sortColumn === "name" && <SortIndicator direction={sortDirection} />}
-            </TableHead>
-            <TableHead data-column="category" onClick={() => handleSort("category")}>
-              <Trans>Category</Trans>
-              {sortColumn === "category" && <SortIndicator direction={sortDirection} />}
-            </TableHead>
-            <TableHead
-              data-column="price"
-              className={fixedColumns ? "w-[7rem]" : undefined}
-              onClick={() => handleSort("price")}
-            >
-              <Trans>Price</Trans>
-              {sortColumn === "price" && <SortIndicator direction={sortDirection} />}
-            </TableHead>
-            <TableHead
-              data-column="addedAt"
-              className={fixedColumns ? "w-[9rem]" : undefined}
-              onClick={() => handleSort("addedAt")}
-            >
-              <Trans>Added</Trans>
-              {sortColumn === "addedAt" && <SortIndicator direction={sortDirection} />}
-            </TableHead>
-            <TableHead
-              data-column="status"
-              className={fixedColumns ? "w-[9rem]" : undefined}
-              onClick={() => handleSort("status")}
-            >
-              <Trans>Status</Trans>
-              {sortColumn === "status" && <SortIndicator direction={sortDirection} />}
-            </TableHead>
-            <TableHead className="w-[3rem]" />
-          </TableRow>
-        </TableHeader>
+      <Table
+        rowSize={rowSize}
+        aria-label={t`Products`}
+        selectionMode={multiSelect ? "multiple" : "single"}
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+        onActivate={handleActivate}
+        activateOnNavigate={selectedProduct != null}
+        scrollToKey={selectedProduct?.id}
+      >
+        <TablePreviewHeader
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+          fixedColumns={fixedColumns}
+          showCheckboxes={showCheckboxes}
+          multiSelect={multiSelect}
+          allChecked={allChecked}
+          onToggleAll={toggleAll}
+        />
         <TableBody>
-          {paginatedProducts.map((product, index) => (
+          {paginatedProducts.map((product) => (
             <ProductRow
               key={product.id}
               product={product}
-              index={index}
-              isSelected={index === selectedIndex}
               rowSize={rowSize}
-              onSelect={handleRowSelect}
               formatDate={formatDate}
               showCheckbox={showCheckboxes}
-              isChecked={checkedIds.includes(product.id)}
-              onToggleCheck={() => toggleCheck(product.id)}
+              isChecked={selectedKeys.has(product.id)}
             />
           ))}
         </TableBody>

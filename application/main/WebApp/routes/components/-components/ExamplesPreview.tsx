@@ -13,10 +13,11 @@ import { SkeletonPreview } from "./SkeletonPreview";
 import { TablePreview } from "./TablePreview";
 
 interface ExamplesPreviewProps {
+  selectedProduct?: SampleProduct | null;
   onProductSelect?: (product: SampleProduct | null) => void;
 }
 
-export function ExamplesPreview({ onProductSelect }: ExamplesPreviewProps) {
+export function ExamplesPreview({ selectedProduct, onProductSelect }: ExamplesPreviewProps) {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "dialogs");
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export function ExamplesPreview({ onProductSelect }: ExamplesPreviewProps) {
         </div>
       </TabsContent>
       <TabsContent value="tables" className="flex flex-1 flex-col">
-        <TablePreview onProductSelect={onProductSelect} />
+        <TablePreview selectedProduct={selectedProduct} onProductSelect={onProductSelect} />
       </TabsContent>
       <TabsContent value="empty" className="flex flex-1 flex-col">
         <EmptyPreview />
