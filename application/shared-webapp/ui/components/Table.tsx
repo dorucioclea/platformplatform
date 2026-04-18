@@ -256,7 +256,9 @@ function Table({
 
   // Keep focusedKey valid as rows/selection change (e.g. pagination, filtering). Prefer the current
   // focused row so rapid keyboard actions aren't reset by selection updates; only fall back to
-  // scrollToKey / first selected / first row when the current focus is stale.
+  // scrollToKey / first selected / first row when the current focus is stale. A MutationObserver
+  // on tbody catches pagination/filtering row swaps that don't change any prop (without this the
+  // roving tabindex stays on a page-1 row after paginating to page 2, so Tab skips the table body).
   useEffect(() => {
     if (!hasSelection) {
       return;
@@ -266,21 +268,33 @@ function Table({
       return;
     }
     const rowExists = (key: RowKey) => container.querySelector(rowSelector(key)) != null;
-    setFocusedKey((current) => {
-      if (current != null && rowExists(current)) {
-        return current;
-      }
-      if (scrollToKey != null && rowExists(scrollToKey)) {
-        return scrollToKey;
-      }
-      for (const key of effectiveSelectedKeys) {
-        if (rowExists(key)) {
-          return key;
+    const validate = () => {
+      setFocusedKey((current) => {
+        if (current != null && rowExists(current)) {
+          return current;
         }
-      }
-      const first = container.querySelector<HTMLElement>("tbody tr[data-row-key]");
-      return first?.dataset.rowKey != null ? parseRowKey(first.dataset.rowKey) : null;
-    });
+        if (scrollToKey != null && rowExists(scrollToKey)) {
+          return scrollToKey;
+        }
+        for (const key of effectiveSelectedKeys) {
+          if (rowExists(key)) {
+            return key;
+          }
+        }
+        const first = container.querySelector<HTMLElement>("tbody tr[data-row-key]");
+        return first?.dataset.rowKey != null ? parseRowKey(first.dataset.rowKey) : null;
+      });
+    };
+
+    validate();
+
+    const tbody = container.querySelector("tbody");
+    if (tbody == null) {
+      return;
+    }
+    const observer = new MutationObserver(validate);
+    observer.observe(tbody, { childList: true });
+    return () => observer.disconnect();
   }, [hasSelection, scrollToKey, effectiveSelectedKeys]);
 
   useEffect(() => {
