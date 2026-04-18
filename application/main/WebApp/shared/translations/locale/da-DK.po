@@ -607,6 +607,12 @@ msgstr "Flet commit"
 msgid "Mexican"
 msgstr "Mexicansk"
 
+msgid "Mobile navigation"
+msgstr "Mobil navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobil navigationsmenu"
+
 msgid "Mole poblano"
 msgstr "Mole poblano"
 

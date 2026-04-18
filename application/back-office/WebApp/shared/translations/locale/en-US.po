@@ -73,6 +73,12 @@ msgstr "Main navigation"
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 
+msgid "Mobile navigation"
+msgstr "Mobile navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobile navigation menu"
+
 msgid "More pages"
 msgstr "More pages"
 

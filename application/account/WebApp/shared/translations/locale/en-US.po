@@ -845,6 +845,12 @@ msgstr "Microsoft patches and secures all PaaS infrastructure automatically"
 msgid "Mobile"
 msgstr "Mobile"
 
+msgid "Mobile navigation"
+msgstr "Mobile navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobile navigation menu"
+
 msgid "Modified date"
 msgstr "Modified date"
 

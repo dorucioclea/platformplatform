@@ -845,6 +845,12 @@ msgstr "Microsoft opdaterer og sikrer automatisk al PaaS infrastruktur"
 msgid "Mobile"
 msgstr "Mobil"
 
+msgid "Mobile navigation"
+msgstr "Mobil navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobil navigationsmenu"
+
 msgid "Modified date"
 msgstr "Ændret dato"
 

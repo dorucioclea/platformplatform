@@ -607,6 +607,12 @@ msgstr "Merge commit"
 msgid "Mexican"
 msgstr "Mexican"
 
+msgid "Mobile navigation"
+msgstr "Mobile navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobile navigation menu"
+
 msgid "Mole poblano"
 msgstr "Mole poblano"
 

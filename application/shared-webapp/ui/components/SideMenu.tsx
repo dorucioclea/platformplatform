@@ -1197,7 +1197,7 @@ function MobileMenu({ ariaLabel, topMenuContent }: { ariaLabel: string; topMenuC
           <dialog
             className="fixed top-[calc(var(--past-due-banner-height,0rem)+var(--invitation-banner-height,0rem))] right-0 bottom-0 left-0 z-40 h-auto w-full bg-sidebar"
             style={{ margin: 0, padding: 0, border: "none", display: "flex" }}
-            aria-label={ariaLabel}
+            aria-label={t`Mobile navigation menu`}
             open={true}
             onTouchStart={(e) => e.stopPropagation()}
             onTouchEnd={(e) => e.stopPropagation()}
@@ -1213,7 +1213,7 @@ function MobileMenu({ ariaLabel, topMenuContent }: { ariaLabel: string; topMenuC
               className="flex h-full w-full flex-col bg-sidebar"
               ref={dialogRef}
               style={{ margin: 0, padding: 0 }}
-              aria-label={ariaLabel}
+              aria-label={t`Mobile navigation`}
             >
               <div
                 className="flex-1 overflow-x-hidden overflow-y-auto px-3 pb-20 supports-[padding:max(0px)]:pb-[max(5rem,env(safe-area-inset-bottom))]"

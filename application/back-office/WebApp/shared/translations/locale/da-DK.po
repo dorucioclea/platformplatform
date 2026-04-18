@@ -73,6 +73,12 @@ msgstr "Hovednavigation"
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
 
+msgid "Mobile navigation"
+msgstr "Mobil navigation"
+
+msgid "Mobile navigation menu"
+msgstr "Mobil navigationsmenu"
+
 msgid "More pages"
 msgstr "Flere sider"
 
