@@ -801,6 +801,9 @@ msgstr "Vælg en dato"
 msgid "Pick a recipe"
 msgstr "Vælg en opskrift"
 
+msgid "Pick a workday"
+msgstr "Vælg en hverdag"
+
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
 
@@ -1212,6 +1215,9 @@ msgstr "Velkommen til PlatformPlatform"
 
 msgid "With icons"
 msgstr "Med ikoner"
+
+msgid "Workday picker"
+msgstr "Hverdagsvælger"
 
 msgid "Yakitori skewers"
 msgstr "Yakitori-spyd"

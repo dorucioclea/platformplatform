@@ -801,6 +801,9 @@ msgstr "Pick a date"
 msgid "Pick a recipe"
 msgstr "Pick a recipe"
 
+msgid "Pick a workday"
+msgstr "Pick a workday"
+
 msgid "Pie chart"
 msgstr "Pie chart"
 
@@ -1212,6 +1215,9 @@ msgstr "Welcome to PlatformPlatform"
 
 msgid "With icons"
 msgstr "With icons"
+
+msgid "Workday picker"
+msgstr "Workday picker"
 
 msgid "Yakitori skewers"
 msgstr "Yakitori skewers"

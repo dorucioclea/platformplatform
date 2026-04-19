@@ -36,32 +36,38 @@ function toIsoDateString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-// Field ranges keyed by the date-fns format token: dd 01-31, MM 01-12, yyyy 0000-9999. The mask
-// only allows typing characters that could still lead to a value inside the range; e.g. "3" as the
-// first day digit is accepted (could become 30 or 31), but "4" is rejected since no completion in
-// dd would be <= 31.
-const dateFieldSpecifications: Record<string, { length: number; minimum: number; maximum: number }> = {
-  d: { length: 2, minimum: 1, maximum: 31 },
-  M: { length: 2, minimum: 1, maximum: 12 },
-  y: { length: 4, minimum: 0, maximum: 9999 }
-};
-
 interface DateFieldSpecification {
   length: number;
   minimum: number;
   maximum: number;
 }
 
+// Field ranges keyed by the date-fns format token: dd 01-31, MM 01-12, yyyy 0000-9999. The mask
+// only allows typing characters that could still lead to a value inside the range; e.g. "3" as the
+// first day digit is accepted (could become 30 or 31), but "4" is rejected since no completion in
+// dd would be <= 31.
+const dateFieldSpecifications: Record<string, DateFieldSpecification> = {
+  d: { length: 2, minimum: 1, maximum: 31 },
+  M: { length: 2, minimum: 1, maximum: 12 },
+  y: { length: 4, minimum: 0, maximum: 9999 }
+};
+
+// True if `digits` is itself in range OR could be completed to an in-range value with more digits.
+// Used to validate partial entries while typing -- "3" in dd is reachable (30 or 31 are valid) but
+// "4" is not (40-49 all exceed 31, and 4 itself is also <= 31, so it's actually reachable too).
+function isPartialInRange(digits: string, specification: DateFieldSpecification): boolean {
+  const value = Number(digits);
+  const remainingPlaces = 10 ** (specification.length - digits.length);
+  const rangeLow = value * remainingPlaces;
+  const rangeHigh = rangeLow + remainingPlaces - 1;
+  const valueInRange = value >= specification.minimum && value <= specification.maximum;
+  const completionInRange = rangeHigh >= specification.minimum && rangeLow <= specification.maximum;
+  return valueInRange || completionInRange;
+}
+
 function hasAnyValidNextDigit(digits: string, specification: DateFieldSpecification): boolean {
   for (let nextDigit = 0; nextDigit < 10; nextDigit++) {
-    const candidate = digits + nextDigit;
-    const value = Number(candidate);
-    const remainingPlaces = 10 ** (specification.length - candidate.length);
-    const rangeLow = value * remainingPlaces;
-    const rangeHigh = rangeLow + remainingPlaces - 1;
-    const valueInRange = value >= specification.minimum && value <= specification.maximum;
-    const completionInRange = rangeHigh >= specification.minimum && rangeLow <= specification.maximum;
-    if (valueInRange || completionInRange) {
+    if (isPartialInRange(digits + nextDigit, specification)) {
       return true;
     }
   }
@@ -100,15 +106,9 @@ function maskDateInput(text: string, format: string): string {
       if (/\d/.test(inputCharacter)) {
         const nextDigits = fieldDigits + inputCharacter;
         const nextValue = Number(nextDigits);
-        const remainingPlaces = 10 ** (specification.length - nextDigits.length);
-        const rangeLow = nextValue * remainingPlaces;
-        const rangeHigh = rangeLow + remainingPlaces - 1;
-        // Accept the digit if the running partial is already in range (user could stop here) OR
-        // if some completion with more digits would still be in range. This is what lets a user
-        // type "9" as a day -- 9 itself is valid, even though 90-99 wouldn't be.
-        const currentInRange = nextValue >= specification.minimum && nextValue <= specification.maximum;
-        const completionInRange = rangeHigh >= specification.minimum && rangeLow <= specification.maximum;
-        if (!currentInRange && !completionInRange) {
+        // Accept the digit if the running partial is already in range OR if some completion with
+        // more digits would still be in range -- "9" as a day is valid even though 90-99 isn't.
+        if (!isPartialInRange(nextDigits, specification)) {
           return output;
         }
         output += inputCharacter;
@@ -116,6 +116,7 @@ function maskDateInput(text: string, format: string): string {
         // Auto-finalize the field: full length always counts; otherwise we finalize when no further
         // digit could keep the partial valid (e.g. typing "3" in MM -- nothing 30-39 is in range,
         // so pad to "03" and insert the trailing separator).
+        const currentInRange = nextValue >= specification.minimum && nextValue <= specification.maximum;
         const isFull = nextDigits.length === specification.length;
         const isImplicitlyDone = !isFull && currentInRange && !hasAnyValidNextDigit(nextDigits, specification);
         if (isFull || isImplicitlyDone) {
@@ -189,16 +190,7 @@ function isValidPartialDate(text: string, format: string): boolean {
       continue;
     }
     const specification = dateFieldSpecifications[formatSegment[0]];
-    if (!specification) {
-      return false;
-    }
-    const value = Number(segment);
-    const remainingPlaces = 10 ** (specification.length - segment.length);
-    const rangeLow = value * remainingPlaces;
-    const rangeHigh = rangeLow + remainingPlaces - 1;
-    const valueInRange = value >= specification.minimum && value <= specification.maximum;
-    const completionInRange = rangeHigh >= specification.minimum && rangeLow <= specification.maximum;
-    if (!valueInRange && !completionInRange) {
+    if (!specification || !isPartialInRange(segment, specification)) {
       return false;
     }
   }
@@ -224,6 +216,9 @@ export interface DatePickerProps {
   min?: string;
   showDropdowns?: boolean;
   locale?: string;
+  // Optional per-date predicate -- return true to disable the date in the calendar (e.g. weekends).
+  // Combined with min/max so consumers can mix range limits with arbitrary exclusions.
+  disabledDate?: (date: Date) => boolean;
 }
 
 export function DatePicker({
@@ -243,7 +238,8 @@ export function DatePicker({
   max,
   min,
   showDropdowns,
-  locale
+  locale,
+  disabledDate
 }: Readonly<DatePickerProps>) {
   const { currentLocale } = useContext(translationContext);
   const resolvedLocale = locale ?? currentLocale ?? "en-US";
@@ -615,11 +611,9 @@ export function DatePicker({
               onSelect={handleCalendarSelect}
               defaultMonth={calendarMonth}
               numberOfMonths={1}
-              {...(showDropdowns && {
-                captionLayout: "dropdown" as const,
-                startMonth: minDate ?? new Date(1900, 0),
-                endMonth: maxDate ?? new Date()
-              })}
+              startMonth={minDate ?? (showDropdowns ? new Date(1900, 0) : undefined)}
+              endMonth={maxDate ?? (showDropdowns ? new Date() : undefined)}
+              {...(showDropdowns && { captionLayout: "dropdown" as const })}
               disabled={(date) => {
                 if (maxDate && date > maxDate) {
                   return true;
@@ -627,7 +621,7 @@ export function DatePicker({
                 if (minDate && date < minDate) {
                   return true;
                 }
-                return false;
+                return disabledDate?.(date) ?? false;
               }}
             />
           </PopoverContent>

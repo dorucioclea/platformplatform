@@ -4,33 +4,19 @@ import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
-import { Field, FieldLabel } from "@repo/ui/components/Field";
 import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
-import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
 import { RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { RadioGroupField } from "@repo/ui/components/RadioGroupField";
 import { SwitchField } from "@repo/ui/components/SwitchField";
 import { TimeField } from "@repo/ui/components/TimeField";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
-import { BoldIcon, ItalicIcon, UnderlineIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import type { ControlRowDerivedProps } from "./controlRowTypes";
 
 import { tooltips } from "./controlTooltips";
 import { TextAreaFields } from "./TextAreaFields";
-
-function focusToggleItem(ref: React.RefObject<HTMLDivElement | null>, isDisabled?: boolean) {
-  if (isDisabled) return;
-  const group = ref.current;
-  if (!group) return;
-  const active = group.querySelector<HTMLElement>("[data-slot=toggle-group-item][data-pressed]");
-  const target = active ?? group.querySelector<HTMLElement>("[data-slot=toggle-group-item]");
-  if (!target) return;
-  target.setAttribute("data-label-focus", "");
-  target.addEventListener("blur", () => target.removeAttribute("data-label-focus"), { once: true });
-  target.focus({ preventScroll: true });
-}
+import { ToggleGroupField } from "./ToggleGroupField";
+import { WorkdayPicker } from "./WorkdayPicker";
 
 export function DateAndToggleFields({
   suffix,
@@ -44,11 +30,8 @@ export function DateAndToggleFields({
   indeterminate,
   errorMessage
 }: ControlRowDerivedProps) {
-  const toggleGroupRef = useRef<HTMLDivElement>(null);
-  const focusToggle = () => focusToggleItem(toggleGroupRef, disabled);
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
-  const [toggleValues, setToggleValues] = useState<string[]>(hasValues ? ["bold"] : []);
   const [datePickerValue, setDatePickerValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
     hasValues ? { start: new Date(2025, 5, 1), end: new Date(2025, 5, 15) } : null
@@ -64,6 +47,17 @@ export function DateAndToggleFields({
         startIcon={showIcon ? undefined : null}
         value={datePickerValue}
         onChange={setDatePickerValue}
+        disabled={disabled}
+        readOnly={readOnly}
+        errorMessage={errorMessage}
+      />
+      <WorkdayPicker
+        suffix={suffix}
+        label={label}
+        tooltip={tooltip}
+        hasValues={hasValues}
+        showIcon={showIcon}
+        placeholders={placeholders}
         disabled={disabled}
         readOnly={readOnly}
         errorMessage={errorMessage}
@@ -142,44 +136,7 @@ export function DateAndToggleFields({
           <Trans>Option B</Trans>
         </label>
       </RadioGroupField>
-      <Field ref={toggleGroupRef}>
-        {label && (
-          <FieldLabel
-            onClick={focusToggle}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                focusToggle();
-              }
-            }}
-          >
-            {tooltip ? (
-              <LabelWithTooltip tooltip={tooltips.toggleGroup}>
-                <Trans>Toggle group</Trans>
-              </LabelWithTooltip>
-            ) : (
-              <Trans>Toggle group</Trans>
-            )}
-          </FieldLabel>
-        )}
-        <ToggleGroup
-          variant="outline"
-          value={toggleValues}
-          onValueChange={setToggleValues}
-          disabled={disabled}
-          readOnly={readOnly}
-        >
-          <ToggleGroupItem value="bold" aria-label={t`Toggle bold`}>
-            <BoldIcon />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="italic" aria-label={t`Toggle italic`}>
-            <ItalicIcon />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="underline" aria-label={t`Toggle underline`}>
-            <UnderlineIcon />
-          </ToggleGroupItem>
-        </ToggleGroup>
-      </Field>
+      <ToggleGroupField label={label} tooltip={tooltip} hasValues={hasValues} disabled={disabled} readOnly={readOnly} />
     </>
   );
 }

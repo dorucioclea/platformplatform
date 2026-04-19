@@ -111,6 +111,13 @@ export const tooltips = {
       <PropNote>Shows full date format. Clearable with X button.</PropNote>
     </PropList>
   ),
+  workdayPicker: (
+    <PropList title="DatePicker (constrained)" description="Bounded range plus per-date predicate">
+      <Prop name="min / max">Selectable from today + 4 days through today + 30 days</Prop>
+      <Prop name="disabledDate">Predicate — works as a deny-list (e.g. weekends) or an allow-list (just invert)</Prop>
+      <PropNote>min/max also dim out-of-range cells in the year and month picker views.</PropNote>
+    </PropList>
+  ),
   dateRange: (
     <PropList title="DateRangePicker" description="Select a start and end date">
       <Prop name="value">Object with start and end Date</Prop>

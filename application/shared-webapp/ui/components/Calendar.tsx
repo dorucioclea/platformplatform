@@ -97,6 +97,10 @@ function Calendar({
   const [yearPageStart, setYearPageStart] = React.useState(() => alignedYearPageStart(initialMonth.getFullYear()));
 
   const today = React.useMemo(() => new Date(), []);
+  // startMonth/endMonth flow through `...props` to DayPicker; we also use them to grey out
+  // unreachable cells in the year and month picker views.
+  const startMonth = (props as { startMonth?: Date }).startMonth;
+  const endMonth = (props as { endMonth?: Date }).endMonth;
 
   if (view === "years") {
     return (
@@ -104,6 +108,8 @@ function Calendar({
         pageStart={yearPageStart}
         selectedYear={displayMonth.getFullYear()}
         currentYear={today.getFullYear()}
+        minYear={startMonth?.getFullYear()}
+        maxYear={endMonth?.getFullYear()}
         onShiftPage={(delta) => setYearPageStart((current) => current + delta)}
         onSelectYear={(year) => {
           updateDisplayMonth(new Date(year, displayMonth.getMonth(), 1));
@@ -120,6 +126,8 @@ function Calendar({
         selectedMonth={displayMonth.getMonth()}
         currentDate={today}
         localeCode={locale.code}
+        startMonth={startMonth}
+        endMonth={endMonth}
         onSelectMonth={(monthIndex) => {
           updateDisplayMonth(new Date(displayMonth.getFullYear(), monthIndex, 1));
           setView("days");
@@ -279,11 +287,21 @@ interface YearPickerViewProps {
   pageStart: number;
   selectedYear: number;
   currentYear: number;
+  minYear: number | undefined;
+  maxYear: number | undefined;
   onShiftPage: (delta: number) => void;
   onSelectYear: (year: number) => void;
 }
 
-function YearPickerView({ pageStart, selectedYear, currentYear, onShiftPage, onSelectYear }: YearPickerViewProps) {
+function YearPickerView({
+  pageStart,
+  selectedYear,
+  currentYear,
+  minYear,
+  maxYear,
+  onShiftPage,
+  onSelectYear
+}: YearPickerViewProps) {
   const years = Array.from({ length: yearsPerPage }, (_, index) => pageStart + index);
   const rangeLabel = `${pageStart} – ${pageStart + yearsPerPage - 1}`;
   return (
@@ -293,15 +311,19 @@ function YearPickerView({ pageStart, selectedYear, currentYear, onShiftPage, onS
       onNextClick={() => onShiftPage(yearsPerPage)}
     >
       <div className="grid h-full grid-cols-5 grid-rows-6 gap-0">
-        {years.map((year) => (
-          <PickerCell
-            key={year}
-            isSelected={year === selectedYear}
-            isCurrent={year === currentYear}
-            onClick={() => onSelectYear(year)}
-            label={String(year)}
-          />
-        ))}
+        {years.map((year) => {
+          const isOutOfRange = (minYear != null && year < minYear) || (maxYear != null && year > maxYear);
+          return (
+            <PickerCell
+              key={year}
+              isSelected={year === selectedYear}
+              isCurrent={year === currentYear}
+              isDisabled={isOutOfRange}
+              onClick={() => onSelectYear(year)}
+              label={String(year)}
+            />
+          );
+        })}
       </div>
     </PickerShell>
   );
@@ -312,6 +334,8 @@ interface MonthPickerViewProps {
   selectedMonth: number;
   currentDate: Date;
   localeCode: string | undefined;
+  startMonth: Date | undefined;
+  endMonth: Date | undefined;
   onSelectMonth: (monthIndex: number) => void;
   onShiftYear: (delta: number) => void;
 }
@@ -321,6 +345,8 @@ function MonthPickerView({
   selectedMonth,
   currentDate,
   localeCode,
+  startMonth,
+  endMonth,
   onSelectMonth,
   onShiftYear
 }: MonthPickerViewProps) {
@@ -332,6 +358,14 @@ function MonthPickerView({
     [localeCode]
   );
   const isCurrentYear = year === currentDate.getFullYear();
+  // A month is reachable if any day inside it falls within [startMonth, endMonth].
+  const isMonthOutOfRange = (monthIndex: number) => {
+    const lastDayOfMonth = new Date(year, monthIndex + 1, 0);
+    const firstDayOfMonth = new Date(year, monthIndex, 1);
+    if (startMonth && lastDayOfMonth < startMonth) return true;
+    if (endMonth && firstDayOfMonth > endMonth) return true;
+    return false;
+  };
   return (
     <PickerShell caption={String(year)} onPreviousClick={() => onShiftYear(-1)} onNextClick={() => onShiftYear(1)}>
       <div className="grid h-full grid-cols-3 grid-rows-4 gap-0">
@@ -340,6 +374,7 @@ function MonthPickerView({
             key={monthName}
             isSelected={monthIndex === selectedMonth}
             isCurrent={isCurrentYear && monthIndex === currentDate.getMonth()}
+            isDisabled={isMonthOutOfRange(monthIndex)}
             onClick={() => onSelectMonth(monthIndex)}
             label={monthName}
           />
@@ -382,21 +417,25 @@ function PickerShell({ caption, onPreviousClick, onNextClick, children }: Picker
 interface PickerCellProps {
   isSelected: boolean;
   isCurrent: boolean;
+  isDisabled?: boolean;
   label: string;
   onClick: () => void;
 }
 
-function PickerCell({ isSelected, isCurrent, label, onClick }: PickerCellProps) {
+function PickerCell({ isSelected, isCurrent, isDisabled, label, onClick }: PickerCellProps) {
   return (
     <button
       type="button"
       onClick={onClick}
+      disabled={isDisabled}
       data-selected={isSelected || undefined}
       data-current={isCurrent || undefined}
+      data-disabled={isDisabled || undefined}
       className={cn(
         "flex h-full w-full items-center justify-center rounded-(--cell-radius) px-3 text-sm font-normal select-none hover:bg-muted",
         isCurrent && !isSelected && "bg-muted text-foreground",
-        isSelected && "bg-primary text-primary-foreground hover:bg-primary"
+        isSelected && "bg-primary text-primary-foreground hover:bg-primary",
+        isDisabled && "cursor-not-allowed text-muted-foreground opacity-50 hover:bg-transparent"
       )}
     >
       {label}
