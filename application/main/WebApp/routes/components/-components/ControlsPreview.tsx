@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { ControlRow } from "./ControlRow";
 import { InlineCalendarPreview } from "./InlineCalendarPreview";
+import { SliderPreview } from "./SliderPreview";
 
 export function ControlsPreview() {
   const [showLabels, setShowLabels] = useState(true);
@@ -70,6 +71,13 @@ export function ControlsPreview() {
           error={showErrors}
         />
       </div>
+      <SliderPreview
+        label={showLabels}
+        tooltip={showTooltips && showLabels}
+        disabled={controlState === "disabled"}
+        readOnly={controlState === "readonly"}
+        error={showErrors}
+      />
     </>
   );
 }

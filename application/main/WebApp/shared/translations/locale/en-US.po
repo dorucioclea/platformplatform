@@ -943,6 +943,9 @@ msgstr "PlatformPlatform"
 msgid "Please enter a valid email address"
 msgstr "Please enter a valid email address"
 
+msgid "Pointer-and-keyboard friendly numeric input. Supports single value or a range with two thumbs."
+msgstr "Pointer-and-keyboard friendly numeric input. Supports single value or a range with two thumbs."
+
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
 
@@ -981,6 +984,9 @@ msgstr "Radar chart"
 
 msgid "Radio group"
 msgstr "Radio group"
+
+msgid "Range"
+msgstr "Range"
 
 msgid "Ratatouille"
 msgstr "Ratatouille"
@@ -1214,6 +1220,9 @@ msgstr "Simulate errors"
 msgid "Single key"
 msgstr "Single key"
 
+msgid "Single value"
+msgstr "Single value"
+
 msgid "Single-expand vs multi-expand"
 msgstr "Single-expand vs multi-expand"
 
@@ -1222,6 +1231,9 @@ msgstr "Skeleton"
 
 msgid "Skip to main content"
 msgstr "Skip to main content"
+
+msgid "Slider"
+msgstr "Slider"
 
 msgid "Small"
 msgstr "Small"
@@ -1252,6 +1264,9 @@ msgstr "Squash and merge"
 
 msgid "Stay"
 msgstr "Stay"
+
+msgid "Stepped (step 10)"
+msgstr "Stepped (step 10)"
 
 msgid "Street address"
 msgstr "Street address"

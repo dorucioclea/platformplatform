@@ -943,6 +943,9 @@ msgstr "PlatformPlatform"
 msgid "Please enter a valid email address"
 msgstr "Indtast en gyldig e-mailadresse"
 
+msgid "Pointer-and-keyboard friendly numeric input. Supports single value or a range with two thumbs."
+msgstr "Numerisk input venlig for både mus og tastatur. Understøtter en enkelt værdi eller et interval med to greb."
+
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
 
@@ -981,6 +984,9 @@ msgstr "Radardiagram"
 
 msgid "Radio group"
 msgstr "Radiogruppe"
+
+msgid "Range"
+msgstr "Interval"
 
 msgid "Ratatouille"
 msgstr "Ratatouille"
@@ -1214,6 +1220,9 @@ msgstr "Simuler fejl"
 msgid "Single key"
 msgstr "Enkelt tast"
 
+msgid "Single value"
+msgstr "Enkelt værdi"
+
 msgid "Single-expand vs multi-expand"
 msgstr "Enkelt-udfoldning vs multi-udfoldning"
 
@@ -1222,6 +1231,9 @@ msgstr "Skelet"
 
 msgid "Skip to main content"
 msgstr "Spring til hovedindhold"
+
+msgid "Slider"
+msgstr "Skyder"
 
 msgid "Small"
 msgstr "Lille"
@@ -1252,6 +1264,9 @@ msgstr "Squash og flet"
 
 msgid "Stay"
 msgstr "Bliv"
+
+msgid "Stepped (step 10)"
+msgstr "Trinvis (trin 10)"
 
 msgid "Street address"
 msgstr "Vejnavn"
