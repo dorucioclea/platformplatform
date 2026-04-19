@@ -193,6 +193,12 @@ msgstr "Button-styled links"
 msgid "Buttons and links"
 msgstr "Buttons and links"
 
+msgid "Calendar"
+msgstr "Calendar"
+
+msgid "Calendar with week numbers"
+msgstr "Calendar with week numbers"
+
 msgid "Can change ingredients and instructions"
 msgstr "Can change ingredients and instructions"
 

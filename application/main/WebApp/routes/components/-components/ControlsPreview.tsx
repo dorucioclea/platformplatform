@@ -62,7 +62,13 @@ export function ControlsPreview() {
         error={showErrors}
       />
       <div className="mt-8">
-        <InlineCalendarPreview />
+        <InlineCalendarPreview
+          label={showLabels}
+          tooltip={showTooltips && showLabels}
+          disabled={controlState === "disabled"}
+          readOnly={controlState === "readonly"}
+          error={showErrors}
+        />
       </div>
     </>
   );

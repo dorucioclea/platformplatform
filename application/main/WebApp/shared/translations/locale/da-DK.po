@@ -193,6 +193,12 @@ msgstr "Links med knapstil"
 msgid "Buttons and links"
 msgstr "Knapper og links"
 
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Calendar with week numbers"
+msgstr "Kalender med ugenumre"
+
 msgid "Can change ingredients and instructions"
 msgstr "Kan ændre ingredienser og instruktioner"
 
