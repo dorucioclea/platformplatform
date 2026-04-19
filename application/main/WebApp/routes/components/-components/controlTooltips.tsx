@@ -168,8 +168,8 @@ export const tooltips = {
     </PropList>
   ),
   checkboxIndeterminate: (
-    <PropList title="CheckboxField (indeterminate)" description="Minus glyph for mixed/partial state — set programmatically">
-      <Prop name="indeterminate">e.g. Select-all with partial row selection or bulk-edit with mixed values</Prop>
+    <PropList title="CheckboxField (indeterminate)" description="Minus glyph for mixed state, set programmatically">
+      <Prop name="indeterminate">e.g. Select-all with partial selection or bulk-edit with mixed values</Prop>
     </PropList>
   ),
   radioGroup: (

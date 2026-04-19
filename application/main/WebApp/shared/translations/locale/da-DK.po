@@ -235,6 +235,9 @@ msgstr "Kan se"
 msgid "Cancel"
 msgstr "Annuller"
 
+msgid "Card-style preview shown on hover or focus. Use it for user mentions, link previews, or any compact context that would otherwise need a click."
+msgstr "Kortvisning vist ved hover eller fokus. Brug det til brugeromtaler, link-previews eller kompakt kontekst der ellers ville kræve et klik."
+
 msgid "Cards"
 msgstr "Kort"
 
@@ -610,6 +613,9 @@ msgstr "Hjem"
 msgid "Horizontal"
 msgstr "Vandret"
 
+msgid "HoverCard"
+msgstr "HoverCard"
+
 msgid "Icon-only buttons"
 msgstr "Knapper kun med ikon"
 
@@ -660,6 +666,9 @@ msgstr "Element slettet"
 
 msgid "Japanese"
 msgstr "Japansk"
+
+msgid "Joined March 2024"
+msgstr "Tilmeldt marts 2024"
 
 msgid "Jordan Lee"
 msgstr "Jordan Lee"
@@ -1327,6 +1336,9 @@ msgstr "Her vil dit personlige dashboard-indhold blive vist. Hold dig opdateret.
 
 msgid "Time zone"
 msgstr "Tidszone"
+
+msgid "Tinkers with food on weekends. Recipe library curator since 2024."
+msgstr "Pusler med mad i weekenderne. Opskriftskurator siden 2024."
 
 msgid "Tiramisu"
 msgstr "Tiramisu"
