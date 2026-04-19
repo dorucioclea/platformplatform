@@ -67,6 +67,12 @@ msgstr "75% af kvoten brugt"
 msgid "About this feature"
 msgstr "Om denne funktion"
 
+msgid "Accordion"
+msgstr "Accordion"
+
+msgid "Accordion vs Collapsible"
+msgstr "Accordion vs Collapsible"
+
 msgid "Add notes about this recipe"
 msgstr "Tilføj noter om denne opskrift"
 
@@ -87,6 +93,9 @@ msgstr "Tilføjet"
 
 msgid "Address (fixed 2 lines)"
 msgstr "Adresse (fast 2 linjer)"
+
+msgid "Advanced options"
+msgstr "Avancerede indstillinger"
 
 msgid "Advanced techniques, over 60 minutes"
 msgstr "Avancerede teknikker, over 60 minutter"
@@ -193,6 +202,9 @@ msgstr "Links med knapstil"
 msgid "Buttons and links"
 msgstr "Knapper og links"
 
+msgid "By default only one item is open at a time. Pass openMultiple to allow several panels to stay open together."
+msgstr "Som standard kan kun én sektion være åben ad gangen. Brug openMultiple for at lade flere paneler stå åbne samtidigt."
+
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -267,6 +279,12 @@ msgstr "Medforfatter"
 
 msgid "Co-cooks"
 msgstr "Medkokke"
+
+msgid "Collapsible"
+msgstr "Collapsible"
+
+msgid "Collapsible is the unstyled single-section primitive behind Accordion. Use it when you need one trigger and one panel."
+msgstr "Collapsible er den ustylede enkelt-sektion primitiv bag Accordion. Brug den når du kun har én trigger og ét panel."
 
 msgid "Colm Tuite"
 msgstr "Colm Tuite"
@@ -796,6 +814,9 @@ msgstr "Osso buco"
 msgid "Outline"
 msgstr "Kontur"
 
+msgid "Overlays"
+msgstr "Overlays"
+
 msgid "Pad thai"
 msgstr "Pad thai"
 
@@ -867,6 +888,9 @@ msgstr "Radiogruppe"
 
 msgid "Ratatouille"
 msgstr "Ratatouille"
+
+msgid "Reach for Collapsible when you only need one trigger and one panel. Use Accordion when several items share visual rhythm and behavior."
+msgstr "Vælg Collapsible når du kun har én trigger og ét panel. Brug Accordion når flere elementer deler visuel rytme og opførsel."
 
 msgid "Read docs"
 msgstr "Læs dokumentation"
@@ -1064,6 +1088,9 @@ msgstr "Sidepanel"
 msgid "Simulate errors"
 msgstr "Simuler fejl"
 
+msgid "Single-expand vs multi-expand"
+msgstr "Enkelt-udfoldning vs multi-udfoldning"
+
 msgid "Skeleton"
 msgstr "Skelet"
 
@@ -1226,6 +1253,9 @@ msgstr "Upload profilbillede"
 msgid "Use a horizontal separator to group related sections in a column layout."
 msgstr "Brug en vandret separator til at gruppere relaterede sektioner i en kolonnelayout."
 
+msgid "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
+msgstr "Brug Accordion til at stable flere relaterede sektioner. God til FAQs, indstillingsgrupper eller lister hvor brugere scanner elementer og udvider et par stykker."
+
 msgid "Values"
 msgstr "Værdier"
 
@@ -1240,6 +1270,9 @@ msgstr "Advarselsbesked"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Velkommen til PlatformPlatform"
+
+msgid "When to use Accordion"
+msgstr "Hvornår skal Accordion bruges"
 
 msgid "With icons"
 msgstr "Med ikoner"

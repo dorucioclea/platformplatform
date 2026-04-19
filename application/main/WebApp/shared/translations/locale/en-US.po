@@ -67,6 +67,12 @@ msgstr "75% of quota used"
 msgid "About this feature"
 msgstr "About this feature"
 
+msgid "Accordion"
+msgstr "Accordion"
+
+msgid "Accordion vs Collapsible"
+msgstr "Accordion vs Collapsible"
+
 msgid "Add notes about this recipe"
 msgstr "Add notes about this recipe"
 
@@ -87,6 +93,9 @@ msgstr "Added"
 
 msgid "Address (fixed 2 lines)"
 msgstr "Address (fixed 2 lines)"
+
+msgid "Advanced options"
+msgstr "Advanced options"
 
 msgid "Advanced techniques, over 60 minutes"
 msgstr "Advanced techniques, over 60 minutes"
@@ -193,6 +202,9 @@ msgstr "Button-styled links"
 msgid "Buttons and links"
 msgstr "Buttons and links"
 
+msgid "By default only one item is open at a time. Pass openMultiple to allow several panels to stay open together."
+msgstr "By default only one item is open at a time. Pass openMultiple to allow several panels to stay open together."
+
 msgid "Calendar"
 msgstr "Calendar"
 
@@ -267,6 +279,12 @@ msgstr "Co-author"
 
 msgid "Co-cooks"
 msgstr "Co-cooks"
+
+msgid "Collapsible"
+msgstr "Collapsible"
+
+msgid "Collapsible is the unstyled single-section primitive behind Accordion. Use it when you need one trigger and one panel."
+msgstr "Collapsible is the unstyled single-section primitive behind Accordion. Use it when you need one trigger and one panel."
 
 msgid "Colm Tuite"
 msgstr "Colm Tuite"
@@ -796,6 +814,9 @@ msgstr "Osso buco"
 msgid "Outline"
 msgstr "Outline"
 
+msgid "Overlays"
+msgstr "Overlays"
+
 msgid "Pad thai"
 msgstr "Pad thai"
 
@@ -867,6 +888,9 @@ msgstr "Radio group"
 
 msgid "Ratatouille"
 msgstr "Ratatouille"
+
+msgid "Reach for Collapsible when you only need one trigger and one panel. Use Accordion when several items share visual rhythm and behavior."
+msgstr "Reach for Collapsible when you only need one trigger and one panel. Use Accordion when several items share visual rhythm and behavior."
 
 msgid "Read docs"
 msgstr "Read docs"
@@ -1064,6 +1088,9 @@ msgstr "Side panel"
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
+msgid "Single-expand vs multi-expand"
+msgstr "Single-expand vs multi-expand"
+
 msgid "Skeleton"
 msgstr "Skeleton"
 
@@ -1226,6 +1253,9 @@ msgstr "Upload profile picture"
 msgid "Use a horizontal separator to group related sections in a column layout."
 msgstr "Use a horizontal separator to group related sections in a column layout."
 
+msgid "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
+msgstr "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
+
 msgid "Values"
 msgstr "Values"
 
@@ -1240,6 +1270,9 @@ msgstr "Warning alert"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Welcome to PlatformPlatform"
+
+msgid "When to use Accordion"
+msgstr "When to use Accordion"
 
 msgid "With icons"
 msgstr "With icons"
