@@ -126,6 +126,7 @@ export function NumberField({
   const decrementRef = useRef(handleDecrement);
   incrementRef.current = handleIncrement;
   decrementRef.current = handleDecrement;
+  const inputRef = useRef<HTMLInputElement>(null);
   const repeatTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const startRepeat = (actionRef: { current: () => void }) => {
@@ -220,6 +221,7 @@ export function NumberField({
           <InputGroupAddon className={cn(displayValue !== "" && "text-foreground")}>{startIcon}</InputGroupAddon>
         )}
         <InputGroupInput
+          ref={inputRef}
           id={name}
           name={name}
           type="text"
@@ -245,6 +247,9 @@ export function NumberField({
               e.preventDefault();
               handleIncrement();
               startRepeat(incrementRef);
+              // Move focus to the NumberField's input so the previously focused control doesn't
+              // remain visually focused after the user clicks this control's stepper.
+              inputRef.current?.focus();
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
@@ -262,6 +267,7 @@ export function NumberField({
               e.preventDefault();
               handleDecrement();
               startRepeat(decrementRef);
+              inputRef.current?.focus();
             }}
             onPointerUp={stopRepeat}
             onPointerLeave={stopRepeat}
