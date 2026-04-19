@@ -4,8 +4,6 @@ import { Input as InputPrimitive } from "@base-ui/react/input";
 
 import { cn } from "../utils";
 
-// NOTE: This diverges from stock ShadCN to use CSS variable heights for Apple HIG compliance,
-// explicit bg-white background, and outline-based focus ring instead of ring utilities.
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <InputPrimitive

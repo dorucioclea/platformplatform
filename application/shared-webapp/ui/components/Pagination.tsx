@@ -74,7 +74,6 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<"span"
     <span
       aria-hidden={true}
       data-slot="pagination-ellipsis"
-      // NOTE: This diverges from stock ShadCN to use --control-height CSS variable for Apple HIG compliance.
       className={cn(
         "flex size-[var(--control-height)] items-center justify-center [&_svg:not([class*='size-'])]:size-4",
         className

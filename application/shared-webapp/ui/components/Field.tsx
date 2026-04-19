@@ -95,8 +95,6 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use data-checked (BaseUI) instead of data-state=checked,
-// thicker border (border-2) when checked, and bg-card background for better visibility in Choice Card pattern.
 function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
   return (
     <Label

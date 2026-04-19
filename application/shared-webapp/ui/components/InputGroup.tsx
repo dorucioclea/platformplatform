@@ -10,8 +10,6 @@ import { Input } from "./Input";
 // Shared ref so InputGroupAddon can focus the InputGroupInput without DOM queries (works regardless of wrapper depth).
 const InputGroupInputRefContext = createContext<React.RefObject<HTMLInputElement | null> | null>(null);
 
-// NOTE: This diverges from stock ShadCN to use CSS variable heights for Apple HIG compliance,
-// explicit bg-white background, outline-based focus ring, and removed combobox context styles.
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   return (
@@ -78,8 +76,6 @@ function InputGroupAddon({
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use CSS variable heights and explicit dimensions
-// instead of size-N shorthand for better control over min-width constraints.
 const inputGroupButtonVariants = cva("flex items-center gap-2 text-sm shadow-none", {
   variants: {
     size: {
@@ -129,8 +125,6 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   );
 }
 
-// NOTE: This diverges from stock ShadCN to suppress the inner input focus ring,
-// since the parent InputGroup handles focus-within outline styling.
 function InputGroupInput({ className, ref, ...props }: React.ComponentProps<"input">) {
   const groupInputRef = useContext(InputGroupInputRefContext);
   const handleRef = (node: HTMLInputElement | null) => {

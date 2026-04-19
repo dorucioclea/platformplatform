@@ -153,8 +153,6 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   );
 }
 
-// NOTE: This diverges from stock ShadCN to include text-sm styling.
-// This avoids needing size="sm" on every Link rendered inside BreadcrumbLink.
 function BreadcrumbLink({ className, render, ...props }: useRender.ComponentProps<"a">) {
   return useRender({
     defaultTagName: "a",

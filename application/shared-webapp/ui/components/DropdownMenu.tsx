@@ -50,7 +50,6 @@ function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
   return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
-// NOTE: This diverges from stock ShadCN to add w-auto for content-based width.
 function DropdownMenuContent({
   align = "start",
   alignOffset = 0,
@@ -102,7 +101,6 @@ function DropdownMenuLabel({
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use --control-height for responsive touch targets and active:bg-accent for press feedback.
 function DropdownMenuItem({
   className,
   inset,
@@ -150,7 +148,6 @@ function DropdownMenuSub({ ...props }: MenuPrimitive.SubmenuRoot.Props) {
   return <MenuPrimitive.SubmenuRoot data-slot="dropdown-menu-sub" {...props} />;
 }
 
-// NOTE: This diverges from stock ShadCN to use --control-height for responsive touch targets and active:bg-accent for press feedback.
 function DropdownMenuSubTrigger({
   className,
   inset,
@@ -199,7 +196,6 @@ function DropdownMenuSubContent({
   );
 }
 
-// NOTE: This diverges from stock ShadCN to add active:bg-accent for press feedback.
 function DropdownMenuCheckboxItem({ className, children, checked, ...props }: MenuPrimitive.CheckboxItem.Props) {
   return (
     <MenuPrimitive.CheckboxItem
@@ -228,7 +224,6 @@ function DropdownMenuRadioGroup({ ...props }: MenuPrimitive.RadioGroup.Props) {
   return <MenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
 }
 
-// NOTE: This diverges from stock ShadCN to add active:bg-accent for press feedback.
 function DropdownMenuRadioItem({ className, children, ...props }: MenuPrimitive.RadioItem.Props) {
   return (
     <MenuPrimitive.RadioItem

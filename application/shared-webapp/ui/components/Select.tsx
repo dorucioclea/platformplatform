@@ -54,8 +54,6 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       aria-invalid={isInvalid || undefined}
-      // NOTE: This diverges from stock ShadCN to use outline-based focus ring and error outline, bg-white instead of bg-transparent,
-      // --control-height CSS variables for Apple HIG compliance, and active:bg-accent for press feedback.
       className={cn(
         "flex w-fit cursor-pointer items-center justify-between gap-1.5 rounded-md border border-input bg-white py-2 pr-2 pl-2.5 text-sm whitespace-nowrap shadow-xs outline-ring transition-[color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-accent disabled:pointer-events-none disabled:opacity-50 aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo data-placeholder:text-muted-foreground data-[size=default]:h-(--control-height) data-[size=sm]:h-(--control-height-sm) dark:bg-input/30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         readOnly && "focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo",
@@ -76,7 +74,6 @@ function SelectContent({
   sideOffset = 4,
   align = "center",
   alignOffset = 0,
-  // NOTE: This diverges from stock ShadCN to show dropdown below trigger instead of aligned with selected item.
   alignItemWithTrigger = false,
   container,
   ...props
@@ -125,8 +122,6 @@ function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) 
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use py-3 for 44px touch targets (Apple HIG compliance)
-// and active:bg-accent for press feedback.
 function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Props) {
   return (
     <SelectPrimitive.Item

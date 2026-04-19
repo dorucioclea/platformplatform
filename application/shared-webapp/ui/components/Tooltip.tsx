@@ -10,8 +10,6 @@ function TooltipProvider({ delay = 300, ...props }: TooltipPrimitive.Provider.Pr
 // Context to pass setOpen from Tooltip to TooltipTrigger for tap-to-open functionality
 const TooltipOpenContext = createContext<(() => void) | null>(null);
 
-// NOTE: This diverges from stock ShadCN to support tap-to-open on touch devices.
-// Uses controlled state to allow TooltipTrigger to toggle the tooltip on click/tap.
 function Tooltip({ open: controlledOpen, onOpenChange, ...props }: TooltipPrimitive.Root.Props) {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
@@ -56,7 +54,6 @@ function Tooltip({ open: controlledOpen, onOpenChange, ...props }: TooltipPrimit
   );
 }
 
-// NOTE: This diverges from stock ShadCN to add tap-to-open support for touch devices.
 function TooltipTrigger({ className, onClick, ...props }: TooltipPrimitive.Trigger.Props) {
   const toggleOpen = use(TooltipOpenContext);
 

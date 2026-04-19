@@ -129,8 +129,6 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use py-3 for 44px touch targets (Apple HIG compliance)
-// and cursor-pointer for clickable items.
 function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.Props) {
   return (
     <ComboboxPrimitive.Item

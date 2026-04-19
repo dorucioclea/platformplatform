@@ -53,8 +53,6 @@ function pickInitialMonth(selected: unknown, defaultMonth: Date | undefined): Da
   return new Date();
 }
 
-// NOTE: This diverges from stock ShadCN to use weekStartsOn=1 (Monday) instead of Sunday, and to
-// add custom Year and Month picker views accessible from the caption's down arrow.
 function Calendar({
   className,
   classNames,
@@ -150,7 +148,6 @@ function Calendar({
         setYearPageStart(alignedYearPageStart(next.getFullYear()));
       }}
       className={cn(
-        // NOTE: This diverges from stock ShadCN to use responsive control height for cell size (38px desktop, 44px mobile).
         "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         String.raw`rtl:[&_.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:[&_.rdp-button\_previous>svg]:rotate-180`,
@@ -158,7 +155,6 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       formatters={{
-        // NOTE: This diverges from stock ShadCN to capitalize month names in caption (e.g., "Januar" instead of "januar" in Danish).
         formatCaption: (date, options) => {
           const month = date.toLocaleString(options?.locale?.code ?? "default", { month: "long" });
           const year = date.getFullYear();
@@ -443,7 +439,6 @@ function PickerCell({ isSelected, isCurrent, isDisabled, label, onClick }: Picke
   );
 }
 
-// NOTE: This diverges from stock ShadCN to add hover variants that maintain selected styling when hovering over selected dates.
 function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
 

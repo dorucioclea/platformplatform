@@ -75,7 +75,6 @@ function ContextMenuLabel({
   );
 }
 
-// NOTE: This diverges from stock ShadCN to use py-3 for 44px touch targets and active:bg-accent for press feedback.
 function ContextMenuItem({
   className,
   inset,

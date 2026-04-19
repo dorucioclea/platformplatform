@@ -188,10 +188,6 @@ interface TableProps extends React.ComponentProps<"table"> {
   scrollToKey?: RowKey;
 }
 
-// NOTE: This diverges from stock ShadCN to bake selection and keyboard navigation into the Table.
-// Per-interaction behaviour is encoded as pure outcome functions above; this component only wires up
-// event listeners and applies outcomes. TableRow stamps data-row-key; clicks delegate to the <table>
-// in the capture phase so BaseUI Checkbox cannot swallow the event before the Table sees it.
 function Table({
   className,
   rowSize,
@@ -443,8 +439,6 @@ function Table({
   );
 }
 
-// NOTE: This diverges from stock ShadCN to override the row size context so header rows
-// always use compact height, regardless of the Table's rowSize prop.
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <TableRowSizeContext value="compact">
@@ -488,10 +482,6 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
       data-slot="table-row"
       data-row-key={rowKey != null ? String(rowKey) : undefined}
       data-state={isSelected ? "selected" : undefined}
-      // NOTE: This diverges from stock ShadCN to add outline-based focus ring, active:bg-muted press
-      // feedback, and roving tabindex / cursor styles when the row participates in selection.
-      // Selected rows use --active-background in both rest and hover states so a selected row never
-      // acquires a secondary hover tint on top of its selection highlight.
       className={cn(
         "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-active-background",
         rowSizeStyles[rowSize],
@@ -504,8 +494,6 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
   );
 }
 
-// NOTE: This diverges from stock ShadCN to make clickable column headers keyboard-accessible.
-// When onClick is present, the header gets tabIndex={0} and responds to Enter/Space.
 function TableHead({ className, onClick, onKeyDown, children, ...props }: React.ComponentProps<"th">) {
   const isInteractive = onClick != null;
 
