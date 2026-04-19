@@ -2,13 +2,15 @@ import type { DateRange } from "react-day-picker";
 
 import { t } from "@lingui/core/macro";
 import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
-import { format, type Locale } from "date-fns";
+import { format, isValid, type Locale } from "date-fns";
 import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
 import { type ReactNode, useContext, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
+import { useFormatDate, useFormatLongDate, useFormatRelativeDate } from "../hooks/useSmartDate";
 import { cn } from "../utils";
+import { resolveInputFormat } from "../utils/dateInputFormat";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
 import { Field, FieldDescription, FieldError } from "./Field";
@@ -44,6 +46,9 @@ export interface DateRangePickerProps {
   className?: string;
   disabled?: boolean;
   readOnly?: boolean;
+  // How each end of the range is rendered. Mirrors DatePicker: "input" (default, locale's
+  // editable format like dd/MM/yyyy), "short", "long", "relative", or any date-fns format string.
+  displayFormat?: "input" | "short" | "long" | "relative" | (string & {});
 }
 
 export function DateRangePicker({
@@ -58,10 +63,12 @@ export function DateRangePicker({
   startIcon = <CalendarIcon className="shrink-0" />,
   className,
   disabled,
-  readOnly
+  readOnly,
+  displayFormat = "input"
 }: Readonly<DateRangePickerProps>) {
   const { currentLocale } = useContext(translationContext);
   const dateLocale = dateFnsLocaleMap[currentLocale] ?? enUS;
+  const inputFormat = resolveInputFormat(currentLocale);
   const [open, setOpen] = useState(false);
 
   const formErrors = useContext(FormValidationContext);
@@ -142,11 +149,34 @@ export function DateRangePicker({
     onChange?.(null);
   };
 
+  // Reuse the locale-aware formatters from useSmartDate so the range matches DatePicker's display.
+  const formatShortDate = useFormatDate();
+  const formatLongDate = useFormatLongDate();
+  const formatRelativeDate = useFormatRelativeDate();
+  const formatEndpoint = (date: Date): string => {
+    if (!isValid(date)) {
+      return "";
+    }
+    // Local-midnight ISO so the Intl-based formatters see the same calendar day regardless of time
+    // zone.
+    const isoLocal = `${String(date.getFullYear()).padStart(4, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}T00:00:00`;
+    if (displayFormat === "relative") {
+      return formatRelativeDate(isoLocal);
+    }
+    if (displayFormat === "long") {
+      return formatLongDate(isoLocal);
+    }
+    if (displayFormat === "short") {
+      return formatShortDate(isoLocal);
+    }
+    const pattern = displayFormat === "input" ? inputFormat : displayFormat;
+    return format(date, pattern, { locale: dateLocale });
+  };
   const formatDateRange = () => {
     if (!value?.start || !value?.end) {
       return placeholder;
     }
-    return `${format(value.start, "PP", { locale: dateLocale })} - ${format(value.end, "PP", { locale: dateLocale })}`;
+    return `${formatEndpoint(value.start)} - ${formatEndpoint(value.end)}`;
   };
 
   const hasValue = value !== null && value !== undefined;

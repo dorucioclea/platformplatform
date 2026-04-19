@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: -diffDays
+msgid "{0, plural, one {# day ago} other {# days ago}}"
+msgstr "{0, plural, one {# day ago} other {# days ago}}"
+
 #. placeholder {0}: dishes.length
 msgid "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
 msgstr "{0, plural, one {Delete # recipe} other {Delete # recipes}}"
@@ -28,6 +32,9 @@ msgstr "{0} minutes ago"
 #. placeholder {0}: dishes.length
 msgid "{0} of {totalCount} recipes selected"
 msgstr "{0} of {totalCount} recipes selected"
+
+msgid "{diffDays, plural, one {In # day} other {In # days}}"
+msgstr "{diffDays, plural, one {In # day} other {In # days}}"
 
 msgid "+39 06 555 0000"
 msgstr "+39 06 555 0000"
@@ -1141,6 +1148,9 @@ msgstr "Time zone"
 msgid "Tiramisu"
 msgstr "Tiramisu"
 
+msgid "Today"
+msgstr "Today"
+
 msgid "Toggle bold"
 msgstr "Toggle bold"
 
@@ -1161,6 +1171,9 @@ msgstr "Toggle underline"
 
 msgid "Tom yum soup"
 msgstr "Tom yum soup"
+
+msgid "Tomorrow"
+msgstr "Tomorrow"
 
 msgid "Tonkotsu ramen"
 msgstr "Tonkotsu ramen"

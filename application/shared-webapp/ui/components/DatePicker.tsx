@@ -6,7 +6,9 @@ import { CalendarIcon, XIcon } from "lucide-react";
 import { type ReactNode, useContext, useEffect, useRef, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
+import { useFormatLongDate, useFormatRelativeDate, useFormatDate } from "../hooks/useSmartDate";
 import { cn } from "../utils";
+import { resolveInputFormat } from "../utils/dateInputFormat";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
 import { Field, FieldDescription, FieldError } from "./Field";
@@ -20,14 +22,6 @@ const dateFnsLocaleMap: Record<string, Locale> = {
   "en-US": enUS,
   "da-DK": da
 };
-
-// Per-locale input format. Default is dd/MM/yyyy (day first, slash separator); Danish keeps the
-// dd-MM-yyyy convention with dashes that's standard locally.
-const inputFormatMap: Record<string, string> = {
-  "en-US": "dd/MM/yyyy",
-  "da-DK": "dd-MM-yyyy"
-};
-const defaultInputFormat = "dd/MM/yyyy";
 
 function toIsoDateString(date: Date): string {
   const year = String(date.getFullYear()).padStart(4, "0");
@@ -219,6 +213,11 @@ export interface DatePickerProps {
   // Optional per-date predicate -- return true to disable the date in the calendar (e.g. weekends).
   // Combined with min/max so consumers can mix range limits with arbitrary exclusions.
   disabledDate?: (date: Date) => boolean;
+  // How to render the value when the input isn't focused. Defaults to "input" so the resting
+  // display matches the editable format. Built-in presets: "short" (Apr 19, 2026), "long" (April
+  // 19th, 2026), "relative" (Today / Yesterday / In 3 days). Anything else is treated as a
+  // date-fns format string.
+  displayFormat?: "input" | "short" | "long" | "relative" | (string & {});
 }
 
 export function DatePicker({
@@ -239,12 +238,13 @@ export function DatePicker({
   min,
   showDropdowns,
   locale,
-  disabledDate
+  disabledDate,
+  displayFormat = "input"
 }: Readonly<DatePickerProps>) {
   const { currentLocale } = useContext(translationContext);
   const resolvedLocale = locale ?? currentLocale ?? "en-US";
   const dateLocale = dateFnsLocaleMap[resolvedLocale] ?? enUS;
-  const inputFormat = inputFormatMap[resolvedLocale] ?? defaultInputFormat;
+  const inputFormat = resolveInputFormat(resolvedLocale);
   const [open, setOpen] = useState(false);
 
   const formErrors = useContext(FormValidationContext);
@@ -275,13 +275,36 @@ export function DatePicker({
   const maxDate = parseIsoDate(max);
   const minDate = parseIsoDate(min);
 
+  // Reuse the locale-aware formatters from useSmartDate so DatePicker's display matches the rest
+  // of the app (cards, activity feeds, etc.).
+  const formatShortDate = useFormatDate();
+  const formatLongDate = useFormatLongDate();
+  const formatRelativeDate = useFormatRelativeDate();
+
   // Guard both format helpers against invalid dates so a momentary bad value can't crash the render
   // (e.g. a partially typed date that parsed to something isValid() flags later).
   const safeFormat = (date: Date | undefined, pattern: string) =>
     date && isValid(date) ? format(date, pattern, { locale: dateLocale }) : "";
   const formatForInput = (date: Date | undefined) => safeFormat(date, inputFormat);
-  // Long natural-language format shown when the field isn't being edited (e.g. "19. april 2026").
-  const formatForDisplay = (date: Date | undefined) => safeFormat(date, "PPP");
+  const formatForDisplay = (date: Date | undefined): string => {
+    if (!date || !isValid(date)) {
+      return "";
+    }
+    // The Intl-based formatters from useSmartDate accept ISO strings; anchor at local midnight so
+    // they format the same calendar day the user picked, regardless of time zone.
+    const isoLocal = `${toIsoDateString(date)}T00:00:00`;
+    if (displayFormat === "relative") {
+      return formatRelativeDate(isoLocal);
+    }
+    if (displayFormat === "short") {
+      return formatShortDate(isoLocal);
+    }
+    if (displayFormat === "long") {
+      return formatLongDate(isoLocal);
+    }
+    const pattern = displayFormat === "input" ? inputFormat : displayFormat;
+    return safeFormat(date, pattern);
+  };
 
   const displayText = formatForDisplay(selectedDate);
   const [editingText, setEditingText] = useState<string>(() => formatForInput(selectedDate));

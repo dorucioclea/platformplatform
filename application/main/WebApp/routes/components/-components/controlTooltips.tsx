@@ -112,10 +112,10 @@ export const tooltips = {
     </PropList>
   ),
   workdayPicker: (
-    <PropList title="DatePicker (constrained)" description="Bounded range plus per-date predicate">
-      <Prop name="min / max">Selectable from today + 4 days through today + 30 days</Prop>
+    <PropList title="DatePicker (constrained)" description="Bounded range, per-date predicate, relative display">
+      <Prop name="min / max">Selectable from today − 7 days through today + 30 days</Prop>
       <Prop name="disabledDate">Predicate — works as a deny-list (e.g. weekends) or an allow-list (just invert)</Prop>
-      <PropNote>min/max also dim out-of-range cells in the year and month picker views.</PropNote>
+      <Prop name='displayFormat="relative"'>Renders as Today / Yesterday / Tomorrow / In N days</Prop>
     </PropList>
   ),
   dateRange: (

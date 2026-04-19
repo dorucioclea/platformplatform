@@ -13,6 +13,13 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
+#. placeholder {0}: -diffDays
+msgid "{0, plural, one {# day ago} other {# days ago}}"
+msgstr "{0, plural, one {for # dag siden} other {for # dage siden}}"
+
+msgid "{diffDays, plural, one {In # day} other {In # days}}"
+msgstr "{diffDays, plural, one {Om # dag} other {Om # dage}}"
+
 msgid "Access denied"
 msgstr "Adgang nægtet"
 
@@ -145,8 +152,14 @@ msgstr "Bliv"
 msgid "The page you are looking for does not exist or was moved."
 msgstr "Siden du leder efter findes ikke eller er blevet flyttet."
 
+msgid "Today"
+msgstr "I dag"
+
 msgid "Toggle sidebar"
 msgstr "Vis/skjul sidepanel"
+
+msgid "Tomorrow"
+msgstr "I morgen"
 
 msgid "Try again"
 msgstr "Prøv igen"
@@ -156,6 +169,9 @@ msgstr "Ugemte ændringer"
 
 msgid "Welcome to the Back Office"
 msgstr "Velkommen til Back Office"
+
+msgid "Yesterday"
+msgstr "I går"
 
 msgid "You do not have permission to access this page."
 msgstr "Du har ikke tilladelse til at tilgaa denne side."

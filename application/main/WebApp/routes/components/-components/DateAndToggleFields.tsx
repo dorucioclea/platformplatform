@@ -47,6 +47,7 @@ export function DateAndToggleFields({
         startIcon={showIcon ? undefined : null}
         value={datePickerValue}
         onChange={setDatePickerValue}
+        displayFormat="long"
         disabled={disabled}
         readOnly={readOnly}
         errorMessage={errorMessage}
@@ -70,6 +71,7 @@ export function DateAndToggleFields({
         startIcon={showIcon ? undefined : null}
         value={dateRangeValue}
         onChange={setDateRangeValue}
+        displayFormat="short"
         disabled={disabled}
         readOnly={readOnly}
         errorMessage={errorMessage}

@@ -1,12 +1,13 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useFormatDate, useFormatLongDate, useSmartDate } from "@repo/ui/hooks/useSmartDate";
+import { useFormatDate, useFormatLongDate, useFormatRelativeDate, useSmartDate } from "@repo/ui/hooks/useSmartDate";
 import { useMemo } from "react";
 
 function SmartDateDisplay({ date, label }: { date: string; label: string }) {
   const smartDate = useSmartDate(date);
   const formatShortDate = useFormatDate();
   const formatLongDate = useFormatLongDate();
+  const formatRelativeDate = useFormatRelativeDate();
 
   let relativeText = "";
   if (smartDate) {
@@ -21,7 +22,9 @@ function SmartDateDisplay({ date, label }: { date: string; label: string }) {
         relativeText = t`${smartDate.value} hours ago`;
         break;
       case "date":
-        relativeText = smartDate.formatted;
+        // Once we're past the hour-resolution part of useSmartDate, switch to day-relative
+        // ("Yesterday", "5 days ago") so the relative cell stays human-readable.
+        relativeText = formatRelativeDate(date);
         break;
     }
   }

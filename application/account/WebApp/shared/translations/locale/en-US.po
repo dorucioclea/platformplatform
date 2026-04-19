@@ -13,6 +13,10 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
+#. placeholder {0}: -diffDays
+msgid "{0, plural, one {# day ago} other {# days ago}}"
+msgstr "{0, plural, one {# day ago} other {# days ago}}"
+
 #. placeholder {0}: result.value
 msgid "{0, plural, one {# hour ago} other {# hours ago}}"
 msgstr "{0, plural, one {# hour ago} other {# hours ago}}"
@@ -43,6 +47,9 @@ msgstr "{0}/month"
 
 msgid "{deletedCount} users permanently deleted"
 msgstr "{deletedCount} users permanently deleted"
+
+msgid "{diffDays, plural, one {In # day} other {In # days}}"
+msgstr "{diffDays, plural, one {In # day} other {In # days}}"
 
 msgid "{price}/month"
 msgstr "{price}/month"
@@ -1366,8 +1373,14 @@ msgstr "Title"
 msgid "To delete your account, please contact our support team."
 msgstr "To delete your account, please contact our support team."
 
+msgid "Today"
+msgstr "Today"
+
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
+
+msgid "Tomorrow"
+msgstr "Tomorrow"
 
 msgid "Too expensive"
 msgstr "Too expensive"
@@ -1540,6 +1553,9 @@ msgstr "We detected suspicious activity on your account. Someone may have attemp
 
 msgid "When you accept this invitation, your profile information (name, title, and avatar) from your current account will be copied to the new account."
 msgstr "When you accept this invitation, your profile information (name, title, and avatar) from your current account will be copied to the new account."
+
+msgid "Yesterday"
+msgstr "Yesterday"
 
 msgid "You cannot change your own role"
 msgstr "You cannot change your own role"

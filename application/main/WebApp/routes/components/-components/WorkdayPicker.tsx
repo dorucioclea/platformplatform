@@ -43,14 +43,16 @@ export function WorkdayPicker({
 }: Readonly<WorkdayPickerProps>): ReactNode {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  // Range includes yesterday/today/tomorrow so the relative display ("Today", "Yesterday", ...)
+  // can be shown off in the demo.
   const minimumDate = new Date(today);
-  minimumDate.setDate(minimumDate.getDate() + 4);
+  minimumDate.setDate(minimumDate.getDate() - 7);
   const maximumDate = new Date(today);
   maximumDate.setDate(maximumDate.getDate() + 30);
 
-  // First workday inside the range, used as the demo default when "Values" is on.
+  // Today, or the next workday if today is a weekend; used as the demo default when "Values" is on.
   const defaultWorkday = (() => {
-    const candidate = new Date(minimumDate);
+    const candidate = new Date(today);
     while (isWeekend(candidate) && candidate <= maximumDate) {
       candidate.setDate(candidate.getDate() + 1);
     }
@@ -71,6 +73,7 @@ export function WorkdayPicker({
       min={toIsoDate(minimumDate)}
       max={toIsoDate(maximumDate)}
       disabledDate={isWeekend}
+      displayFormat="relative"
       disabled={disabled}
       readOnly={readOnly}
       errorMessage={errorMessage}
