@@ -26,10 +26,13 @@ export function KbdPreview() {
           </KbdGroup>
         </span>
         <span className="flex items-center gap-2">
-          <Trans>Long shortcut</Trans>
+          <Trans>All modifiers</Trans>
           <KbdGroup>
-            <Kbd>Ctrl</Kbd>
-            <Kbd>Shift</Kbd>
+            <Kbd>fn</Kbd>
+            <Kbd>⌃</Kbd>
+            <Kbd>⌥</Kbd>
+            <Kbd>⇧</Kbd>
+            <Kbd>⌘</Kbd>
             <Kbd>P</Kbd>
           </KbdGroup>
         </span>
@@ -40,6 +43,12 @@ export function KbdPreview() {
           </Trans>
         </span>
       </div>
+      <p className="text-xs text-muted-foreground">
+        <Trans>
+          macOS modifier glyphs: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Use these everywhere shortcuts
+          are surfaced so the chips read the same across menus, palettes, and tooltips.
+        </Trans>
+      </p>
     </section>
   );
 }

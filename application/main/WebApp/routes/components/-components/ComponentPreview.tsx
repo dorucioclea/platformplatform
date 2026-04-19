@@ -41,7 +41,7 @@ export function ComponentPreview() {
         </TabsTrigger>
         <TabsTrigger value="navigation">
           <CompassIcon />
-          <Trans>Navigation</Trans>
+          <Trans>Navigation and shortcuts</Trans>
         </TabsTrigger>
         <TabsTrigger value="overlays">
           <LayersIcon />

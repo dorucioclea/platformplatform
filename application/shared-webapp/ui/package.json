@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
+    "cmdk": "^1.1.1",
     "vaul": "^1.1.2"
   },
   "devDependencies": {

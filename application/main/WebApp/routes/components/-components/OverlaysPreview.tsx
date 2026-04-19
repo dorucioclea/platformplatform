@@ -1,6 +1,5 @@
 import { AccordionPreview } from "./AccordionPreview";
 import { DrawerPreview } from "./DrawerPreview";
-import { KbdPreview } from "./KbdPreview";
 import { SheetPreview } from "./SheetPreview";
 
 export function OverlaysPreview() {
@@ -9,7 +8,6 @@ export function OverlaysPreview() {
       <AccordionPreview />
       <DrawerPreview />
       <SheetPreview />
-      <KbdPreview />
     </div>
   );
 }

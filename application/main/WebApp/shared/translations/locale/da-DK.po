@@ -115,6 +115,9 @@ msgstr "Advarsler, badges og bannere"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
+msgid "All modifiers"
+msgstr "Alle modifikatorer"
+
 msgid "Always underlined"
 msgstr "Altid understreget"
 
@@ -306,6 +309,12 @@ msgstr "Kombinationsboks (oprettelig)"
 
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
+
+msgid "Command"
+msgstr "Command"
+
+msgid "Command palette"
+msgstr "Kommandopalette"
 
 msgid "Component preview"
 msgstr "Komponentvisning"
@@ -724,8 +733,8 @@ msgstr "Log ind"
 msgid "Long date"
 msgstr "Lang dato"
 
-msgid "Long shortcut"
-msgstr "Lang genvej"
+msgid "macOS modifier glyphs: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Use these everywhere shortcuts are surfaced so the chips read the same across menus, palettes, and tooltips."
+msgstr "macOS modifier-glyffer: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Brug disse alle steder hvor genveje vises, så chipsene læses ens på tværs af menuer, paletter og værktøjstips."
 
 msgid "Main content"
 msgstr "Hovedindhold"
@@ -811,8 +820,14 @@ msgstr "Native tid"
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "Navigation and shortcuts"
+msgstr "Navigation og genveje"
+
 msgid "Never underlined"
 msgstr "Aldrig understreget"
+
+msgid "New document"
+msgstr "Nyt dokument"
 
 msgid "Next"
 msgstr "Næste"
@@ -825,6 +840,9 @@ msgstr "Ingen opskrifter endnu"
 
 msgid "No results found"
 msgstr "Ingen resultater fundet"
+
+msgid "No results found."
+msgstr "Ingen resultater fundet."
 
 msgid "None"
 msgstr "Ingen"
@@ -850,6 +868,9 @@ msgstr "Engangskode"
 msgid "Open calendar"
 msgstr ""
 
+msgid "Open command palette"
+msgstr "Åbn kommandopalette"
+
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
@@ -864,6 +885,9 @@ msgstr "Mulighed A"
 
 msgid "Option B"
 msgstr "Mulighed B"
+
+msgid "or press"
+msgstr "eller tryk"
 
 msgid "Osso buco"
 msgstr "Osso buco"
@@ -918,6 +942,9 @@ msgstr "Indtast en gyldig e-mailadresse"
 
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
+
+msgid "Preferences"
+msgstr "Indstillinger"
 
 msgid "press <0>?</0> to view all shortcuts."
 msgstr "tryk <0>?</0> for at se alle genveje."
@@ -1069,8 +1096,17 @@ msgstr "Planlagt vedligeholdelse søndag kl. 02:00—04:00 UTC. Nogle funktioner
 msgid "Search"
 msgstr "Søg"
 
+msgid "Search and run commands"
+msgstr "Søg og kør kommandoer"
+
 msgid "Search charts..."
 msgstr "Søg diagrammer..."
+
+msgid "Search emoji"
+msgstr "Søg emoji"
+
+msgid "Search-driven menu with grouped items and inline shortcuts. Wrap it in CommandDialog to surface as a Cmd+K palette."
+msgstr "Søgedrevet menu med grupperede elementer og inline-genveje. Pak den ind i CommandDialog for at vise den som en Cmd+K palette."
 
 msgid "Secondary"
 msgstr "Sekundær"
@@ -1214,6 +1250,9 @@ msgstr "Bliv"
 msgid "Street address"
 msgstr "Vejnavn"
 
+msgid "Suggestions"
+msgstr "Forslag"
+
 msgid "Switch"
 msgstr "Kontakt"
 
@@ -1315,6 +1354,9 @@ msgstr "Samlet tilberedningstid"
 
 msgid "Total time spent cooking this month."
 msgstr "Samlet tid brugt på madlavning denne måned."
+
+msgid "Type a command or search..."
+msgstr "Skriv en kommando eller søg..."
 
 msgid "Type a date"
 msgstr "Indtast en dato"

@@ -27,6 +27,9 @@ import { Link } from "@repo/ui/components/Link";
 import { SlashIcon } from "lucide-react";
 import { useState } from "react";
 
+import { CommandPreview } from "./CommandPreview";
+import { KbdPreview } from "./KbdPreview";
+
 export function NavigationPreview() {
   const [showBookmarks, setShowBookmarks] = useState(true);
   const [showStatusBar, setShowStatusBar] = useState(false);
@@ -174,6 +177,8 @@ export function NavigationPreview() {
           </ContextMenuContent>
         </ContextMenu>
       </div>
+      <CommandPreview />
+      <KbdPreview />
     </div>
   );
 }

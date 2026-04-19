@@ -115,6 +115,9 @@ msgstr "Alerts, badges, and banners"
 msgid "Alex Taylor"
 msgstr "Alex Taylor"
 
+msgid "All modifiers"
+msgstr "All modifiers"
+
 msgid "Always underlined"
 msgstr "Always underlined"
 
@@ -306,6 +309,12 @@ msgstr "Combobox (creatable)"
 
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
+
+msgid "Command"
+msgstr "Command"
+
+msgid "Command palette"
+msgstr "Command palette"
 
 msgid "Component preview"
 msgstr "Component preview"
@@ -724,8 +733,8 @@ msgstr "Log in"
 msgid "Long date"
 msgstr "Long date"
 
-msgid "Long shortcut"
-msgstr "Long shortcut"
+msgid "macOS modifier glyphs: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Use these everywhere shortcuts are surfaced so the chips read the same across menus, palettes, and tooltips."
+msgstr "macOS modifier glyphs: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Use these everywhere shortcuts are surfaced so the chips read the same across menus, palettes, and tooltips."
 
 msgid "Main content"
 msgstr "Main content"
@@ -811,8 +820,14 @@ msgstr "Native time"
 msgid "Navigation"
 msgstr "Navigation"
 
+msgid "Navigation and shortcuts"
+msgstr "Navigation and shortcuts"
+
 msgid "Never underlined"
 msgstr "Never underlined"
+
+msgid "New document"
+msgstr "New document"
 
 msgid "Next"
 msgstr "Next"
@@ -825,6 +840,9 @@ msgstr "No recipes yet"
 
 msgid "No results found"
 msgstr "No results found"
+
+msgid "No results found."
+msgstr "No results found."
 
 msgid "None"
 msgstr "None"
@@ -850,6 +868,9 @@ msgstr "One-time code"
 msgid "Open calendar"
 msgstr "Open calendar"
 
+msgid "Open command palette"
+msgstr "Open command palette"
+
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 
@@ -864,6 +885,9 @@ msgstr "Option A"
 
 msgid "Option B"
 msgstr "Option B"
+
+msgid "or press"
+msgstr "or press"
 
 msgid "Osso buco"
 msgstr "Osso buco"
@@ -918,6 +942,9 @@ msgstr "Please enter a valid email address"
 
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
+
+msgid "Preferences"
+msgstr "Preferences"
 
 msgid "press <0>?</0> to view all shortcuts."
 msgstr "press <0>?</0> to view all shortcuts."
@@ -1069,8 +1096,17 @@ msgstr "Scheduled maintenance on Sunday 2:00 AM — 4:00 AM UTC. Some features m
 msgid "Search"
 msgstr "Search"
 
+msgid "Search and run commands"
+msgstr "Search and run commands"
+
 msgid "Search charts..."
 msgstr "Search charts..."
+
+msgid "Search emoji"
+msgstr "Search emoji"
+
+msgid "Search-driven menu with grouped items and inline shortcuts. Wrap it in CommandDialog to surface as a Cmd+K palette."
+msgstr "Search-driven menu with grouped items and inline shortcuts. Wrap it in CommandDialog to surface as a Cmd+K palette."
 
 msgid "Secondary"
 msgstr "Secondary"
@@ -1214,6 +1250,9 @@ msgstr "Stay"
 msgid "Street address"
 msgstr "Street address"
 
+msgid "Suggestions"
+msgstr "Suggestions"
+
 msgid "Switch"
 msgstr "Switch"
 
@@ -1315,6 +1354,9 @@ msgstr "Total cook time"
 
 msgid "Total time spent cooking this month."
 msgstr "Total time spent cooking this month."
+
+msgid "Type a command or search..."
+msgstr "Type a command or search..."
 
 msgid "Type a date"
 msgstr "Type a date"
