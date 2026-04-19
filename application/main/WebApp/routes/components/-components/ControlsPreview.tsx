@@ -60,7 +60,6 @@ export function ControlsPreview() {
         disabled={controlState === "disabled"}
         readOnly={controlState === "readonly"}
         error={showErrors}
-        indeterminate={showIndeterminate}
       />
       <div className="mt-8">
         <InlineCalendarPreview />

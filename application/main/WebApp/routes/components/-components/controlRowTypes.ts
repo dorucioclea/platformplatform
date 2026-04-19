@@ -8,7 +8,6 @@ export type ControlRowProps = {
   showIcon?: boolean;
   values?: boolean;
   placeholders?: boolean;
-  indeterminate?: boolean;
 };
 
 export type ControlRowDerivedProps = ControlRowProps & {

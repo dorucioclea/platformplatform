@@ -28,11 +28,12 @@ export function DateAndToggleFields({
   showIcon,
   hasValues,
   placeholders,
-  indeterminate,
   errorMessage
 }: ControlRowDerivedProps) {
-  const [switchChecked, setSwitchChecked] = useState(false);
-  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [switchChecked, setSwitchChecked] = useState(hasValues);
+  const [checkboxChecked, setCheckboxChecked] = useState(hasValues);
+  const [indeterminateCheckboxChecked, setIndeterminateCheckboxChecked] = useState(false);
+  const [isIndeterminate, setIsIndeterminate] = useState(true);
   const [datePickerValue, setDatePickerValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
   const [dateInputValue, setDateInputValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
@@ -114,7 +115,7 @@ export function DateAndToggleFields({
           label={t`Switch`}
           tooltip={tooltip ? tooltips.switchField : undefined}
           name={`switch-${suffix}`}
-          checked={hasValues ? true : switchChecked}
+          checked={switchChecked}
           onCheckedChange={setSwitchChecked}
           disabled={disabled}
           readOnly={readOnly}
@@ -126,9 +127,22 @@ export function DateAndToggleFields({
           label={t`Checkbox`}
           tooltip={tooltip ? tooltips.checkboxField : undefined}
           name={`checkbox-${suffix}`}
-          checked={hasValues ? true : checkboxChecked}
-          indeterminate={indeterminate}
+          checked={checkboxChecked}
           onCheckedChange={setCheckboxChecked}
+          disabled={disabled}
+          readOnly={readOnly}
+          errorMessage={errorMessage}
+        />
+        <CheckboxField
+          label={t`Indeterminate`}
+          tooltip={tooltip ? tooltips.checkboxIndeterminate : undefined}
+          name={`checkbox-indeterminate-${suffix}`}
+          checked={indeterminateCheckboxChecked}
+          indeterminate={isIndeterminate}
+          onCheckedChange={(checked) => {
+            setIsIndeterminate(false);
+            setIndeterminateCheckboxChecked(checked);
+          }}
           disabled={disabled}
           readOnly={readOnly}
           errorMessage={errorMessage}

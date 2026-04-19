@@ -125,6 +125,19 @@ export const tooltips = {
       <PropNote>Same masking and validation as DatePicker. Use when keyboard entry is the only path.</PropNote>
     </PropList>
   ),
+  inlineCalendar: (
+    <PropList title="Calendar" description="Standalone calendar widget rendered inline">
+      <Prop name="mode">"single" / "multiple" / "range"</Prop>
+      <Prop name="selected / onSelect">Controlled selection</Prop>
+      <PropNote>Use the bare Calendar (without DatePicker) when the date selection is the primary action of a screen.</PropNote>
+    </PropList>
+  ),
+  inlineCalendarWithWeekNumbers: (
+    <PropList title="Calendar with week numbers" description="Same Calendar plus the showWeekNumber prop">
+      <Prop name="showWeekNumber">Renders an ISO week-number column on the left of the grid</Prop>
+      <PropNote>Useful in scheduling/HR contexts where users navigate by week number.</PropNote>
+    </PropList>
+  ),
   dateRange: (
     <PropList title="DateRangePicker" description="Select a start and end date">
       <Prop name="value">Object with start and end Date</Prop>
@@ -170,6 +183,12 @@ export const tooltips = {
     <PropList title="CheckboxField" description="Tick box for boolean choices">
       <Prop name="checked / onCheckedChange">Controlled check state</Prop>
       <Prop name="readOnly">Visible but not checkable</Prop>
+    </PropList>
+  ),
+  checkboxIndeterminate: (
+    <PropList title="CheckboxField (indeterminate)" description="Third state when a value cannot be determined">
+      <Prop name="indeterminate">Renders a minus glyph instead of a check. Set programmatically only.</Prop>
+      <PropNote>E.g. Select all when some but not all rows are selected, or bulk-edit with mixed values.</PropNote>
     </PropList>
   ),
   radioGroup: (
