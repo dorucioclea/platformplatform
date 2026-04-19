@@ -35,6 +35,9 @@ msgstr "Ryd dato"
 msgid "Clear dates"
 msgstr "Ryd datoer"
 
+msgid "Close"
+msgstr ""
+
 msgid "Close menu"
 msgstr "Luk menu"
 

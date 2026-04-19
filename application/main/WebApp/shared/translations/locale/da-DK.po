@@ -118,6 +118,9 @@ msgstr "Alex Taylor"
 msgid "Always underlined"
 msgstr "Altid understreget"
 
+msgid "Apply filters"
+msgstr "Anvend filtre"
+
 msgid "Archive"
 msgstr "Arkiver"
 
@@ -168,6 +171,9 @@ msgstr "Fed"
 
 msgid "Bottom drawer"
 msgstr "Bunddrawer"
+
+msgid "Bottom sheet"
+msgstr "Bundsheet"
 
 msgid "Breadcrumb"
 msgstr "Brødkrumme"
@@ -448,6 +454,9 @@ msgstr "Udført"
 msgid "Drawer"
 msgstr "Drawer"
 
+msgid "Drop your filter controls here. The sheet handles scrolling and dismissal."
+msgstr "Placér dine filterkontroller her. Sheet håndterer scrolling og lukning."
+
 msgid "Duplicate"
 msgstr "Dupliker"
 
@@ -519,6 +528,9 @@ msgstr "Ekstra lille"
 
 msgid "Features"
 msgstr "Funktioner"
+
+msgid "Filters"
+msgstr "Filtre"
 
 msgid "First cooked"
 msgstr "Første gang tilberedt"
@@ -673,6 +685,9 @@ msgstr "Forlad"
 msgid "Left drawer"
 msgstr "Venstre drawer"
 
+msgid "Left sheet"
+msgstr "Venstre sheet"
+
 msgid "Library"
 msgstr "Bibliotek"
 
@@ -768,6 +783,9 @@ msgstr "Oversigtspanel for flervalg"
 
 msgid "Narrow bottom drawer"
 msgstr "Smal bunddrawer"
+
+msgid "Narrow bottom sheet"
+msgstr "Smalt bundsheet"
 
 msgid "Native date"
 msgstr "Native dato"
@@ -961,6 +979,9 @@ msgstr "Opskrifter"
 msgid "recipes@example.com"
 msgstr "recipes@example.com"
 
+msgid "Refine the recipe list. Changes apply when you close the sheet."
+msgstr "Forfin opskriftslisten. Ændringer træder i kraft når du lukker sheetet."
+
 msgid "Relative"
 msgstr "Relativ"
 
@@ -984,6 +1005,9 @@ msgstr "Restauranttelefon"
 
 msgid "Right drawer"
 msgstr "Højre drawer"
+
+msgid "Right sheet"
+msgstr "Højre sheet"
 
 msgid "Right-click area"
 msgstr "Højreklik-område"
@@ -1085,6 +1109,9 @@ msgstr "Del denne opskrift med en ven eller et familiemedlem."
 msgid "Sharing..."
 msgstr "Deler..."
 
+msgid "Sheet"
+msgstr "Sheet"
+
 msgid "Short date"
 msgstr "Kort dato"
 
@@ -1117,6 +1144,9 @@ msgstr "Sidepanel"
 
 msgid "Side panel"
 msgstr "Sidepanel"
+
+msgid "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
+msgstr "Sideforankret panel bygget på samme Dialog-primitiv. Brug det til desktop sidefelter som filter-sidebars, sekundær navigation eller detail-editorer. Venstre- og højre-sheets er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser SheetContent med mx-auto og max-w-*. Sammenlign med SidePane (Custom) som er den dokket-som-standard app-shell variant."
 
 msgid "Simulate errors"
 msgstr "Simuler fejl"
@@ -1255,6 +1285,9 @@ msgstr "Værktøjstip"
 
 msgid "Top drawer"
 msgstr "Top drawer"
+
+msgid "Top sheet"
+msgstr "Top sheet"
 
 msgid "Total cook time"
 msgstr "Samlet tilberedningstid"

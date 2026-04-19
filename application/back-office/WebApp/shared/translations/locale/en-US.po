@@ -35,6 +35,9 @@ msgstr "Clear date"
 msgid "Clear dates"
 msgstr "Clear dates"
 
+msgid "Close"
+msgstr "Close"
+
 msgid "Close menu"
 msgstr "Close menu"
 

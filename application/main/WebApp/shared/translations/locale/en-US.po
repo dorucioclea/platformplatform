@@ -118,6 +118,9 @@ msgstr "Alex Taylor"
 msgid "Always underlined"
 msgstr "Always underlined"
 
+msgid "Apply filters"
+msgstr "Apply filters"
+
 msgid "Archive"
 msgstr "Archive"
 
@@ -168,6 +171,9 @@ msgstr "Bold"
 
 msgid "Bottom drawer"
 msgstr "Bottom drawer"
+
+msgid "Bottom sheet"
+msgstr "Bottom sheet"
 
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
@@ -448,6 +454,9 @@ msgstr "Done"
 msgid "Drawer"
 msgstr "Drawer"
 
+msgid "Drop your filter controls here. The sheet handles scrolling and dismissal."
+msgstr "Drop your filter controls here. The sheet handles scrolling and dismissal."
+
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -519,6 +528,9 @@ msgstr "Extra small"
 
 msgid "Features"
 msgstr "Features"
+
+msgid "Filters"
+msgstr "Filters"
 
 msgid "First cooked"
 msgstr "First cooked"
@@ -673,6 +685,9 @@ msgstr "Leave"
 msgid "Left drawer"
 msgstr "Left drawer"
 
+msgid "Left sheet"
+msgstr "Left sheet"
+
 msgid "Library"
 msgstr "Library"
 
@@ -768,6 +783,9 @@ msgstr "Multi-select summary side pane"
 
 msgid "Narrow bottom drawer"
 msgstr "Narrow bottom drawer"
+
+msgid "Narrow bottom sheet"
+msgstr "Narrow bottom sheet"
 
 msgid "Native date"
 msgstr "Native date"
@@ -961,6 +979,9 @@ msgstr "Recipes"
 msgid "recipes@example.com"
 msgstr "recipes@example.com"
 
+msgid "Refine the recipe list. Changes apply when you close the sheet."
+msgstr "Refine the recipe list. Changes apply when you close the sheet."
+
 msgid "Relative"
 msgstr "Relative"
 
@@ -984,6 +1005,9 @@ msgstr "Restaurant phone"
 
 msgid "Right drawer"
 msgstr "Right drawer"
+
+msgid "Right sheet"
+msgstr "Right sheet"
 
 msgid "Right-click area"
 msgstr "Right-click area"
@@ -1085,6 +1109,9 @@ msgstr "Share this recipe with a friend or family member."
 msgid "Sharing..."
 msgstr "Sharing..."
 
+msgid "Sheet"
+msgstr "Sheet"
+
 msgid "Short date"
 msgstr "Short date"
 
@@ -1117,6 +1144,9 @@ msgstr "Side pane"
 
 msgid "Side panel"
 msgstr "Side panel"
+
+msgid "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
+msgstr "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
 
 msgid "Simulate errors"
 msgstr "Simulate errors"
@@ -1255,6 +1285,9 @@ msgstr "Tooltips"
 
 msgid "Top drawer"
 msgstr "Top drawer"
+
+msgid "Top sheet"
+msgstr "Top sheet"
 
 msgid "Total cook time"
 msgstr "Total cook time"
