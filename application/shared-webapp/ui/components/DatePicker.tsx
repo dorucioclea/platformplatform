@@ -110,8 +110,13 @@ export function DatePicker({
     baseHandleMouseDown();
     wasFocusedBeforeClickRef.current = inputRef.current === document.activeElement;
     wasOpenAtMouseDownRef.current = open;
-    // event is unused but kept for parity with the other mouse handlers.
-    void event;
+    // Suppress native focus-on-click on the first click into an unfocused, enabled input. Without
+    // this the input is focused for the brief gap between mousedown and the popover render, so the
+    // focus ring flashes on and then disappears once the calendar takes over the visual hierarchy.
+    // We re-focus the input ourselves in handleInputClick so the user can keep typing.
+    if (!disabled && !readOnly && !open && !wasFocusedBeforeClickRef.current) {
+      event.preventDefault();
+    }
   };
 
   const handleInputClick = () => {
@@ -128,6 +133,9 @@ export function DatePicker({
     }
     openedByKeyboardRef.current = false;
     setOpen(true);
+    // mousedown preventDefault skipped the native focus, so move focus programmatically here. The
+    // browser treats this as mouse-modality focus, so :focus-visible stays off and no ring appears.
+    inputRef.current?.focus();
   };
 
   const handleInputBlur = () => {
