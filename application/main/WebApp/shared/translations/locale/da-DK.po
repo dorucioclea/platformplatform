@@ -169,6 +169,9 @@ msgstr "Fakturering"
 msgid "Boeuf bourguignon"
 msgstr "Boeuf bourguignon"
 
+msgid "Boeuf, ragù, biryani"
+msgstr "Boeuf, ragù, biryani"
+
 msgid "Bold"
 msgstr "Fed"
 
@@ -189,6 +192,9 @@ msgstr "Brødkrumme — flere niveauer med automatisk sammenklapning"
 
 msgid "Breadcrumb — simple"
 msgstr "Brødkrumme — enkel"
+
+msgid "Browse all recipes"
+msgstr "Gennemse alle opskrifter"
 
 msgid "Browse and test all UI components."
 msgstr "Gennemse og test alle UI-komponenter."
@@ -313,6 +319,9 @@ msgstr "Kombinationsboks (oprettelig)"
 msgid "Combobox (free text)"
 msgstr "Kombinationsboks (fritekst)"
 
+msgid "Comfort in a bowl"
+msgstr "Hygge i en skål"
+
 msgid "Command"
 msgstr "Command"
 
@@ -340,11 +349,17 @@ msgstr "Kontroller"
 msgid "Cook time"
 msgstr "Tilberedningstid"
 
+msgid "Cookbooks"
+msgstr "Kogebøger"
+
 msgid "Cooking details"
 msgstr "Tilberedningsdetaljer"
 
 msgid "Cooking notes"
 msgstr "Tilberedningsnoter"
+
+msgid "Cooking techniques"
+msgstr "Madlavningsteknikker"
 
 msgid "Cooking time"
 msgstr "Madlavningstid"
@@ -366,6 +381,12 @@ msgstr "Creme brulee"
 
 msgid "Cuisine"
 msgstr "Køkken"
+
+msgid "Cuisines of the world"
+msgstr "Verdens køkkener"
+
+msgid "Curated weekly"
+msgstr "Kurateret ugentligt"
 
 msgid "Current page"
 msgstr "Nuværende side"
@@ -454,6 +475,9 @@ msgstr "Deaktiveret"
 msgid "Disabled buttons"
 msgstr "Deaktiverede knapper"
 
+msgid "Discover"
+msgstr "Opdag"
+
 msgid "Dish name"
 msgstr "Rettens navn"
 
@@ -492,6 +516,9 @@ msgstr "Rediger profil"
 
 msgid "Edit recipe"
 msgstr "Rediger opskrift"
+
+msgid "Editor's picks"
+msgstr "Redaktørens valg"
 
 msgid "Email address"
 msgstr "E-mailadresse"
@@ -562,6 +589,9 @@ msgstr "friend@example.com"
 msgid "Full access, can edit and share with others"
 msgstr "Fuld adgang, kan redigere og dele med andre"
 
+msgid "Full library"
+msgstr "Hele biblioteket"
+
 msgid "Fullscreen on mobile"
 msgstr "Fuldskærm på mobil"
 
@@ -613,6 +643,9 @@ msgstr "Hjem"
 msgid "Horizontal"
 msgstr "Vandret"
 
+msgid "Horizontal nav bar with rich dropdown sections. Use it for marketing-style site headers or top-level discovery navigation."
+msgstr "Vandret navigationsbjælke med rige dropdown-sektioner. Brug det til marketingsstilede site-headers eller top-niveau opdagelsesnavigation."
+
 msgid "HoverCard"
 msgstr "HoverCard"
 
@@ -655,6 +688,9 @@ msgstr "Inviter"
 msgid "Italian"
 msgstr "Italiensk"
 
+msgid "Italian, Thai, Mexican and more"
+msgstr "Italiensk, thai, mexicansk og mere"
+
 msgid "Italic"
 msgstr "Kursiv"
 
@@ -687,6 +723,9 @@ msgstr "Kbd"
 
 msgid "Keyboard accessible"
 msgstr "Tilgængelig via tastatur"
+
+msgid "Knife skills, sauces, fermentation"
+msgstr "Knivteknik, saucer, fermentering"
 
 msgid "Labels"
 msgstr "Etiketter"
@@ -744,6 +783,9 @@ msgstr "Linkvarianter"
 
 msgid "Loading"
 msgstr ""
+
+msgid "Local seasonal"
+msgstr "Lokalt og sæsonbestemt"
 
 msgid "Log in"
 msgstr "Log ind"
@@ -840,6 +882,9 @@ msgstr "Navigation"
 
 msgid "Navigation and shortcuts"
 msgstr "Navigation og genveje"
+
+msgid "NavigationMenu"
+msgstr "NavigationMenu"
 
 msgid "Never underlined"
 msgstr "Aldrig understreget"
@@ -973,6 +1018,9 @@ msgstr "Forhåndsvisningsindstillinger"
 msgid "Previous"
 msgstr "Forrige"
 
+msgid "Pricing"
+msgstr "Priser"
+
 msgid "Primary"
 msgstr "Primær"
 
@@ -990,6 +1038,9 @@ msgstr "Udgiv nu"
 
 msgid "Quick note"
 msgstr "Kort note"
+
+msgid "Quick weeknight meals"
+msgstr "Hurtige hverdagsmåltider"
 
 msgid "Radar chart"
 msgstr "Radardiagram"
@@ -1244,6 +1295,9 @@ msgstr ""
 msgid "Slider with steps"
 msgstr ""
 
+msgid "Slow-cooked classics"
+msgstr "Langtidsstegte klassikere"
+
 msgid "Small"
 msgstr "Lille"
 
@@ -1255,6 +1309,9 @@ msgstr "Noget tilberedningserfaring, 30 til 60 minutter"
 
 msgid "Something went wrong. Please try again."
 msgstr "Noget gik galt. Prøv venligst igen."
+
+msgid "Soups and stews"
+msgstr "Supper og gryderetter"
 
 msgid "Source"
 msgstr "Kilde"
@@ -1397,6 +1454,9 @@ msgstr "Indtast en dato"
 msgid "Type or search..."
 msgstr "Skriv eller søg..."
 
+msgid "Under 30 minutes"
+msgstr "Under 30 minutter"
+
 msgid "Underline"
 msgstr "Understregning"
 
@@ -1435,6 +1495,9 @@ msgstr "Advarselsbesked"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Velkommen til PlatformPlatform"
+
+msgid "What's at the market this week"
+msgstr "Hvad er på markedet denne uge"
 
 msgid "When to use Accordion"
 msgstr "Hvornår skal Accordion bruges"

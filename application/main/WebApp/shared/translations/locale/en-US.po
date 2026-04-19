@@ -169,6 +169,9 @@ msgstr "Billing"
 msgid "Boeuf bourguignon"
 msgstr "Boeuf bourguignon"
 
+msgid "Boeuf, ragù, biryani"
+msgstr "Boeuf, ragù, biryani"
+
 msgid "Bold"
 msgstr "Bold"
 
@@ -189,6 +192,9 @@ msgstr "Breadcrumb — multi-level with auto-collapse"
 
 msgid "Breadcrumb — simple"
 msgstr "Breadcrumb — simple"
+
+msgid "Browse all recipes"
+msgstr "Browse all recipes"
 
 msgid "Browse and test all UI components."
 msgstr "Browse and test all UI components."
@@ -313,6 +319,9 @@ msgstr "Combobox (creatable)"
 msgid "Combobox (free text)"
 msgstr "Combobox (free text)"
 
+msgid "Comfort in a bowl"
+msgstr "Comfort in a bowl"
+
 msgid "Command"
 msgstr "Command"
 
@@ -340,11 +349,17 @@ msgstr "Controls"
 msgid "Cook time"
 msgstr "Cook time"
 
+msgid "Cookbooks"
+msgstr "Cookbooks"
+
 msgid "Cooking details"
 msgstr "Cooking details"
 
 msgid "Cooking notes"
 msgstr "Cooking notes"
+
+msgid "Cooking techniques"
+msgstr "Cooking techniques"
 
 msgid "Cooking time"
 msgstr "Cooking time"
@@ -366,6 +381,12 @@ msgstr "Creme brulee"
 
 msgid "Cuisine"
 msgstr "Cuisine"
+
+msgid "Cuisines of the world"
+msgstr "Cuisines of the world"
+
+msgid "Curated weekly"
+msgstr "Curated weekly"
 
 msgid "Current page"
 msgstr "Current page"
@@ -454,6 +475,9 @@ msgstr "Disabled"
 msgid "Disabled buttons"
 msgstr "Disabled buttons"
 
+msgid "Discover"
+msgstr "Discover"
+
 msgid "Dish name"
 msgstr "Dish name"
 
@@ -492,6 +516,9 @@ msgstr "Edit profile"
 
 msgid "Edit recipe"
 msgstr "Edit recipe"
+
+msgid "Editor's picks"
+msgstr "Editor's picks"
 
 msgid "Email address"
 msgstr "Email address"
@@ -562,6 +589,9 @@ msgstr "friend@example.com"
 msgid "Full access, can edit and share with others"
 msgstr "Full access, can edit and share with others"
 
+msgid "Full library"
+msgstr "Full library"
+
 msgid "Fullscreen on mobile"
 msgstr "Fullscreen on mobile"
 
@@ -613,6 +643,9 @@ msgstr "Home"
 msgid "Horizontal"
 msgstr "Horizontal"
 
+msgid "Horizontal nav bar with rich dropdown sections. Use it for marketing-style site headers or top-level discovery navigation."
+msgstr "Horizontal nav bar with rich dropdown sections. Use it for marketing-style site headers or top-level discovery navigation."
+
 msgid "HoverCard"
 msgstr "HoverCard"
 
@@ -655,6 +688,9 @@ msgstr "Invite"
 msgid "Italian"
 msgstr "Italian"
 
+msgid "Italian, Thai, Mexican and more"
+msgstr "Italian, Thai, Mexican and more"
+
 msgid "Italic"
 msgstr "Italic"
 
@@ -687,6 +723,9 @@ msgstr "Kbd"
 
 msgid "Keyboard accessible"
 msgstr "Keyboard accessible"
+
+msgid "Knife skills, sauces, fermentation"
+msgstr "Knife skills, sauces, fermentation"
 
 msgid "Labels"
 msgstr "Labels"
@@ -744,6 +783,9 @@ msgstr "Link variants"
 
 msgid "Loading"
 msgstr "Loading"
+
+msgid "Local seasonal"
+msgstr "Local seasonal"
 
 msgid "Log in"
 msgstr "Log in"
@@ -840,6 +882,9 @@ msgstr "Navigation"
 
 msgid "Navigation and shortcuts"
 msgstr "Navigation and shortcuts"
+
+msgid "NavigationMenu"
+msgstr "NavigationMenu"
 
 msgid "Never underlined"
 msgstr "Never underlined"
@@ -973,6 +1018,9 @@ msgstr "Preview settings"
 msgid "Previous"
 msgstr "Previous"
 
+msgid "Pricing"
+msgstr "Pricing"
+
 msgid "Primary"
 msgstr "Primary"
 
@@ -990,6 +1038,9 @@ msgstr "Publish now"
 
 msgid "Quick note"
 msgstr "Quick note"
+
+msgid "Quick weeknight meals"
+msgstr "Quick weeknight meals"
 
 msgid "Radar chart"
 msgstr "Radar chart"
@@ -1244,6 +1295,9 @@ msgstr "Slider (range)"
 msgid "Slider with steps"
 msgstr "Slider with steps"
 
+msgid "Slow-cooked classics"
+msgstr "Slow-cooked classics"
+
 msgid "Small"
 msgstr "Small"
 
@@ -1255,6 +1309,9 @@ msgstr "Some cooking experience, 30 to 60 minutes"
 
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
+
+msgid "Soups and stews"
+msgstr "Soups and stews"
 
 msgid "Source"
 msgstr "Source"
@@ -1397,6 +1454,9 @@ msgstr "Type a date"
 msgid "Type or search..."
 msgstr "Type or search..."
 
+msgid "Under 30 minutes"
+msgstr "Under 30 minutes"
+
 msgid "Underline"
 msgstr "Underline"
 
@@ -1435,6 +1495,9 @@ msgstr "Warning alert"
 
 msgid "Welcome to PlatformPlatform"
 msgstr "Welcome to PlatformPlatform"
+
+msgid "What's at the market this week"
+msgstr "What's at the market this week"
 
 msgid "When to use Accordion"
 msgstr "When to use Accordion"

@@ -29,6 +29,7 @@ import { useState } from "react";
 
 import { CommandPreview } from "./CommandPreview";
 import { KbdPreview } from "./KbdPreview";
+import { NavigationMenuPreview } from "./NavigationMenuPreview";
 
 export function NavigationPreview() {
   const [showBookmarks, setShowBookmarks] = useState(true);
@@ -177,6 +178,7 @@ export function NavigationPreview() {
           </ContextMenuContent>
         </ContextMenu>
       </div>
+      <NavigationMenuPreview />
       <CommandPreview />
       <KbdPreview />
     </div>
