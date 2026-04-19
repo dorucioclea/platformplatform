@@ -340,6 +340,9 @@ msgstr "Date and time"
 msgid "Date and time formatting"
 msgstr "Date and time formatting"
 
+msgid "Date input"
+msgstr "Date input"
+
 msgid "Date must be in the past"
 msgstr "Date must be in the past"
 
@@ -573,6 +576,9 @@ msgstr "Indian"
 
 msgid "Info alert"
 msgstr "Info alert"
+
+msgid "Inline calendar"
+msgstr "Inline calendar"
 
 msgid "Invite"
 msgstr "Invite"
@@ -1186,6 +1192,9 @@ msgstr "Total cook time"
 
 msgid "Total time spent cooking this month."
 msgstr "Total time spent cooking this month."
+
+msgid "Type a date"
+msgstr "Type a date"
 
 msgid "Type or search..."
 msgstr "Type or search..."

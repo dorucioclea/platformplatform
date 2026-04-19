@@ -5,6 +5,7 @@ import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/ToggleGroup";
 import { useState } from "react";
 
 import { ControlRow } from "./ControlRow";
+import { InlineCalendarPreview } from "./InlineCalendarPreview";
 
 export function ControlsPreview() {
   const [showLabels, setShowLabels] = useState(true);
@@ -14,7 +15,6 @@ export function ControlsPreview() {
   const [showPlaceholders, setShowPlaceholders] = useState(true);
   const [controlState, setControlState] = useState<"enabled" | "disabled" | "readonly">("enabled");
   const [showErrors, setShowErrors] = useState(false);
-  const [showIndeterminate, setShowIndeterminate] = useState(false);
 
   return (
     <>
@@ -30,7 +30,6 @@ export function ControlsPreview() {
         <SwitchField label={t`Values`} checked={showValues} onCheckedChange={setShowValues} />
         <SwitchField label={t`Placeholders`} checked={showPlaceholders} onCheckedChange={setShowPlaceholders} />
         <SwitchField label={t`Errors`} checked={showErrors} onCheckedChange={setShowErrors} />
-        <SwitchField label={t`Indeterminate`} checked={showIndeterminate} onCheckedChange={setShowIndeterminate} />
         <ToggleGroup
           variant="outline"
           value={[controlState]}
@@ -63,6 +62,9 @@ export function ControlsPreview() {
         error={showErrors}
         indeterminate={showIndeterminate}
       />
+      <div className="mt-8">
+        <InlineCalendarPreview />
+      </div>
     </>
   );
 }

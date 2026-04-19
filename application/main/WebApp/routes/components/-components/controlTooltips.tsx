@@ -118,6 +118,13 @@ export const tooltips = {
       <Prop name='displayFormat="relative"'>Renders as Today / Yesterday / Tomorrow / In N days</Prop>
     </PropList>
   ),
+  dateInput: (
+    <PropList title="DateInput" description="Editable date field without the calendar popover">
+      <Prop name="value / onChange">Controlled date as YYYY-MM-DD string</Prop>
+      <Prop name="displayFormat">Same options as DatePicker (input, short, long, relative, custom)</Prop>
+      <PropNote>Same masking and validation as DatePicker. Use when keyboard entry is the only path.</PropNote>
+    </PropList>
+  ),
   dateRange: (
     <PropList title="DateRangePicker" description="Select a start and end date">
       <Prop name="value">Object with start and end Date</Prop>

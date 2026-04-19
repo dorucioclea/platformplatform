@@ -340,6 +340,9 @@ msgstr "Dato og tid"
 msgid "Date and time formatting"
 msgstr "Dato- og tidsformatering"
 
+msgid "Date input"
+msgstr "Datofelt"
+
 msgid "Date must be in the past"
 msgstr "Datoen skal være i fortiden"
 
@@ -573,6 +576,9 @@ msgstr "Indisk"
 
 msgid "Info alert"
 msgstr "Informationsadvarsel"
+
+msgid "Inline calendar"
+msgstr "Inline kalender"
 
 msgid "Invite"
 msgstr "Inviter"
@@ -1186,6 +1192,9 @@ msgstr "Samlet tilberedningstid"
 
 msgid "Total time spent cooking this month."
 msgstr "Samlet tid brugt på madlavning denne måned."
+
+msgid "Type a date"
+msgstr "Indtast en dato"
 
 msgid "Type or search..."
 msgstr "Skriv eller søg..."

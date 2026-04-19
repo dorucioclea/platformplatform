@@ -2,6 +2,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DateField } from "@repo/ui/components/DateField";
+import { DateInput } from "@repo/ui/components/DateInput";
 import { DatePicker } from "@repo/ui/components/DatePicker";
 import { DateRangePicker } from "@repo/ui/components/DateRangePicker";
 import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
@@ -33,6 +34,7 @@ export function DateAndToggleFields({
   const [switchChecked, setSwitchChecked] = useState(false);
   const [checkboxChecked, setCheckboxChecked] = useState(false);
   const [datePickerValue, setDatePickerValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
+  const [dateInputValue, setDateInputValue] = useState<string | undefined>(hasValues ? "2025-06-15" : undefined);
   const [dateRangeValue, setDateRangeValue] = useState<{ start: Date; end: Date } | null>(
     hasValues ? { start: new Date(2025, 5, 1), end: new Date(2025, 5, 15) } : null
   );
@@ -59,6 +61,18 @@ export function DateAndToggleFields({
         hasValues={hasValues}
         showIcon={showIcon}
         placeholders={placeholders}
+        disabled={disabled}
+        readOnly={readOnly}
+        errorMessage={errorMessage}
+      />
+      <DateInput
+        label={label ? t`Date input` : undefined}
+        tooltip={tooltip ? tooltips.dateInput : undefined}
+        name={`dateinput-${suffix}`}
+        placeholder={placeholders ? t`Type a date` : undefined}
+        startIcon={showIcon ? undefined : null}
+        value={dateInputValue}
+        onChange={setDateInputValue}
         disabled={disabled}
         readOnly={readOnly}
         errorMessage={errorMessage}
