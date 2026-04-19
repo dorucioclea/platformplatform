@@ -715,6 +715,9 @@ msgstr "Lys"
 msgid "Line chart"
 msgstr "Linjediagram"
 
+msgid "Linear progress bar for determinate, foreground tasks like uploads or onboarding completion. Use Spinner for indeterminate or background loading."
+msgstr "Lineær fremskridtsbjælke til determinerede, forgrundsopgaver som uploads eller onboarding. Brug Spinner til indetermineret eller baggrundsindlæsning."
+
 msgid "Link"
 msgstr "Link"
 
@@ -963,6 +966,9 @@ msgstr "Profil"
 
 msgid "Profile picture preview"
 msgstr "Profilbilledeksempel"
+
+msgid "Progress"
+msgstr "Fremskridt"
 
 msgid "Publish now"
 msgstr "Udgiv nu"

@@ -715,6 +715,9 @@ msgstr "Light"
 msgid "Line chart"
 msgstr "Line chart"
 
+msgid "Linear progress bar for determinate, foreground tasks like uploads or onboarding completion. Use Spinner for indeterminate or background loading."
+msgstr "Linear progress bar for determinate, foreground tasks like uploads or onboarding completion. Use Spinner for indeterminate or background loading."
+
 msgid "Link"
 msgstr "Link"
 
@@ -963,6 +966,9 @@ msgstr "Profile"
 
 msgid "Profile picture preview"
 msgstr "Profile picture preview"
+
+msgid "Progress"
+msgstr "Progress"
 
 msgid "Publish now"
 msgstr "Publish now"

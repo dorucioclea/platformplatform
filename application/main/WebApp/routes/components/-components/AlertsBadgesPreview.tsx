@@ -8,6 +8,8 @@ import { AlertCircleIcon, FlagIcon, InfoIcon, TriangleAlertIcon, XIcon } from "l
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
+import { ProgressPreview } from "./ProgressPreview";
+
 type BannerVariant = "persistent" | "dismissable" | "cta";
 
 const bannerContent: Record<BannerVariant, { message: () => string; icon: React.ReactNode }> = {
@@ -179,6 +181,8 @@ export function AlertsBadgesPreview() {
           </span>
         </div>
       </div>
+
+      <ProgressPreview />
     </div>
   );
 }
