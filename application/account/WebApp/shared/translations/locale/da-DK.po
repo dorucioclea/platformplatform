@@ -914,6 +914,9 @@ msgstr "Kun ejere kan ændre brugerroller"
 msgid "Only trusted personnel access data through Azure AD authentication"
 msgstr "Kun betroet personale får adgang til data gennem Azure AD autentificering"
 
+msgid "Open calendar"
+msgstr "Åbn kalender"
+
 msgid "Open navigation menu"
 msgstr "Åbn navigationsmenu"
 
