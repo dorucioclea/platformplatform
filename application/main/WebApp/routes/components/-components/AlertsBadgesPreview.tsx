@@ -8,6 +8,7 @@ import { AlertCircleIcon, FlagIcon, InfoIcon, TriangleAlertIcon, XIcon } from "l
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
+import { ItemPreview } from "./ItemPreview";
 import { ProgressPreview } from "./ProgressPreview";
 import { SpinnerPreview } from "./SpinnerPreview";
 
@@ -185,6 +186,7 @@ export function AlertsBadgesPreview() {
 
       <ProgressPreview />
       <SpinnerPreview />
+      <ItemPreview />
     </div>
   );
 }

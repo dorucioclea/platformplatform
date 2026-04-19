@@ -73,6 +73,12 @@ msgstr "Accordion"
 msgid "Accordion vs Collapsible"
 msgstr "Accordion vs Collapsible"
 
+msgid "Action"
+msgstr ""
+
+msgid "Add an extra layer of security to your account."
+msgstr ""
+
 msgid "Add notes about this recipe"
 msgstr "Tilføj noter om denne opskrift"
 
@@ -174,6 +180,9 @@ msgstr "Boeuf, ragù, biryani"
 
 msgid "Bold"
 msgstr "Fed"
+
+msgid "Bordered row for stand-alone settings or list items."
+msgstr ""
 
 msgid "Bottom"
 msgstr "Bund"
@@ -532,6 +541,9 @@ msgstr "Redaktørens valg"
 msgid "Email address"
 msgstr "E-mailadresse"
 
+msgid "Email me when a new device signs in."
+msgstr ""
+
 msgid "Empty"
 msgstr "Tom"
 
@@ -703,11 +715,23 @@ msgstr "Italiensk, thai, mexicansk og mere"
 msgid "Italic"
 msgstr "Kursiv"
 
+msgid "Item — clickable row"
+msgstr ""
+
+msgid "Item — image media"
+msgstr ""
+
+msgid "Item — variants"
+msgstr ""
+
 msgid "Item archived"
 msgstr "Element arkiveret"
 
 msgid "Item deleted"
 msgstr "Element slettet"
+
+msgid "ItemGroup — settings list"
+msgstr ""
 
 msgid "Japanese"
 msgstr "Japansk"
@@ -802,6 +826,9 @@ msgstr "Lokalt og sæsonbestemt"
 msgid "Log in"
 msgstr "Log ind"
 
+msgid "Login alerts"
+msgstr ""
+
 msgid "Long date"
 msgstr "Lang dato"
 
@@ -813,6 +840,9 @@ msgstr "Hovedindhold"
 
 msgid "Main navigation"
 msgstr "Hovednavigation"
+
+msgid "Manage"
+msgstr ""
 
 msgid "Masala dosa"
 msgstr "Masala dosa"
@@ -880,6 +910,9 @@ msgstr "Flervalg"
 msgid "Multi-select summary side pane"
 msgstr "Oversigtspanel for flervalg"
 
+msgid "Muted"
+msgstr ""
+
 msgid "Narrow bottom drawer"
 msgstr "Smal bunddrawer"
 
@@ -937,8 +970,14 @@ msgstr "Tal (decimal)"
 msgid "Number (integer)"
 msgstr "Tal (heltal)"
 
+msgid "Off"
+msgstr ""
+
 msgid "Okonomiyaki"
 msgstr "Okonomiyaki"
+
+msgid "On"
+msgstr ""
 
 msgid "One-time code"
 msgstr "Engangskode"
@@ -984,6 +1023,9 @@ msgstr "Paginering"
 
 msgid "Palak paneer"
 msgstr "Palak paneer"
+
+msgid "Passkeys"
+msgstr ""
 
 msgid "Pedro Duarte"
 msgstr "Pedro Duarte"
@@ -1292,6 +1334,9 @@ msgstr "Sidepanel"
 msgid "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
 msgstr "Sideforankret panel bygget på samme Dialog-primitiv. Brug det til desktop sidefelter som filter-sidebars, sekundær navigation eller detail-editorer. Venstre- og højre-sheets er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser SheetContent med mx-auto og max-w-*. Sammenlign med SidePane (Custom) som er den dokket-som-standard app-shell variant."
 
+msgid "Sign in without a password using your device."
+msgstr ""
+
 msgid "Simulate errors"
 msgstr "Simuler fejl"
 
@@ -1354,6 +1399,9 @@ msgstr "Bliv"
 
 msgid "Street address"
 msgstr "Vejnavn"
+
+msgid "Subtle background for grouped rows inside a panel."
+msgstr ""
 
 msgid "Suggestions"
 msgstr "Forslag"
@@ -1466,6 +1514,9 @@ msgstr "Samlet tilberedningstid"
 msgid "Total time spent cooking this month."
 msgstr "Samlet tid brugt på madlavning denne måned."
 
+msgid "Two-factor authentication"
+msgstr ""
+
 msgid "Type a command or search..."
 msgstr "Skriv en kommando eller søg..."
 
@@ -1511,6 +1562,9 @@ msgstr "Grøntsagstempura"
 msgid "View all"
 msgstr "Se alle"
 
+msgid "View profile verification"
+msgstr ""
+
 msgid "Warning alert"
 msgstr "Advarselsbesked"
 
@@ -1555,6 +1609,9 @@ msgstr "Dit dashboard er tomt"
 
 msgid "Your personal cookbook library."
 msgstr "Dit personlige kogebogsbibliotek."
+
+msgid "Your profile has been verified"
+msgstr ""
 
 msgid "Your trial expires in 3 days."
 msgstr "Din prøveperiode udløber om 3 dage."

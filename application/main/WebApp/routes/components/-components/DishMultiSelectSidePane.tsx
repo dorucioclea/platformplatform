@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { Button } from "@repo/ui/components/Button";
+import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from "@repo/ui/components/Item";
 import { SidePane, SidePaneBody, SidePaneFooter, SidePaneHeader } from "@repo/ui/components/SidePane";
 import { Trash2Icon } from "lucide-react";
 
@@ -33,21 +34,29 @@ export function DishMultiSelectSidePane({ dishes, totalCount, isOpen }: DishMult
       </SidePaneHeader>
 
       <SidePaneBody className="flex flex-col gap-4">
-        <div className="flex items-center justify-between rounded-lg border border-border bg-muted/40 p-3">
-          <span className="text-sm text-muted-foreground">
-            <Trans>Total cook time</Trans>
-          </span>
-          <span className="text-lg font-semibold">{formatCookTime(totalMinutes)}</span>
-        </div>
+        <Item variant="muted" size="sm">
+          <ItemContent>
+            <ItemTitle className="text-sm font-normal text-muted-foreground">
+              <Trans>Total cook time</Trans>
+            </ItemTitle>
+          </ItemContent>
+          <ItemActions>
+            <span className="text-lg font-semibold">{formatCookTime(totalMinutes)}</span>
+          </ItemActions>
+        </Item>
 
-        <ul className="flex flex-col gap-1">
+        <ItemGroup>
           {dishes.map((dish) => (
-            <li key={dish.id} className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm">
-              <span className="truncate font-medium">{dish.name}</span>
-              <span className="shrink-0 text-muted-foreground">{formatCookTime(dish.cookTime)}</span>
-            </li>
+            <Item key={dish.id} size="xs">
+              <ItemContent>
+                <ItemTitle className="font-medium">{dish.name}</ItemTitle>
+              </ItemContent>
+              <ItemActions>
+                <span className="shrink-0 text-sm text-muted-foreground">{formatCookTime(dish.cookTime)}</span>
+              </ItemActions>
+            </Item>
           ))}
-        </ul>
+        </ItemGroup>
       </SidePaneBody>
 
       <SidePaneFooter>

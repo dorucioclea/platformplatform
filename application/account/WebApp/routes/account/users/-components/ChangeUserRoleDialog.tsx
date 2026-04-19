@@ -13,7 +13,8 @@ import {
 } from "@repo/ui/components/Dialog";
 import { DirtyDialog } from "@repo/ui/components/DirtyDialog";
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@repo/ui/components/Field";
-import { Form } from "@repo/ui/components/Form";
+import { Form, type FormProps } from "@repo/ui/components/Form";
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@repo/ui/components/Item";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
 import { getInitials } from "@repo/utils/string/getInitials";
 import { useQueryClient } from "@tanstack/react-query";
@@ -61,7 +62,7 @@ export function ChangeUserRoleDialog({ user, isOpen, onOpenChange }: Readonly<Ch
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
   const currentRole = selectedRole ?? user.role;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: NonNullable<FormProps["onSubmit"]> = (event) => {
     event.preventDefault();
     changeUserRoleMutation.mutate({
       params: {
@@ -97,19 +98,21 @@ export function ChangeUserRoleDialog({ user, isOpen, onOpenChange }: Readonly<Ch
           className="flex flex-col max-sm:h-full"
         >
           <DialogBody>
-            <div className="flex items-center gap-3">
-              <Avatar className="size-16">
-                <AvatarImage src={user.avatarUrl ?? undefined} />
-                <AvatarFallback>
-                  {getInitials(user.firstName ?? undefined, user.lastName ?? undefined, user.email)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-medium">{displayName}</p>
-                {user.title && <p className="truncate text-sm text-muted-foreground">{user.title}</p>}
-                <p className="truncate text-sm text-muted-foreground">{user.email}</p>
-              </div>
-            </div>
+            <Item className="p-0">
+              <ItemMedia variant="image" className="size-16">
+                <Avatar className="size-16">
+                  <AvatarImage src={user.avatarUrl ?? undefined} />
+                  <AvatarFallback>
+                    {getInitials(user.firstName ?? undefined, user.lastName ?? undefined, user.email)}
+                  </AvatarFallback>
+                </Avatar>
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle className="truncate font-medium">{displayName}</ItemTitle>
+                {user.title && <ItemDescription className="truncate">{user.title}</ItemDescription>}
+                <ItemDescription className="truncate">{user.email}</ItemDescription>
+              </ItemContent>
+            </Item>
 
             <RadioGroup
               aria-label={t`Role`}

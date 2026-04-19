@@ -73,6 +73,12 @@ msgstr "Accordion"
 msgid "Accordion vs Collapsible"
 msgstr "Accordion vs Collapsible"
 
+msgid "Action"
+msgstr "Action"
+
+msgid "Add an extra layer of security to your account."
+msgstr "Add an extra layer of security to your account."
+
 msgid "Add notes about this recipe"
 msgstr "Add notes about this recipe"
 
@@ -174,6 +180,9 @@ msgstr "Boeuf, ragù, biryani"
 
 msgid "Bold"
 msgstr "Bold"
+
+msgid "Bordered row for stand-alone settings or list items."
+msgstr "Bordered row for stand-alone settings or list items."
 
 msgid "Bottom"
 msgstr "Bottom"
@@ -532,6 +541,9 @@ msgstr "Editor's picks"
 msgid "Email address"
 msgstr "Email address"
 
+msgid "Email me when a new device signs in."
+msgstr "Email me when a new device signs in."
+
 msgid "Empty"
 msgstr "Empty"
 
@@ -703,11 +715,23 @@ msgstr "Italian, Thai, Mexican and more"
 msgid "Italic"
 msgstr "Italic"
 
+msgid "Item — clickable row"
+msgstr "Item — clickable row"
+
+msgid "Item — image media"
+msgstr "Item — image media"
+
+msgid "Item — variants"
+msgstr "Item — variants"
+
 msgid "Item archived"
 msgstr "Item archived"
 
 msgid "Item deleted"
 msgstr "Item deleted"
+
+msgid "ItemGroup — settings list"
+msgstr "ItemGroup — settings list"
 
 msgid "Japanese"
 msgstr "Japanese"
@@ -802,6 +826,9 @@ msgstr "Local seasonal"
 msgid "Log in"
 msgstr "Log in"
 
+msgid "Login alerts"
+msgstr "Login alerts"
+
 msgid "Long date"
 msgstr "Long date"
 
@@ -813,6 +840,9 @@ msgstr "Main content"
 
 msgid "Main navigation"
 msgstr "Main navigation"
+
+msgid "Manage"
+msgstr "Manage"
 
 msgid "Masala dosa"
 msgstr "Masala dosa"
@@ -880,6 +910,9 @@ msgstr "Multi-select"
 msgid "Multi-select summary side pane"
 msgstr "Multi-select summary side pane"
 
+msgid "Muted"
+msgstr "Muted"
+
 msgid "Narrow bottom drawer"
 msgstr "Narrow bottom drawer"
 
@@ -937,8 +970,14 @@ msgstr "Number (decimal)"
 msgid "Number (integer)"
 msgstr "Number (integer)"
 
+msgid "Off"
+msgstr "Off"
+
 msgid "Okonomiyaki"
 msgstr "Okonomiyaki"
+
+msgid "On"
+msgstr "On"
 
 msgid "One-time code"
 msgstr "One-time code"
@@ -984,6 +1023,9 @@ msgstr "Pagination"
 
 msgid "Palak paneer"
 msgstr "Palak paneer"
+
+msgid "Passkeys"
+msgstr "Passkeys"
 
 msgid "Pedro Duarte"
 msgstr "Pedro Duarte"
@@ -1292,6 +1334,9 @@ msgstr "Side panel"
 msgid "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
 msgstr "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
 
+msgid "Sign in without a password using your device."
+msgstr "Sign in without a password using your device."
+
 msgid "Simulate errors"
 msgstr "Simulate errors"
 
@@ -1354,6 +1399,9 @@ msgstr "Stay"
 
 msgid "Street address"
 msgstr "Street address"
+
+msgid "Subtle background for grouped rows inside a panel."
+msgstr "Subtle background for grouped rows inside a panel."
 
 msgid "Suggestions"
 msgstr "Suggestions"
@@ -1466,6 +1514,9 @@ msgstr "Total cook time"
 msgid "Total time spent cooking this month."
 msgstr "Total time spent cooking this month."
 
+msgid "Two-factor authentication"
+msgstr "Two-factor authentication"
+
 msgid "Type a command or search..."
 msgstr "Type a command or search..."
 
@@ -1511,6 +1562,9 @@ msgstr "Vegetable tempura"
 msgid "View all"
 msgstr "View all"
 
+msgid "View profile verification"
+msgstr "View profile verification"
+
 msgid "Warning alert"
 msgstr "Warning alert"
 
@@ -1555,6 +1609,9 @@ msgstr "Your dashboard is empty"
 
 msgid "Your personal cookbook library."
 msgstr "Your personal cookbook library."
+
+msgid "Your profile has been verified"
+msgstr "Your profile has been verified"
 
 msgid "Your trial expires in 3 days."
 msgstr "Your trial expires in 3 days."
