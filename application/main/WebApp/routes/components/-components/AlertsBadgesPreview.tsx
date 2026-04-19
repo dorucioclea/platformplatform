@@ -9,6 +9,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 
 import { ProgressPreview } from "./ProgressPreview";
+import { SpinnerPreview } from "./SpinnerPreview";
 
 type BannerVariant = "persistent" | "dismissable" | "cta";
 
@@ -183,6 +184,7 @@ export function AlertsBadgesPreview() {
       </div>
 
       <ProgressPreview />
+      <SpinnerPreview />
     </div>
   );
 }

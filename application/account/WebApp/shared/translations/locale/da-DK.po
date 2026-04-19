@@ -777,6 +777,9 @@ msgstr "Lys"
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+msgid "Loading"
+msgstr ""
+
 msgid "Loading..."
 msgstr "Indlæser..."
 

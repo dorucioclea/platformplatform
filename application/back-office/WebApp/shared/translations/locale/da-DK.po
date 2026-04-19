@@ -71,6 +71,9 @@ msgstr "Forøg"
 msgid "Leave"
 msgstr "Forlad"
 
+msgid "Loading"
+msgstr ""
+
 msgid "Log out"
 msgstr "Log ud"
 

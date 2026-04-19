@@ -65,7 +65,7 @@ function InputOtpSlot({
       data-slot="input-otp-slot"
       data-active={showActive}
       className={cn(
-        "relative z-0 flex size-[var(--control-height)] items-center justify-center border border-input border-l-transparent text-sm shadow-xs transition-all first:rounded-l-md first:border-l-input last:rounded-r-md aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:before:pointer-events-none data-[active=true]:before:absolute data-[active=true]:before:-inset-[5px] data-[active=true]:before:z-[-1] data-[active=true]:before:rounded-[inherit] data-[active=true]:before:border-2 data-[active=true]:before:border-ring data-[active=true]:before:bg-background data-[active=true]:aria-invalid:border-destructive dark:bg-input/30",
+        "relative z-0 flex size-(--control-height) items-center justify-center border border-input border-l-transparent text-sm shadow-xs transition-all first:rounded-l-md first:border-l-input last:rounded-r-md aria-invalid:border-destructive data-[active=true]:z-10 data-[active=true]:before:pointer-events-none data-[active=true]:before:absolute data-[active=true]:before:-inset-1.25 data-[active=true]:before:z-[-1] data-[active=true]:before:rounded-[inherit] data-[active=true]:before:border-2 data-[active=true]:before:border-ring data-[active=true]:before:bg-background data-[active=true]:aria-invalid:border-destructive dark:bg-input/30",
         className
       )}
       {...props}

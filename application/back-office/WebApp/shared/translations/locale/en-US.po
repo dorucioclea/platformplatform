@@ -71,6 +71,9 @@ msgstr "Increase"
 msgid "Leave"
 msgstr "Leave"
 
+msgid "Loading"
+msgstr "Loading"
+
 msgid "Log out"
 msgstr "Log out"
 

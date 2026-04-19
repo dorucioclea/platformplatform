@@ -48,7 +48,7 @@ export function TablePreviewHeader({
     <TableHeader>
       <TableRow>
         {showCheckboxes && (
-          <TableHead className="w-[2.5rem]">
+          <TableHead className="w-10">
             {multiSelect && (
               <Checkbox
                 checked={allChecked}
@@ -69,7 +69,7 @@ export function TablePreviewHeader({
         </TableHead>
         <TableHead
           data-column="cookTime"
-          className={fixedColumns ? "w-[7rem]" : undefined}
+          className={fixedColumns ? "w-28" : undefined}
           onClick={() => onSort("cookTime")}
         >
           <Trans>Cook time</Trans>
@@ -77,7 +77,7 @@ export function TablePreviewHeader({
         </TableHead>
         <TableHead
           data-column="addedAt"
-          className={fixedColumns ? "w-[9rem]" : undefined}
+          className={fixedColumns ? "w-36" : undefined}
           onClick={() => onSort("addedAt")}
         >
           <Trans>Added</Trans>
@@ -85,13 +85,13 @@ export function TablePreviewHeader({
         </TableHead>
         <TableHead
           data-column="difficulty"
-          className={fixedColumns ? "w-[9rem]" : undefined}
+          className={fixedColumns ? "w-36" : undefined}
           onClick={() => onSort("difficulty")}
         >
           <Trans>Difficulty</Trans>
           <SortIndicator column="difficulty" sortColumn={sortColumn} direction={sortDirection} />
         </TableHead>
-        <TableHead className="w-[3rem]" />
+        <TableHead className="w-12" />
       </TableRow>
     </TableHeader>
   );

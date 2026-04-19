@@ -777,6 +777,9 @@ msgstr "Light"
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+msgid "Loading"
+msgstr "Loading"
+
 msgid "Loading..."
 msgstr "Loading..."
 

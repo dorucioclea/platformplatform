@@ -126,24 +126,20 @@ export const tooltips = {
     </PropList>
   ),
   dateRange: (
-    <PropList title="DateRangePicker" description="Select a start and end date">
-      <Prop name="value">Object with start and end Date</Prop>
-      <Prop name="onChange">Callback with DateRangeValue or null</Prop>
+    <PropList title="DateRangePicker" description="Type endpoints or click two days; clearable">
+      <Prop name="value / onChange">DateRangeValue or null</Prop>
       <Prop name="displayFormat">Same options as DatePicker (input, short, long, relative, custom)</Prop>
-      <PropNote>Type both endpoints or click two days in the calendar. Clearable with X button.</PropNote>
     </PropList>
   ),
   timeField: (
     <PropList title="TimeField" description="Native browser time input">
       <Prop name="value / onChange">Time as HH:MM string</Prop>
       <Prop name="trailingContent">Icon or content after the input</Prop>
-      <PropNote>Uses the browser's built-in time picker.</PropNote>
     </PropList>
   ),
   timeZonePicker: (
-    <PropList title="TimeZonePicker" description="Searchable time zone selector">
+    <PropList title="TimeZonePicker" description="Searchable IANA time zone selector grouped by continent">
       <Prop name="value / onValueChange">IANA time zone identifier</Prop>
-      <PropNote>Groups by continent. Uses browser Intl API for offset display.</PropNote>
     </PropList>
   ),
   inputOtp: (
@@ -162,35 +158,42 @@ export const tooltips = {
     </PropList>
   ),
   switchField: (
-    <PropList title="SwitchField" description="Toggle for on/off settings">
+    <PropList title="SwitchField" description="Toggle for on/off settings; readOnly disables changes">
       <Prop name="checked / onCheckedChange">Controlled toggle state</Prop>
-      <Prop name="readOnly">Visible but not toggleable</Prop>
     </PropList>
   ),
   checkboxField: (
-    <PropList title="CheckboxField" description="Tick box for boolean choices">
+    <PropList title="CheckboxField" description="Tick box for boolean choices; readOnly disables changes">
       <Prop name="checked / onCheckedChange">Controlled check state</Prop>
-      <Prop name="readOnly">Visible but not checkable</Prop>
     </PropList>
   ),
   checkboxIndeterminate: (
-    <PropList title="CheckboxField (indeterminate)" description="Third state when a value cannot be determined">
-      <Prop name="indeterminate">Renders a minus glyph instead of a check. Set programmatically only.</Prop>
-      <PropNote>E.g. Select all when some but not all rows are selected, or bulk-edit with mixed values.</PropNote>
+    <PropList title="CheckboxField (indeterminate)" description="Minus glyph for mixed/partial state — set programmatically">
+      <Prop name="indeterminate">e.g. Select-all with partial row selection or bulk-edit with mixed values</Prop>
     </PropList>
   ),
   radioGroup: (
-    <PropList title="RadioGroupField" description="Choose one from a small set">
+    <PropList title="RadioGroupField" description="Choose one from 2-5 options; use Select for more">
       <Prop name="defaultValue">Initially selected option</Prop>
       <Prop name="readOnly">Visible but not changeable</Prop>
-      <PropNote>Use for 2-5 mutually exclusive options. For more, use Select.</PropNote>
     </PropList>
   ),
   toggleGroup: (
-    <PropList title="ToggleGroup" description="Segmented button group for exclusive or multi-select options">
-      <Prop name="variant">Visual style: default or outline</Prop>
+    <PropList title="ToggleGroup" description="Segmented button group for view modes or small exclusive sets">
+      <Prop name="variant">default or outline</Prop>
       <Prop name="value">Controlled pressed state as array of values</Prop>
-      <PropNote>Use for toggling between a small set of options like view modes or text formatting.</PropNote>
+    </PropList>
+  ),
+  slider: (
+    <PropList title="Slider with steps" description="Numeric input that snaps to step increments">
+      <Prop name="step">Increment between values, e.g. step=20 gives 5 stops</Prop>
+      <Prop name="defaultValue">Array — single [40] or range [20, 80]</Prop>
+      <Prop name="min / max">Bounds (default 0 and 100)</Prop>
+    </PropList>
+  ),
+  sliderRange: (
+    <PropList title="Slider (range)" description="Two thumbs select an interval">
+      <Prop name="defaultValue">e.g. [20, 80]</Prop>
     </PropList>
   )
 };

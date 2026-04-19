@@ -216,7 +216,7 @@ export function DatePicker({
                 setOpen(true);
               }}
               className={cn(
-                "absolute top-1/2 left-2.5 -translate-y-1/2 cursor-pointer rounded outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                "absolute top-1/2 left-2.5 -translate-y-1/2 cursor-pointer rounded outline-ring focus-visible:outline-2 focus-visible:outline-offset-2",
                 hasValue ? "text-foreground" : "text-muted-foreground",
                 (readOnly || disabled) && "pointer-events-none cursor-default"
               )}

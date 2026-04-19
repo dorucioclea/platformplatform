@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/Accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@repo/ui/components/Collapsible";
+import { cn } from "@repo/ui/utils";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -60,11 +61,13 @@ export function AccordionPreview() {
           <Trans>Collapsible</Trans>
         </h3>
         <Collapsible open={collapsibleOpen} onOpenChange={setCollapsibleOpen}>
-          <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md border border-input bg-white px-4 py-3 text-sm font-medium outline-ring transition-colors hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-muted/50 dark:bg-input/30 aria-expanded:[&_[data-slot=collapsible-chevron]]:rotate-180">
+          <CollapsibleTrigger className="flex w-full cursor-pointer items-center justify-between rounded-md border border-input bg-white px-4 py-3 text-sm font-medium outline-ring transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-muted/50 dark:bg-input/30">
             <Trans>Advanced options</Trans>
             <ChevronDownIcon
-              data-slot="collapsible-chevron"
-              className="size-4 text-muted-foreground transition-transform duration-200"
+              className={cn(
+                "size-4 text-muted-foreground transition-transform duration-200",
+                collapsibleOpen && "rotate-180"
+              )}
             />
           </CollapsibleTrigger>
           <CollapsibleContent className="overflow-hidden data-closed:animate-accordion-up data-open:animate-accordion-down">

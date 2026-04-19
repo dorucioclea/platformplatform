@@ -148,7 +148,7 @@ function Calendar({
         setYearPageStart(alignedYearPageStart(next.getFullYear()));
       }}
       className={cn(
-        "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
         String.raw`rtl:[&_.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:[&_.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -394,7 +394,7 @@ function PickerShell({ caption, onPreviousClick, onNextClick, children }: Picker
       // Outer dimensions match the days view exactly: 7 cells wide + p-2 padding for width;
       // 7 cells + p-2 + an extra 1rem for the weekday-header equivalent for height (282 × 298 on
       // desktop, scales with --cell-size on mobile).
-      className="flex h-[calc(var(--cell-size)*7+2rem)] w-[calc(var(--cell-size)*7+1rem)] flex-col bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [[data-slot=popover-content]_&]:bg-transparent"
+      className="flex h-[calc(var(--cell-size)*7+2rem)] w-[calc(var(--cell-size)*7+1rem)] flex-col bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] in-data-[slot=popover-content]:bg-transparent"
     >
       <div className="flex h-(--cell-size) w-full items-center justify-between gap-1">
         <Button variant="ghost" size="icon" onClick={onPreviousClick} aria-label="Previous">
@@ -462,7 +462,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 border-0 leading-none font-normal focus-visible:outline-offset-[-2px] data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground hover:data-[range-end=true]:bg-primary hover:data-[range-end=true]:text-primary-foreground data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground hover:data-[range-start=true]:bg-primary hover:data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground hover:data-[selected-single=true]:bg-primary hover:data-[selected-single=true]:text-primary-foreground dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
+        "relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 border-0 leading-none font-normal focus-visible:-outline-offset-2 data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground hover:data-[range-end=true]:bg-primary hover:data-[range-end=true]:text-primary-foreground data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground hover:data-[range-start=true]:bg-primary hover:data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground hover:data-[selected-single=true]:bg-primary hover:data-[selected-single=true]:text-primary-foreground dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className
       )}

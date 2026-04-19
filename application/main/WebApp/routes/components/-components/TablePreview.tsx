@@ -168,7 +168,7 @@ export function TablePreview({
           ))}
         </TableBody>
       </Table>
-      <div className="mt-auto flex-shrink-0 pt-2">
+      <div className="mt-auto shrink-0 pt-2">
         <TablePagination
           currentPage={currentPage}
           totalPages={totalPages}
