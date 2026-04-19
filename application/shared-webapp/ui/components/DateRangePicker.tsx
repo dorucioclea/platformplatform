@@ -158,7 +158,7 @@ export function DateRangePicker({
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}
-      <div className="relative">
+      <div className="group relative">
         <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : handleOpenChange}>
           <PopoverTrigger
             render={
@@ -169,7 +169,7 @@ export function DateRangePicker({
                 // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
                 className={cn(
                   "w-full justify-between border border-input px-2.5 font-normal hover:bg-white active:bg-white aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:hover:bg-input/30 dark:active:bg-input/30",
-                  hasValue && !readOnly && !disabled && "pr-9",
+                  hasValue && !readOnly && !disabled && (open ? "pr-9" : "group-hover:pr-9"),
                   readOnly && "focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
                 )}
                 disabled={disabled}
@@ -212,7 +212,13 @@ export function DateRangePicker({
           <Button
             variant="ghost"
             size="icon-xs"
-            className="absolute top-1/2 right-1 -translate-y-1/2"
+            tabIndex={-1}
+            // Hidden until the picker is being interacted with (popover open or hover) so the date
+            // range gets the full button width to render without truncation.
+            className={cn(
+              "absolute top-1/2 right-1 -translate-y-1/2 transition-opacity",
+              open ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            )}
             onClick={handleClear}
             aria-label={t`Clear dates`}
           >

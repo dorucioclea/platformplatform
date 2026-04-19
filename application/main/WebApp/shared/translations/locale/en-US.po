@@ -753,6 +753,9 @@ msgstr "Okonomiyaki"
 msgid "One-time code"
 msgstr "One-time code"
 
+msgid "Open calendar"
+msgstr "Open calendar"
+
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 

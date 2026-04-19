@@ -165,6 +165,46 @@ function toParseFormat(format: string): string {
   return format.replace(/dd/g, "d").replace(/MM/g, "M");
 }
 
+// Per-segment validation that allows partial digits while typing. Each segment must consist only
+// of digits (no letters), can't be longer than its format slot, and the partial value (or any
+// completion of it) must fit the field's range. Rejects "Thomas" and "44/33/7843" while still
+// allowing intermediate states like "0/12/2024" produced by deleting a digit mid-edit.
+function isValidPartialDate(text: string, format: string): boolean {
+  const separator = format.includes("/") ? "/" : "-";
+  const segments = text.split(separator);
+  const formatSegments = format.split(separator);
+  if (segments.length > formatSegments.length) {
+    return false;
+  }
+  for (let index = 0; index < segments.length; index++) {
+    const segment = segments[index];
+    const formatSegment = formatSegments[index];
+    if (!/^\d*$/.test(segment)) {
+      return false;
+    }
+    if (segment.length > formatSegment.length) {
+      return false;
+    }
+    if (segment.length === 0) {
+      continue;
+    }
+    const specification = dateFieldSpecifications[formatSegment[0]];
+    if (!specification) {
+      return false;
+    }
+    const value = Number(segment);
+    const remainingPlaces = 10 ** (specification.length - segment.length);
+    const rangeLow = value * remainingPlaces;
+    const rangeHigh = rangeLow + remainingPlaces - 1;
+    const valueInRange = value >= specification.minimum && value <= specification.maximum;
+    const completionInRange = rangeHigh >= specification.minimum && rangeLow <= specification.maximum;
+    if (!valueInRange && !completionInRange) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export interface DatePickerProps {
   id?: string;
   name?: string;
@@ -311,6 +351,20 @@ export function DatePicker({
     return adjustedParts.join(separator);
   };
 
+  // The calendar should open on the date the user is currently typing -- not the last committed
+  // value. The popover unmounts its content on close, so each open mounts a fresh Calendar that
+  // picks up the latest defaultMonth. We don't remount mid-open: doing so would tear down the
+  // calendar's internal focus while the user is navigating with arrows.
+  const previewDate = (() => {
+    const text = editingText.trim();
+    if (!text) {
+      return undefined;
+    }
+    const parsed = parse(expandShortYear(text), toParseFormat(inputFormat), new Date(), { locale: dateLocale });
+    return isValid(parsed) ? parsed : undefined;
+  })();
+  const calendarMonth = previewDate ?? selectedDate;
+
   const commitInputText = () => {
     const text = editingText.trim();
     if (text === "") {
@@ -328,7 +382,13 @@ export function DatePicker({
     const parsed = parse(normalizedText, parseFormat, reference, { locale: dateLocale });
     const isOutOfRange = !isValid(parsed) || (maxDate && parsed > maxDate) || (minDate && parsed < minDate);
     if (isOutOfRange) {
-      setEditingText(formatForInput(selectedDate));
+      // Date doesn't parse (e.g. 31/02/2026). Clear instead of reverting -- shows the user the
+      // entry was rejected without leaving stale text behind.
+      setEditingText("");
+      if (hasValue) {
+        clearNow();
+        onChange?.("");
+      }
       return;
     }
     const iso = toIsoDateString(parsed);
@@ -345,17 +405,25 @@ export function DatePicker({
   // keyboard. Mouse opens (input click) keep focus on the input so the user can keep typing while
   // the calendar is visible.
   const openedByKeyboardRef = useRef(false);
-  // Set when BaseUI dismisses the popover via outside-click (which fires just before our input
-  // click handler). Prevents the click from immediately re-opening the popover that was just
-  // dismissed by clicking the input.
-  const suppressNextInputToggleRef = useRef(false);
 
   // mousedown fires before focus, so a click sets this flag and the focus handler skips select-all
   // (the browser will place the caret where the user clicked instead).
   const focusedByClickRef = useRef(false);
+  // Captured at mousedown so the click handler can tell whether the click landed on an input that
+  // was already focused. Subsequent clicks on a focused input should just position the caret -- not
+  // toggle the popover -- so the user can edit a date with the keyboard without re-opening the
+  // calendar.
+  const wasFocusedBeforeClickRef = useRef(false);
+  // Captured at mousedown so the click handler knows whether the popover was open when this click
+  // started. If it was open, BaseUI's outside-click dismiss will close it -- our click must not
+  // re-open it. Reading at mousedown avoids the timer race where a setTimeout(0) flag could fire
+  // between mousedown and click.
+  const wasOpenAtMouseDownRef = useRef(false);
 
   const handleInputMouseDown = () => {
     focusedByClickRef.current = true;
+    wasFocusedBeforeClickRef.current = inputRef.current === document.activeElement;
+    wasOpenAtMouseDownRef.current = open;
   };
 
   const handleInputFocus = () => {
@@ -386,19 +454,28 @@ export function DatePicker({
     if (readOnly || disabled) {
       return;
     }
-    if (suppressNextInputToggleRef.current) {
-      // BaseUI just closed the popover because of this same click; don't re-open it.
-      suppressNextInputToggleRef.current = false;
+    if (wasOpenAtMouseDownRef.current) {
+      // Popover was open at mousedown -- BaseUI is closing it as part of this same click. Don't
+      // re-open.
+      return;
+    }
+    if (wasFocusedBeforeClickRef.current) {
+      // Click on an already-focused input -- treat as caret positioning, not as a popover open.
       return;
     }
     openedByKeyboardRef.current = false;
-    setOpen((current) => !current);
+    setOpen(true);
   };
 
   const handleInputBlur = () => {
     setIsFocused(false);
     clearOnBlur();
     commitInputText();
+    // Reset interaction-state refs so the next entry into the control behaves consistently. A label
+    // click fires a synthesized click on the input but no mousedown, so without this reset the
+    // stale ref values from the previous mousedown would suppress the click.
+    wasFocusedBeforeClickRef.current = false;
+    wasOpenAtMouseDownRef.current = false;
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -429,22 +506,8 @@ export function DatePicker({
         </Label>
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
-      <div className="relative">
-        <Popover
-          open={readOnly ? false : open}
-          onOpenChange={
-            readOnly
-              ? () => {}
-              : (next) => {
-                  if (!next) {
-                    // BaseUI's outside-click dismiss fires before our input click handler -- mark
-                    // the close so the click handler can ignore the immediate re-open attempt.
-                    suppressNextInputToggleRef.current = true;
-                  }
-                  setOpen(next);
-                }
-          }
-        >
+      <div className="group relative">
+        <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : setOpen}>
           <Input
             ref={inputRef}
             id={triggerId}
@@ -452,8 +515,29 @@ export function DatePicker({
             placeholder={isEditing ? inputFormat.toLowerCase() : placeholder}
             value={inputValue}
             onChange={(event) => {
+              const input = event.currentTarget;
+              const nextValue = input.value;
+              // Reject the keystroke entirely if the resulting text isn't a valid partial date
+              // (letters, out-of-range numbers, too many segments, etc.). This blocks "Thomas" and
+              // "44/33/7843" while still allowing intermediate states like "0/12/2024" produced by
+              // deleting a digit mid-edit.
+              if (nextValue !== "" && !isValidPartialDate(nextValue, inputFormat)) {
+                // Restore the caret to where it was before the rejected insert -- otherwise React
+                // re-renders with the old value and the browser jumps the cursor to the end.
+                const insertedLength = Math.max(0, nextValue.length - editingText.length);
+                const restorePosition = Math.max(0, (input.selectionStart ?? 0) - insertedLength);
+                requestAnimationFrame(() => {
+                  input.setSelectionRange(restorePosition, restorePosition);
+                });
+                return;
+              }
               markChanged();
-              setEditingText(maskDateInput(event.target.value, inputFormat));
+              // Only run the mask (auto-pad / auto-insert separator) when the user is appending at
+              // the end of the field. For mid-edits we accept the value verbatim -- the mask is
+              // sequential-append-aware and would otherwise truncate or jump the caret. Final
+              // validation happens on blur.
+              const isAppendAtEnd = nextValue.length > editingText.length && nextValue.startsWith(editingText);
+              setEditingText(isAppendAtEnd ? maskDateInput(nextValue, inputFormat) : nextValue);
             }}
             onMouseDown={handleInputMouseDown}
             onFocus={handleInputFocus}
@@ -464,23 +548,48 @@ export function DatePicker({
             readOnly={readOnly}
             autoComplete="off"
             inputMode={isEditing ? "numeric" : undefined}
-            className={cn(startIcon != null && "pl-9", showTrailingControls && hasValue && "pr-9")}
+            className={cn(
+              startIcon != null && "pl-9",
+              showTrailingControls && hasValue && (isEditing ? "pr-9" : "group-hover:pr-9")
+            )}
           />
           {startIcon != null && (
-            <div
+            <button
+              type="button"
+              tabIndex={-1}
+              disabled={readOnly || disabled}
+              aria-label={t`Open calendar`}
+              // mousedown preventDefault keeps the input focused when the icon is clicked, so the
+              // input doesn't blur (and commit) just to open the calendar.
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (readOnly || disabled) {
+                  return;
+                }
+                openedByKeyboardRef.current = false;
+                setOpen(true);
+              }}
               className={cn(
-                "pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2",
-                hasValue ? "text-foreground" : "text-muted-foreground"
+                "absolute top-1/2 left-2.5 -translate-y-1/2 cursor-pointer rounded outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                hasValue ? "text-foreground" : "text-muted-foreground",
+                (readOnly || disabled) && "pointer-events-none cursor-default"
               )}
             >
               {startIcon}
-            </div>
+            </button>
           )}
           {showTrailingControls && hasValue && (
             <Button
               variant="ghost"
               size="icon-xs"
-              className="absolute top-1/2 right-1 -translate-y-1/2"
+              tabIndex={-1}
+              // Hidden when the picker isn't being interacted with so the date has the full input
+              // width to render. Stays visible while the input is focused, the popover is open, or
+              // the user hovers anywhere on the field.
+              className={cn(
+                "absolute top-1/2 right-1 -translate-y-1/2 transition-opacity",
+                isEditing ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+              )}
               onClick={handleClear}
               aria-label={t`Clear date`}
             >
@@ -504,7 +613,7 @@ export function DatePicker({
               mode="single"
               selected={selectedDate}
               onSelect={handleCalendarSelect}
-              defaultMonth={selectedDate}
+              defaultMonth={calendarMonth}
               numberOfMonths={1}
               {...(showDropdowns && {
                 captionLayout: "dropdown" as const,
