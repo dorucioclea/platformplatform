@@ -129,7 +129,8 @@ export const tooltips = {
     <PropList title="DateRangePicker" description="Select a start and end date">
       <Prop name="value">Object with start and end Date</Prop>
       <Prop name="onChange">Callback with DateRangeValue or null</Prop>
-      <PropNote>Two clicks select the range. Clearable with X button.</PropNote>
+      <Prop name="displayFormat">Same options as DatePicker (input, short, long, relative, custom)</Prop>
+      <PropNote>Type both endpoints or click two days in the calendar. Clearable with X button.</PropNote>
     </PropList>
   ),
   timeField: (

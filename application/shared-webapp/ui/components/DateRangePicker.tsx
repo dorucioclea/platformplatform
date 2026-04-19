@@ -1,96 +1,93 @@
-import type { DateRange } from "react-day-picker";
-
 import { t } from "@lingui/core/macro";
-import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
-import { format, isValid, type Locale } from "date-fns";
-import { da, enUS } from "date-fns/locale";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { type ReactNode, useContext, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 
-import { useFieldError } from "../hooks/useFieldError";
-import { useFormatDate, useFormatLongDate, useFormatRelativeDate } from "../hooks/useSmartDate";
+import { type DateFieldDisplayFormat } from "../hooks/useDateField";
+import { type DateRangeValue, useDateRangeField } from "../hooks/useDateRangeField";
 import { cn } from "../utils";
-import { resolveInputFormat } from "../utils/dateInputFormat";
 import { Button } from "./Button";
 import { Calendar } from "./Calendar";
 import { Field, FieldDescription, FieldError } from "./Field";
-import { FormValidationContext } from "./Form";
+import { Input } from "./Input";
 import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import { Popover, PopoverContent } from "./Popover";
 
-/**
- * Maps app locale codes to date-fns locale objects.
- * Add new locales here when extending language support.
- */
-const dateFnsLocaleMap: Record<string, Locale> = {
-  "en-US": enUS,
-  "da-DK": da
-};
-
-export interface DateRangeValue {
-  start: Date;
-  end: Date;
-}
+export type { DateRangeValue };
 
 export interface DateRangePickerProps {
+  id?: string;
   name?: string;
   label?: string;
   description?: string;
   errorMessage?: string;
   tooltip?: React.ReactNode;
+  className?: string;
   value?: DateRangeValue | null;
   onChange?: (value: DateRangeValue | null) => void;
   placeholder?: string;
   startIcon?: ReactNode;
-  className?: string;
+  required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-  // How each end of the range is rendered. Mirrors DatePicker: "input" (default, locale's
-  // editable format like dd/MM/yyyy), "short", "long", "relative", or any date-fns format string.
-  displayFormat?: "input" | "short" | "long" | "relative" | (string & {});
+  locale?: string;
+  displayFormat?: DateFieldDisplayFormat;
 }
 
 export function DateRangePicker({
+  id,
   name,
   label,
   description,
   errorMessage,
   tooltip,
+  className,
   value,
   onChange,
   placeholder = t`Select dates`,
-  startIcon = <CalendarIcon className="shrink-0" />,
-  className,
+  startIcon = <CalendarIcon className="size-4 shrink-0" />,
   disabled,
   readOnly,
+  locale,
   displayFormat = "input"
 }: Readonly<DateRangePickerProps>) {
-  const { currentLocale } = useContext(translationContext);
-  const dateLocale = dateFnsLocaleMap[currentLocale] ?? enUS;
-  const inputFormat = resolveInputFormat(currentLocale);
   const [open, setOpen] = useState(false);
-
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
   const [selectionsCount, setSelectionsCount] = useState(0);
-  // Track the first clicked date separately since react-day-picker's onSelect
-  // doesn't reliably tell us which date was clicked
   const [firstClickDate, setFirstClickDate] = useState<Date | null>(null);
+  const {
+    inputRef,
+    rangeInputFormat,
+    isEditing,
+    hasValue,
+    inputValue,
+    selectedRange,
+    previewDate,
+    errors,
+    isInvalid,
+    handleInputChange,
+    handleInputMouseDown: baseHandleMouseDown,
+    handleInputFocus,
+    handleInputBlur: baseHandleBlur,
+    handleInputKeyDown: baseHandleKeyDown,
+    handleClear,
+    commitRange
+  } = useDateRangeField({
+    value,
+    onChange,
+    name,
+    errorMessage,
+    locale,
+    displayFormat,
+    externalEditingOverride: open
+  });
 
-  const dateRange: DateRange | undefined = value ? { from: value.start, to: value.end } : undefined;
+  const triggerId = id ?? name;
+  const showTrailingControls = !readOnly && !disabled;
+  const calendarMonth = previewDate ?? value?.start ?? value?.end;
+
+  const openedByKeyboardRef = useRef(false);
+  const wasFocusedBeforeClickRef = useRef(false);
+  const wasOpenAtMouseDownRef = useRef(false);
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
@@ -100,161 +97,177 @@ export function DateRangePicker({
     }
   };
 
+  const handleInputMouseDown = (event: React.MouseEvent) => {
+    baseHandleMouseDown();
+    wasFocusedBeforeClickRef.current = inputRef.current === document.activeElement;
+    wasOpenAtMouseDownRef.current = open;
+    if (!disabled && !readOnly && !open && !wasFocusedBeforeClickRef.current) {
+      event.preventDefault();
+    }
+  };
+
+  const handleInputClick = () => {
+    if (readOnly || disabled) {
+      return;
+    }
+    if (wasOpenAtMouseDownRef.current) {
+      return;
+    }
+    if (wasFocusedBeforeClickRef.current) {
+      return;
+    }
+    openedByKeyboardRef.current = false;
+    handleOpenChange(true);
+    inputRef.current?.focus();
+  };
+
+  const handleInputBlur = () => {
+    baseHandleBlur();
+    wasFocusedBeforeClickRef.current = false;
+    wasOpenAtMouseDownRef.current = false;
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "ArrowDown" && !open) {
+      event.preventDefault();
+      openedByKeyboardRef.current = true;
+      handleOpenChange(true);
+      return;
+    }
+    baseHandleKeyDown(event);
+  };
+
   const handleDayClick = (day: Date) => {
     const newCount = selectionsCount + 1;
     setSelectionsCount(newCount);
 
     if (newCount === 1) {
-      // First click: use existing start as pivot (matches react-day-picker behavior)
+      // First click pivots on the existing range: clicking before the start becomes the new start,
+      // clicking on or after the start becomes the new end. With no existing range the day becomes
+      // a single-day range that the next click expands.
       const existingStart = value?.start;
       const existingEnd = value?.end;
       setFirstClickDate(day);
 
       if (existingStart && existingEnd) {
         if (day.getTime() < existingStart.getTime()) {
-          // Clicked before existing start: clicked becomes start, keep end
-          onChange?.({ start: day, end: existingEnd });
+          commitRange({ start: day, end: existingEnd });
         } else {
-          // Clicked on or after existing start: keep start, clicked becomes end
-          onChange?.({ start: existingStart, end: day });
+          commitRange({ start: existingStart, end: day });
         }
       } else {
-        // No existing range: clicked becomes both start and end
-        onChange?.({ start: day, end: day });
+        commitRange({ start: day, end: day });
       }
-    } else {
-      // Second click: combine with the first click to form the range
-      const firstDate = firstClickDate ?? day;
-
-      // Earlier date becomes start, later becomes end
-      let newStart = firstDate;
-      let newEnd = day;
-      if (newStart.getTime() > newEnd.getTime()) {
-        [newStart, newEnd] = [newEnd, newStart];
-      }
-
-      clearNow();
-      onChange?.({ start: newStart, end: newEnd });
-
-      // Close if we have a valid range with different dates
-      if (newStart.getTime() !== newEnd.getTime()) {
-        setOpen(false);
-      }
+      return;
+    }
+    // Second click: pair with the first click; swap so earlier becomes start.
+    const firstDate = firstClickDate ?? day;
+    let newStart = firstDate;
+    let newEnd = day;
+    if (newStart.getTime() > newEnd.getTime()) {
+      [newStart, newEnd] = [newEnd, newStart];
+    }
+    commitRange({ start: newStart, end: newEnd });
+    if (newStart.getTime() !== newEnd.getTime()) {
+      setOpen(false);
+      inputRef.current?.focus();
     }
   };
-
-  const handleClear = (event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    onChange?.(null);
-  };
-
-  // Reuse the locale-aware formatters from useSmartDate so the range matches DatePicker's display.
-  const formatShortDate = useFormatDate();
-  const formatLongDate = useFormatLongDate();
-  const formatRelativeDate = useFormatRelativeDate();
-  const formatEndpoint = (date: Date): string => {
-    if (!isValid(date)) {
-      return "";
-    }
-    // Local-midnight ISO so the Intl-based formatters see the same calendar day regardless of time
-    // zone.
-    const isoLocal = `${String(date.getFullYear()).padStart(4, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}T00:00:00`;
-    if (displayFormat === "relative") {
-      return formatRelativeDate(isoLocal);
-    }
-    if (displayFormat === "long") {
-      return formatLongDate(isoLocal);
-    }
-    if (displayFormat === "short") {
-      return formatShortDate(isoLocal);
-    }
-    const pattern = displayFormat === "input" ? inputFormat : displayFormat;
-    return format(date, pattern, { locale: dateLocale });
-  };
-  const formatDateRange = () => {
-    if (!value?.start || !value?.end) {
-      return placeholder;
-    }
-    return `${formatEndpoint(value.start)} - ${formatEndpoint(value.end)}`;
-  };
-
-  const hasValue = value !== null && value !== undefined;
 
   return (
     <Field className={cn("flex flex-col", className)}>
       {label && (
-        <Label htmlFor={disabled ? undefined : name} data-slot="field-label" className="cursor-default leading-snug">
+        <Label
+          htmlFor={disabled ? undefined : triggerId}
+          data-slot="field-label"
+          className="cursor-default leading-snug"
+        >
           {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
         </Label>
       )}
       <div className="group relative">
         <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : handleOpenChange}>
-          <PopoverTrigger
-            render={
-              <Button
-                id={name}
-                variant="outline"
-                aria-invalid={isInvalid || undefined}
-                // NOTE: This diverges from stock ShadCN to prevent hover background change on the trigger button.
-                className={cn(
-                  "w-full justify-between border border-input px-2.5 font-normal hover:bg-white active:bg-white aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive aria-invalid:focus-visible:shadow-error-halo dark:hover:bg-input/30 dark:active:bg-input/30",
-                  hasValue && !readOnly && !disabled && (open ? "pr-9" : "group-hover:pr-9"),
-                  readOnly && "focus:outline-2 focus:outline-offset-2 aria-invalid:focus:shadow-error-halo"
-                )}
-                disabled={disabled}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === "ArrowDown" && !open) {
-                    e.preventDefault();
-                    setOpen(true);
-                  }
-                }}
-              >
-                <div className={cn("flex min-w-0 items-center gap-2", !hasValue && "text-muted-foreground")}>
-                  {startIcon}
-                  <span className="truncate">{formatDateRange()}</span>
-                </div>
-              </Button>
-            }
+          <Input
+            ref={inputRef}
+            id={triggerId}
+            aria-invalid={isInvalid || undefined}
+            placeholder={isEditing ? rangeInputFormat.toLowerCase() : placeholder}
+            value={inputValue}
+            onChange={handleInputChange}
+            onMouseDown={handleInputMouseDown}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            onKeyDown={handleInputKeyDown}
+            onClick={handleInputClick}
+            disabled={disabled}
+            readOnly={readOnly}
+            autoComplete="off"
+            inputMode={isEditing ? "numeric" : undefined}
+            className={cn(
+              startIcon != null && "pl-9",
+              showTrailingControls && hasValue && (isEditing ? "pr-9" : "group-hover:pr-9")
+            )}
           />
+          {startIcon != null && (
+            <button
+              type="button"
+              tabIndex={-1}
+              disabled={readOnly || disabled}
+              aria-label={t`Open calendar`}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                if (readOnly || disabled) {
+                  return;
+                }
+                openedByKeyboardRef.current = false;
+                handleOpenChange(true);
+              }}
+              className={cn(
+                "absolute top-1/2 left-2.5 -translate-y-1/2 cursor-pointer rounded outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+                hasValue ? "text-foreground" : "text-muted-foreground",
+                (readOnly || disabled) && "pointer-events-none cursor-default"
+              )}
+            >
+              {startIcon}
+            </button>
+          )}
+          {showTrailingControls && hasValue && (
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              tabIndex={-1}
+              className={cn(
+                "absolute top-1/2 right-1 -translate-y-1/2 transition-opacity",
+                isEditing ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+              )}
+              onClick={handleClear}
+              aria-label={t`Clear dates`}
+            >
+              <XIcon className="size-5" />
+            </Button>
+          )}
           <PopoverContent
             className="w-auto overflow-hidden p-0"
             align="start"
-            onKeyDown={(e: React.KeyboardEvent) => {
-              if (e.key === "Tab") {
-                e.preventDefault();
+            anchor={() => inputRef.current}
+            onKeyDown={(event: React.KeyboardEvent) => {
+              if (event.key === "Tab") {
+                event.preventDefault();
                 setOpen(false);
-                document.getElementById(name ?? "")?.focus();
+                inputRef.current?.focus();
               }
             }}
           >
             <Calendar
-              autoFocus
+              autoFocus={openedByKeyboardRef.current}
               mode="range"
-              selected={dateRange}
+              selected={selectedRange}
               onDayClick={handleDayClick}
+              defaultMonth={calendarMonth}
               numberOfMonths={1}
-              defaultMonth={value?.start}
             />
           </PopoverContent>
         </Popover>
-        {hasValue && !readOnly && !disabled && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            tabIndex={-1}
-            // Hidden until the picker is being interacted with (popover open or hover) so the date
-            // range gets the full button width to render without truncation.
-            className={cn(
-              "absolute top-1/2 right-1 -translate-y-1/2 transition-opacity",
-              open ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-            )}
-            onClick={handleClear}
-            aria-label={t`Clear dates`}
-          >
-            <XIcon className="size-5" />
-          </Button>
-        )}
       </div>
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError errors={errors} />
