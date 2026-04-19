@@ -166,6 +166,9 @@ msgstr "Boeuf bourguignon"
 msgid "Bold"
 msgstr "Fed"
 
+msgid "Bottom drawer"
+msgstr "Bunddrawer"
+
 msgid "Breadcrumb"
 msgstr "Brødkrumme"
 
@@ -442,8 +445,14 @@ msgstr "Rettens navn er påkrævet"
 msgid "Done"
 msgstr "Udført"
 
+msgid "Drawer"
+msgstr "Drawer"
+
 msgid "Duplicate"
 msgstr "Dupliker"
+
+msgid "E.g. doubled the garlic, used a cast iron pan..."
+msgstr "F.eks. dobbelt mængde hvidløg, brugte en støbejernspande..."
 
 msgid "E.g., Alex Taylor"
 msgstr "F.eks. Alex Taylor"
@@ -625,6 +634,9 @@ msgstr "Japansk"
 msgid "Jordan Lee"
 msgstr "Jordan Lee"
 
+msgid "Jot down a thought. It will be attached to the current recipe."
+msgstr "Skriv en hurtig tanke ned. Den bliver tilføjet til den aktuelle opskrift."
+
 msgid "JPEG, PNG or WebP. Max 1 MB."
 msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
 
@@ -657,6 +669,9 @@ msgstr "Lær mere"
 
 msgid "Leave"
 msgstr "Forlad"
+
+msgid "Left drawer"
+msgstr "Venstre drawer"
 
 msgid "Library"
 msgstr "Bibliotek"
@@ -718,6 +733,9 @@ msgstr "Mobil navigation"
 msgid "Mobile navigation menu"
 msgstr "Mobil navigationsmenu"
 
+msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
+msgstr "Mobile-first panel med trækhåndtag og swipe-to-dismiss. Brug det når indholdet er kort og brugeren skal kunne flicke det væk. Venstre- og højre-drawers er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser DrawerContent med mx-auto og max-w-*."
+
 msgid "Mole poblano"
 msgstr "Mole poblano"
 
@@ -748,6 +766,9 @@ msgstr "Flervalg"
 msgid "Multi-select summary side pane"
 msgstr "Oversigtspanel for flervalg"
 
+msgid "Narrow bottom drawer"
+msgstr "Smal bunddrawer"
+
 msgid "Native date"
 msgstr "Native dato"
 
@@ -777,6 +798,9 @@ msgstr "Ingen"
 
 msgid "Not yet"
 msgstr "Ikke endnu"
+
+msgid "Note"
+msgstr "Note"
 
 msgid "Number (decimal)"
 msgstr "Tal (decimal)"
@@ -880,6 +904,9 @@ msgstr "Profilbilledeksempel"
 msgid "Publish now"
 msgstr "Udgiv nu"
 
+msgid "Quick note"
+msgstr "Kort note"
+
 msgid "Radar chart"
 msgstr "Radardiagram"
 
@@ -955,6 +982,9 @@ msgstr "Responsivt layout"
 msgid "Restaurant phone"
 msgstr "Restauranttelefon"
 
+msgid "Right drawer"
+msgstr "Højre drawer"
+
 msgid "Right-click area"
 msgstr "Højreklik-område"
 
@@ -978,6 +1008,9 @@ msgstr "Gem som..."
 
 msgid "Save changes"
 msgstr "Gem ændringer"
+
+msgid "Save note"
+msgstr "Gem note"
 
 msgid "Save page as..."
 msgstr "Gem side som..."
@@ -1219,6 +1252,9 @@ msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Værktøjstip"
+
+msgid "Top drawer"
+msgstr "Top drawer"
 
 msgid "Total cook time"
 msgstr "Samlet tilberedningstid"
