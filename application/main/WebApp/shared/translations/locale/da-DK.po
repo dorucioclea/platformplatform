@@ -625,6 +625,12 @@ msgstr "Informationsadvarsel"
 msgid "Inline calendar"
 msgstr "Inline kalender"
 
+msgid "Inline keyboard hint. Use it to call out shortcuts in tooltips, menus, and command palettes. Compose multi-key combinations with KbdGroup so each key keeps its own visual chip."
+msgstr "Inline tastaturhint. Brug det til at fremhæve genveje i værktøjstips, menuer og kommandopaletter. Kombinér flere taster med KbdGroup så hver tast beholder sin egen visuelle chip."
+
+msgid "Inline tip:"
+msgstr "Inline tip:"
+
 msgid "Invite"
 msgstr "Inviter"
 
@@ -654,6 +660,9 @@ msgstr "JPEG, PNG eller WebP. Maks. 1 MB."
 
 msgid "Just now"
 msgstr "Lige nu"
+
+msgid "Kbd"
+msgstr "Kbd"
 
 msgid "Keyboard accessible"
 msgstr "Tilgængelig via tastatur"
@@ -715,6 +724,9 @@ msgstr "Log ind"
 msgid "Long date"
 msgstr "Lang dato"
 
+msgid "Long shortcut"
+msgstr "Lang genvej"
+
 msgid "Main content"
 msgstr "Hovedindhold"
 
@@ -750,6 +762,9 @@ msgstr "Mobil navigationsmenu"
 
 msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 msgstr "Mobile-first panel med trækhåndtag og swipe-to-dismiss. Brug det når indholdet er kort og brugeren skal kunne flicke det væk. Venstre- og højre-drawers er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser DrawerContent med mx-auto og max-w-*."
+
+msgid "Modifier combo"
+msgstr "Modifikator-kombination"
 
 msgid "Mole poblano"
 msgstr "Mole poblano"
@@ -903,6 +918,9 @@ msgstr "Indtast en gyldig e-mailadresse"
 
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
+
+msgid "press <0>?</0> to view all shortcuts."
+msgstr "tryk <0>?</0> for at se alle genveje."
 
 msgid "Preview settings"
 msgstr "Forhåndsvisningsindstillinger"
@@ -1150,6 +1168,9 @@ msgstr "Sideforankret panel bygget på samme Dialog-primitiv. Brug det til deskt
 
 msgid "Simulate errors"
 msgstr "Simuler fejl"
+
+msgid "Single key"
+msgstr "Enkelt tast"
 
 msgid "Single-expand vs multi-expand"
 msgstr "Enkelt-udfoldning vs multi-udfoldning"

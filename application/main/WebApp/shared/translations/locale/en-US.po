@@ -625,6 +625,12 @@ msgstr "Info alert"
 msgid "Inline calendar"
 msgstr "Inline calendar"
 
+msgid "Inline keyboard hint. Use it to call out shortcuts in tooltips, menus, and command palettes. Compose multi-key combinations with KbdGroup so each key keeps its own visual chip."
+msgstr "Inline keyboard hint. Use it to call out shortcuts in tooltips, menus, and command palettes. Compose multi-key combinations with KbdGroup so each key keeps its own visual chip."
+
+msgid "Inline tip:"
+msgstr "Inline tip:"
+
 msgid "Invite"
 msgstr "Invite"
 
@@ -654,6 +660,9 @@ msgstr "JPEG, PNG or WebP. Max 1 MB."
 
 msgid "Just now"
 msgstr "Just now"
+
+msgid "Kbd"
+msgstr "Kbd"
 
 msgid "Keyboard accessible"
 msgstr "Keyboard accessible"
@@ -715,6 +724,9 @@ msgstr "Log in"
 msgid "Long date"
 msgstr "Long date"
 
+msgid "Long shortcut"
+msgstr "Long shortcut"
+
 msgid "Main content"
 msgstr "Main content"
 
@@ -750,6 +762,9 @@ msgstr "Mobile navigation menu"
 
 msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 msgstr "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
+
+msgid "Modifier combo"
+msgstr "Modifier combo"
 
 msgid "Mole poblano"
 msgstr "Mole poblano"
@@ -903,6 +918,9 @@ msgstr "Please enter a valid email address"
 
 msgid "Pozole rojo"
 msgstr "Pozole rojo"
+
+msgid "press <0>?</0> to view all shortcuts."
+msgstr "press <0>?</0> to view all shortcuts."
 
 msgid "Preview settings"
 msgstr "Preview settings"
@@ -1150,6 +1168,9 @@ msgstr "Side-anchored panel built on the same Dialog primitive. Use it for deskt
 
 msgid "Simulate errors"
 msgstr "Simulate errors"
+
+msgid "Single key"
+msgstr "Single key"
 
 msgid "Single-expand vs multi-expand"
 msgstr "Single-expand vs multi-expand"
