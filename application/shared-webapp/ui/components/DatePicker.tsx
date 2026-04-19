@@ -345,6 +345,10 @@ export function DatePicker({
   // keyboard. Mouse opens (input click) keep focus on the input so the user can keep typing while
   // the calendar is visible.
   const openedByKeyboardRef = useRef(false);
+  // Set when BaseUI dismisses the popover via outside-click (which fires just before our input
+  // click handler). Prevents the click from immediately re-opening the popover that was just
+  // dismissed by clicking the input.
+  const suppressNextInputToggleRef = useRef(false);
 
   // mousedown fires before focus, so a click sets this flag and the focus handler skips select-all
   // (the browser will place the caret where the user clicked instead).
@@ -379,11 +383,16 @@ export function DatePicker({
   };
 
   const handleInputClick = () => {
-    if (readOnly || disabled || open) {
+    if (readOnly || disabled) {
+      return;
+    }
+    if (suppressNextInputToggleRef.current) {
+      // BaseUI just closed the popover because of this same click; don't re-open it.
+      suppressNextInputToggleRef.current = false;
       return;
     }
     openedByKeyboardRef.current = false;
-    setOpen(true);
+    setOpen((current) => !current);
   };
 
   const handleInputBlur = () => {
@@ -421,7 +430,21 @@ export function DatePicker({
       )}
       {name && <input type="hidden" name={name} value={value ?? ""} />}
       <div className="relative">
-        <Popover open={readOnly ? false : open} onOpenChange={readOnly ? () => {} : setOpen}>
+        <Popover
+          open={readOnly ? false : open}
+          onOpenChange={
+            readOnly
+              ? () => {}
+              : (next) => {
+                  if (!next) {
+                    // BaseUI's outside-click dismiss fires before our input click handler -- mark
+                    // the close so the click handler can ignore the immediate re-open attempt.
+                    suppressNextInputToggleRef.current = true;
+                  }
+                  setOpen(next);
+                }
+          }
+        >
           <Input
             ref={inputRef}
             id={triggerId}
