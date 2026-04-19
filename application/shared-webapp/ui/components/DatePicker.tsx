@@ -14,7 +14,7 @@ import { FormValidationContext } from "./Form";
 import { Input } from "./Input";
 import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import { Popover, PopoverContent } from "./Popover";
 
 const dateFnsLocaleMap: Record<string, Locale> = {
   "en-US": enUS,
@@ -197,7 +197,7 @@ export function DatePicker({
   value,
   onChange,
   placeholder,
-  startIcon,
+  startIcon = <CalendarIcon className="size-4 shrink-0" />,
   disabled,
   readOnly,
   max,
@@ -263,7 +263,11 @@ export function DatePicker({
 
   const hasValue = !!value;
   const showTrailingControls = !readOnly && !disabled;
-  const inputValue = isFocused ? editingText : displayText;
+  // The input is "editing" both while the user is typing and while the calendar popover is open --
+  // the popover may steal DOM focus, but visually the field stays in edit mode so the user sees the
+  // editable format, not the long display format.
+  const isEditing = isFocused || open;
+  const inputValue = isEditing ? editingText : displayText;
 
   const handleClear = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -273,11 +277,16 @@ export function DatePicker({
     inputRef.current?.focus();
   };
 
+  // After picking a date in the calendar we re-focus the input but want the cursor placed at the
+  // end (not the default "select all"), so the user can continue editing without losing the value.
+  const placeCursorAtEndOnNextFocusRef = useRef(false);
+
   const handleCalendarSelect = (date: Date | undefined) => {
     if (date) {
       clearNow();
       onChange?.(toIsoDateString(date));
       setOpen(false);
+      placeCursorAtEndOnNextFocusRef.current = true;
       inputRef.current?.focus();
     }
   };
@@ -332,11 +341,49 @@ export function DatePicker({
     }
   };
 
+  // Track how the popover was opened so the Calendar only steals focus when triggered by the
+  // keyboard. Mouse opens (input click) keep focus on the input so the user can keep typing while
+  // the calendar is visible.
+  const openedByKeyboardRef = useRef(false);
+
+  // mousedown fires before focus, so a click sets this flag and the focus handler skips select-all
+  // (the browser will place the caret where the user clicked instead).
+  const focusedByClickRef = useRef(false);
+
+  const handleInputMouseDown = () => {
+    focusedByClickRef.current = true;
+  };
+
   const handleInputFocus = () => {
     setIsFocused(true);
-    // Select the editable text so the user can overtype immediately. Deferred one frame so React
-    // has swapped the input's value from display format to editable format first.
+    // Defer one frame so React has swapped the input's value from display format to editable
+    // format first. After picking a date in the calendar we just place the cursor at the end so the
+    // user keeps the value visible. On click we leave the cursor where the user clicked. On tab we
+    // select-all so the user can overtype immediately.
+    if (placeCursorAtEndOnNextFocusRef.current) {
+      placeCursorAtEndOnNextFocusRef.current = false;
+      requestAnimationFrame(() => {
+        const input = inputRef.current;
+        if (input) {
+          const cursorPosition = input.value.length;
+          input.setSelectionRange(cursorPosition, cursorPosition);
+        }
+      });
+      return;
+    }
+    if (focusedByClickRef.current) {
+      focusedByClickRef.current = false;
+      return;
+    }
     requestAnimationFrame(() => inputRef.current?.select());
+  };
+
+  const handleInputClick = () => {
+    if (readOnly || disabled || open) {
+      return;
+    }
+    openedByKeyboardRef.current = false;
+    setOpen(true);
   };
 
   const handleInputBlur = () => {
@@ -348,6 +395,7 @@ export function DatePicker({
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown" && !open) {
       event.preventDefault();
+      openedByKeyboardRef.current = true;
       setOpen(true);
       return;
     }
@@ -378,23 +426,30 @@ export function DatePicker({
             ref={inputRef}
             id={triggerId}
             aria-invalid={isInvalid || undefined}
-            placeholder={isFocused ? inputFormat.toLowerCase() : (placeholder ?? inputFormat.toLowerCase())}
+            placeholder={isEditing ? inputFormat.toLowerCase() : placeholder}
             value={inputValue}
             onChange={(event) => {
               markChanged();
               setEditingText(maskDateInput(event.target.value, inputFormat));
             }}
+            onMouseDown={handleInputMouseDown}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             onKeyDown={handleInputKeyDown}
+            onClick={handleInputClick}
             disabled={disabled}
             readOnly={readOnly}
             autoComplete="off"
-            inputMode={isFocused ? "numeric" : undefined}
-            className={cn(startIcon != null && "pl-9", showTrailingControls && (hasValue ? "pr-16" : "pr-9"))}
+            inputMode={isEditing ? "numeric" : undefined}
+            className={cn(startIcon != null && "pl-9", showTrailingControls && hasValue && "pr-9")}
           />
           {startIcon != null && (
-            <div className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-muted-foreground">
+            <div
+              className={cn(
+                "pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2",
+                hasValue ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
               {startIcon}
             </div>
           )}
@@ -402,30 +457,17 @@ export function DatePicker({
             <Button
               variant="ghost"
               size="icon-xs"
-              className="absolute top-1/2 right-8 -translate-y-1/2"
+              className="absolute top-1/2 right-1 -translate-y-1/2"
               onClick={handleClear}
               aria-label={t`Clear date`}
             >
               <XIcon className="size-5" />
             </Button>
           )}
-          {showTrailingControls && (
-            <PopoverTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  className="absolute top-1/2 right-1 -translate-y-1/2"
-                  aria-label={t`Open calendar`}
-                >
-                  <CalendarIcon className="size-5" />
-                </Button>
-              }
-            />
-          )}
           <PopoverContent
             className="w-auto overflow-hidden p-0"
             align="start"
+            anchor={() => inputRef.current}
             onKeyDown={(event: React.KeyboardEvent) => {
               if (event.key === "Tab") {
                 event.preventDefault();
@@ -435,7 +477,7 @@ export function DatePicker({
             }}
           >
             <Calendar
-              autoFocus
+              autoFocus={openedByKeyboardRef.current}
               mode="single"
               selected={selectedDate}
               onSelect={handleCalendarSelect}

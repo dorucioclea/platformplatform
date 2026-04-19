@@ -914,9 +914,6 @@ msgstr "Only owners can change user roles"
 msgid "Only trusted personnel access data through Azure AD authentication"
 msgstr "Only trusted personnel access data through Azure AD authentication"
 
-msgid "Open calendar"
-msgstr "Open calendar"
-
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 

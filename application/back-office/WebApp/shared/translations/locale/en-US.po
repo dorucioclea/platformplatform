@@ -91,9 +91,6 @@ msgstr "Next"
 msgid "No results found"
 msgstr "No results found"
 
-msgid "Open calendar"
-msgstr "Open calendar"
-
 msgid "Open navigation menu"
 msgstr "Open navigation menu"
 
