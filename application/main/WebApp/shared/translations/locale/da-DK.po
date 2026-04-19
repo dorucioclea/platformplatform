@@ -175,6 +175,9 @@ msgstr "Boeuf, ragù, biryani"
 msgid "Bold"
 msgstr "Fed"
 
+msgid "Bottom"
+msgstr "Bund"
+
 msgid "Bottom drawer"
 msgstr "Bunddrawer"
 
@@ -207,6 +210,9 @@ msgstr "Sidder du stadig oppe?"
 
 msgid "Butter chicken"
 msgstr "Butter chicken"
+
+msgid "Button group"
+msgstr "Knapgruppe"
 
 msgid "Button sizes"
 msgstr "Knapstørrelser"
@@ -252,6 +258,9 @@ msgstr "Casey Park"
 
 msgid "Categorization"
 msgstr "Kategorisering"
+
+msgid "Center"
+msgstr "Midt"
 
 msgid "Change language"
 msgstr "Skift sprog"
@@ -751,6 +760,9 @@ msgstr "Lær mere"
 msgid "Leave"
 msgstr "Forlad"
 
+msgid "Left"
+msgstr "Venstre"
+
 msgid "Left drawer"
 msgstr "Venstre drawer"
 
@@ -822,6 +834,9 @@ msgstr "Flet commit"
 
 msgid "Mexican"
 msgstr "Mexicansk"
+
+msgid "Middle"
+msgstr "Midte"
 
 msgid "Mobile navigation"
 msgstr "Mobil navigation"
@@ -1119,6 +1134,9 @@ msgstr "Responsivt layout"
 
 msgid "Restaurant phone"
 msgstr "Restauranttelefon"
+
+msgid "Right"
+msgstr "Højre"
 
 msgid "Right drawer"
 msgstr "Højre drawer"
@@ -1432,6 +1450,9 @@ msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Værktøjstip"
+
+msgid "Top"
+msgstr "Top"
 
 msgid "Top drawer"
 msgstr "Top drawer"

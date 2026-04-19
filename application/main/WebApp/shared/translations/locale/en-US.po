@@ -175,6 +175,9 @@ msgstr "Boeuf, ragù, biryani"
 msgid "Bold"
 msgstr "Bold"
 
+msgid "Bottom"
+msgstr "Bottom"
+
 msgid "Bottom drawer"
 msgstr "Bottom drawer"
 
@@ -207,6 +210,9 @@ msgstr "Burning the midnight oil?"
 
 msgid "Butter chicken"
 msgstr "Butter chicken"
+
+msgid "Button group"
+msgstr "Button group"
 
 msgid "Button sizes"
 msgstr "Button sizes"
@@ -252,6 +258,9 @@ msgstr "Casey Park"
 
 msgid "Categorization"
 msgstr "Categorization"
+
+msgid "Center"
+msgstr "Center"
 
 msgid "Change language"
 msgstr "Change language"
@@ -751,6 +760,9 @@ msgstr "Learn more"
 msgid "Leave"
 msgstr "Leave"
 
+msgid "Left"
+msgstr "Left"
+
 msgid "Left drawer"
 msgstr "Left drawer"
 
@@ -822,6 +834,9 @@ msgstr "Merge commit"
 
 msgid "Mexican"
 msgstr "Mexican"
+
+msgid "Middle"
+msgstr "Middle"
 
 msgid "Mobile navigation"
 msgstr "Mobile navigation"
@@ -1119,6 +1134,9 @@ msgstr "Responsive layout"
 
 msgid "Restaurant phone"
 msgstr "Restaurant phone"
+
+msgid "Right"
+msgstr "Right"
 
 msgid "Right drawer"
 msgstr "Right drawer"
@@ -1432,6 +1450,9 @@ msgstr "Tonkotsu ramen"
 
 msgid "Tooltips"
 msgstr "Tooltips"
+
+msgid "Top"
+msgstr "Top"
 
 msgid "Top drawer"
 msgstr "Top drawer"

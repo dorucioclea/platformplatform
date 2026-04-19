@@ -7,7 +7,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@repo/ui/components/NavigationMenu";
-import { BookmarkIcon, BookOpenIcon, FlameIcon, GlobeIcon, GraduationCapIcon, MapIcon, SoupIcon, UtensilsIcon } from "lucide-react";
+import {
+  BookmarkIcon,
+  BookOpenIcon,
+  FlameIcon,
+  GlobeIcon,
+  GraduationCapIcon,
+  MapIcon,
+  SoupIcon,
+  UtensilsIcon
+} from "lucide-react";
 
 export function NavigationMenuPreview() {
   return (

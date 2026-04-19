@@ -1,12 +1,12 @@
-import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Button } from "@repo/ui/components/Button";
-import { Toggle } from "@repo/ui/components/Toggle";
-import { BoldIcon, ItalicIcon, MailIcon, PlusIcon, SearchIcon, TrashIcon, UnderlineIcon } from "lucide-react";
+import { MailIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
 
 import { AvatarPreview } from "./AvatarPreview";
+import { ButtonGroupPreview } from "./ButtonGroupPreview";
 import { LinkPreview } from "./LinkPreview";
 import { SplitButtons } from "./SplitButtons";
+import { TogglesPreview } from "./TogglesPreview";
 
 export function ButtonsPreview() {
   return (
@@ -139,22 +139,16 @@ export function ButtonsPreview() {
 
       <div className="flex flex-col gap-2">
         <h4>
+          <Trans>Button group</Trans>
+        </h4>
+        <ButtonGroupPreview />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h4>
           <Trans>Toggle buttons</Trans>
         </h4>
-        <div className="flex flex-wrap items-center gap-3">
-          <Toggle aria-label={t`Bold`}>
-            <BoldIcon />
-          </Toggle>
-          <Toggle aria-label={t`Italic`}>
-            <ItalicIcon />
-          </Toggle>
-          <Toggle aria-label={t`Underline`}>
-            <UnderlineIcon />
-          </Toggle>
-          <Toggle variant="outline" aria-label={t`Bold`}>
-            <BoldIcon />
-          </Toggle>
-        </div>
+        <TogglesPreview />
       </div>
 
       <LinkPreview />
