@@ -1,16 +1,56 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { MenuButton, SideMenu, SideMenuSeparator } from "@repo/ui/components/SideMenu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail
+} from "@repo/ui/components/Sidebar";
+import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { BoxIcon } from "lucide-react";
 
-export function BackOfficeSideMenu() {
-  return (
-    <SideMenu sidebarToggleAriaLabel={t`Toggle sidebar`} mobileMenuAriaLabel={t`Open navigation menu`}>
-      <SideMenuSeparator>
-        <Trans>Navigation</Trans>
-      </SideMenuSeparator>
+const normalizePath = (path: string): string => path.replace(/\/$/, "") || "/";
 
-      <MenuButton icon={BoxIcon} label={t`Dashboard`} href="/back-office" />
-    </SideMenu>
+export function BackOfficeSideMenu() {
+  const router = useRouter();
+  const currentPath = normalizePath(router.state.location.pathname);
+
+  return (
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <div className="flex h-[var(--side-menu-collapsed-width)] items-center gap-2 px-3 text-sm font-semibold">
+          <BoxIcon className="size-6 shrink-0" />
+          <span className="truncate group-data-[collapsible=icon]:hidden">PlatformPlatform</span>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <Trans>Navigation</Trans>
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild={true} isActive={currentPath === "/back-office"} tooltip={t`Dashboard`}>
+                  <RouterLink to="/back-office">
+                    <BoxIcon />
+                    <span>
+                      <Trans>Dashboard</Trans>
+                    </span>
+                  </RouterLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarRail />
+    </Sidebar>
   );
 }

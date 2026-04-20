@@ -70,6 +70,12 @@ function useSidebar() {
   return context;
 }
 
+// Safe variant for components that may render with or without a SidebarProvider ancestor
+// (e.g. AppLayout, which still supports the legacy SideMenu until all SCSs are migrated).
+function useSidebarSafe() {
+  return React.useContext(SidebarContext);
+}
+
 function readInitialOpen(defaultOpen: boolean) {
   if (typeof window === "undefined") {
     return defaultOpen;
@@ -778,5 +784,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-  useSidebar
+  useSidebar,
+  useSidebarSafe
 };

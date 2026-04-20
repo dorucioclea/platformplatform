@@ -113,9 +113,6 @@ msgstr "No results found"
 msgid "Open calendar"
 msgstr "Open calendar"
 
-msgid "Open navigation menu"
-msgstr "Open navigation menu"
-
 msgid "Page not found"
 msgstr "Page not found"
 

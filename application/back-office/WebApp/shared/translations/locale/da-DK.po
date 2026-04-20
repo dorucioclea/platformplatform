@@ -113,9 +113,6 @@ msgstr "Ingen resultater fundet"
 msgid "Open calendar"
 msgstr ""
 
-msgid "Open navigation menu"
-msgstr "Åbn navigationsmenu"
-
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
 

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSideMenuLayout } from "../hooks/useSideMenuLayout";
 import { cn } from "../utils";
 import { getSideMenuCollapsedWidth } from "../utils/responsive";
+import { useSidebarSafe } from "./Sidebar";
 
 const appName = document.title;
 
@@ -308,7 +309,13 @@ export function AppLayout({
   subtitle,
   scrollAwayHeader = true
 }: Readonly<AppLayoutProps>) {
-  const { className, style, isOverlayOpen } = useSideMenuLayout();
+  // When rendered inside a new-style <SidebarProvider>, the <SidebarInset> parent already
+  // handles the sidebar/content split via flex layout. Skip the legacy marginLeft math in that case.
+  const isInsideNewSidebar = useSidebarSafe() !== null;
+  const legacy = useSideMenuLayout();
+  const className = isInsideNewSidebar ? "flex min-h-0 flex-1 flex-col" : legacy.className;
+  const style = isInsideNewSidebar ? undefined : legacy.style;
+  const isOverlayOpen = isInsideNewSidebar ? false : legacy.isOverlayOpen;
   const headerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
