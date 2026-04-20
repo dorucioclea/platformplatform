@@ -2,6 +2,7 @@ import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import {
   CompassIcon,
+  ImageIcon,
   LayersIcon,
   LayoutDashboardIcon,
   MousePointerClickIcon,
@@ -11,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
+import { AspectRatioPreview } from "./AspectRatioPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { NavigationPreview } from "./NavigationPreview";
@@ -59,6 +61,10 @@ export function ComponentPreview() {
           <LayoutDashboardIcon />
           <Trans>Resizable panels</Trans>
         </TabsTrigger>
+        <TabsTrigger value="media">
+          <ImageIcon />
+          <Trans>Media</Trans>
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="controls">
         <ControlsPreview />
@@ -77,6 +83,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="resizable">
         <ResizablePreview />
+      </TabsContent>
+      <TabsContent value="media">
+        <AspectRatioPreview />
       </TabsContent>
     </Tabs>
   );

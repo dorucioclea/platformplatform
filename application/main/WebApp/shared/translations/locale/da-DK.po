@@ -142,6 +142,9 @@ msgstr "Arkiver dette element?"
 msgid "Area chart"
 msgstr "Områdediagram"
 
+msgid "Aspect ratio"
+msgstr "Billedformat"
+
 msgid "Avatar fallback and badge"
 msgstr "Reserveavatar og badge"
 
@@ -859,6 +862,9 @@ msgstr "Masala dosa"
 msgid "Meal plan period"
 msgstr "Måltidsplanperiode"
 
+msgid "Media"
+msgstr "Medier"
+
 msgid "Medium"
 msgstr "Mellem"
 
@@ -1176,6 +1182,9 @@ msgstr "Fjern"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
+
+msgid "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
+msgstr "Reserverer et felt med et fast billedformat, så miniaturer forbliver justerede, og layoutet ikke hopper."
 
 msgid "Resizable app shell"
 msgstr "Justerbar app-skal"

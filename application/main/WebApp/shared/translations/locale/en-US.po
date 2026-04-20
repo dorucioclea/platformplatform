@@ -142,6 +142,9 @@ msgstr "Archive this item?"
 msgid "Area chart"
 msgstr "Area chart"
 
+msgid "Aspect ratio"
+msgstr "Aspect ratio"
+
 msgid "Avatar fallback and badge"
 msgstr "Avatar fallback and badge"
 
@@ -859,6 +862,9 @@ msgstr "Masala dosa"
 msgid "Meal plan period"
 msgstr "Meal plan period"
 
+msgid "Media"
+msgstr "Media"
+
 msgid "Medium"
 msgstr "Medium"
 
@@ -1176,6 +1182,9 @@ msgstr "Remove"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
+
+msgid "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
+msgstr "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
 
 msgid "Resizable app shell"
 msgstr "Resizable app shell"
