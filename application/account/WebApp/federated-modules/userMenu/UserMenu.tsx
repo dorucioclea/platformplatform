@@ -6,7 +6,7 @@ import { useUserInfo } from "@repo/infrastructure/auth/hooks";
 import { hasPermission } from "@repo/infrastructure/auth/routeGuards";
 import { createLoginUrlWithReturnPath } from "@repo/infrastructure/auth/util";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@repo/ui/components/DropdownMenu";
-import { collapsedContext, overlayContext } from "@repo/ui/components/SideMenu";
+import { collapsedContext, overlayContext } from "@repo/ui/components/Sidebar";
 import { TenantLogo } from "@repo/ui/components/TenantLogo";
 import { getRootFontSize, SIDE_MENU_DEFAULT_WIDTH_REM } from "@repo/ui/utils/responsive";
 import { useQueryClient } from "@tanstack/react-query";

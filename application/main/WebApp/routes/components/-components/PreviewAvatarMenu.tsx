@@ -14,7 +14,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from "@repo/ui/components/DropdownMenu";
-import { collapsedContext } from "@repo/ui/components/SideMenu";
+import { collapsedContext } from "@repo/ui/components/Sidebar";
 import { SIDE_MENU_DEFAULT_WIDTH_REM } from "@repo/ui/utils/responsive";
 import {
   CheckIcon,

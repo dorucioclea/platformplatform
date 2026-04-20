@@ -1,10 +1,8 @@
 import { t } from "@lingui/core/macro";
 import React, { useEffect, useRef, useState } from "react";
 
-import { useSideMenuLayout } from "../hooks/useSideMenuLayout";
 import { cn } from "../utils";
 import { getSideMenuCollapsedWidth } from "../utils/responsive";
-import { useSidebarSafe } from "./Sidebar";
 
 const appName = document.title;
 
@@ -38,20 +36,6 @@ type AppLayoutProps = {
  * - full: Content takes full width with standard padding
  * - center: Content is always centered with configurable max width (default: 40rem)
  */
-function useBodyScrollLock(isLocked: boolean) {
-  useEffect(() => {
-    if (isLocked) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isLocked]);
-}
-
 function useStickyHeader(enabled: boolean, headerRef: React.RefObject<HTMLDivElement | null>) {
   const [isSticky, setIsSticky] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -309,17 +293,11 @@ export function AppLayout({
   subtitle,
   scrollAwayHeader = true
 }: Readonly<AppLayoutProps>) {
-  // When rendered inside a new-style <SidebarProvider>, the <SidebarInset> parent already
-  // handles the sidebar/content split via flex layout. Skip the legacy marginLeft math in that case.
-  const isInsideNewSidebar = useSidebarSafe() !== null;
-  const legacy = useSideMenuLayout();
-  const className = isInsideNewSidebar ? "flex min-h-0 flex-1 flex-col" : legacy.className;
-  const style = isInsideNewSidebar ? undefined : legacy.style;
-  const isOverlayOpen = isInsideNewSidebar ? false : legacy.isOverlayOpen;
+  // Assumes rendered inside a <SidebarProvider> + <SidebarInset>, which owns the sidebar/content
+  // split. AppLayout only handles the main content column (header, scroll behavior, side pane).
   const headerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useBodyScrollLock(isOverlayOpen);
   const isSticky = useStickyHeader(!!title && !scrollAwayHeader, headerRef);
   const { isFullyScrolled } = useScrollAwayHeader(scrollAwayHeader && !!title, contentRef);
 
@@ -333,8 +311,7 @@ export function AppLayout({
   return (
     <div className="flex min-h-dvh flex-1 flex-col">
       <div
-        className={`${className} ${sidePane ? "grid grid-cols-[1fr_24rem] sm:grid" : "flex flex-col"} min-h-0 overflow-hidden`}
-        style={style}
+        className={cn("flex min-h-0 flex-1 flex-col overflow-hidden", sidePane && "grid grid-cols-[1fr_24rem] sm:grid")}
       >
         {/* Mobile sticky header - appears when page header scrolls out of view */}
         {/* z-30 to stack above sticky content (z-10) like toolbars and table headers */}
