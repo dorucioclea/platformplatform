@@ -343,6 +343,9 @@ msgstr "Luk menu"
 msgid "Close recipe details"
 msgstr "Luk opskriftsdetaljer"
 
+msgid "Close sidebar"
+msgstr "Luk sidemenu"
+
 msgid "Co-author"
 msgstr "Medforfatter"
 

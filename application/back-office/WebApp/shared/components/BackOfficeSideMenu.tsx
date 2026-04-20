@@ -15,6 +15,8 @@ import {
 import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { BoxIcon } from "lucide-react";
 
+import logoMark from "@/shared/images/logo-mark.svg";
+
 const normalizePath = (path: string): string => path.replace(/\/$/, "") || "/";
 
 export function BackOfficeSideMenu() {
@@ -24,8 +26,8 @@ export function BackOfficeSideMenu() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="flex h-[var(--side-menu-collapsed-width)] items-center gap-2 px-3 text-sm font-semibold">
-          <BoxIcon className="size-6 shrink-0" />
+        <div className="-mt-2 flex h-[var(--side-menu-collapsed-width)] items-center gap-3 pl-[0.875rem] text-sm font-semibold">
+          <img className="size-9 shrink-0" src={logoMark} alt={t`PlatformPlatform logo`} />
           <span className="truncate group-data-[collapsible=icon]:hidden">PlatformPlatform</span>
         </div>
       </SidebarHeader>

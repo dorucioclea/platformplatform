@@ -1,12 +1,13 @@
 import { t } from "@lingui/core/macro";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronLeftIcon, PanelLeftIcon } from "lucide-react";
+import { ChevronsLeftIcon, PanelLeftIcon } from "lucide-react";
 import * as React from "react";
 
 import { useViewportResize } from "../hooks/useViewportResize";
 import { cn } from "../utils";
 import {
   getRootFontSize,
+  MEDIA_QUERIES,
   SIDE_MENU_COLLAPSED_WIDTH_REM,
   SIDE_MENU_DEFAULT_WIDTH_REM,
   SIDE_MENU_MAX_WIDTH_REM,
@@ -119,7 +120,16 @@ function SidebarProvider({
   const [openMobile, setOpenMobile] = React.useState(false);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const [internalOpen, setInternalOpen] = React.useState(() => readInitialOpen(defaultOpen));
+  // Persisted user preference (only mutated by explicit toggles at `lg+`). This is the value
+  // the sidebar restores to when the viewport grows back from overlay mode.
+  const persistedOpenRef = React.useRef<boolean>(readInitialOpen(defaultOpen));
+  const [internalOpen, setInternalOpen] = React.useState<boolean>(() => {
+    if (typeof window === "undefined") {
+      return persistedOpenRef.current;
+    }
+    // On initial load below `lg`, force-collapsed regardless of stored preference.
+    return window.matchMedia(MEDIA_QUERIES.lg).matches ? persistedOpenRef.current : false;
+  });
   const open = openProp ?? internalOpen;
   const setOpen = React.useCallback(
     (value: boolean | ((prev: boolean) => boolean)) => {
@@ -129,7 +139,12 @@ function SidebarProvider({
       } else {
         setInternalOpen(openState);
       }
-      localStorage.setItem(SIDEBAR_STORAGE_KEY_COLLAPSED, String(!openState));
+      // Only persist user choices made at `lg+`. Toggles below `lg` are overlay-mode
+      // interactions — transient, never written to localStorage.
+      if (typeof window !== "undefined" && window.matchMedia(MEDIA_QUERIES.lg).matches) {
+        persistedOpenRef.current = openState;
+        localStorage.setItem(SIDEBAR_STORAGE_KEY_COLLAPSED, String(!openState));
+      }
     },
     [setOpenProp, open]
   );
@@ -158,6 +173,21 @@ function SidebarProvider({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggleSidebar]);
+
+  // Auto-collapse when the viewport drops below `lg`, restore user preference when it grows back.
+  // Below `lg` the sidebar overlays content (rarely desirable on narrow screens). Transitions
+  // use setInternalOpen directly so they do NOT touch the persisted preference.
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const mediaQuery = window.matchMedia(MEDIA_QUERIES.lg);
+    const handleChange = (event: MediaQueryListEvent) => {
+      setInternalOpen(event.matches ? persistedOpenRef.current : false);
+    };
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   const state = open ? "expanded" : "collapsed";
 
@@ -222,7 +252,7 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { isMobile, state, openMobile, setOpenMobile, setOpen } = useSidebar();
 
   if (collapsible === "none") {
     return (
@@ -267,25 +297,43 @@ function Sidebar({
       data-side={side}
       data-slot="sidebar"
     >
-      {/* Placeholder stays at icon-rail width so the expanded sidebar always OVERLAYS content. */}
+      {/* Backdrop: dims content behind the expanded sidebar in overlay mode (below `lg`).
+          Hidden at `lg+` where the sidebar pushes content instead of overlaying. Click to collapse. */}
+      <button
+        type="button"
+        aria-label={t`Close sidebar`}
+        tabIndex={-1}
+        onClick={() => setOpen(false)}
+        className={cn(
+          "pointer-events-none fixed inset-0 z-[35] bg-black/50 opacity-0 transition-opacity duration-100 ease-linear lg:hidden",
+          "group-data-[state=expanded]:pointer-events-auto group-data-[state=expanded]:opacity-100"
+        )}
+      />
+      {/* Placeholder width:
+          - Below `lg`: stays at icon-rail width so the expanded sidebar OVERLAYS content.
+          - At `lg`+: follows sidebar width so main content pushes right (no overlay).
+          Transitions disabled during drag via `[data-resizing]` on the wrapper. */}
       <div
         data-slot="sidebar-gap"
         className={cn(
-          "relative w-(--sidebar-width-icon) bg-transparent",
+          "relative w-(--sidebar-width-icon) bg-transparent transition-[width] duration-100 ease-linear",
+          "lg:w-(--sidebar-width) lg:group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
           "group-data-[collapsible=offcanvas]:w-0",
-          "group-data-[side=right]:rotate-180"
+          "group-data-[side=right]:rotate-180",
+          "group-data-[resizing=true]/sidebar-wrapper:transition-none"
         )}
       />
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-100 ease-linear sm:flex",
+          "fixed inset-y-0 z-40 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-100 ease-linear sm:flex",
+          "group-data-[resizing=true]/sidebar-wrapper:transition-none",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+0.125rem)]"
-            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
+            : "border-sidebar group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
           className
         )}
         {...props}
@@ -327,48 +375,37 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
 // A floating chevron button reveals on hover or focus (matches current SideMenu UX).
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { state, toggleSidebar, setWidthRem, wrapperRef } = useSidebar();
-  const dragStartRef = React.useRef<{ x: number; widthRem: number } | null>(null);
   const draggedRef = React.useRef(false);
+  const suppressClickRef = React.useRef(false);
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  // Attaches pointermove/pointerup listeners to resize the sidebar until release.
+  // Only called when `state === "expanded"`. `onRelease` runs after cleanup.
+  const startDrag = (startX: number, onRelease: () => void) => {
     draggedRef.current = false;
-
-    // Only capture drag when expanded. Collapsed rail only toggles.
-    if (state !== "expanded") {
-      toggleSidebar();
-      return;
-    }
-
     const currentWidthRaw = wrapperRef.current?.style.getPropertyValue("--sidebar-width");
     const currentWidthRem = currentWidthRaw ? Number.parseFloat(currentWidthRaw) : SIDE_MENU_DEFAULT_WIDTH_REM;
-    dragStartRef.current = { x: event.clientX, widthRem: currentWidthRem };
-    document.body.style.cursor = "ew-resize";
 
-    const handleMove = (moveEvent: PointerEvent) => {
-      if (!dragStartRef.current) {
-        return;
-      }
-      const deltaPx = moveEvent.clientX - dragStartRef.current.x;
+    const handleMove = (event: PointerEvent) => {
+      const deltaPx = event.clientX - startX;
       if (!draggedRef.current && Math.abs(deltaPx) > DRAG_THRESHOLD_PX) {
         draggedRef.current = true;
+        // Suppress CSS width transitions during drag so the sidebar tracks the cursor 1:1.
+        wrapperRef.current?.setAttribute("data-resizing", "true");
+        document.body.style.cursor = "ew-resize";
       }
       if (!draggedRef.current) {
         return;
       }
-      const deltaRem = deltaPx / getRootFontSize();
-      setWidthRem(dragStartRef.current.widthRem + deltaRem);
+      setWidthRem(currentWidthRem + deltaPx / getRootFontSize());
     };
 
     const handleUp = () => {
       document.body.style.cursor = "";
+      wrapperRef.current?.removeAttribute("data-resizing");
       document.removeEventListener("pointermove", handleMove);
       document.removeEventListener("pointerup", handleUp);
       document.removeEventListener("pointercancel", handleUp);
-      if (!draggedRef.current) {
-        toggleSidebar();
-      }
-      dragStartRef.current = null;
+      onRelease();
     };
 
     document.addEventListener("pointermove", handleMove);
@@ -376,37 +413,98 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
     document.addEventListener("pointercancel", handleUp);
   };
 
+  // Rail: click-or-drag via pointer events only (rail is tabindex=-1, no keyboard path).
+  const handleRailPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (state !== "expanded") {
+      toggleSidebar();
+      return;
+    }
+    startDrag(event.clientX, () => {
+      if (!draggedRef.current) {
+        toggleSidebar();
+      }
+    });
+  };
+
+  // Toggle button: supports drag (expanded) AND a real onClick for keyboard.
+  // `suppressClick` prevents the synthetic click (fired after pointerup) from double-toggling.
+  const handleTogglePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (state !== "expanded") {
+      return; // Collapsed: let onClick handle toggle (no drag available).
+    }
+    startDrag(event.clientX, () => {
+      if (draggedRef.current) {
+        suppressClickRef.current = true;
+      }
+    });
+  };
+
+  const handleToggleClick = () => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    toggleSidebar();
+  };
+
+  // Arrow keys resize the sidebar when the toggle is focused (expanded state only).
+  const handleToggleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (state !== "expanded") {
+      return;
+    }
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+      return;
+    }
+    event.preventDefault();
+    const currentWidthRaw = wrapperRef.current?.style.getPropertyValue("--sidebar-width");
+    const currentWidthRem = currentWidthRaw ? Number.parseFloat(currentWidthRaw) : SIDE_MENU_DEFAULT_WIDTH_REM;
+    const step = event.shiftKey ? 2 : 1;
+    setWidthRem(currentWidthRem + (event.key === "ArrowLeft" ? -step : step));
+  };
+
   return (
-    <button
-      data-sidebar="rail"
-      data-slot="sidebar-rail"
-      aria-label={t`Toggle sidebar`}
-      tabIndex={-1}
-      onPointerDown={handlePointerDown}
-      title={t`Toggle sidebar`}
-      className={cn(
-        "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear sm:flex",
-        "group-data-[side=left]:-right-4 group-data-[side=right]:left-0",
-        "after:absolute after:inset-y-0 after:left-1/2 after:w-[0.125rem] hover:after:bg-sidebar-border",
-        "group-data-[state=collapsed]:cursor-pointer group-data-[state=expanded]:cursor-ew-resize",
-        "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar",
-        "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
-        "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
-        className
-      )}
-      {...props}
-    >
-      <ChevronLeftIcon
-        aria-hidden="true"
+    <>
+      <button
+        data-sidebar="rail"
+        data-slot="sidebar-rail"
+        aria-label={t`Toggle sidebar`}
+        tabIndex={-1}
+        onPointerDown={handleRailPointerDown}
+        title={t`Toggle sidebar`}
         className={cn(
-          // Align the floating chevron with the boundary between the header and the menu items
-          // (5rem — SidebarHeader height). Matches the old SideMenu toggle position.
-          "pointer-events-none absolute top-[var(--side-menu-collapsed-width)] right-0 size-6 translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-background p-0.5 text-foreground opacity-0 shadow-sm transition-opacity duration-100",
-          "group-focus-within/sidebar-wrapper:opacity-100 group-hover/sidebar-wrapper:opacity-100",
-          "group-data-[state=collapsed]:rotate-180"
+          "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear sm:flex",
+          "group-data-[side=left]:-right-4 group-data-[side=right]:left-0",
+          "group-data-[state=collapsed]:cursor-pointer group-data-[state=expanded]:cursor-ew-resize",
+          "group-data-[collapsible=offcanvas]:translate-x-0",
+          "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
+          "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
+          className
         )}
+        {...props}
       />
-    </button>
+      {/* Dedicated toggle button (keyboard-accessible). Sits above the rail in z-order so click and
+          focus go to this button, while the rail behind still handles drag-to-resize on its other areas. */}
+      <button
+        type="button"
+        data-slot="sidebar-toggle"
+        aria-label={t`Toggle sidebar`}
+        title={t`Toggle sidebar`}
+        onPointerDown={handleTogglePointerDown}
+        onClick={handleToggleClick}
+        onKeyDown={handleToggleKeyDown}
+        className={cn(
+          // Anchored to the boundary between SidebarHeader and menu items (5rem).
+          "absolute top-[var(--side-menu-collapsed-width)] right-0 z-30 hidden size-6 translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full bg-foreground p-1 text-background opacity-0 shadow-sm outline-foreground transition-[opacity,transform] duration-100 sm:block",
+          "group-focus-within:opacity-100 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        )}
+      >
+        <ChevronsLeftIcon
+          aria-hidden="true"
+          className={cn("size-full transition-transform duration-100", "group-data-[state=collapsed]:rotate-180")}
+        />
+      </button>
+    </>
   );
 }
 
@@ -496,8 +594,10 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 uppercase outline-ring transition-[margin,opacity] duration-100 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
+        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 uppercase outline-ring transition-opacity duration-100 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        // Keep the label's layout space when collapsed so menu icons stay at the exact same vertical
+        // position as when expanded. Hide visually via `invisible` (not `-mt-8`, which would collapse height).
+        "group-data-[collapsible=icon]:invisible",
         className
       )}
       {...props}
@@ -556,7 +656,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
       className={cn(
         // Active indicator: a vertical bar flush with the sidebar's left edge when any descendant
         // button carries [data-active=true]. `-left-2` reaches past the SidebarGroup's 0.5rem padding.
-        "group/menu-item relative before:pointer-events-none before:absolute before:top-1/2 before:-left-2 before:h-6 before:w-1 before:-translate-y-1/2 before:rounded-r-sm before:bg-primary before:opacity-0 has-[[data-active=true]]:before:opacity-100",
+        "group/menu-item relative mx-1 before:pointer-events-none before:absolute before:top-1/2 before:-left-3 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0 has-[[data-active=true]]:before:opacity-100",
         className
       )}
       {...props}
@@ -572,7 +672,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 // - Active indicator: ::before pseudo-element renders a vertical bar at the sidebar's left edge
 //   (-0.5rem from the item, reaching past the SidebarGroup's 0.5rem padding).
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md px-3 text-left text-sm outline-ring group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md pr-3 pl-[1.125rem] text-left text-sm outline-ring group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:ml-[0.5625rem] group-data-[collapsible=icon]:w-[var(--control-height)] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
   {
     variants: {
       variant: {

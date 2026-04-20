@@ -407,6 +407,9 @@ msgstr "Close"
 msgid "Close menu"
 msgstr "Close menu"
 
+msgid "Close sidebar"
+msgstr "Close sidebar"
+
 msgid "Close user profile"
 msgstr "Close user profile"
 

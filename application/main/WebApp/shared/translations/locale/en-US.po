@@ -343,6 +343,9 @@ msgstr "Close menu"
 msgid "Close recipe details"
 msgstr "Close recipe details"
 
+msgid "Close sidebar"
+msgstr "Close sidebar"
+
 msgid "Co-author"
 msgstr "Co-author"
 

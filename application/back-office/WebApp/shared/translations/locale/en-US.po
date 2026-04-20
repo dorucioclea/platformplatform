@@ -41,6 +41,9 @@ msgstr "Close"
 msgid "Close menu"
 msgstr "Close menu"
 
+msgid "Close sidebar"
+msgstr "Close sidebar"
+
 msgid "Contact your administrator if you believe this is a mistake."
 msgstr "Contact your administrator if you believe this is a mistake."
 

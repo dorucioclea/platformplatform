@@ -407,6 +407,9 @@ msgstr "Luk"
 msgid "Close menu"
 msgstr "Luk menu"
 
+msgid "Close sidebar"
+msgstr "Luk sidemenu"
+
 msgid "Close user profile"
 msgstr "Luk brugerprofil"
 
