@@ -12,6 +12,7 @@ interface TableSelectionContextValue {
   focusedKey: RowKey | null;
   selectedKeys: ReadonlySet<RowKey>;
   hasSelection: boolean;
+  isKeyboardNavigating: boolean;
 }
 
 const TableSelectionContext = createContext<TableSelectionContextValue | null>(null);
@@ -206,6 +207,7 @@ function Table({
   const hasSelection = selectionMode !== "none";
   const effectiveSelectedKeys = selectedKeys ?? EMPTY_KEYS;
   const [focusedKey, setFocusedKey] = useState<RowKey | null>(null);
+  const [isKeyboardNavigating, setIsKeyboardNavigating] = useState(false);
   const anchorKeyRef = useRef<RowKey | null>(null);
   const transientSelectionRef = useRef(false);
 
@@ -413,14 +415,21 @@ function Table({
         event.preventDefault();
         event.stopPropagation();
       }
+      setIsKeyboardNavigating(true);
       applyOutcome(outcome);
+    };
+
+    const handlePointerMove = () => {
+      setIsKeyboardNavigating((current) => (current ? false : current));
     };
 
     tableElement.addEventListener("click", handleClick, true);
     document.addEventListener("keydown", handleKeyDown, true);
+    tableElement.addEventListener("pointermove", handlePointerMove);
     return () => {
       tableElement.removeEventListener("click", handleClick, true);
       document.removeEventListener("keydown", handleKeyDown, true);
+      tableElement.removeEventListener("pointermove", handlePointerMove);
     };
   }, [hasSelection]);
 
@@ -437,7 +446,9 @@ function Table({
   }
 
   return (
-    <TableSelectionContext value={{ focusedKey, selectedKeys: effectiveSelectedKeys, hasSelection }}>
+    <TableSelectionContext
+      value={{ focusedKey, selectedKeys: effectiveSelectedKeys, hasSelection, isKeyboardNavigating }}
+    >
       {withSticky}
     </TableSelectionContext>
   );
@@ -485,6 +496,7 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
   const isSelectable = selection != null && rowKey != null;
   const isSelected = isSelectable && selection.selectedKeys.has(rowKey);
   const tabIndex = isSelectable ? (selection.focusedKey === rowKey ? 0 : -1) : undefined;
+  const suppressHover = selection?.isKeyboardNavigating ?? false;
 
   return (
     <tr
@@ -492,7 +504,8 @@ function TableRow({ className, rowKey, ...props }: TableRowProps) {
       data-row-key={rowKey != null ? String(rowKey) : undefined}
       data-state={isSelected ? "selected" : undefined}
       className={cn(
-        "rounded-md border-b outline-ring transition-colors hover:bg-hover-background focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background data-[state=selected]:hover:bg-active-background",
+        "rounded-md border-b outline-ring transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 active:bg-muted data-[state=selected]:bg-active-background",
+        !suppressHover && "hover:bg-hover-background data-[state=selected]:hover:bg-active-background",
         rowSizeStyles[rowSize],
         isSelectable && "cursor-pointer select-none",
         className
