@@ -149,9 +149,6 @@ msgstr "Show details"
 msgid "Show more"
 msgstr "Show more"
 
-msgid "Side panel"
-msgstr "Side panel"
-
 msgid "Sidebar"
 msgstr "Sidebar"
 

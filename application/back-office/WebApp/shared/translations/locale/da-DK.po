@@ -149,9 +149,6 @@ msgstr "Vis detaljer"
 msgid "Show more"
 msgstr "Vis flere"
 
-msgid "Side panel"
-msgstr "Sidepanel"
-
 msgid "Sidebar"
 msgstr "Sidemenu"
 

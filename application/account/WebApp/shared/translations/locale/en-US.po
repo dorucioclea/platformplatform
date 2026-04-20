@@ -1228,9 +1228,6 @@ msgstr "Show more"
 msgid "Show search filters"
 msgstr "Show search filters"
 
-msgid "Side panel"
-msgstr "Side panel"
-
 msgid "Sidebar"
 msgstr "Sidebar"
 

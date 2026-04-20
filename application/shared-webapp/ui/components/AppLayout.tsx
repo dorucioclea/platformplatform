@@ -310,9 +310,9 @@ export function AppLayout({
 
   return (
     <div className="flex min-h-dvh flex-1 flex-col">
-      <div
-        className={cn("flex min-h-0 flex-1 flex-col overflow-hidden", sidePane && "grid grid-cols-[1fr_24rem] sm:grid")}
-      >
+      {/* Row layout: main takes remaining width, sidePane reserves its own column.
+          When the pane opens, main naturally shrinks because it has `min-w-0 flex-1`. */}
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Mobile sticky header - appears when page header scrolls out of view */}
         {/* z-30 to stack above sticky content (z-10) like toolbars and table headers */}
         {title && (
@@ -336,7 +336,7 @@ export function AppLayout({
         {/* scales UI via --zoom-level -- growing content should consume extra space inward, not push against the viewport edges. */}
         <main
           ref={contentRef}
-          className="flex min-h-0 w-full flex-1 flex-col overflow-y-auto bg-background px-[16px] pt-4 transition-all duration-100 ease-in-out [-webkit-overflow-scrolling:touch] focus:outline-none sm:px-[32px] sm:pt-8"
+          className="flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-y-auto bg-background px-[16px] pt-4 transition-all duration-100 ease-in-out [-webkit-overflow-scrolling:touch] focus:outline-none sm:px-[32px] sm:pt-8"
           id="main-content"
           aria-label={t`Main content`}
           tabIndex={-1}
@@ -371,15 +371,8 @@ export function AppLayout({
           )}
         </main>
 
-        {/* Side pane area - fullscreen mode uses portal, side-by-side uses this wrapper */}
-        {sidePane && (
-          <aside
-            className="fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-40 bg-card md:left-auto md:z-10 md:w-96"
-            aria-label={t`Side panel`}
-          >
-            {sidePane}
-          </aside>
-        )}
+        {/* SidePane handles its own docking/overlay — renders as a fixed-position aside. */}
+        {sidePane}
       </div>
     </div>
   );
