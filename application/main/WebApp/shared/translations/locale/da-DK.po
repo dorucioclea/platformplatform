@@ -1072,9 +1072,6 @@ msgstr ""
 msgid "Open command palette"
 msgstr "Åbn kommandopalette"
 
-msgid "Open navigation menu"
-msgstr "Åbn navigationsmenu"
-
 msgid "Open side pane"
 msgstr "Åbn sidepanel"
 

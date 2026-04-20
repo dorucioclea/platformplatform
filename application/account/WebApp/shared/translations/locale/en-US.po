@@ -936,9 +936,6 @@ msgstr "Only trusted personnel access data through Azure AD authentication"
 msgid "Open calendar"
 msgstr "Open calendar"
 
-msgid "Open navigation menu"
-msgstr "Open navigation menu"
-
 msgid "or"
 msgstr "or"
 

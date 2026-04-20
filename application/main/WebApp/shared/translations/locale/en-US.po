@@ -1072,9 +1072,6 @@ msgstr "Open calendar"
 msgid "Open command palette"
 msgstr "Open command palette"
 
-msgid "Open navigation menu"
-msgstr "Open navigation menu"
-
 msgid "Open side pane"
 msgstr "Open side pane"
 
