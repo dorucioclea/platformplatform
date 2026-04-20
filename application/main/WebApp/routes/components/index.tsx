@@ -30,7 +30,8 @@ function ComponentsPage() {
               buttons: <Trans>Buttons and links</Trans>,
               alerts: <Trans>Alerts and badges</Trans>,
               banners: <Trans>Banners</Trans>,
-              navigation: <Trans>Navigation</Trans>
+              navigation: <Trans>Navigation</Trans>,
+              charts: <Trans>Charts</Trans>
             }}
           />
         }

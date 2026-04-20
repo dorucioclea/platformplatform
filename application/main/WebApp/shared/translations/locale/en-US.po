@@ -64,6 +64,9 @@ msgstr "5 active co-cooks"
 msgid "75% of quota used"
 msgstr "75% of quota used"
 
+msgid "A small selection of chart variants built on recharts."
+msgstr "A small selection of chart variants built on recharts."
+
 msgid "About this feature"
 msgstr "About this feature"
 
@@ -142,6 +145,9 @@ msgstr "Archive this item?"
 msgid "Area chart"
 msgstr "Area chart"
 
+msgid "Area Chart - Interactive"
+msgstr "Area Chart - Interactive"
+
 msgid "Aspect ratio"
 msgstr "Aspect ratio"
 
@@ -165,6 +171,12 @@ msgstr "Banners"
 
 msgid "Bar chart"
 msgstr "Bar chart"
+
+msgid "Bar Chart - Interactive"
+msgstr "Bar Chart - Interactive"
+
+msgid "Bar Chart - Stacked + Legend"
+msgstr "Bar Chart - Stacked + Legend"
 
 msgid "Basic recipe information and cover photo."
 msgstr "Basic recipe information and cover photo."
@@ -292,6 +304,9 @@ msgstr "Change zoom level"
 msgid "Changes published"
 msgstr "Changes published"
 
+msgid "Charts"
+msgstr "Charts"
+
 msgid "Checkbox"
 msgstr "Checkbox"
 
@@ -303,6 +318,9 @@ msgstr "Chicken katsu"
 
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
+
+msgid "Chrome"
+msgstr "Chrome"
 
 msgid "Clear date"
 msgstr "Clear date"
@@ -475,6 +493,9 @@ msgstr "Delete this item?"
 msgid "Description"
 msgstr "Description"
 
+msgid "Desktop"
+msgstr "Desktop"
+
 msgid "Destructive"
 msgstr "Destructive"
 
@@ -553,6 +574,9 @@ msgstr "E.g., Spaghetti Carbonara"
 msgid "Easy"
 msgstr "Easy"
 
+msgid "Edge"
+msgstr "Edge"
+
 msgid "Edit profile"
 msgstr "Edit profile"
 
@@ -615,6 +639,9 @@ msgstr "Features"
 
 msgid "Filters"
 msgstr "Filters"
+
+msgid "Firefox"
+msgstr "Firefox"
 
 msgid "First cooked"
 msgstr "First cooked"
@@ -757,6 +784,9 @@ msgstr "Item deleted"
 msgid "ItemGroup — settings list"
 msgstr "ItemGroup — settings list"
 
+msgid "January - June 2024"
+msgstr "January - June 2024"
+
 msgid "Japanese"
 msgstr "Japanese"
 
@@ -801,6 +831,15 @@ msgstr "Larger"
 
 msgid "Lasagna bolognese"
 msgstr "Lasagna bolognese"
+
+msgid "Last 3 months"
+msgstr "Last 3 months"
+
+msgid "Last 30 days"
+msgstr "Last 30 days"
+
+msgid "Last 7 days"
+msgstr "Last 7 days"
 
 msgid "Learn more"
 msgstr "Learn more"
@@ -897,6 +936,9 @@ msgstr "Mexican"
 
 msgid "Middle"
 msgstr "Middle"
+
+msgid "Mobile"
+msgstr "Mobile"
 
 msgid "Mobile navigation"
 msgstr "Mobile navigation"
@@ -1039,6 +1081,9 @@ msgstr "or press"
 msgid "Osso buco"
 msgstr "Osso buco"
 
+msgid "Other"
+msgstr "Other"
+
 msgid "Outline"
 msgstr "Outline"
 
@@ -1047,6 +1092,9 @@ msgstr "Overlays"
 
 msgid "Pad thai"
 msgstr "Pad thai"
+
+msgid "Page Views"
+msgstr "Page Views"
 
 msgid "Pagination"
 msgstr "Pagination"
@@ -1077,6 +1125,9 @@ msgstr "Pick a workday"
 
 msgid "Pie chart"
 msgstr "Pie chart"
+
+msgid "Pie Chart - Donut with Text"
+msgstr "Pie Chart - Donut with Text"
 
 msgid "Pizza margherita"
 msgstr "Pizza margherita"
@@ -1131,6 +1182,12 @@ msgstr "Quick weeknight meals"
 
 msgid "Radar chart"
 msgstr "Radar chart"
+
+msgid "Radial Chart - Shape"
+msgstr "Radial Chart - Shape"
+
+msgid "Radial Chart - Stacked"
+msgstr "Radial Chart - Stacked"
 
 msgid "Radio group"
 msgstr "Radio group"
@@ -1241,6 +1298,9 @@ msgstr "Risotto alla milanese"
 msgid "Rogan josh"
 msgstr "Rogan josh"
 
+msgid "Safari"
+msgstr "Safari"
+
 msgid "Save"
 msgstr "Save"
 
@@ -1286,12 +1346,18 @@ msgstr "Search-driven menu with grouped items and inline shortcuts. Wrap it in C
 msgid "Secondary"
 msgstr "Secondary"
 
+msgid "See more variations on ShadCN"
+msgstr "See more variations on ShadCN"
+
 msgid "Select"
 msgstr "Select"
 
 #. placeholder {0}: dish.name
 msgid "Select {0}"
 msgstr "Select {0}"
+
+msgid "Select a value"
+msgstr "Select a value"
 
 msgid "Select all rows on this page"
 msgstr "Select all rows on this page"
@@ -1367,6 +1433,12 @@ msgstr "Show status bar"
 
 msgid "Show toast"
 msgstr "Show toast"
+
+msgid "Showing total visitors for the last 3 months"
+msgstr "Showing total visitors for the last 3 months"
+
+msgid "Showing total visitors for the last 6 months"
+msgstr "Showing total visitors for the last 6 months"
 
 msgid "Side pane"
 msgstr "Side pane"
@@ -1566,6 +1638,9 @@ msgstr "Total cook time"
 msgid "Total time spent cooking this month."
 msgstr "Total time spent cooking this month."
 
+msgid "Trending up by 5.2% this month"
+msgstr "Trending up by 5.2% this month"
+
 msgid "Two-factor authentication"
 msgstr "Two-factor authentication"
 
@@ -1622,6 +1697,9 @@ msgstr "View all"
 
 msgid "View profile verification"
 msgstr "View profile verification"
+
+msgid "Visitors"
+msgstr "Visitors"
 
 msgid "Warning alert"
 msgstr "Warning alert"

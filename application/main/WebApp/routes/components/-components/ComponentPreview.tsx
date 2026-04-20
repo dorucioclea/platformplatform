@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
 import {
+  BarChart3Icon,
   CompassIcon,
   ImageIcon,
   LayersIcon,
@@ -13,6 +14,7 @@ import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
+import { ChartsPreview } from "./ChartsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { MediaTab } from "./MediaTab";
 import { NavigationPreview } from "./NavigationPreview";
@@ -65,6 +67,10 @@ export function ComponentPreview() {
           <ImageIcon />
           <Trans>Media</Trans>
         </TabsTrigger>
+        <TabsTrigger value="charts">
+          <BarChart3Icon />
+          <Trans>Charts</Trans>
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="controls">
         <ControlsPreview />
@@ -86,6 +92,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="media">
         <MediaTab />
+      </TabsContent>
+      <TabsContent value="charts">
+        <ChartsPreview />
       </TabsContent>
     </Tabs>
   );

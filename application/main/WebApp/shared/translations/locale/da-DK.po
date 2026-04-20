@@ -64,6 +64,9 @@ msgstr "5 aktive medkokke"
 msgid "75% of quota used"
 msgstr "75% af kvoten brugt"
 
+msgid "A small selection of chart variants built on recharts."
+msgstr "Et lille udvalg af diagramvarianter bygget på recharts."
+
 msgid "About this feature"
 msgstr "Om denne funktion"
 
@@ -142,6 +145,9 @@ msgstr "Arkiver dette element?"
 msgid "Area chart"
 msgstr "Områdediagram"
 
+msgid "Area Chart - Interactive"
+msgstr "Arealdiagram - Interaktivt"
+
 msgid "Aspect ratio"
 msgstr "Billedformat"
 
@@ -165,6 +171,12 @@ msgstr "Bannere"
 
 msgid "Bar chart"
 msgstr "Søjlediagram"
+
+msgid "Bar Chart - Interactive"
+msgstr "Søjlediagram - Interaktivt"
+
+msgid "Bar Chart - Stacked + Legend"
+msgstr "Søjlediagram - Stablet + Forklaring"
 
 msgid "Basic recipe information and cover photo."
 msgstr "Grundlæggende opskriftsinformation og forsidebillede."
@@ -292,6 +304,9 @@ msgstr "Skift zoomniveau"
 msgid "Changes published"
 msgstr "Ændringer udgivet"
 
+msgid "Charts"
+msgstr "Diagrammer"
+
 msgid "Checkbox"
 msgstr "Afkrydsningsfelt"
 
@@ -303,6 +318,9 @@ msgstr "Chicken katsu"
 
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
+
+msgid "Chrome"
+msgstr "Chrome"
 
 msgid "Clear date"
 msgstr "Ryd dato"
@@ -475,6 +493,9 @@ msgstr "Slet dette element?"
 msgid "Description"
 msgstr "Beskrivelse"
 
+msgid "Desktop"
+msgstr "Desktop"
+
 msgid "Destructive"
 msgstr "Destruktiv"
 
@@ -553,6 +574,9 @@ msgstr "F.eks. Spaghetti Carbonara"
 msgid "Easy"
 msgstr "Let"
 
+msgid "Edge"
+msgstr "Edge"
+
 msgid "Edit profile"
 msgstr "Rediger profil"
 
@@ -615,6 +639,9 @@ msgstr "Funktioner"
 
 msgid "Filters"
 msgstr "Filtre"
+
+msgid "Firefox"
+msgstr "Firefox"
 
 msgid "First cooked"
 msgstr "Første gang tilberedt"
@@ -757,6 +784,9 @@ msgstr "Element slettet"
 msgid "ItemGroup — settings list"
 msgstr ""
 
+msgid "January - June 2024"
+msgstr "Januar - juni 2024"
+
 msgid "Japanese"
 msgstr "Japansk"
 
@@ -801,6 +831,15 @@ msgstr "Større"
 
 msgid "Lasagna bolognese"
 msgstr "Lasagne bolognese"
+
+msgid "Last 3 months"
+msgstr "Sidste 3 måneder"
+
+msgid "Last 30 days"
+msgstr "Sidste 30 dage"
+
+msgid "Last 7 days"
+msgstr "Sidste 7 dage"
 
 msgid "Learn more"
 msgstr "Lær mere"
@@ -897,6 +936,9 @@ msgstr "Mexicansk"
 
 msgid "Middle"
 msgstr "Midte"
+
+msgid "Mobile"
+msgstr "Mobil"
 
 msgid "Mobile navigation"
 msgstr "Mobil navigation"
@@ -1039,6 +1081,9 @@ msgstr "eller tryk"
 msgid "Osso buco"
 msgstr "Osso buco"
 
+msgid "Other"
+msgstr "Andet"
+
 msgid "Outline"
 msgstr "Kontur"
 
@@ -1047,6 +1092,9 @@ msgstr "Overlays"
 
 msgid "Pad thai"
 msgstr "Pad thai"
+
+msgid "Page Views"
+msgstr "Sidevisninger"
 
 msgid "Pagination"
 msgstr "Paginering"
@@ -1077,6 +1125,9 @@ msgstr "Vælg en hverdag"
 
 msgid "Pie chart"
 msgstr "Cirkeldiagram"
+
+msgid "Pie Chart - Donut with Text"
+msgstr "Cirkeldiagram - Donut med tekst"
 
 msgid "Pizza margherita"
 msgstr "Pizza margherita"
@@ -1131,6 +1182,12 @@ msgstr "Hurtige hverdagsmåltider"
 
 msgid "Radar chart"
 msgstr "Radardiagram"
+
+msgid "Radial Chart - Shape"
+msgstr "Radialdiagram - Figur"
+
+msgid "Radial Chart - Stacked"
+msgstr "Radialdiagram - Stablet"
 
 msgid "Radio group"
 msgstr "Radiogruppe"
@@ -1241,6 +1298,9 @@ msgstr "Risotto alla milanese"
 msgid "Rogan josh"
 msgstr "Rogan josh"
 
+msgid "Safari"
+msgstr "Safari"
+
 msgid "Save"
 msgstr "Gem"
 
@@ -1286,12 +1346,18 @@ msgstr "Søgedrevet menu med grupperede elementer og inline-genveje. Pak den ind
 msgid "Secondary"
 msgstr "Sekundær"
 
+msgid "See more variations on ShadCN"
+msgstr "Se flere varianter på ShadCN"
+
 msgid "Select"
 msgstr "Vælg"
 
 #. placeholder {0}: dish.name
 msgid "Select {0}"
 msgstr "Vælg {0}"
+
+msgid "Select a value"
+msgstr "Vælg en værdi"
 
 msgid "Select all rows on this page"
 msgstr "Vælg alle rækker på denne side"
@@ -1367,6 +1433,12 @@ msgstr "Vis statuslinje"
 
 msgid "Show toast"
 msgstr "Vis meddelelse"
+
+msgid "Showing total visitors for the last 3 months"
+msgstr "Viser samlede besøgende de sidste 3 måneder"
+
+msgid "Showing total visitors for the last 6 months"
+msgstr "Viser samlede besøgende de sidste 6 måneder"
 
 msgid "Side pane"
 msgstr "Sidepanel"
@@ -1566,6 +1638,9 @@ msgstr "Samlet tilberedningstid"
 msgid "Total time spent cooking this month."
 msgstr "Samlet tid brugt på madlavning denne måned."
 
+msgid "Trending up by 5.2% this month"
+msgstr "Stiger med 5,2% denne måned"
+
 msgid "Two-factor authentication"
 msgstr ""
 
@@ -1622,6 +1697,9 @@ msgstr "Se alle"
 
 msgid "View profile verification"
 msgstr ""
+
+msgid "Visitors"
+msgstr "Besøgende"
 
 msgid "Warning alert"
 msgstr "Advarselsbesked"
