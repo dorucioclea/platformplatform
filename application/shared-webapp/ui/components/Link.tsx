@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../utils";
 
 const linkVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-1 py-0.5 font-medium whitespace-nowrap outline-0 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-1 py-0.5 text-sm font-medium whitespace-nowrap outline-0 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
   {
     variants: {
       variant: {
@@ -30,9 +30,9 @@ const linkVariants = cva(
         false: "no-underline"
       },
       size: {
-        md: "text-base",
-        sm: "text-sm",
-        lg: "text-lg"
+        sm: "text-xs",
+        md: "text-sm",
+        lg: "text-base"
       },
       disabled: {
         true: "pointer-events-none opacity-50"

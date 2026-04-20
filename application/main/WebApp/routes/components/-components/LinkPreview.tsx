@@ -22,7 +22,7 @@ export function LinkPreview() {
           <Link href="/components" variant="ghost">
             <Trans>Ghost</Trans>
           </Link>
-          <Link href="https://platformplatform.net" variant="primary">
+          <Link href="https://example.com" variant="primary">
             <Trans>External</Trans>
             <ExternalLinkIcon />
           </Link>

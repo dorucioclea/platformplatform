@@ -578,7 +578,7 @@ msgid "Export as PDF"
 msgstr "Eksporter som PDF"
 
 msgid "External"
-msgstr "Ekstern"
+msgstr ""
 
 msgid "Extra large"
 msgstr "Ekstra stor"
