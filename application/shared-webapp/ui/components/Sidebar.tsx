@@ -267,21 +267,19 @@ function Sidebar({
       data-side={side}
       data-slot="sidebar"
     >
+      {/* Placeholder stays at icon-rail width so the expanded sidebar always OVERLAYS content. */}
       <div
         data-slot="sidebar-gap"
         className={cn(
-          "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+          "relative w-(--sidebar-width-icon) bg-transparent",
           "group-data-[collapsible=offcanvas]:w-0",
-          "group-data-[side=right]:rotate-180",
-          variant === "floating" || variant === "inset"
-            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
-            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
+          "group-data-[side=right]:rotate-180"
         )}
       />
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear sm:flex",
+          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-100 ease-linear sm:flex",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -401,7 +399,9 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
       <ChevronLeftIcon
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute top-1/2 right-0 size-6 translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-background p-0.5 text-foreground opacity-0 shadow-sm transition-opacity duration-150",
+          // Align the floating chevron with the boundary between the header and the menu items
+          // (5rem — SidebarHeader height). Matches the old SideMenu toggle position.
+          "pointer-events-none absolute top-[var(--side-menu-collapsed-width)] right-0 size-6 translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-background p-0.5 text-foreground opacity-0 shadow-sm transition-opacity duration-100",
           "group-focus-within/sidebar-wrapper:opacity-100 group-hover/sidebar-wrapper:opacity-100",
           "group-data-[state=collapsed]:rotate-180"
         )}
@@ -496,7 +496,7 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 uppercase outline-ring transition-[margin,opacity] duration-100 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
         "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className
       )}
@@ -553,14 +553,26 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn("group/menu-item relative", className)}
+      className={cn(
+        // Active indicator: a vertical bar flush with the sidebar's left edge when any descendant
+        // button carries [data-active=true]. `-left-2` reaches past the SidebarGroup's 0.5rem padding.
+        "group/menu-item relative before:pointer-events-none before:absolute before:top-1/2 before:-left-2 before:h-6 before:w-1 before:-translate-y-1/2 before:rounded-r-sm before:bg-primary before:opacity-0 has-[[data-active=true]]:before:opacity-100",
+        className
+      )}
       {...props}
     />
   );
 }
 
+// Diverges from stock ShadCN:
+// - Apple HIG: uses --control-height (38px desktop / 44px mobile) instead of h-8.
+// - Collapsed: keeps the SAME height as expanded so icons stay at the exact same vertical
+//   position when the sidebar collapses. Only the label hides, icon centers.
+// - Icon size: size-5 matches the old SideMenu visual language.
+// - Active indicator: ::before pseudo-element renders a vertical bar at the sidebar's left edge
+//   (-0.5rem from the item, reaching past the SidebarGroup's 0.5rem padding).
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-ring transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md px-3 text-left text-sm outline-ring group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -569,9 +581,9 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_0.0625rem_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_0.0625rem_var(--sidebar-accent)]"
       },
       size: {
-        default: "h-8 text-sm",
-        sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!"
+        default: "h-[var(--control-height)] text-sm",
+        sm: "h-[var(--control-height-sm)] text-xs",
+        lg: "h-[var(--control-height-lg)] text-sm"
       }
     },
     defaultVariants: {
