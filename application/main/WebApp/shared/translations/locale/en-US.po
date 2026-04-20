@@ -241,8 +241,14 @@ msgstr "By default only one item is open at a time. Pass openMultiple to allow s
 msgid "Calendar"
 msgstr "Calendar"
 
-msgid "Calendar with week numbers"
-msgstr "Calendar with week numbers"
+msgid "Calendar (multiple)"
+msgstr "Calendar (multiple)"
+
+msgid "Calendar (range)"
+msgstr "Calendar (range)"
+
+msgid "Calendar (single)"
+msgstr "Calendar (single)"
 
 msgid "Can change ingredients and instructions"
 msgstr "Can change ingredients and instructions"

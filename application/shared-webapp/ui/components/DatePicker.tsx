@@ -261,7 +261,7 @@ export function DatePicker({
               startMonth={minDate ?? (showDropdowns ? new Date(1900, 0) : undefined)}
               endMonth={maxDate ?? (showDropdowns ? new Date() : undefined)}
               {...(showDropdowns && { captionLayout: "dropdown" as const })}
-              disabled={(date) => {
+              disabledDates={(date) => {
                 if (maxDate && date > maxDate) {
                   return true;
                 }

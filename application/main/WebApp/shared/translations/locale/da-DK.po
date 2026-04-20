@@ -241,8 +241,14 @@ msgstr "Som standard kan kun én sektion være åben ad gangen. Brug openMultipl
 msgid "Calendar"
 msgstr "Kalender"
 
-msgid "Calendar with week numbers"
-msgstr "Kalender med ugenumre"
+msgid "Calendar (multiple)"
+msgstr "Kalender (flere)"
+
+msgid "Calendar (range)"
+msgstr "Kalender (interval)"
+
+msgid "Calendar (single)"
+msgstr "Kalender (enkelt)"
 
 msgid "Can change ingredients and instructions"
 msgstr "Kan ændre ingredienser og instruktioner"

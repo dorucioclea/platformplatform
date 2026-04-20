@@ -1,7 +1,15 @@
 import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as React from "react";
-import { type DayButton, DayPicker, getDefaultClassNames, type Locale } from "react-day-picker";
+import {
+  type DateRange,
+  type DayButton,
+  DayPicker,
+  getDefaultClassNames,
+  type Locale,
+  type Matcher,
+  type Modifiers
+} from "react-day-picker";
 import { da, enUS } from "react-day-picker/locale";
 
 import { cn } from "../utils";
@@ -35,7 +43,58 @@ function alignedYearPageStart(year: number): number {
   return target - offset;
 }
 
+function noop() {}
+
 type CalendarView = "days" | "months" | "years";
+
+// Calendar's public API is declared explicitly -- we do not inherit from DayPicker's props. This
+// keeps the surface stable, self-documenting, and consistent with the rest of the library
+// (e.g. `disabled: boolean`, `aria-invalid: boolean`). The three mode-specific interfaces below
+// correlate `selected` and `onSelect` to `mode`, so a caller passing a `Date` can't accidentally
+// set `mode="range"`. Translation to DayPicker happens in exactly one place (the `<DayPicker />`
+// call near the bottom of this function) and is called out with a comment there.
+interface CalendarCommonProps {
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
+  numberOfMonths?: number;
+  startMonth?: Date;
+  endMonth?: Date;
+  showWeekNumber?: boolean;
+  captionLayout?: "label" | "dropdown" | "dropdown-months" | "dropdown-years";
+  autoFocus?: boolean;
+  locale?: Locale;
+  className?: string;
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  /** Dim the whole calendar and block interaction. */
+  disabled?: boolean;
+  /** Allow month navigation but block selection changes and the year/month picker. */
+  readOnly?: boolean;
+  /** Predicate (or predicate list) for individual dates that should not be selectable. */
+  disabledDates?: Matcher | Matcher[];
+  "aria-invalid"?: boolean;
+  onDayClick?: (day: Date, modifiers: Modifiers, event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+interface CalendarSingleProps extends CalendarCommonProps {
+  mode?: "single";
+  selected?: Date;
+  onSelect?: (date: Date | undefined) => void;
+}
+
+interface CalendarMultipleProps extends CalendarCommonProps {
+  mode: "multiple";
+  selected?: Date[];
+  onSelect?: (dates: Date[] | undefined) => void;
+}
+
+interface CalendarRangeProps extends CalendarCommonProps {
+  mode: "range";
+  selected?: DateRange;
+  onSelect?: (range: DateRange | undefined) => void;
+}
+
+type CalendarProps = CalendarSingleProps | CalendarMultipleProps | CalendarRangeProps;
 
 function pickInitialMonth(selected: unknown, defaultMonth: Date | undefined): Date {
   if (defaultMonth) {
@@ -54,26 +113,27 @@ function pickInitialMonth(selected: unknown, defaultMonth: Date | undefined): Da
 }
 
 function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  weekStartsOn = 1,
-  captionLayout = "label",
-  buttonVariant = "ghost",
-  formatters,
-  components,
-  locale: localeProp,
-  defaultMonth,
+  mode,
+  selected,
+  onSelect,
+  onDayClick,
   month: monthProp,
+  defaultMonth,
   onMonthChange,
-  "aria-invalid": ariaInvalid,
-  "aria-disabled": ariaDisabled,
-  ...props
-}: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
-  "aria-invalid"?: boolean;
-  "aria-disabled"?: boolean;
-}) {
+  numberOfMonths,
+  startMonth,
+  endMonth,
+  showWeekNumber,
+  captionLayout = "label",
+  autoFocus,
+  locale: localeProp,
+  className,
+  buttonVariant = "ghost",
+  disabled,
+  readOnly,
+  disabledDates,
+  "aria-invalid": ariaInvalid
+}: CalendarProps) {
   const { currentLocale } = React.useContext(translationContext);
   const locale = localeProp ?? localeMap[currentLocale] ?? enUS;
   const defaultClassNames = getDefaultClassNames();
@@ -82,7 +142,7 @@ function Calendar({
   // the consumer to wire up `month`/`onMonthChange`. If the consumer does control `month`, we honor
   // it and forward changes via `onMonthChange`.
   const initialMonth = React.useMemo(
-    () => pickInitialMonth((props as { selected?: unknown }).selected, defaultMonth),
+    () => pickInitialMonth(selected, defaultMonth),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
@@ -99,14 +159,21 @@ function Calendar({
   const [yearPageStart, setYearPageStart] = React.useState(() => alignedYearPageStart(initialMonth.getFullYear()));
 
   const today = React.useMemo(() => new Date(), []);
-  // startMonth/endMonth flow through `...props` to DayPicker; we also use them to grey out
-  // unreachable cells in the year and month picker views.
-  const startMonth = (props as { startMonth?: Date }).startMonth;
-  const endMonth = (props as { endMonth?: Date }).endMonth;
+
+  // Single shell used by days view (via DayPicker's root className) and by the year/month picker
+  // views (via PickerShell). `--calendar-cols` is 7 normally; 8 when week numbers add a leading
+  // column -- the width calc reads this variable so Sunday is never clipped. `--calendar-rows` is
+  // the fixed row count that accommodates the 6-week `fixedWeeks` days view (caption + weekdays +
+  // 6 weeks). PickerShell uses the same shell; its grid stretches to fill the same height.
+  const shellClassName = cn(
+    "flex h-[calc(var(--cell-size)*var(--calendar-rows))] w-[calc(var(--cell-size)*var(--calendar-cols)+1rem)] flex-col overflow-hidden rounded-md border bg-card p-2 [--calendar-rows:9] [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] in-data-[slot=card-content]:border-0 in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:border-0 in-data-[slot=popover-content]:bg-transparent aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive",
+    showWeekNumber ? "[--calendar-cols:8]" : "[--calendar-cols:7]"
+  );
 
   if (view === "years") {
     return (
       <YearPickerView
+        shellClassName={shellClassName}
         pageStart={yearPageStart}
         selectedYear={displayMonth.getFullYear()}
         currentYear={today.getFullYear()}
@@ -124,6 +191,7 @@ function Calendar({
   if (view === "months") {
     return (
       <MonthPickerView
+        shellClassName={shellClassName}
         year={displayMonth.getFullYear()}
         selectedMonth={displayMonth.getMonth()}
         currentDate={today}
@@ -141,18 +209,45 @@ function Calendar({
     );
   }
 
+  // Translation to DayPicker: our `disabledDates` becomes DayPicker's `disabled`. `readOnly`
+  // replaces the select/click callbacks with no-ops (not `undefined`, which would make DayPicker
+  // fall back to uncontrolled selection and diverge from `selected`). The mode/selected/onSelect
+  // shapes are correlated in our discriminated union but TS can't prove the correlation to
+  // DayPicker's own union without a cast, so we narrow with `any`.
+  const dayPickerProps = {
+    mode,
+    selected,
+    onSelect: readOnly ? noop : onSelect,
+    onDayClick: readOnly ? noop : onDayClick,
+    numberOfMonths,
+    startMonth,
+    endMonth,
+    showWeekNumber,
+    autoFocus,
+    disabled: disabledDates,
+    // `navLayout: "around"` renders prev -> caption -> next inline inside each Month, so tab order
+    // matches visual order (prev, month picker, next) without any custom Nav override.
+    navLayout: "around",
+    // `fixedWeeks` pads short months to 6 rows so the days view always has the same height as the
+    // year/month picker views -- switching between views doesn't jump.
+    fixedWeeks: true
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any;
+
   return (
     <DayPicker
+      {...dayPickerProps}
       locale={locale}
-      showOutsideDays={showOutsideDays}
-      weekStartsOn={weekStartsOn}
+      showOutsideDays={true}
+      weekStartsOn={1}
       month={displayMonth}
       onMonthChange={(next) => {
         updateDisplayMonth(next);
         setYearPageStart(alignedYearPageStart(next.getFullYear()));
       }}
       className={cn(
-        "group/calendar w-fit overflow-hidden rounded-md border bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] in-data-[slot=card-content]:border-0 in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:border-0 in-data-[slot=popover-content]:bg-transparent aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive",
+        "group/calendar [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)]",
+        shellClassName,
         String.raw`rtl:[&_.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:[&_.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -164,32 +259,27 @@ function Calendar({
           const year = date.getFullYear();
           return `${capitalizeFirstLetter(month)} ${year}`;
         },
-        formatMonthDropdown: (date) => date.toLocaleString("default", { month: "short" }),
-        ...formatters
+        formatMonthDropdown: (date) => date.toLocaleString("default", { month: "short" })
       }}
       classNames={{
         root: cn("w-fit", defaultClassNames.root),
         months: cn("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
         month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
-        // Nav overlays the caption row; without pointer-events-none its empty middle area would
-        // swallow clicks meant for the CaptionLabel button underneath. Buttons inside re-enable
-        // pointer events so they remain clickable.
-        nav: cn(
-          "pointer-events-none absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1",
-          defaultClassNames.nav
-        ),
+        // With navLayout="around" the prev/caption/next trio renders inline inside each Month's
+        // caption row. The `nav` element still exists as a wrapper but is unused.
+        nav: "hidden",
         button_previous: cn(
           buttonVariants({ variant: buttonVariant, size: "icon" }),
-          "pointer-events-auto size-(--cell-size) select-none aria-disabled:opacity-50",
+          "absolute top-0 left-0 z-10 size-(--cell-size) select-none aria-disabled:opacity-50",
           defaultClassNames.button_previous
         ),
         button_next: cn(
           buttonVariants({ variant: buttonVariant, size: "icon" }),
-          "pointer-events-auto size-(--cell-size) select-none aria-disabled:opacity-50",
+          "absolute top-0 right-0 z-10 size-(--cell-size) select-none aria-disabled:opacity-50",
           defaultClassNames.button_next
         ),
         month_caption: cn(
-          "flex h-(--cell-size) w-full items-center justify-center px-(--cell-size)",
+          "relative flex h-(--cell-size) w-full items-center justify-center px-(--cell-size)",
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
@@ -219,7 +309,7 @@ function Calendar({
         week_number: cn("text-[0.8rem] text-muted-foreground select-none", defaultClassNames.week_number),
         day: cn(
           "group/day relative aspect-square h-full w-full rounded-(--cell-radius) p-0 text-center select-none [&:last-child[data-selected=true]_button]:rounded-r-(--cell-radius)",
-          props.showWeekNumber
+          showWeekNumber
             ? "[&:nth-child(2)[data-selected=true]_button]:rounded-l-(--cell-radius)"
             : "[&:first-child[data-selected=true]_button]:rounded-l-(--cell-radius)",
           defaultClassNames.day
@@ -239,8 +329,7 @@ function Calendar({
         ),
         outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
         disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
-        hidden: cn("invisible", defaultClassNames.hidden),
-        ...classNames
+        hidden: cn("invisible", defaultClassNames.hidden)
       }}
       components={{
         Root: ({ className, rootRef, ...rootProps }) => (
@@ -249,7 +338,7 @@ function Calendar({
             ref={rootRef}
             className={cn(className)}
             aria-invalid={ariaInvalid}
-            aria-disabled={ariaDisabled}
+            aria-disabled={disabled || undefined}
             {...rootProps}
           />
         ),
@@ -264,33 +353,35 @@ function Calendar({
 
           return <ChevronDownIcon className={cn("size-4", className)} {...chevronProps} />;
         },
-        CaptionLabel: ({ children }) => (
-          <button
-            type="button"
-            onClick={() => {
-              setYearPageStart(alignedYearPageStart(displayMonth.getFullYear()));
-              setView("years");
-            }}
-            className="inline-flex items-center gap-1 rounded-(--cell-radius) px-2 py-1 text-sm font-medium select-none hover:bg-muted"
-          >
-            <span>{children}</span>
-            <ChevronDownIcon className="size-3.5 text-muted-foreground" />
-          </button>
-        ),
+        CaptionLabel: ({ children }) =>
+          readOnly ? (
+            <span className="inline-flex items-center px-2 py-1 text-sm font-medium select-none">{children}</span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setYearPageStart(alignedYearPageStart(displayMonth.getFullYear()));
+                setView("years");
+              }}
+              className="inline-flex items-center gap-1 rounded-(--cell-radius) px-2 py-1 text-sm font-medium outline-ring select-none hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span>{children}</span>
+              <ChevronDownIcon className="size-3.5 text-muted-foreground" />
+            </button>
+          ),
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...weekNumberProps }) => (
           <td {...weekNumberProps}>
             <div className="flex size-(--cell-size) items-center justify-center text-center">{children}</div>
           </td>
-        ),
-        ...components
+        )
       }}
-      {...props}
     />
   );
 }
 
 interface YearPickerViewProps {
+  shellClassName: string;
   pageStart: number;
   selectedYear: number;
   currentYear: number;
@@ -301,6 +392,7 @@ interface YearPickerViewProps {
 }
 
 function YearPickerView({
+  shellClassName,
   pageStart,
   selectedYear,
   currentYear,
@@ -311,13 +403,15 @@ function YearPickerView({
 }: YearPickerViewProps) {
   const years = Array.from({ length: yearsPerPage }, (_, index) => pageStart + index);
   const rangeLabel = `${pageStart} – ${pageStart + yearsPerPage - 1}`;
+  const selectedIndex = years.indexOf(selectedYear);
   return (
     <PickerShell
+      shellClassName={shellClassName}
       caption={rangeLabel}
       onPreviousClick={() => onShiftPage(-yearsPerPage)}
       onNextClick={() => onShiftPage(yearsPerPage)}
     >
-      <div className="grid h-full grid-cols-5 grid-rows-6 gap-0">
+      <PickerGrid cols={yearsPerRow} rows={yearsPerPage / yearsPerRow} initialFocusIndex={selectedIndex}>
         {years.map((year) => {
           const isOutOfRange = (minYear != null && year < minYear) || (maxYear != null && year > maxYear);
           return (
@@ -331,12 +425,13 @@ function YearPickerView({
             />
           );
         })}
-      </div>
+      </PickerGrid>
     </PickerShell>
   );
 }
 
 interface MonthPickerViewProps {
+  shellClassName: string;
   year: number;
   selectedMonth: number;
   currentDate: Date;
@@ -348,6 +443,7 @@ interface MonthPickerViewProps {
 }
 
 function MonthPickerView({
+  shellClassName,
   year,
   selectedMonth,
   currentDate,
@@ -374,8 +470,13 @@ function MonthPickerView({
     return false;
   };
   return (
-    <PickerShell caption={String(year)} onPreviousClick={() => onShiftYear(-1)} onNextClick={() => onShiftYear(1)}>
-      <div className="grid h-full grid-cols-3 grid-rows-4 gap-0">
+    <PickerShell
+      shellClassName={shellClassName}
+      caption={String(year)}
+      onPreviousClick={() => onShiftYear(-1)}
+      onNextClick={() => onShiftYear(1)}
+    >
+      <PickerGrid cols={3} rows={4} initialFocusIndex={selectedMonth}>
         {monthNames.map((monthName, monthIndex) => (
           <PickerCell
             key={monthName}
@@ -386,27 +487,95 @@ function MonthPickerView({
             label={monthName}
           />
         ))}
-      </div>
+      </PickerGrid>
     </PickerShell>
   );
 }
 
+interface PickerGridProps {
+  cols: number;
+  rows: number;
+  initialFocusIndex: number;
+  children: React.ReactNode;
+}
+
+// Grid wrapper that adds arrow-key navigation across PickerCell children. Roving tabindex --
+// only the initially-focused cell is tab-stoppable; arrow keys move focus cell-by-cell.
+function PickerGrid({ cols, rows, initialFocusIndex, children }: PickerGridProps) {
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const [focusIndex, setFocusIndex] = React.useState(initialFocusIndex >= 0 ? initialFocusIndex : 0);
+
+  const focusAt = (index: number) => {
+    const buttons = gridRef.current?.querySelectorAll<HTMLButtonElement>("button");
+    buttons?.[index]?.focus();
+    setFocusIndex(index);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const total = cols * rows;
+    let next = focusIndex;
+    switch (event.key) {
+      case "ArrowLeft":
+        next = Math.max(0, focusIndex - 1);
+        break;
+      case "ArrowRight":
+        next = Math.min(total - 1, focusIndex + 1);
+        break;
+      case "ArrowUp":
+        next = Math.max(0, focusIndex - cols);
+        break;
+      case "ArrowDown":
+        next = Math.min(total - 1, focusIndex + cols);
+        break;
+      case "Home":
+        next = 0;
+        break;
+      case "End":
+        next = total - 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    focusAt(next);
+  };
+
+  const items = React.Children.toArray(children).map((child, index) => {
+    if (!React.isValidElement(child)) {
+      return child;
+    }
+    return React.cloneElement(child as React.ReactElement<{ tabIndex?: number }>, {
+      tabIndex: index === focusIndex ? 0 : -1
+    });
+  });
+
+  return (
+    <div
+      ref={gridRef}
+      role="grid"
+      onKeyDown={handleKeyDown}
+      className="grid h-full gap-0"
+      style={{
+        gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`
+      }}
+    >
+      {items}
+    </div>
+  );
+}
+
 interface PickerShellProps {
+  shellClassName: string;
   caption: string;
   onPreviousClick: () => void;
   onNextClick: () => void;
   children: React.ReactNode;
 }
 
-function PickerShell({ caption, onPreviousClick, onNextClick, children }: PickerShellProps) {
+function PickerShell({ shellClassName, caption, onPreviousClick, onNextClick, children }: PickerShellProps) {
   return (
-    <div
-      data-slot="calendar"
-      // Outer dimensions match the days view exactly: 7 cells wide + p-2 padding for width;
-      // 7 cells + p-2 + an extra 1rem for the weekday-header equivalent for height (282 × 298 on
-      // desktop, scales with --cell-size on mobile).
-      className="flex h-[calc(var(--cell-size)*7+2rem)] w-[calc(var(--cell-size)*7+1rem)] flex-col bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] in-data-[slot=popover-content]:bg-transparent"
-    >
+    <div data-slot="calendar" className={shellClassName}>
       <div className="flex h-(--cell-size) w-full items-center justify-between gap-1">
         <Button variant="ghost" size="icon" onClick={onPreviousClick} aria-label="Previous">
           <ChevronLeftIcon />
@@ -429,17 +598,19 @@ interface PickerCellProps {
   onClick: () => void;
 }
 
-function PickerCell({ isSelected, isCurrent, isDisabled, label, onClick }: PickerCellProps) {
-  return (
+const PickerCell = React.forwardRef<HTMLButtonElement, PickerCellProps & { tabIndex?: number }>(
+  ({ isSelected, isCurrent, isDisabled, label, onClick, tabIndex }, ref) => (
     <button
+      ref={ref}
       type="button"
       onClick={onClick}
       disabled={isDisabled}
+      tabIndex={tabIndex}
       data-selected={isSelected || undefined}
       data-current={isCurrent || undefined}
       data-disabled={isDisabled || undefined}
       className={cn(
-        "flex h-full w-full items-center justify-center rounded-(--cell-radius) px-3 text-sm font-normal select-none hover:bg-muted",
+        "flex h-full w-full items-center justify-center rounded-(--cell-radius) px-3 text-sm font-normal outline-ring select-none hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2",
         isCurrent && !isSelected && "bg-muted text-foreground",
         isSelected && "bg-primary text-primary-foreground hover:bg-primary",
         isDisabled && "cursor-not-allowed text-muted-foreground opacity-50 hover:bg-transparent"
@@ -447,8 +618,9 @@ function PickerCell({ isSelected, isCurrent, isDisabled, label, onClick }: Picke
     >
       {label}
     </button>
-  );
-}
+  )
+);
+PickerCell.displayName = "PickerCell";
 
 function CalendarDayButton({ className, day, modifiers, ...props }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();

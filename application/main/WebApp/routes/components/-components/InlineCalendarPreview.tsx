@@ -1,3 +1,5 @@
+import type { DateRange } from "react-day-picker";
+
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Calendar } from "@repo/ui/components/Calendar";
@@ -16,20 +18,27 @@ interface InlineCalendarPreviewProps {
   error?: boolean;
 }
 
-const inlineCalendarTooltip = (
-  <PropList title="Calendar" description="Standalone calendar widget rendered inline">
-    <Prop name="mode">"single" / "multiple" / "range"</Prop>
-    <Prop name="selected / onSelect">Controlled selection</Prop>
-    <PropNote>
-      Use the bare Calendar (without DatePicker) when the date selection is the primary action of a screen.
-    </PropNote>
+const singleTooltip = (
+  <PropList title="Calendar (single)" description="Pick exactly one date">
+    <Prop name="mode">"single"</Prop>
+    <Prop name="selected / onSelect">Date | undefined</Prop>
+    <PropNote>Use for birthdays, due dates, appointment slots - any single-date choice.</PropNote>
   </PropList>
 );
 
-const inlineCalendarWithWeekNumbersTooltip = (
-  <PropList title="Calendar with week numbers" description="Same Calendar plus the showWeekNumber prop">
-    <Prop name="showWeekNumber">Renders an ISO week-number column on the left of the grid</Prop>
-    <PropNote>Useful in scheduling/HR contexts where users navigate by week number.</PropNote>
+const multipleTooltip = (
+  <PropList title="Calendar (multiple)" description="Pick several non-contiguous dates">
+    <Prop name="mode">"multiple"</Prop>
+    <Prop name="selected / onSelect">Date[] | undefined</Prop>
+    <PropNote>Use for PTO, shift availability, or any flagging of individual dates.</PropNote>
+  </PropList>
+);
+
+const rangeTooltip = (
+  <PropList title="Calendar (range)" description="Pick a contiguous start/end range">
+    <Prop name="mode">"range"</Prop>
+    <Prop name="selected / onSelect">{"{ from, to } | undefined"}</Prop>
+    <PropNote>Use for bookings, reports, anything defined by a span.</PropNote>
   </PropList>
 );
 
@@ -40,22 +49,33 @@ export function InlineCalendarPreview({
   readOnly,
   error
 }: Readonly<InlineCalendarPreviewProps>) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => new Date());
+  const [singleDate, setSingleDate] = useState<Date | undefined>(() => new Date(2026, 3, 10));
+  const [multipleDates, setMultipleDates] = useState<Date[] | undefined>(() => [
+    new Date(2026, 3, 3),
+    new Date(2026, 3, 14),
+    new Date(2026, 3, 22)
+  ]);
+  const [range, setRange] = useState<DateRange | undefined>(() => ({
+    from: new Date(2026, 3, 7),
+    to: new Date(2026, 3, 18)
+  }));
 
-  const { errors, clearNow } = useFieldError({
-    errorMessage: error ? t`This field is required` : undefined
-  });
-  const isInvalid = !!errors;
+  const errorMessage = error ? t`This field is required` : undefined;
+  const single = useFieldError({ errorMessage });
+  const multiple = useFieldError({ errorMessage });
+  const rangeError = useFieldError({ errorMessage });
 
-  // Keep the Calendar strictly controlled in readOnly mode -- pass an onSelect that ignores the
-  // call rather than omitting it, otherwise react-day-picker falls back to uncontrolled selection
-  // and the visual state changes despite readOnly.
-  const handleSelect = (date: Date | undefined) => {
-    if (readOnly) {
-      return;
-    }
-    clearNow();
-    setSelectedDate(date);
+  const handleSingleSelect = (date: Date | undefined) => {
+    single.clearNow();
+    setSingleDate(date);
+  };
+  const handleMultipleSelect = (dates: Date[] | undefined) => {
+    multiple.clearNow();
+    setMultipleDates(dates);
+  };
+  const handleRangeSelect = (next: DateRange | undefined) => {
+    rangeError.clearNow();
+    setRange(next);
   };
 
   return (
@@ -67,39 +87,60 @@ export function InlineCalendarPreview({
         <div className="flex flex-col gap-3">
           {label && (
             <div className="flex items-center gap-1 text-sm leading-snug font-medium">
-              <LabelWithTooltip tooltip={tooltip ? inlineCalendarTooltip : undefined}>
-                <Trans>Calendar</Trans>
+              <LabelWithTooltip tooltip={tooltip ? singleTooltip : undefined}>
+                <Trans>Calendar (single)</Trans>
               </LabelWithTooltip>
             </div>
           )}
           <Calendar
             mode="single"
-            selected={selectedDate}
-            onSelect={handleSelect}
+            selected={singleDate}
+            onSelect={handleSingleSelect}
             numberOfMonths={1}
-            aria-invalid={isInvalid}
-            aria-disabled={disabled}
+            showWeekNumber
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-invalid={single.isInvalid || undefined}
           />
-          <FieldError errors={errors} />
+          <FieldError errors={single.errors} />
         </div>
         <div className="flex flex-col gap-3">
           {label && (
             <div className="flex items-center gap-1 text-sm leading-snug font-medium">
-              <LabelWithTooltip tooltip={tooltip ? inlineCalendarWithWeekNumbersTooltip : undefined}>
-                <Trans>Calendar with week numbers</Trans>
+              <LabelWithTooltip tooltip={tooltip ? multipleTooltip : undefined}>
+                <Trans>Calendar (multiple)</Trans>
               </LabelWithTooltip>
             </div>
           )}
           <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleSelect}
+            mode="multiple"
+            selected={multipleDates}
+            onSelect={handleMultipleSelect}
             numberOfMonths={1}
-            showWeekNumber
-            aria-invalid={isInvalid}
-            aria-disabled={disabled}
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-invalid={multiple.isInvalid || undefined}
           />
-          <FieldError errors={errors} />
+          <FieldError errors={multiple.errors} />
+        </div>
+        <div className="flex flex-col gap-3">
+          {label && (
+            <div className="flex items-center gap-1 text-sm leading-snug font-medium">
+              <LabelWithTooltip tooltip={tooltip ? rangeTooltip : undefined}>
+                <Trans>Calendar (range)</Trans>
+              </LabelWithTooltip>
+            </div>
+          )}
+          <Calendar
+            mode="range"
+            selected={range}
+            onSelect={handleRangeSelect}
+            numberOfMonths={1}
+            disabled={disabled}
+            readOnly={readOnly}
+            aria-invalid={rangeError.isInvalid || undefined}
+          />
+          <FieldError errors={rangeError.errors} />
         </div>
       </div>
     </div>
