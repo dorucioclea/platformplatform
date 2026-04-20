@@ -540,6 +540,9 @@ msgstr "Enheder, der har logget ind på din konto. Tilbagekald alle sessioner, d
 msgid "Different user logged in"
 msgstr "En anden bruger loggede ind"
 
+msgid "Displays the mobile sidebar."
+msgstr "Viser sidemenuen på mobil."
+
 msgid "Do you already have an account?"
 msgstr "Har du allerede en konto?"
 
@@ -1227,6 +1230,9 @@ msgstr "Vis søgefiltre"
 
 msgid "Side panel"
 msgstr "Sidepanel"
+
+msgid "Sidebar"
+msgstr "Sidemenu"
 
 msgid "Sign up"
 msgstr "Tilmeld dig"

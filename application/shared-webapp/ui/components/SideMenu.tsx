@@ -4,7 +4,7 @@ import { t } from "@lingui/core/macro";
 import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { cva } from "class-variance-authority";
 import { ChevronsLeftIcon, type LucideIcon, Menu, X } from "lucide-react";
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { useResponsiveMenu } from "../hooks/useResponsiveMenu";
 import logoMarkUrl from "../images/logo-mark.svg";
@@ -18,11 +18,14 @@ import {
 } from "../utils/responsive";
 import { Button } from "./Button";
 import { Link } from "./Link";
+import { collapsedContext, overlayContext } from "./Sidebar";
 import { Toggle } from "./Toggle";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./Tooltip";
 
-export const collapsedContext = createContext(false);
-export const overlayContext = createContext<{ isOpen: boolean; close: () => void } | null>(null);
+// Re-exports for backward compatibility during the Sidebar migration.
+// Federated modules consume these two contexts from "@repo/ui/components/SideMenu".
+// Canonical definitions live in Sidebar.tsx.
+export { collapsedContext, overlayContext };
 
 // Helper function to handle focus trap tab navigation
 const _handleFocusTrap = (e: KeyboardEvent, containerRef: React.RefObject<HTMLElement | null>) => {

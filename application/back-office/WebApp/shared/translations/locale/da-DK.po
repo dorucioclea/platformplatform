@@ -53,6 +53,9 @@ msgstr "Dashboard"
 msgid "Decrease"
 msgstr "Formindsk"
 
+msgid "Displays the mobile sidebar."
+msgstr "Viser sidemenuen på mobil."
+
 msgid "Drop files here, or click to browse"
 msgstr ""
 
@@ -148,6 +151,9 @@ msgstr "Vis flere"
 
 msgid "Side panel"
 msgstr "Sidepanel"
+
+msgid "Sidebar"
+msgstr "Sidemenu"
 
 msgid "Skip to main content"
 msgstr "Spring til hovedindhold"

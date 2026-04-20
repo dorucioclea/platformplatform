@@ -532,6 +532,9 @@ msgstr "Rettens navn"
 msgid "Dish name is required"
 msgstr "Rettens navn er påkrævet"
 
+msgid "Displays the mobile sidebar."
+msgstr "Viser sidemenuen på mobil."
+
 msgid "Done"
 msgstr "Udført"
 
@@ -1448,6 +1451,9 @@ msgstr "Sidepanel"
 
 msgid "Side-anchored panel built on the same Dialog primitive. Use it for desktop side surfaces like filter sidebars, secondary navigation, or detail editors. Left and right sheets are narrow by default; top and bottom span the full width unless you constrain SheetContent with mx-auto and max-w-*. Compare with SidePane (Custom) which is the docked-by-default app-shell variant."
 msgstr "Sideforankret panel bygget på samme Dialog-primitiv. Brug det til desktop sidefelter som filter-sidebars, sekundær navigation eller detail-editorer. Venstre- og højre-sheets er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser SheetContent med mx-auto og max-w-*. Sammenlign med SidePane (Custom) som er den dokket-som-standard app-shell variant."
+
+msgid "Sidebar"
+msgstr "Sidemenu"
 
 msgid "Sign in without a password using your device."
 msgstr ""
