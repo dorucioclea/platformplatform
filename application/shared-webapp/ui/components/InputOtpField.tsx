@@ -1,10 +1,8 @@
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { useContext } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
-import { FormValidationContext } from "./Form";
 import { InputOtp, InputOtpGroup, InputOtpSlot } from "./InputOtp";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -47,20 +45,7 @@ export function InputOtpField({
   required,
   "aria-label": ariaLabel
 }: Readonly<InputOtpFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, markChanged, clearOnBlur } = useFieldError({ name, errorMessage });
 
   const handleChange = (nextValue: string) => {
     markChanged();

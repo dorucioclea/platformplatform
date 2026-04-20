@@ -3,7 +3,6 @@ import { format, isValid, parse } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { useContext, useEffect, useRef, useState } from "react";
 
-import { FormValidationContext } from "../components/Form";
 import { resolveInputFormat } from "../utils/dateInputFormat";
 import {
   dateFnsLocaleMap,
@@ -49,20 +48,7 @@ export function useDateField({
   const dateLocale = dateFnsLocaleMap[resolvedLocale] ?? enUS;
   const inputFormat = resolveInputFormat(resolvedLocale);
 
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, markChanged, clearOnBlur, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, markChanged, clearOnBlur, clearNow } = useFieldError({ name, errorMessage });
 
   const selectedDate = parseIsoDate(value);
   const maxDate = parseIsoDate(max);

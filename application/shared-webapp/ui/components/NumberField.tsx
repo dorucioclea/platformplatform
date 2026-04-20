@@ -6,7 +6,6 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
-import { FormValidationContext } from "./Form";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./InputGroup";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -49,20 +48,7 @@ export function NumberField({
   readOnly,
   ...props
 }: Readonly<NumberFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, markChanged, clearOnBlur, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, markChanged, clearOnBlur, clearNow } = useFieldError({ name, errorMessage });
 
   const { currentLocale } = useContext(translationContext);
   const decimalSeparator = useMemo(() => {

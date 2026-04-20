@@ -1,12 +1,9 @@
 import type { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 
-import { useContext } from "react";
-
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Checkbox } from "./Checkbox";
 import { Field, FieldError } from "./Field";
-import { FormValidationContext } from "./Form";
 import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -31,19 +28,7 @@ export function CheckboxField({
   onCheckedChange,
   ...props
 }: Readonly<CheckboxFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
+  const { errors, clearNow } = useFieldError({ name, errorMessage });
 
   const handleCheckedChange: typeof onCheckedChange = (checked, event) => {
     clearNow();

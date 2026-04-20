@@ -34,29 +34,16 @@ export function SelectField<Value, Multiple extends boolean | undefined = false>
   ...props
 }: Readonly<SelectFieldProps<Value, Multiple>>) {
   const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
+  const { errors, errorMessages, clearNow } = useFieldError({ name, errorMessage });
 
   const handleValueChange: typeof onValueChange = (value, event) => {
     clearNow();
     onValueChange?.(value, event);
   };
 
-  // Merge errorMessage into form context so SelectTrigger can show aria-invalid
-  const triggerErrors =
-    name && (displayError || fieldErrorMessages.length > 0)
-      ? { ...formErrors, [name]: displayError ? [displayError] : fieldErrorMessages }
-      : formErrors;
+  // Merge the resolved errors back into the form context so SelectTrigger can show aria-invalid.
+  // Using `errorMessages` (rather than the raw context) ensures this respects suppression.
+  const triggerErrors = name && errorMessages.length > 0 ? { ...formErrors, [name]: errorMessages } : formErrors;
 
   return (
     <Field className={cn("flex flex-col", className)}>

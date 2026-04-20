@@ -3,13 +3,12 @@ import type * as React from "react";
 
 import { Trans } from "@lingui/react/macro";
 import { PlusIcon } from "lucide-react";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "./Combobox";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
-import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
 export interface ComboboxFieldItem {
@@ -67,20 +66,7 @@ export function ComboboxField({
   onCreateItem,
   startIcon: startIconProp
 }: Readonly<ComboboxFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, clearNow } = useFieldError({ name, errorMessage });
 
   const fieldRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);

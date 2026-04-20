@@ -1,9 +1,7 @@
 import { t } from "@lingui/core/macro";
-import { Field, FieldError, FieldLabel } from "@repo/ui/components/Field";
 import { InputOtpField } from "@repo/ui/components/InputOtpField";
-import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
 import { NumberField } from "@repo/ui/components/NumberField";
-import { Slider } from "@repo/ui/components/Slider";
+import { SliderField } from "@repo/ui/components/SliderField";
 import { TextField } from "@repo/ui/components/TextField";
 import { EuroIcon, HashIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
@@ -99,7 +97,7 @@ export function ControlRow({
         errorMessage={errorMessage}
       />
       <SliderField
-        suffix={`steps-${suffix}`}
+        name={`slider-steps-${suffix}`}
         label={label ? t`Slider with steps` : undefined}
         tooltip={tooltip ? tooltips.slider : undefined}
         disabled={disabled}
@@ -109,7 +107,7 @@ export function ControlRow({
         step={20}
       />
       <SliderField
-        suffix={`range-${suffix}`}
+        name={`slider-range-${suffix}`}
         label={label ? t`Slider (range)` : undefined}
         tooltip={tooltip ? tooltips.sliderRange : undefined}
         disabled={disabled}
@@ -118,54 +116,5 @@ export function ControlRow({
         defaultValue={hasValues ? [25, 75] : [20, 80]}
       />
     </div>
-  );
-}
-
-interface SliderFieldProps {
-  suffix: string;
-  label?: string;
-  tooltip?: React.ReactNode;
-  disabled?: boolean;
-  readOnly?: boolean;
-  errorMessage?: string;
-  defaultValue: number[];
-  step?: number;
-}
-
-function SliderField({
-  suffix,
-  label,
-  tooltip,
-  disabled,
-  readOnly,
-  errorMessage,
-  defaultValue,
-  step
-}: SliderFieldProps) {
-  const [value, setValue] = useState<number[]>(defaultValue);
-  const id = `slider-${suffix}`;
-  return (
-    <Field className="flex flex-col gap-2">
-      {label && (
-        <FieldLabel htmlFor={id}>
-          {tooltip ? <LabelWithTooltip tooltip={tooltip}>{label}</LabelWithTooltip> : label}
-        </FieldLabel>
-      )}
-      <div className="flex h-[var(--control-height)] items-center">
-        <Slider
-          id={id}
-          value={value}
-          onValueChange={(next) => {
-            if (readOnly) return;
-            setValue(Array.isArray(next) ? [...next] : [next as number]);
-          }}
-          disabled={disabled}
-          step={step}
-          aria-invalid={!!errorMessage}
-          aria-readonly={readOnly}
-        />
-      </div>
-      {errorMessage && <FieldError errors={[{ message: errorMessage }]} />}
-    </Field>
   );
 }

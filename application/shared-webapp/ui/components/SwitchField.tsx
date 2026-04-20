@@ -1,11 +1,8 @@
 import type { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 
-import { useContext } from "react";
-
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldError } from "./Field";
-import { FormValidationContext } from "./Form";
 import { Label } from "./Label";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { Switch } from "./Switch";
@@ -31,19 +28,7 @@ export function SwitchField({
   onCheckedChange,
   ...props
 }: Readonly<SwitchFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
+  const { errors, clearNow } = useFieldError({ name, errorMessage });
 
   const handleCheckedChange: typeof onCheckedChange = (checked, event) => {
     clearNow();

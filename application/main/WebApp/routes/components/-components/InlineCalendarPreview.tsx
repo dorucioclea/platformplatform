@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { Calendar } from "@repo/ui/components/Calendar";
 import { FieldError } from "@repo/ui/components/Field";
 import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
+import { useFieldError } from "@repo/ui/hooks/useFieldError";
 import { cn } from "@repo/ui/utils";
 import { useState } from "react";
 
@@ -42,11 +43,14 @@ export function InlineCalendarPreview({
 }: Readonly<InlineCalendarPreviewProps>) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => new Date());
 
-  const errorMessage = error ? t`This field is required` : undefined;
+  const { errors, clearNow } = useFieldError({
+    errorMessage: error ? t`This field is required` : undefined
+  });
+  const isInvalid = !!errors;
 
   const wrapperClasses = cn(
     "w-fit rounded-md border",
-    error && "outline-2 outline-offset-2 outline-destructive",
+    isInvalid && "outline-2 outline-offset-2 outline-destructive",
     disabled && "pointer-events-none opacity-50"
   );
 
@@ -57,6 +61,7 @@ export function InlineCalendarPreview({
     if (readOnly) {
       return;
     }
+    clearNow();
     setSelectedDate(date);
   };
 
@@ -77,7 +82,7 @@ export function InlineCalendarPreview({
           <div className={wrapperClasses}>
             <Calendar mode="single" selected={selectedDate} onSelect={handleSelect} numberOfMonths={1} />
           </div>
-          {errorMessage && <FieldError>{errorMessage}</FieldError>}
+          <FieldError errors={errors} />
         </div>
         <div className="flex flex-col gap-3">
           {label && (
@@ -90,7 +95,7 @@ export function InlineCalendarPreview({
           <div className={wrapperClasses}>
             <Calendar mode="single" selected={selectedDate} onSelect={handleSelect} numberOfMonths={1} showWeekNumber />
           </div>
-          {errorMessage && <FieldError>{errorMessage}</FieldError>}
+          <FieldError errors={errors} />
         </div>
       </div>
     </div>

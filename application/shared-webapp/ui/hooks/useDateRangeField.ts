@@ -7,7 +7,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import type { DateFieldDisplayFormat } from "./useDateField";
 
-import { FormValidationContext } from "../components/Form";
 import { resolveInputFormat } from "../utils/dateInputFormat";
 import {
   dateFnsLocaleMap,
@@ -88,20 +87,7 @@ export function useDateRangeField({
   const inputFormat = resolveInputFormat(resolvedLocale);
   const rangeInputFormat = inputFormat + RANGE_SEPARATOR + inputFormat;
 
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, markChanged, clearOnBlur, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, markChanged, clearOnBlur, clearNow } = useFieldError({ name, errorMessage });
 
   const maxDate = parseIsoDate(max);
   const minDate = parseIsoDate(min);

@@ -1,9 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
-import { FormValidationContext } from "./Form";
 import { Input } from "./Input";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 
@@ -34,20 +33,7 @@ export function DateField({
   readOnly,
   ...props
 }: Readonly<DateFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, markChanged, clearOnBlur } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
-  const isInvalid = errors && errors.length > 0;
+  const { errors, isInvalid, markChanged, clearOnBlur } = useFieldError({ name, errorMessage });
 
   const [hasValue, setHasValue] = useState(!!(value ?? defaultValue));
 

@@ -1,11 +1,10 @@
 import type { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
-import { FormValidationContext } from "./Form";
 import { LabelWithTooltip } from "./LabelWithTooltip";
 import { RadioGroup } from "./RadioGroup";
 
@@ -32,19 +31,7 @@ export function RadioGroupField({
   onValueChange,
   ...props
 }: Readonly<RadioGroupFieldProps>) {
-  const formErrors = useContext(FormValidationContext);
-  const fieldValidationErrors = name && formErrors && name in formErrors ? formErrors[name] : undefined;
-  const fieldErrorMessages = fieldValidationErrors
-    ? Array.isArray(fieldValidationErrors)
-      ? fieldValidationErrors
-      : [fieldValidationErrors]
-    : [];
-  const { displayError, clearNow } = useFieldError(errorMessage);
-  const errors = displayError
-    ? [{ message: displayError }]
-    : fieldErrorMessages.length > 0
-      ? fieldErrorMessages.map((error) => ({ message: error }))
-      : undefined;
+  const { errors, clearNow } = useFieldError({ name, errorMessage });
 
   const groupRef = useRef<HTMLDivElement>(null);
 
