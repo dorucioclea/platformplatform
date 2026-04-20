@@ -28,6 +28,7 @@ export function UserProfileFields({
     <UserAvatarPicker
       avatarUrl={user?.avatarUrl}
       isPending={isPending}
+      size={layout === "horizontal" ? "lg" : "base"}
       onFileSelect={onAvatarFileSelect}
       onRemove={onAvatarRemove}
     />
@@ -75,9 +76,7 @@ export function UserProfileFields({
           <span className="pb-2.75 text-sm font-medium">
             <Trans>Profile photo</Trans>
           </span>
-          <div className="flex h-34 w-full flex-col items-center justify-center rounded-xl bg-card md:size-34">
-            {avatarSection}
-          </div>
+          {avatarSection}
         </div>
         <div className="flex flex-col gap-4">{fieldsSection}</div>
       </div>

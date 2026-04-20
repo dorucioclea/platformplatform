@@ -9,41 +9,47 @@ import {
   DropdownMenuTrigger
 } from "@repo/ui/components/DropdownMenu";
 import { type Accept, type FileRejection, useDropzone } from "@repo/ui/components/Dropzone";
+import { TenantLogo } from "@repo/ui/components/TenantLogo";
 import { CameraIcon, PencilIcon, Trash2Icon } from "lucide-react";
 import { useRef, useState } from "react";
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB in bytes
-const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
 const ACCEPTED_FILES: Accept = {
   "image/jpeg": [".jpg", ".jpeg"],
   "image/png": [".png"],
   "image/gif": [".gif"],
-  "image/webp": [".webp"]
+  "image/webp": [".webp"],
+  "image/svg+xml": [".svg"]
 };
 
-interface UserAvatarPickerProps {
-  avatarUrl: string | null | undefined;
+interface TenantLogoPickerProps {
+  logoUrl: string | null | undefined;
+  tenantName: string;
   isPending: boolean;
-  size?: "base" | "lg";
+  readOnly?: boolean;
+  size: "base" | "lg";
   onFileSelect: (file: File | null) => void;
   onRemove?: () => void;
 }
 
-export function UserAvatarPicker({
-  avatarUrl,
+export function TenantLogoPicker({
+  logoUrl,
+  tenantName,
   isPending,
-  size = "base",
+  readOnly,
+  size,
   onFileSelect,
   onRemove
-}: Readonly<UserAvatarPickerProps>) {
-  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null);
-  const [isAvatarRemoved, setIsAvatarRemoved] = useState(false);
-  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
-  const avatarFileInputRef = useRef<HTMLInputElement>(null);
+}: Readonly<TenantLogoPickerProps>) {
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const [isLogoRemoved, setIsLogoRemoved] = useState(false);
+  const [logoMenuOpen, setLogoMenuOpen] = useState(false);
+  const logoFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAcceptedFile = (file: File) => {
-    setAvatarPreviewUrl(URL.createObjectURL(file));
-    setIsAvatarRemoved(false);
+    setLogoPreviewUrl(URL.createObjectURL(file));
+    setIsLogoRemoved(false);
     onFileSelect(file);
   };
 
@@ -52,7 +58,7 @@ export function UserAvatarPicker({
     if (code === "file-too-large") {
       alert(t`Image must be smaller than 1 MB.`);
     } else if (code === "file-invalid-type") {
-      alert(t`Please select a JPEG, PNG, GIF, or WebP image.`);
+      alert(t`Please select a JPEG, PNG, GIF, WebP, or SVG image.`);
     }
   };
 
@@ -61,7 +67,7 @@ export function UserAvatarPicker({
       const file = files[0];
 
       if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-        alert(t`Please select a JPEG, PNG, GIF, or WebP image.`);
+        alert(t`Please select a JPEG, PNG, GIF, WebP, or SVG image.`);
         return;
       }
 
@@ -89,88 +95,91 @@ export function UserAvatarPicker({
     multiple: false,
     noClick: true,
     noKeyboard: true,
-    disabled: isPending
+    disabled: readOnly || isPending
   });
 
   const handleRemove = () => {
-    setAvatarMenuOpen(false);
-    setAvatarPreviewUrl(null);
-    setIsAvatarRemoved(true);
+    setLogoMenuOpen(false);
+    setLogoPreviewUrl(null);
+    setIsLogoRemoved(true);
     onFileSelect(null);
     onRemove?.();
   };
+
+  const buttonSizeClass = size === "lg" ? "size-[7rem]" : "size-16";
 
   return (
     <>
       <input
         type="file"
-        ref={avatarFileInputRef}
+        ref={logoFileInputRef}
         onChange={(e) => {
-          setAvatarMenuOpen(false);
+          setLogoMenuOpen(false);
           handleFileSelect(e.target.files);
         }}
         accept={ALLOWED_FILE_TYPES.join(",")}
         className="hidden"
       />
 
-      <DropdownMenu open={avatarMenuOpen} onOpenChange={setAvatarMenuOpen} trackingTitle="Profile picture menu">
+      <DropdownMenu open={logoMenuOpen} onOpenChange={setLogoMenuOpen} trackingTitle="Account logo menu">
         <div
           {...getRootProps({
             className: [
-              "group relative",
-              size === "lg"
-                ? "flex h-34 w-full flex-col items-center justify-center rounded-xl bg-card md:size-34"
-                : "w-fit",
-              isDragActive && (size === "lg" ? "rounded-xl" : "rounded-full"),
-              isDragActive && "outline outline-2 outline-dashed outline-ring"
+              "relative",
+              size === "lg" &&
+                "flex h-[8.5rem] w-full flex-col items-center justify-center rounded-xl bg-card md:size-[8.5rem]",
+              !readOnly && "group",
+              isDragActive && "rounded-xl outline outline-2 outline-dashed outline-ring"
             ]
               .filter(Boolean)
               .join(" ")
           })}
         >
           <DropdownMenuTrigger
+            disabled={readOnly}
             render={
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-[7rem] rounded-full border border-dashed border-border bg-secondary hover:bg-secondary/80"
-                aria-label={t`Change profile picture`}
-                disabled={isPending}
+                className={`rounded-md ${buttonSizeClass}`}
+                aria-label={t`Change logo`}
+                disabled={readOnly || isPending}
               >
-                {avatarPreviewUrl || (!isAvatarRemoved && avatarUrl) ? (
-                  <img
-                    src={avatarPreviewUrl ?? avatarUrl ?? ""}
-                    width={80}
-                    height={80}
-                    className="size-full rounded-full object-cover"
-                    alt={t`Profile avatar`}
-                  />
-                ) : (
-                  <CameraIcon className="size-8 text-secondary-foreground" aria-label={t`Add profile picture`} />
-                )}
+                <TenantLogo
+                  key={logoPreviewUrl ?? (isLogoRemoved ? "no-logo" : (logoUrl ?? "no-logo"))}
+                  logoUrl={logoPreviewUrl ?? (isLogoRemoved ? undefined : logoUrl)}
+                  tenantName={tenantName}
+                  size="lg"
+                  className={size === "lg" ? "size-[7rem]" : undefined}
+                />
               </Button>
             }
           />
-          <div className="pointer-events-none absolute right-1 bottom-1 flex size-6 items-center justify-center rounded-full border border-border bg-popover opacity-0 group-hover:bg-primary group-hover:opacity-100">
-            <PencilIcon className="size-3 text-muted-foreground group-hover:text-primary-foreground" strokeWidth={3} />
-          </div>
+          {!readOnly && (
+            <div className="pointer-events-none absolute right-0 bottom-0 flex size-6 items-center justify-center rounded-full border border-border bg-popover opacity-0 group-hover:bg-primary group-hover:opacity-100">
+              <PencilIcon
+                className="size-3 text-muted-foreground group-hover:text-primary-foreground"
+                strokeWidth={3}
+              />
+            </div>
+          )}
         </div>
         <DropdownMenuContent>
           <DropdownMenuItem
-            trackingLabel="Upload profile picture"
+            trackingLabel="Upload logo"
             onClick={() => {
-              avatarFileInputRef.current?.click();
+              logoFileInputRef.current?.click();
             }}
           >
             <CameraIcon className="size-4" />
-            <Trans>Upload profile picture</Trans>
+            <Trans>Upload logo</Trans>
           </DropdownMenuItem>
-          {(avatarPreviewUrl || (!isAvatarRemoved && avatarUrl)) && (
+          {(logoPreviewUrl || (!isLogoRemoved && logoUrl)) && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" trackingLabel="Remove profile picture" onClick={handleRemove}>
+              <DropdownMenuItem variant="destructive" trackingLabel="Remove logo" onClick={handleRemove}>
                 <Trash2Icon className="size-4" />
-                <Trans>Remove profile picture</Trans>
+                <Trans>Remove logo</Trans>
               </DropdownMenuItem>
             </>
           )}
