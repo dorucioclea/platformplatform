@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
+import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useState } from "react";
 
@@ -52,35 +53,37 @@ function ExamplesPage() {
   };
 
   return (
-    <>
+    <SidebarProvider>
       <ComponentsSideMenu />
-      <AppLayout
-        variant="full"
-        browserTitle={t`Examples`}
-        title={t`Examples`}
-        subtitle={t`Composed real-world flows using the UI components.`}
-        beforeHeader={
-          <PreviewHeader
-            currentPage="examples"
-            defaultTab="dialogs"
-            tabLabels={{
-              dialogs: <Trans>Dialogs and alert dialogs</Trans>,
-              cards: <Trans>Cards</Trans>,
-              tables: <Trans>Tables and side pane</Trans>,
-              empty: <Trans>Empty and skeleton</Trans>,
-              skeleton: <Trans>Skeleton</Trans>
-            }}
+      <SidebarInset>
+        <AppLayout
+          variant="full"
+          browserTitle={t`Examples`}
+          title={t`Examples`}
+          subtitle={t`Composed real-world flows using the UI components.`}
+          beforeHeader={
+            <PreviewHeader
+              currentPage="examples"
+              defaultTab="dialogs"
+              tabLabels={{
+                dialogs: <Trans>Dialogs and alert dialogs</Trans>,
+                cards: <Trans>Cards</Trans>,
+                tables: <Trans>Tables and side pane</Trans>,
+                empty: <Trans>Empty and skeleton</Trans>,
+                skeleton: <Trans>Skeleton</Trans>
+              }}
+            />
+          }
+          sidePane={getSidePane()}
+        >
+          <ExamplesPreview
+            selectedDish={selectedDish}
+            onDishSelect={setSelectedDish}
+            onSelectedDishesChange={setSelectedDishes}
+            onSummaryPaneChange={setSummaryPaneEnabled}
           />
-        }
-        sidePane={getSidePane()}
-      >
-        <ExamplesPreview
-          selectedDish={selectedDish}
-          onDishSelect={setSelectedDish}
-          onSelectedDishesChange={setSelectedDishes}
-          onSummaryPaneChange={setSummaryPaneEnabled}
-        />
-      </AppLayout>
-    </>
+        </AppLayout>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

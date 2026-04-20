@@ -1,6 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
+import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ComponentPreview } from "./-components/ComponentPreview";
@@ -14,30 +15,32 @@ export const Route = createFileRoute("/components/")({
 
 function ComponentsPage() {
   return (
-    <>
+    <SidebarProvider>
       <ComponentsSideMenu />
-      <AppLayout
-        variant="full"
-        browserTitle={t`Components`}
-        title={t`Component preview`}
-        subtitle={t`Browse and test all UI components.`}
-        beforeHeader={
-          <PreviewHeader
-            currentPage="components"
-            defaultTab="controls"
-            tabLabels={{
-              controls: <Trans>Controls</Trans>,
-              buttons: <Trans>Buttons and links</Trans>,
-              alerts: <Trans>Alerts and badges</Trans>,
-              banners: <Trans>Banners</Trans>,
-              navigation: <Trans>Navigation</Trans>,
-              charts: <Trans>Charts</Trans>
-            }}
-          />
-        }
-      >
-        <ComponentPreview />
-      </AppLayout>
-    </>
+      <SidebarInset>
+        <AppLayout
+          variant="full"
+          browserTitle={t`Components`}
+          title={t`Component preview`}
+          subtitle={t`Browse and test all UI components.`}
+          beforeHeader={
+            <PreviewHeader
+              currentPage="components"
+              defaultTab="controls"
+              tabLabels={{
+                controls: <Trans>Controls</Trans>,
+                buttons: <Trans>Buttons and links</Trans>,
+                alerts: <Trans>Alerts and badges</Trans>,
+                banners: <Trans>Banners</Trans>,
+                navigation: <Trans>Navigation</Trans>,
+                charts: <Trans>Charts</Trans>
+              }}
+            />
+          }
+        >
+          <ComponentPreview />
+        </AppLayout>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

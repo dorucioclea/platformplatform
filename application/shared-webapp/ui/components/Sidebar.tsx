@@ -516,7 +516,9 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "relative flex w-full flex-1 flex-col bg-background",
+        // `min-w-0` lets this flex child shrink below its content's intrinsic width, so a wide
+        // sidebar (expanded or dragged larger) doesn't force the main content into horizontal overflow.
+        "relative flex w-full min-w-0 flex-1 flex-col bg-background",
         "sm:peer-data-[variant=inset]:m-2 sm:peer-data-[variant=inset]:ml-0 sm:peer-data-[variant=inset]:rounded-xl sm:peer-data-[variant=inset]:shadow-sm sm:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
@@ -720,19 +722,20 @@ function SidebarMenuButton({
     />
   );
 
-  if (!tooltip) {
+  // Only render the tooltip when collapsed on desktop — otherwise the label is already visible
+  // next to the icon. BaseUI tooltips track their own hover state via the trigger element, so we
+  // wrap the button in a `<span>` render target (asChild-style) to match the working pattern
+  // used elsewhere in the codebase (e.g. UserProfileContent).
+  if (!tooltip || state !== "collapsed" || isMobile) {
     return button;
   }
 
-  // When sidebar is collapsed to icons on desktop, show the menu label in a tooltip.
-  // Our BaseUI Tooltip has no `asChild`: use the `render` prop pattern on the trigger.
   const tooltipProps = typeof tooltip === "string" ? { children: tooltip } : tooltip;
-  const hideTooltip = state !== "collapsed" || isMobile;
 
   return (
     <Tooltip>
-      <TooltipTrigger render={button} />
-      {!hideTooltip && <TooltipContent side="right" align="center" {...tooltipProps} />}
+      <TooltipTrigger render={<span className="block w-full" />}>{button}</TooltipTrigger>
+      <TooltipContent side="right" align="center" {...tooltipProps} />
     </Tooltip>
   );
 }
