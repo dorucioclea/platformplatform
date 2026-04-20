@@ -7,6 +7,7 @@ import {
   LayersIcon,
   LayoutDashboardIcon,
   MousePointerClickIcon,
+  PanelLeftIcon,
   TagIcon,
   TextCursorInputIcon
 } from "lucide-react";
@@ -20,6 +21,7 @@ import { MediaTab } from "./MediaTab";
 import { NavigationPreview } from "./NavigationPreview";
 import { OverlaysPreview } from "./OverlaysPreview";
 import { ResizablePreview } from "./ResizablePreview";
+import { SidebarPreview } from "./SidebarPreview";
 
 export function ComponentPreview() {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "controls");
@@ -63,6 +65,10 @@ export function ComponentPreview() {
           <LayoutDashboardIcon />
           <Trans>Resizable panels</Trans>
         </TabsTrigger>
+        <TabsTrigger value="sidebar">
+          <PanelLeftIcon />
+          <Trans>Sidebar</Trans>
+        </TabsTrigger>
         <TabsTrigger value="media">
           <ImageIcon />
           <Trans>Media</Trans>
@@ -89,6 +95,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="resizable">
         <ResizablePreview />
+      </TabsContent>
+      <TabsContent value="sidebar">
+        <SidebarPreview />
       </TabsContent>
       <TabsContent value="media">
         <MediaTab />

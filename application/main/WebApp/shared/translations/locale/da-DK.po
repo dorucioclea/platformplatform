@@ -76,6 +76,9 @@ msgstr "Accordion"
 msgid "Accordion vs Collapsible"
 msgstr "Accordion vs Collapsible"
 
+msgid "Account"
+msgstr "Konto"
+
 msgid "Action"
 msgstr ""
 
@@ -667,6 +670,9 @@ msgstr "Fuld adgang, kan redigere og dele med andre"
 msgid "Full library"
 msgstr "Hele biblioteket"
 
+msgid "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
+msgstr "Fuld Sidebar-skal i en afgrænset forhåndsvisning. Klik på den flydende chevron i kanten for at skifte til ikon-tilstand. Træk i kanten for at ændre størrelsen løbende. Hold musen over for at vise skifteknappen."
+
 msgid "Fullscreen on mobile"
 msgstr "Fuldskærm på mobil"
 
@@ -1093,6 +1099,9 @@ msgstr "Kontur"
 msgid "Overlays"
 msgstr "Overlays"
 
+msgid "Overview"
+msgstr "Overblik"
+
 msgid "Pad thai"
 msgstr "Pad thai"
 
@@ -1152,6 +1161,9 @@ msgstr "Indstillinger"
 
 msgid "press <0>?</0> to view all shortcuts."
 msgstr "tryk <0>?</0> for at se alle genveje."
+
+msgid "Preview app"
+msgstr "Forhåndsvisning"
 
 msgid "Preview settings"
 msgstr "Forhåndsvisningsindstillinger"
@@ -1386,6 +1398,9 @@ msgstr "Send invitation"
 msgid "Separator"
 msgstr "Separator"
 
+msgid "Sessions"
+msgstr "Sessioner"
+
 msgid "Set the recipe's difficulty and favorite status."
 msgstr "Angiv opskriftens sværhedsgrad og favoritstatus."
 
@@ -1454,6 +1469,9 @@ msgstr "Sideforankret panel bygget på samme Dialog-primitiv. Brug det til deskt
 
 msgid "Sidebar"
 msgstr "Sidemenu"
+
+msgid "Sidebar footer"
+msgstr "Sidemenu-sidefod"
 
 msgid "Sign in without a password using your device."
 msgstr ""
@@ -1550,6 +1568,9 @@ msgstr "Thai"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
+
+msgid "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
+msgstr "Sidemenuen til venstre gemmer sin tilstand og bredde i localStorage (rem-baseret, ikke cookies). Klik på den flydende chevron for at skifte til ikon-tilstand, eller træk i kanten for at ændre størrelsen løbende mellem 14rem og 25rem."
 
 msgid "Theme"
 msgstr "Tema"
@@ -1691,6 +1712,12 @@ msgstr "Brug en vandret separator til at gruppere relaterede sektioner i en kolo
 
 msgid "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
 msgstr "Brug Accordion til at stable flere relaterede sektioner. God til FAQs, indstillingsgrupper eller lister hvor brugere scanner elementer og udvider et par stykker."
+
+msgid "User"
+msgstr "Bruger"
+
+msgid "Users"
+msgstr "Brugere"
 
 msgid "Values"
 msgstr "Værdier"

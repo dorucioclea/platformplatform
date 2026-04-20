@@ -76,6 +76,9 @@ msgstr "Accordion"
 msgid "Accordion vs Collapsible"
 msgstr "Accordion vs Collapsible"
 
+msgid "Account"
+msgstr "Account"
+
 msgid "Action"
 msgstr "Action"
 
@@ -667,6 +670,9 @@ msgstr "Full access, can edit and share with others"
 msgid "Full library"
 msgstr "Full library"
 
+msgid "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
+msgstr "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
+
 msgid "Fullscreen on mobile"
 msgstr "Fullscreen on mobile"
 
@@ -1093,6 +1099,9 @@ msgstr "Outline"
 msgid "Overlays"
 msgstr "Overlays"
 
+msgid "Overview"
+msgstr "Overview"
+
 msgid "Pad thai"
 msgstr "Pad thai"
 
@@ -1152,6 +1161,9 @@ msgstr "Preferences"
 
 msgid "press <0>?</0> to view all shortcuts."
 msgstr "press <0>?</0> to view all shortcuts."
+
+msgid "Preview app"
+msgstr "Preview app"
 
 msgid "Preview settings"
 msgstr "Preview settings"
@@ -1386,6 +1398,9 @@ msgstr "Send invite"
 msgid "Separator"
 msgstr "Separator"
 
+msgid "Sessions"
+msgstr "Sessions"
+
 msgid "Set the recipe's difficulty and favorite status."
 msgstr "Set the recipe's difficulty and favorite status."
 
@@ -1454,6 +1469,9 @@ msgstr "Side-anchored panel built on the same Dialog primitive. Use it for deskt
 
 msgid "Sidebar"
 msgstr "Sidebar"
+
+msgid "Sidebar footer"
+msgstr "Sidebar footer"
 
 msgid "Sign in without a password using your device."
 msgstr "Sign in without a password using your device."
@@ -1550,6 +1568,9 @@ msgstr "Thai"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "The item will be moved to the archive. You can restore it later from the archive."
+
+msgid "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
+msgstr "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
 
 msgid "Theme"
 msgstr "Theme"
@@ -1691,6 +1712,12 @@ msgstr "Use a horizontal separator to group related sections in a column layout.
 
 msgid "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
 msgstr "Use Accordion to stack multiple related disclosable sections. Good for FAQs, settings groups, or any list where users scan items and expand a few."
+
+msgid "User"
+msgstr "User"
+
+msgid "Users"
+msgstr "Users"
 
 msgid "Values"
 msgstr "Values"
