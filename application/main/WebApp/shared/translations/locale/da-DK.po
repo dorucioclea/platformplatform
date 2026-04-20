@@ -514,11 +514,26 @@ msgstr "Rettens navn er påkrævet"
 msgid "Done"
 msgstr "Udført"
 
+msgid "Drag-and-drop or click to browse. Previews use AspectRatio to keep thumbnails aligned."
+msgstr "Træk og slip, eller klik for at vælge. Previews bruger AspectRatio for at holde miniaturer justerede."
+
 msgid "Drawer"
 msgstr "Drawer"
 
+msgid "Drop an image into any card — AspectRatio keeps the slot size fixed regardless of content."
+msgstr "Slip et billede i et vilkårligt kort — AspectRatio holder feltet fast uanset indhold."
+
+msgid "Drop anywhere to add to the gallery"
+msgstr "Slip et vilkårligt sted for at tilføje til galleriet"
+
+msgid "Drop files here, or click to browse"
+msgstr "Slip filer her, eller klik for at vælge"
+
 msgid "Drop your filter controls here. The sheet handles scrolling and dismissal."
 msgstr "Placér dine filterkontroller her. Sheet håndterer scrolling og lukning."
+
+msgid "Dropzone"
+msgstr "Dropzone"
 
 msgid "Duplicate"
 msgstr "Dupliker"
@@ -1180,11 +1195,15 @@ msgstr "Genindlæs"
 msgid "Remove"
 msgstr "Fjern"
 
+#. placeholder {0}: image.file.name
+msgid "Remove {0}"
+msgstr "Fjern {0}"
+
+msgid "Remove image from {label}"
+msgstr "Fjern billede fra {label}"
+
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
-
-msgid "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
-msgstr "Reserverer et felt med et fast billedformat, så miniaturer forbliver justerede, og layoutet ikke hopper."
 
 msgid "Resizable app shell"
 msgstr "Justerbar app-skal"
@@ -1573,6 +1592,12 @@ msgstr "Ugemte ændringer"
 
 msgid "Upgrade now"
 msgstr "Opgrader nu"
+
+msgid "Upload image for {label}"
+msgstr "Upload billede til {label}"
+
+msgid "Upload images"
+msgstr "Upload billeder"
 
 msgid "Upload photo"
 msgstr "Upload foto"

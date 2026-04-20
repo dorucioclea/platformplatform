@@ -53,6 +53,9 @@ msgstr "Dashboard"
 msgid "Decrease"
 msgstr "Formindsk"
 
+msgid "Drop files here, or click to browse"
+msgstr ""
+
 msgid "Go to home"
 msgstr "Gå til forsiden"
 

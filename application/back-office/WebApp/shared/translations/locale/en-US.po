@@ -53,6 +53,9 @@ msgstr "Dashboard"
 msgid "Decrease"
 msgstr "Decrease"
 
+msgid "Drop files here, or click to browse"
+msgstr "Drop files here, or click to browse"
+
 msgid "Go to home"
 msgstr "Go to home"
 

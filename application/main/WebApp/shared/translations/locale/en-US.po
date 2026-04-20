@@ -514,11 +514,26 @@ msgstr "Dish name is required"
 msgid "Done"
 msgstr "Done"
 
+msgid "Drag-and-drop or click to browse. Previews use AspectRatio to keep thumbnails aligned."
+msgstr "Drag-and-drop or click to browse. Previews use AspectRatio to keep thumbnails aligned."
+
 msgid "Drawer"
 msgstr "Drawer"
 
+msgid "Drop an image into any card — AspectRatio keeps the slot size fixed regardless of content."
+msgstr "Drop an image into any card — AspectRatio keeps the slot size fixed regardless of content."
+
+msgid "Drop anywhere to add to the gallery"
+msgstr "Drop anywhere to add to the gallery"
+
+msgid "Drop files here, or click to browse"
+msgstr "Drop files here, or click to browse"
+
 msgid "Drop your filter controls here. The sheet handles scrolling and dismissal."
 msgstr "Drop your filter controls here. The sheet handles scrolling and dismissal."
+
+msgid "Dropzone"
+msgstr "Dropzone"
 
 msgid "Duplicate"
 msgstr "Duplicate"
@@ -1180,11 +1195,15 @@ msgstr "Reload"
 msgid "Remove"
 msgstr "Remove"
 
+#. placeholder {0}: image.file.name
+msgid "Remove {0}"
+msgstr "Remove {0}"
+
+msgid "Remove image from {label}"
+msgstr "Remove image from {label}"
+
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Replace this sample page with your own product information and branding."
-
-msgid "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
-msgstr "Reserves a box at a fixed ratio so thumbnails stay aligned and the layout doesn't jump."
 
 msgid "Resizable app shell"
 msgstr "Resizable app shell"
@@ -1573,6 +1592,12 @@ msgstr "Unsaved changes"
 
 msgid "Upgrade now"
 msgstr "Upgrade now"
+
+msgid "Upload image for {label}"
+msgstr "Upload image for {label}"
+
+msgid "Upload images"
+msgstr "Upload images"
 
 msgid "Upload photo"
 msgstr "Upload photo"

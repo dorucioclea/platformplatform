@@ -12,9 +12,9 @@ import {
 import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
-import { AspectRatioPreview } from "./AspectRatioPreview";
 import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
+import { MediaTab } from "./MediaTab";
 import { NavigationPreview } from "./NavigationPreview";
 import { OverlaysPreview } from "./OverlaysPreview";
 import { ResizablePreview } from "./ResizablePreview";
@@ -85,7 +85,7 @@ export function ComponentPreview() {
         <ResizablePreview />
       </TabsContent>
       <TabsContent value="media">
-        <AspectRatioPreview />
+        <MediaTab />
       </TabsContent>
     </Tabs>
   );

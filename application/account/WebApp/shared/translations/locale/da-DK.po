@@ -555,6 +555,9 @@ msgstr "Nedgrader til {planName}"
 msgid "DPA"
 msgstr "DBA"
 
+msgid "Drop files here, or click to browse"
+msgstr ""
+
 msgid "E.g. Acme Corp"
 msgstr "F.eks. Hansen & Co"
 

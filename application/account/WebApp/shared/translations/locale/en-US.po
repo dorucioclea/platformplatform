@@ -555,6 +555,9 @@ msgstr "Downgrade to {planName}"
 msgid "DPA"
 msgstr "DPA"
 
+msgid "Drop files here, or click to browse"
+msgstr "Drop files here, or click to browse"
+
 msgid "E.g. Acme Corp"
 msgstr "E.g. Acme Corp"
 
