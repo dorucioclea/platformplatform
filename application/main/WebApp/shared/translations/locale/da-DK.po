@@ -841,6 +841,9 @@ msgstr "Lang dato"
 msgid "macOS modifier glyphs: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Use these everywhere shortcuts are surfaced so the chips read the same across menus, palettes, and tooltips."
 msgstr "macOS modifier-glyffer: ⌃ Control, ⌥ Option, ⇧ Shift, ⌘ Command, fn Function. Brug disse alle steder hvor genveje vises, så chipsene læses ens på tværs af menuer, paletter og værktøjstips."
 
+msgid "Main"
+msgstr "Hoved"
+
 msgid "Main content"
 msgstr "Hovedindhold"
 
@@ -1173,6 +1176,12 @@ msgstr "Fjern"
 
 msgid "Replace this sample page with your own product information and branding."
 msgstr "Erstat denne eksempelside med dine egne produktinformationer og branding."
+
+msgid "Resizable app shell"
+msgstr "Justerbar app-skal"
+
+msgid "Resizable panels"
+msgstr "Justerbare paneler"
 
 msgid "Resize sidebar"
 msgstr "Juster sidebjælkens bredde"
@@ -1508,8 +1517,17 @@ msgstr "Værktøjstip"
 msgid "Top"
 msgstr "Top"
 
+msgid "Top center"
+msgstr "Top midt"
+
 msgid "Top drawer"
 msgstr "Top drawer"
+
+msgid "Top left"
+msgstr "Top venstre"
+
+msgid "Top right"
+msgstr "Top højre"
 
 msgid "Top sheet"
 msgstr "Top sheet"

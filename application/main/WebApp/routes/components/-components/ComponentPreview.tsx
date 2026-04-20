@@ -1,6 +1,13 @@
 import { Trans } from "@lingui/react/macro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
-import { CompassIcon, LayersIcon, MousePointerClickIcon, TagIcon, TextCursorInputIcon } from "lucide-react";
+import {
+  CompassIcon,
+  LayersIcon,
+  LayoutDashboardIcon,
+  MousePointerClickIcon,
+  TagIcon,
+  TextCursorInputIcon
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AlertsBadgesPreview } from "./AlertsBadgesPreview";
@@ -8,6 +15,7 @@ import { ButtonsPreview } from "./ButtonsPreview";
 import { ControlsPreview } from "./ControlsPreview";
 import { NavigationPreview } from "./NavigationPreview";
 import { OverlaysPreview } from "./OverlaysPreview";
+import { ResizablePreview } from "./ResizablePreview";
 
 export function ComponentPreview() {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "controls");
@@ -47,6 +55,10 @@ export function ComponentPreview() {
           <LayersIcon />
           <Trans>Overlays</Trans>
         </TabsTrigger>
+        <TabsTrigger value="resizable">
+          <LayoutDashboardIcon />
+          <Trans>Resizable panels</Trans>
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="controls">
         <ControlsPreview />
@@ -62,6 +74,9 @@ export function ComponentPreview() {
       </TabsContent>
       <TabsContent value="overlays">
         <OverlaysPreview />
+      </TabsContent>
+      <TabsContent value="resizable">
+        <ResizablePreview />
       </TabsContent>
     </Tabs>
   );
