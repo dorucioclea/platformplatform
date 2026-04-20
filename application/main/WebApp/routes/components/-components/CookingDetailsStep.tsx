@@ -35,7 +35,7 @@ export function CookingDetailsStep({
   const { i18n } = useLingui();
 
   return (
-    <Form className="flex min-h-0 flex-1 flex-col">
+    <Form validationBehavior="aria" className="flex min-h-0 flex-1 flex-col">
       <DialogBody>
         <div className="grid grid-cols-2 gap-4">
           <DatePicker

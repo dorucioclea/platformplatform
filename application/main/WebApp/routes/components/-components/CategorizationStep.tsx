@@ -1,12 +1,12 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Button } from "@repo/ui/components/Button";
+import { CheckboxField } from "@repo/ui/components/CheckboxField";
 import { DialogBody, DialogFooter } from "@repo/ui/components/Dialog";
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@repo/ui/components/Field";
 import { Form } from "@repo/ui/components/Form";
 import { InlineFieldGroup } from "@repo/ui/components/InlineFieldGroup";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/RadioGroup";
-import { SwitchField } from "@repo/ui/components/SwitchField";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { type UseMutationResult } from "@tanstack/react-query";
 import { ChefHatIcon, ChevronLeftIcon, FlameIcon, UtensilsIcon } from "lucide-react";
@@ -22,7 +22,7 @@ export function CategorizationStep({ mutation, onBack, onChange }: Readonly<Cate
   const [favoriteChecked, setFavoriteChecked] = useState(false);
 
   return (
-    <Form onSubmit={mutationSubmitter(mutation)} className="flex min-h-0 flex-1 flex-col">
+    <Form onSubmit={mutationSubmitter(mutation)} validationBehavior="aria" className="flex min-h-0 flex-1 flex-col">
       <DialogBody>
         <div className="flex flex-col gap-4">
           <RadioGroup defaultValue="medium" onValueChange={onChange}>
@@ -70,7 +70,7 @@ export function CategorizationStep({ mutation, onBack, onChange }: Readonly<Cate
             </FieldLabel>
           </RadioGroup>
           <InlineFieldGroup>
-            <SwitchField
+            <CheckboxField
               name="favorite"
               label={t`Add to favorites`}
               checked={favoriteChecked}

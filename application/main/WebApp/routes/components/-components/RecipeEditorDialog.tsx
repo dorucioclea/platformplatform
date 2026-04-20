@@ -1,9 +1,9 @@
 import type { DateRangeValue } from "@repo/ui/components/DateRangePicker";
 
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/Dialog";
 import { DirtyDialog } from "@repo/ui/components/DirtyDialog";
+import { useDialogSetDirty } from "@repo/ui/components/DirtyDialogContext";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -55,8 +55,34 @@ export function RecipeEditorDialog({
   simulateErrors,
   size
 }: Readonly<RecipeEditorDialogProps>) {
+  const handleClose = () => onOpenChange(false);
+  return (
+    <DirtyDialog open={isOpen} onOpenChange={onOpenChange} trackingTitle="Edit recipe">
+      <DialogContent className={getDialogSizeClassName(size)}>
+        <RecipeEditorDialogBody
+          onClose={handleClose}
+          dirtyDialog={dirtyDialog}
+          showToasts={showToasts}
+          simulateErrors={simulateErrors}
+        />
+      </DialogContent>
+    </DirtyDialog>
+  );
+}
+
+function RecipeEditorDialogBody({
+  onClose,
+  dirtyDialog,
+  showToasts,
+  simulateErrors
+}: {
+  onClose: () => void;
+  dirtyDialog: boolean;
+  showToasts: boolean;
+  simulateErrors: boolean;
+}) {
+  const setDirty = useDialogSetDirty();
   const [step, setStep] = useState(0);
-  const [isDirty, setIsDirty] = useState(false);
   const [firstCooked, setFirstCooked] = useState<string | undefined>(undefined);
   const [mealPlan, setMealPlan] = useState<DateRangeValue | null>(null);
 
@@ -65,62 +91,46 @@ export function RecipeEditorDialog({
       await new Promise<void>((resolve) => setTimeout(resolve, 500));
     },
     onSuccess: () => {
-      setIsDirty(false);
-      onOpenChange(false);
       if (showToasts) toast.success(t`Recipe saved`);
+      onClose();
     }
   });
 
-  const markDirty = () => setIsDirty(true);
-  const handleCloseComplete = () => {
-    setStep(0);
-    setIsDirty(false);
-    mutation.reset();
+  const markDirty = () => {
+    if (dirtyDialog) setDirty(true);
   };
 
   const titles = stepTitles();
   const descriptions = stepDescriptions();
 
   return (
-    <DirtyDialog
-      open={isOpen}
-      onOpenChange={onOpenChange}
-      hasUnsavedChanges={dirtyDialog && isDirty}
-      unsavedChangesTitle={t`Unsaved changes`}
-      unsavedChangesMessage={<Trans>You have unsaved changes. If you leave now, your changes will be lost.</Trans>}
-      leaveLabel={t`Leave`}
-      stayLabel={t`Stay`}
-      onCloseComplete={handleCloseComplete}
-      trackingTitle="Edit recipe"
-    >
-      <DialogContent className={getDialogSizeClassName(size)}>
-        <DialogHeader>
-          <StepIndicator current={step} total={TOTAL_STEPS} />
-          <DialogTitle>{titles[step]}</DialogTitle>
-          <DialogDescription>{descriptions[step]}</DialogDescription>
-        </DialogHeader>
-        {step === 0 && (
-          <RecipeInfoStep
-            simulateErrors={simulateErrors}
-            onNext={() => setStep(1)}
-            onCancel={() => onOpenChange(false)}
-            onChange={markDirty}
-          />
-        )}
-        {step === 1 && (
-          <CookingDetailsStep
-            simulateErrors={simulateErrors}
-            firstCooked={firstCooked}
-            onFirstCookedChange={setFirstCooked}
-            mealPlan={mealPlan}
-            onMealPlanChange={setMealPlan}
-            onBack={() => setStep(0)}
-            onNext={() => setStep(2)}
-            onChange={markDirty}
-          />
-        )}
-        {step === 2 && <CategorizationStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
-      </DialogContent>
-    </DirtyDialog>
+    <>
+      <DialogHeader>
+        <StepIndicator current={step} total={TOTAL_STEPS} />
+        <DialogTitle>{titles[step]}</DialogTitle>
+        <DialogDescription>{descriptions[step]}</DialogDescription>
+      </DialogHeader>
+      {step === 0 && (
+        <RecipeInfoStep
+          simulateErrors={simulateErrors}
+          onNext={() => setStep(1)}
+          onCancel={onClose}
+          onChange={markDirty}
+        />
+      )}
+      {step === 1 && (
+        <CookingDetailsStep
+          simulateErrors={simulateErrors}
+          firstCooked={firstCooked}
+          onFirstCookedChange={setFirstCooked}
+          mealPlan={mealPlan}
+          onMealPlanChange={setMealPlan}
+          onBack={() => setStep(0)}
+          onNext={() => setStep(2)}
+          onChange={markDirty}
+        />
+      )}
+      {step === 2 && <CategorizationStep mutation={mutation} onBack={() => setStep(1)} onChange={markDirty} />}
+    </>
   );
 }
