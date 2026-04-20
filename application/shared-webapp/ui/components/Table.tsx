@@ -16,6 +16,7 @@ interface TableSelectionContextValue {
 
 const TableSelectionContext = createContext<TableSelectionContextValue | null>(null);
 const TableRowSizeContext = createContext<TableRowSize>("compact");
+const TableStickyHeaderContext = createContext<boolean>(false);
 
 const EMPTY_KEYS: ReadonlySet<RowKey> = new Set();
 
@@ -186,6 +187,7 @@ interface TableProps extends React.ComponentProps<"table"> {
   onActivate?: (key: RowKey) => void;
   activateOnNavigate?: boolean;
   scrollToKey?: RowKey;
+  stickyHeader?: boolean;
 }
 
 function Table({
@@ -197,6 +199,7 @@ function Table({
   onActivate,
   activateOnNavigate = false,
   scrollToKey,
+  stickyHeader = false,
   ...props
 }: TableProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -427,22 +430,28 @@ function Table({
     </div>
   );
   const withRowSize = <TableRowSizeContext value={rowSize}>{table}</TableRowSizeContext>;
+  const withSticky = <TableStickyHeaderContext value={stickyHeader}>{withRowSize}</TableStickyHeaderContext>;
 
   if (!hasSelection) {
-    return withRowSize;
+    return withSticky;
   }
 
   return (
     <TableSelectionContext value={{ focusedKey, selectedKeys: effectiveSelectedKeys, hasSelection }}>
-      {withRowSize}
+      {withSticky}
     </TableSelectionContext>
   );
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+  const sticky = use(TableStickyHeaderContext);
   return (
     <TableRowSizeContext value="compact">
-      <thead data-slot="table-header" className={cn("[&_tr]:border-b", className)} {...props} />
+      <thead
+        data-slot="table-header"
+        className={cn("[&_tr]:border-b", sticky && "sticky top-0 z-10 [&_tr]:bg-background", className)}
+        {...props}
+      />
     </TableRowSizeContext>
   );
 }
