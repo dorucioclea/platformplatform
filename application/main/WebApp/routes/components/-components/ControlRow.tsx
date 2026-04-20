@@ -86,16 +86,6 @@ export function ControlRow({
       />
       <SelectAndComboboxFields {...derived} />
       <DateAndToggleFields {...derived} />
-      <InputOtpField
-        label={label ? t`One-time code` : undefined}
-        tooltip={tooltip ? tooltips.inputOtp : undefined}
-        name={`otp-${suffix}`}
-        value={otpValue}
-        onChange={setOtpValue}
-        disabled={disabled}
-        readOnly={readOnly}
-        errorMessage={errorMessage}
-      />
       <SliderField
         name={`slider-steps-${suffix}`}
         label={label ? t`Slider with steps` : undefined}
@@ -114,6 +104,16 @@ export function ControlRow({
         readOnly={readOnly}
         errorMessage={errorMessage}
         defaultValue={hasValues ? [25, 75] : [20, 80]}
+      />
+      <InputOtpField
+        label={label ? t`One-time code` : undefined}
+        tooltip={tooltip ? tooltips.inputOtp : undefined}
+        name={`otp-${suffix}`}
+        value={otpValue}
+        onChange={setOtpValue}
+        disabled={disabled}
+        readOnly={readOnly}
+        errorMessage={errorMessage}
       />
     </div>
   );
