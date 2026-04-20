@@ -360,7 +360,12 @@ function Table({
         return;
       }
       const state = stateRef.current;
-      const isCheckboxClick = target.closest('[role="checkbox"]') != null;
+      // Treat any click inside a cell that contains a checkbox as a checkbox click, even if the
+      // pointer missed the checkbox itself -- this makes the whole checkbox column act as a big
+      // hit target without affecting clicks on other columns.
+      const cell = target.closest<HTMLElement>("td");
+      const cellHasCheckbox = cell?.querySelector('[role="checkbox"]') != null;
+      const isCheckboxClick = cellHasCheckbox || target.closest('[role="checkbox"]') != null;
       const outcome = outcomeForClick(
         parseRowKey(row.dataset.rowKey ?? ""),
         state.selectionMode,
@@ -371,9 +376,10 @@ function Table({
         anchorKeyRef.current,
         readOrderedKeys()
       );
-      // Prevent the default checkbox toggle when the click landed on a row checkbox; the Table
-      // owns selection, so letting BaseUI also flip its controlled state would double-fire.
-      if (isCheckboxClick) {
+      // Prevent the default checkbox toggle when the click landed on the actual checkbox; the Table
+      // owns selection, so letting BaseUI also flip its controlled state would double-fire. For
+      // clicks in the checkbox cell but off the checkbox, there's no default to prevent.
+      if (target.closest('[role="checkbox"]') != null) {
         event.preventDefault();
       }
       applyOutcome(outcome);
