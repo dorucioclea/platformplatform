@@ -1,6 +1,6 @@
 import { trackInteraction } from "@repo/infrastructure/applicationInsights/ApplicationInsightsProvider";
+import { useSidebarSafe } from "@repo/ui/components/Sidebar";
 import { useDebounce } from "@repo/ui/hooks/useDebounce";
-import { useSideMenuLayout } from "@repo/ui/hooks/useSideMenuLayout";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -25,7 +25,10 @@ interface UseUserFiltersOptions {
 export function useUserFilters({ onFiltersUpdated, onFiltersExpandedChange }: UseUserFiltersOptions = {}) {
   const navigate = useNavigate();
   const searchParams = (useLocation().search as SearchParams) ?? {};
-  const { isOverlayOpen, isMobileMenuOpen } = useSideMenuLayout();
+  // The sidebar's mobile sheet overlays content; collapse expanded filters when it's open so they don't fight for space.
+  const sidebar = useSidebarSafe();
+  const isOverlayOpen = sidebar?.openMobile ?? false;
+  const isMobileMenuOpen = sidebar?.isMobile && sidebar.openMobile;
   const containerRef = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState(searchParams.search ?? "");
   const debouncedSearch = useDebounce(search, 500);

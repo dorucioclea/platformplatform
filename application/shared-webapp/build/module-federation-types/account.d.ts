@@ -15,9 +15,6 @@ declare module "account/Banners" {
 declare module "account/ErrorPage" {
   export default ReactNode;
 }
-declare module "account/MobileMenu" {
-  export default ReactNode;
-}
 declare module "account/NotFoundPage" {
   export default ReactNode;
 }

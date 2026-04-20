@@ -38,9 +38,6 @@ msgstr "Clear dates"
 msgid "Close"
 msgstr "Close"
 
-msgid "Close menu"
-msgstr "Close menu"
-
 msgid "Close sidebar"
 msgstr "Close sidebar"
 
@@ -89,17 +86,8 @@ msgstr "Log out"
 msgid "Main content"
 msgstr "Main content"
 
-msgid "Main navigation"
-msgstr "Main navigation"
-
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
-
-msgid "Mobile navigation"
-msgstr "Mobile navigation"
-
-msgid "Mobile navigation menu"
-msgstr "Mobile navigation menu"
 
 msgid "More pages"
 msgstr "More pages"
@@ -134,9 +122,6 @@ msgstr "Please try again or return to the home page."
 msgid "Previous"
 msgstr "Previous"
 
-msgid "Resize sidebar"
-msgstr "Resize sidebar"
-
 msgid "Select dates"
 msgstr "Select dates"
 
@@ -151,9 +136,6 @@ msgstr "Show more"
 
 msgid "Sidebar"
 msgstr "Sidebar"
-
-msgid "Skip to main content"
-msgstr "Skip to main content"
 
 msgid "Something went wrong"
 msgstr "Something went wrong"

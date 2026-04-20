@@ -45,7 +45,6 @@ export default defineConfig({
         "./AuthSyncModal": "./federated-modules/common/AuthSyncModal.tsx",
         "./Banners": "./federated-modules/banners/Banners.tsx",
         "./ErrorPage": "./federated-modules/errorPages/ErrorPage.tsx",
-        "./MobileMenu": "./federated-modules/sideMenu/MobileMenu.tsx",
         "./NotFoundPage": "./federated-modules/errorPages/NotFoundPage.tsx",
         "./PublicFooter": "./federated-modules/public/PublicFooter.tsx",
         "./PublicNavigation": "./federated-modules/public/PublicNavigation.tsx",

@@ -404,9 +404,6 @@ msgstr "Clear search"
 msgid "Close"
 msgstr "Close"
 
-msgid "Close menu"
-msgstr "Close menu"
-
 msgid "Close sidebar"
 msgstr "Close sidebar"
 
@@ -469,9 +466,6 @@ msgstr "Danger zone"
 
 msgid "Dark"
 msgstr "Dark"
-
-msgid "Dashboard"
-msgstr "Dashboard"
 
 msgid "Data Processing Agreement"
 msgstr "Data Processing Agreement"
@@ -819,9 +813,6 @@ msgstr "Logo"
 msgid "Main content"
 msgstr "Main content"
 
-msgid "Main navigation"
-msgstr "Main navigation"
-
 msgid "Manage subscription"
 msgstr "Manage subscription"
 
@@ -864,12 +855,6 @@ msgstr "Microsoft patches and secures all PaaS infrastructure automatically"
 msgid "Mobile"
 msgstr "Mobile"
 
-msgid "Mobile navigation"
-msgstr "Mobile navigation"
-
-msgid "Mobile navigation menu"
-msgstr "Mobile navigation menu"
-
 msgid "Modified date"
 msgstr "Modified date"
 
@@ -881,9 +866,6 @@ msgstr "Name"
 
 msgid "Name as it appears on invoices"
 msgstr "Name as it appears on invoices"
-
-msgid "Navigation"
-msgstr "Navigation"
 
 msgid "Need help? Our support team is here to assist you."
 msgstr "Need help? Our support team is here to assist you."
@@ -1120,9 +1102,6 @@ msgstr "Remove profile picture"
 msgid "Request a new code"
 msgstr "Request a new code"
 
-msgid "Resize sidebar"
-msgstr "Resize sidebar"
-
 msgid "Restore"
 msgstr "Restore"
 
@@ -1245,9 +1224,6 @@ msgstr "Sign up with Google"
 
 msgid "Signup verification code"
 msgstr "Signup verification code"
-
-msgid "Skip to main content"
-msgstr "Skip to main content"
 
 msgid "SLA"
 msgstr "SLA"

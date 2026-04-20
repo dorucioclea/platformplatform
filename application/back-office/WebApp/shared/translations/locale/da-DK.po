@@ -38,9 +38,6 @@ msgstr "Ryd datoer"
 msgid "Close"
 msgstr ""
 
-msgid "Close menu"
-msgstr "Luk menu"
-
 msgid "Close sidebar"
 msgstr "Luk sidemenu"
 
@@ -89,17 +86,8 @@ msgstr "Log ud"
 msgid "Main content"
 msgstr "Hovedindhold"
 
-msgid "Main navigation"
-msgstr "Hovednavigation"
-
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
-
-msgid "Mobile navigation"
-msgstr "Mobil navigation"
-
-msgid "Mobile navigation menu"
-msgstr "Mobil navigationsmenu"
 
 msgid "More pages"
 msgstr "Flere sider"
@@ -134,9 +122,6 @@ msgstr "Prøv venligst igen eller vend tilbage til forsiden."
 msgid "Previous"
 msgstr "Forrige"
 
-msgid "Resize sidebar"
-msgstr "Juster sidebjælkens bredde"
-
 msgid "Select dates"
 msgstr "Vælg datoer"
 
@@ -151,9 +136,6 @@ msgstr "Vis flere"
 
 msgid "Sidebar"
 msgstr "Sidemenu"
-
-msgid "Skip to main content"
-msgstr "Spring til hovedindhold"
 
 msgid "Something went wrong"
 msgstr "Noget gik galt"

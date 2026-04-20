@@ -404,9 +404,6 @@ msgstr "Ryd søgning"
 msgid "Close"
 msgstr "Luk"
 
-msgid "Close menu"
-msgstr "Luk menu"
-
 msgid "Close sidebar"
 msgstr "Luk sidemenu"
 
@@ -469,9 +466,6 @@ msgstr "Farezone"
 
 msgid "Dark"
 msgstr "Mørk"
-
-msgid "Dashboard"
-msgstr "Dashboard"
 
 msgid "Data Processing Agreement"
 msgstr "Databehandleraftale"
@@ -819,9 +813,6 @@ msgstr "Logo"
 msgid "Main content"
 msgstr "Hovedindhold"
 
-msgid "Main navigation"
-msgstr "Hovednavigation"
-
 msgid "Manage subscription"
 msgstr "Administrer abonnement"
 
@@ -864,12 +855,6 @@ msgstr "Microsoft opdaterer og sikrer automatisk al PaaS infrastruktur"
 msgid "Mobile"
 msgstr "Mobil"
 
-msgid "Mobile navigation"
-msgstr "Mobil navigation"
-
-msgid "Mobile navigation menu"
-msgstr "Mobil navigationsmenu"
-
 msgid "Modified date"
 msgstr "Ændret dato"
 
@@ -881,9 +866,6 @@ msgstr "Navn"
 
 msgid "Name as it appears on invoices"
 msgstr "Navn som det fremgår på fakturaer"
-
-msgid "Navigation"
-msgstr "Navigation"
 
 msgid "Need help? Our support team is here to assist you."
 msgstr "Har du brug for hjælp? Vores supportteam er klart til at hjælpe."
@@ -1120,9 +1102,6 @@ msgstr "Fjern profilbillede"
 msgid "Request a new code"
 msgstr "Anmod om en ny kode"
 
-msgid "Resize sidebar"
-msgstr "Juster sidebjælkens bredde"
-
 msgid "Restore"
 msgstr "Gendan"
 
@@ -1245,9 +1224,6 @@ msgstr "Tilmeld dig med Google"
 
 msgid "Signup verification code"
 msgstr "Tilmeldingsbekræftelseskode"
-
-msgid "Skip to main content"
-msgstr "Spring til hovedindhold"
 
 msgid "SLA"
 msgstr "SLA"
