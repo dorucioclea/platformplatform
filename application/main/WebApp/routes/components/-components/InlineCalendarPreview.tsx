@@ -4,7 +4,6 @@ import { Calendar } from "@repo/ui/components/Calendar";
 import { FieldError } from "@repo/ui/components/Field";
 import { LabelWithTooltip } from "@repo/ui/components/LabelWithTooltip";
 import { useFieldError } from "@repo/ui/hooks/useFieldError";
-import { cn } from "@repo/ui/utils";
 import { useState } from "react";
 
 import { Prop, PropList, PropNote } from "./PropTooltip";
@@ -48,12 +47,6 @@ export function InlineCalendarPreview({
   });
   const isInvalid = !!errors;
 
-  const wrapperClasses = cn(
-    "w-fit rounded-md border",
-    isInvalid && "outline-2 outline-offset-2 outline-destructive",
-    disabled && "pointer-events-none opacity-50"
-  );
-
   // Keep the Calendar strictly controlled in readOnly mode -- pass an onSelect that ignores the
   // call rather than omitting it, otherwise react-day-picker falls back to uncontrolled selection
   // and the visual state changes despite readOnly.
@@ -79,9 +72,14 @@ export function InlineCalendarPreview({
               </LabelWithTooltip>
             </div>
           )}
-          <div className={wrapperClasses}>
-            <Calendar mode="single" selected={selectedDate} onSelect={handleSelect} numberOfMonths={1} />
-          </div>
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleSelect}
+            numberOfMonths={1}
+            aria-invalid={isInvalid}
+            aria-disabled={disabled}
+          />
           <FieldError errors={errors} />
         </div>
         <div className="flex flex-col gap-3">
@@ -92,9 +90,15 @@ export function InlineCalendarPreview({
               </LabelWithTooltip>
             </div>
           )}
-          <div className={wrapperClasses}>
-            <Calendar mode="single" selected={selectedDate} onSelect={handleSelect} numberOfMonths={1} showWeekNumber />
-          </div>
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleSelect}
+            numberOfMonths={1}
+            showWeekNumber
+            aria-invalid={isInvalid}
+            aria-disabled={disabled}
+          />
           <FieldError errors={errors} />
         </div>
       </div>

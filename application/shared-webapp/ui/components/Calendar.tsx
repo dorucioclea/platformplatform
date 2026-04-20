@@ -66,9 +66,13 @@ function Calendar({
   defaultMonth,
   month: monthProp,
   onMonthChange,
+  "aria-invalid": ariaInvalid,
+  "aria-disabled": ariaDisabled,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  "aria-invalid"?: boolean;
+  "aria-disabled"?: boolean;
 }) {
   const { currentLocale } = React.useContext(translationContext);
   const locale = localeProp ?? localeMap[currentLocale] ?? enUS;
@@ -148,7 +152,7 @@ function Calendar({
         setYearPageStart(alignedYearPageStart(next.getFullYear()));
       }}
       className={cn(
-        "group/calendar bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
+        "group/calendar w-fit overflow-hidden rounded-md border bg-background p-2 [--cell-radius:var(--radius-md)] [--cell-size:var(--control-height)] [--rdp-nav_button-height:var(--control-height)] [--rdp-nav_button-width:var(--control-height)] in-data-[slot=card-content]:border-0 in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:border-0 in-data-[slot=popover-content]:bg-transparent aria-disabled:pointer-events-none aria-disabled:opacity-50 aria-invalid:outline aria-invalid:outline-2 aria-invalid:outline-offset-2 aria-invalid:outline-destructive",
         String.raw`rtl:[&_.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:[&_.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -240,7 +244,14 @@ function Calendar({
       }}
       components={{
         Root: ({ className, rootRef, ...rootProps }) => (
-          <div data-slot="calendar" ref={rootRef} className={cn(className)} {...rootProps} />
+          <div
+            data-slot="calendar"
+            ref={rootRef}
+            className={cn(className)}
+            aria-invalid={ariaInvalid}
+            aria-disabled={ariaDisabled}
+            {...rootProps}
+          />
         ),
         Chevron: ({ className, orientation, ...chevronProps }) => {
           if (orientation === "left") {
