@@ -12,8 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail
+  SidebarProvider
 } from "@repo/ui/components/Sidebar";
 import {
   Building2Icon,
@@ -25,23 +24,21 @@ import {
   UsersIcon
 } from "lucide-react";
 
-// CSS containment via transform makes `position: fixed` inside Sidebar anchor to this preview
-// container instead of the viewport — lets us show the full Sidebar UX inside a bounded preview.
+// Preview uses collapsible="none" so the sidebar sits in normal flow inside a bounded box.
+// The full interactive sidebar (drag-to-resize, hover-reveal toggle, icon collapse, mobile Sheet)
+// renders as the real sidemenu in Back-Office, Main, and Account once those SCSs are migrated.
 export function SidebarPreview() {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-muted-foreground">
         <Trans>
-          Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode.
-          Drag the edge to continuously resize. Hover to reveal the toggle.
+          Static preview of the Sidebar component. The fully interactive version — with drag-to-resize, hover-reveal
+          toggle, and icon collapse — renders as the real sidemenu in each self-contained system.
         </Trans>
       </p>
-      <div
-        className="relative h-[30rem] overflow-hidden rounded-lg border bg-background"
-        style={{ transform: "translateZ(0)" }}
-      >
+      <div className="relative flex h-[30rem] overflow-hidden rounded-lg border bg-background">
         <SidebarProvider defaultOpen={true} className="h-full min-h-0!">
-          <Sidebar collapsible="icon">
+          <Sidebar collapsible="none" className="h-full border-r">
             <SidebarHeader>
               <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold">
                 <Building2Icon className="size-5 shrink-0" />
@@ -119,11 +116,10 @@ export function SidebarPreview() {
               </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-              <div className="px-2 py-1.5 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+              <div className="px-2 py-1.5 text-xs text-muted-foreground">
                 <Trans>Sidebar footer</Trans>
               </div>
             </SidebarFooter>
-            <SidebarRail />
           </Sidebar>
           <SidebarInset className="h-full overflow-auto p-6">
             <h3>
@@ -131,9 +127,9 @@ export function SidebarPreview() {
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
               <Trans>
-                The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the
-                floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and
-                25rem.
+                In the real app the sidebar is fixed-positioned, persists its state and width in localStorage
+                (rem-based, not cookies), and exposes a floating chevron to toggle icon collapse plus drag-to-resize
+                between 14rem and 25rem.
               </Trans>
             </p>
           </SidebarInset>

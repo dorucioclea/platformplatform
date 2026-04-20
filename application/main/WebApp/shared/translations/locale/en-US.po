@@ -670,9 +670,6 @@ msgstr "Full access, can edit and share with others"
 msgid "Full library"
 msgstr "Full library"
 
-msgid "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
-msgstr "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
-
 msgid "Fullscreen on mobile"
 msgstr "Fullscreen on mobile"
 
@@ -735,6 +732,9 @@ msgstr "Icon-only buttons"
 
 msgid "Icons"
 msgstr "Icons"
+
+msgid "In the real app the sidebar is fixed-positioned, persists its state and width in localStorage (rem-based, not cookies), and exposes a floating chevron to toggle icon collapse plus drag-to-resize between 14rem and 25rem."
+msgstr "In the real app the sidebar is fixed-positioned, persists its state and width in localStorage (rem-based, not cookies), and exposes a floating chevron to toggle icon collapse plus drag-to-resize between 14rem and 25rem."
 
 msgid "Include cooking notes"
 msgstr "Include cooking notes"
@@ -1533,6 +1533,9 @@ msgstr "Split buttons"
 msgid "Squash and merge"
 msgstr "Squash and merge"
 
+msgid "Static preview of the Sidebar component. The fully interactive version — with drag-to-resize, hover-reveal toggle, and icon collapse — renders as the real sidemenu in each self-contained system."
+msgstr "Static preview of the Sidebar component. The fully interactive version — with drag-to-resize, hover-reveal toggle, and icon collapse — renders as the real sidemenu in each self-contained system."
+
 msgid "Stay"
 msgstr "Stay"
 
@@ -1568,9 +1571,6 @@ msgstr "Thai"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "The item will be moved to the archive. You can restore it later from the archive."
-
-msgid "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
-msgstr "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
 
 msgid "Theme"
 msgstr "Theme"

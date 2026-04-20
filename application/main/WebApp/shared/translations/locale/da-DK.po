@@ -670,9 +670,6 @@ msgstr "Fuld adgang, kan redigere og dele med andre"
 msgid "Full library"
 msgstr "Hele biblioteket"
 
-msgid "Full Sidebar shell inside a contained preview. Click the floating chevron on the edge to toggle icon mode. Drag the edge to continuously resize. Hover to reveal the toggle."
-msgstr "Fuld Sidebar-skal i en afgrænset forhåndsvisning. Klik på den flydende chevron i kanten for at skifte til ikon-tilstand. Træk i kanten for at ændre størrelsen løbende. Hold musen over for at vise skifteknappen."
-
 msgid "Fullscreen on mobile"
 msgstr "Fuldskærm på mobil"
 
@@ -735,6 +732,9 @@ msgstr "Knapper kun med ikon"
 
 msgid "Icons"
 msgstr "Ikoner"
+
+msgid "In the real app the sidebar is fixed-positioned, persists its state and width in localStorage (rem-based, not cookies), and exposes a floating chevron to toggle icon collapse plus drag-to-resize between 14rem and 25rem."
+msgstr "I selve appen er sidemenuen fixed-positioneret, gemmer sin tilstand og bredde i localStorage (rem-baseret, ikke cookies), og viser en flydende chevron til at skifte til ikon-tilstand samt træk-for-at-ændre-størrelse mellem 14rem og 25rem."
 
 msgid "Include cooking notes"
 msgstr "Inkluder tilberedningsnoter"
@@ -1533,6 +1533,9 @@ msgstr "Delte knapper"
 msgid "Squash and merge"
 msgstr "Squash og flet"
 
+msgid "Static preview of the Sidebar component. The fully interactive version — with drag-to-resize, hover-reveal toggle, and icon collapse — renders as the real sidemenu in each self-contained system."
+msgstr "Statisk forhåndsvisning af Sidebar-komponenten. Den fuldt interaktive version — med træk-for-at-ændre-størrelse, skifteknap der vises ved hover og ikon-sammenklapning — vises som den rigtige sidemenu i hvert self-contained system."
+
 msgid "Stay"
 msgstr "Bliv"
 
@@ -1568,9 +1571,6 @@ msgstr "Thai"
 
 msgid "The item will be moved to the archive. You can restore it later from the archive."
 msgstr "Elementet flyttes til arkivet. Du kan gendanne det senere fra arkivet."
-
-msgid "The sidebar on the left persists its state and width in localStorage (rem-based, not cookies). Click the floating chevron to toggle icon collapse, or drag the edge to resize continuously between 14rem and 25rem."
-msgstr "Sidemenuen til venstre gemmer sin tilstand og bredde i localStorage (rem-baseret, ikke cookies). Klik på den flydende chevron for at skifte til ikon-tilstand, eller træk i kanten for at ændre størrelsen løbende mellem 14rem og 25rem."
 
 msgid "Theme"
 msgstr "Tema"
