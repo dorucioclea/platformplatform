@@ -10,11 +10,17 @@ import { Link } from "@repo/ui/components/Link";
 import { useEffect, useState } from "react";
 
 type PreviewHeaderProps = Readonly<{
-  currentPage: "components" | "examples";
+  currentPage: "components" | "examples" | "charts";
   tabLabels: Record<string, React.ReactNode>;
   defaultTab: string;
   rightContent?: React.ReactNode;
 }>;
+
+const sectionConfig = {
+  components: { href: "/components", label: <Trans>Components</Trans> },
+  examples: { href: "/components/examples", label: <Trans>Examples</Trans> },
+  charts: { href: "/components/charts", label: <Trans>Charts</Trans> }
+} as const;
 
 export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent }: PreviewHeaderProps) {
   const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || defaultTab);
@@ -26,7 +32,7 @@ export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent
   }, [defaultTab]);
 
   const activeLabel = tabLabels[activeTab];
-  const sectionHref = currentPage === "components" ? "/components" : "/components/examples";
+  const { href: sectionHref, label: sectionLabel } = sectionConfig[currentPage];
 
   return (
     <nav className="hidden w-full justify-between gap-2 sm:flex">
@@ -51,15 +57,13 @@ export function PreviewHeader({ currentPage, tabLabels, defaultTab, rightContent
                   />
                 }
               >
-                {currentPage === "components" ? <Trans>Components</Trans> : <Trans>Examples</Trans>}
+                {sectionLabel}
               </BreadcrumbLink>
             ) : (
-              <BreadcrumbPage>
-                {currentPage === "components" ? <Trans>Components</Trans> : <Trans>Examples</Trans>}
-              </BreadcrumbPage>
+              <BreadcrumbPage>{sectionLabel}</BreadcrumbPage>
             )}
           </BreadcrumbItem>
-          {activeLabel && (
+          {activeLabel && activeLabel !== sectionLabel && (
             <BreadcrumbItem>
               <BreadcrumbPage>{activeLabel}</BreadcrumbPage>
             </BreadcrumbItem>

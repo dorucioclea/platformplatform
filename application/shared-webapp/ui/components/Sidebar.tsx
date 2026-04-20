@@ -656,9 +656,11 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
       className={cn(
-        // Active indicator: a vertical bar flush with the sidebar's left edge when any descendant
-        // button carries [data-active=true]. `-left-2` reaches past the SidebarGroup's 0.5rem padding.
-        "group/menu-item relative mx-1 before:pointer-events-none before:absolute before:top-1/2 before:-left-3 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0 has-[[data-active=true]]:before:opacity-100",
+        // Active indicator: vertical bar visible inside the sidebar content area (not flush with the
+        // browser edge) — sits just to the left of the menu item's rounded background.
+        // Direct-child selector ensures only THIS item's own button drives the marker; nested sub-items
+        // render their own marker on SidebarMenuSubItem.
+        "group/menu-item relative mx-1 before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-1 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-primary before:opacity-0 has-[>[data-sidebar=menu-button][data-active=true]]:before:opacity-100",
         className
       )}
       {...props}
@@ -674,7 +676,9 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 // - Active indicator: ::before pseudo-element renders a vertical bar at the sidebar's left edge
 //   (-0.5rem from the item, reaching past the SidebarGroup's 0.5rem padding).
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md pr-3 pl-[1.125rem] text-left text-sm outline-ring group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:ml-[0.5625rem] group-data-[collapsible=icon]:w-[var(--control-height)] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
+  // Dim by default, brighten on hover/active. Active items get the primary-colored marker (on SidebarMenuItem)
+  // so text color alone distinguishes active from hover: hover=foreground (white-ish), active=foreground+bold.
+  "peer/menu-button flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-md pr-3 pl-[1.125rem] text-left text-sm text-muted-foreground outline-ring group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:ml-[0.5625rem] group-data-[collapsible=icon]:w-[var(--control-height)] group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:font-medium data-[active=true]:text-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:truncate group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -837,7 +841,12 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
     <li
       data-slot="sidebar-menu-sub-item"
       data-sidebar="menu-sub-item"
-      className={cn("group/menu-sub-item relative", className)}
+      className={cn(
+        // Active indicator for sub items: positioned just left of the button's rounded background so it
+        // visually matches the parent marker's column treatment (inside the sidebar content area).
+        "group/menu-sub-item relative before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-1 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-primary before:opacity-0 has-[>[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-100",
+        className
+      )}
       {...props}
     />
   );
@@ -862,8 +871,11 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
-        "flex h-7 min-w-0 -translate-x-px cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
-        "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+        // Matches the top-level menu button height for consistency (38px desktop / 44px mobile per Apple HIG).
+        // Dim by default (muted), brighten on hover/active — mirrors SidebarMenuButton styling.
+        "flex h-[var(--control-height)] min-w-0 -translate-x-px cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 text-muted-foreground outline-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+        // Active: no background fill — only marker (on SidebarMenuSubItem) + brighter text + weight.
+        "data-[active=true]:font-medium data-[active=true]:text-foreground",
         size === "sm" && "text-xs",
         size === "md" && "text-sm",
         "group-data-[collapsible=icon]:hidden",

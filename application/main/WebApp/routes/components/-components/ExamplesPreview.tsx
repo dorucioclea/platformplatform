@@ -1,6 +1,3 @@
-import { Trans } from "@lingui/react/macro";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/Tabs";
-import { LayoutDashboardIcon, LayoutTemplateIcon, PanelsTopLeftIcon, SquareDashedIcon, TableIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { SampleDish } from "./sampleDishData";
@@ -19,76 +16,50 @@ interface ExamplesPreviewProps {
   onSummaryPaneChange?: (enabled: boolean) => void;
 }
 
+const DEFAULT_SECTION = "dialogs";
+
 export function ExamplesPreview({
   selectedDish,
   onDishSelect,
   onSelectedDishesChange,
   onSummaryPaneChange
 }: ExamplesPreviewProps) {
-  const [activeTab, setActiveTab] = useState(() => window.location.hash.replace("#", "") || "dialogs");
+  const [activeSection, setActiveSection] = useState(() => window.location.hash.replace("#", "") || DEFAULT_SECTION);
 
   useEffect(() => {
-    const handleHashChange = () => setActiveTab(window.location.hash.replace("#", "") || "dialogs");
+    const handleHashChange = () => {
+      const next = window.location.hash.replace("#", "") || DEFAULT_SECTION;
+      // Leaving the tables view clears the selected row so the details pane doesn't remain open.
+      setActiveSection((prev) => {
+        if (prev === "tables" && next !== "tables") {
+          onDishSelect?.(null);
+        }
+        return next;
+      });
+    };
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
-
-  const handleTabChange = (value: string | number) => {
-    const tab = String(value);
-    if (activeTab === "tables" && tab !== "tables") {
-      onDishSelect?.(null);
-    }
-    setActiveTab(tab);
-    window.location.hash = tab;
-  };
+  }, [onDishSelect]);
 
   return (
-    <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1">
-      <TabsList>
-        <TabsTrigger value="dialogs">
-          <PanelsTopLeftIcon />
-          <Trans>Dialogs</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="cards">
-          <LayoutTemplateIcon />
-          <Trans>Cards</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="tables">
-          <TableIcon />
-          <Trans>Tables and side pane</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="empty">
-          <LayoutDashboardIcon />
-          <Trans>Empty</Trans>
-        </TabsTrigger>
-        <TabsTrigger value="skeleton">
-          <SquareDashedIcon />
-          <Trans>Skeleton</Trans>
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="dialogs">
-        <DialogsPreview />
-      </TabsContent>
-      <TabsContent value="cards">
+    <div className="flex flex-1 flex-col">
+      {activeSection === "dialogs" && <DialogsPreview />}
+      {activeSection === "cards" && (
         <div className="flex flex-col gap-6">
           <CardsPreview />
           <DateFormatPreview />
         </div>
-      </TabsContent>
-      <TabsContent value="tables" className="flex flex-1 flex-col">
+      )}
+      {activeSection === "tables" && (
         <TablePreview
           selectedDish={selectedDish}
           onDishSelect={onDishSelect}
           onSelectedDishesChange={onSelectedDishesChange}
           onSummaryPaneChange={onSummaryPaneChange}
         />
-      </TabsContent>
-      <TabsContent value="empty" className="flex flex-1 flex-col">
-        <EmptyPreview />
-      </TabsContent>
-      <TabsContent value="skeleton">
-        <SkeletonPreview />
-      </TabsContent>
-    </Tabs>
+      )}
+      {activeSection === "empty" && <EmptyPreview />}
+      {activeSection === "skeleton" && <SkeletonPreview />}
+    </div>
   );
 }

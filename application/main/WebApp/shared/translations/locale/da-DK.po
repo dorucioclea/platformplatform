@@ -118,9 +118,6 @@ msgstr "Advarselsdialoger"
 msgid "Alerts"
 msgstr "Advarsler"
 
-msgid "Alerts and badges"
-msgstr "Advarsler og badges"
-
 msgid "Alerts, badges, and banners"
 msgstr "Advarsler, badges og bannere"
 
@@ -226,9 +223,6 @@ msgstr "Brødkrumme — enkel"
 msgid "Browse all recipes"
 msgstr "Gennemse alle opskrifter"
 
-msgid "Browse and test all UI components."
-msgstr "Gennemse og test alle UI-komponenter."
-
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Sidder du stadig oppe, {firstName}?"
 
@@ -322,6 +316,9 @@ msgstr "Chicken katsu"
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
 
+msgid "Choose which notifications you receive and how."
+msgstr "Vælg hvilke notifikationer du modtager og hvordan."
+
 msgid "Chrome"
 msgstr "Chrome"
 
@@ -352,6 +349,12 @@ msgstr "Medforfatter"
 msgid "Co-cooks"
 msgstr "Medkokke"
 
+msgid "Collapse Components"
+msgstr "Fold Komponenter sammen"
+
+msgid "Collapse Examples"
+msgstr "Fold Eksempler sammen"
+
 msgid "Collapsible"
 msgstr "Collapsible"
 
@@ -379,14 +382,8 @@ msgstr "Command"
 msgid "Command palette"
 msgstr "Kommandopalette"
 
-msgid "Component preview"
-msgstr "Komponentvisning"
-
 msgid "Components"
 msgstr "Komponenter"
-
-msgid "Composed real-world flows using the UI components."
-msgstr "Sammensatte virkelige flows med UI-komponenterne."
 
 msgid "Confirm action"
 msgstr "Bekræft handling"
@@ -514,9 +511,6 @@ msgstr "Udviklerværktøjer"
 msgid "Dialogs"
 msgstr "Dialoger"
 
-msgid "Dialogs and alert dialogs"
-msgstr "Dialoger og advarselsdialoger"
-
 msgid "Difficulty"
 msgstr "Sværhedsgrad"
 
@@ -604,9 +598,6 @@ msgstr ""
 msgid "Empty"
 msgstr "Tom"
 
-msgid "Empty and skeleton"
-msgstr "Tom tilstand og skelet"
-
 msgid "Enabled"
 msgstr "Aktiveret"
 
@@ -621,6 +612,12 @@ msgstr "Tryk Escape for at lukke"
 
 msgid "Examples"
 msgstr "Eksempler"
+
+msgid "Expand Components"
+msgstr "Fold Komponenter ud"
+
+msgid "Expand Examples"
+msgstr "Fold Eksempler ud"
 
 msgid "Export"
 msgstr "Eksporter"
@@ -1047,6 +1044,9 @@ msgstr "Ikke endnu"
 
 msgid "Note"
 msgstr "Note"
+
+msgid "Notifications"
+msgstr "Notifikationer"
 
 msgid "Number (decimal)"
 msgstr "Tal (decimal)"
@@ -1560,6 +1560,9 @@ msgstr "System"
 msgid "Tables and side pane"
 msgstr "Tabeller og sidepanel"
 
+msgid "Tabs"
+msgstr ""
+
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"
 
@@ -1695,6 +1698,9 @@ msgstr "Understreg ved hover"
 msgid "Unsaved changes"
 msgstr "Ugemte ændringer"
 
+msgid "Update your personal information and profile photo."
+msgstr "Opdater dine personlige oplysninger og profilbillede."
+
 msgid "Upgrade now"
 msgstr "Opgrader nu"
 
@@ -1730,6 +1736,9 @@ msgstr "Grøntsagstempura"
 
 msgid "View all"
 msgstr "Se alle"
+
+msgid "View invoices and manage your payment method."
+msgstr "Se fakturaer og administrer din betalingsmetode."
 
 msgid "View profile verification"
 msgstr ""

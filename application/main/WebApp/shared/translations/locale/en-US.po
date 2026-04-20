@@ -118,9 +118,6 @@ msgstr "Alert dialogs"
 msgid "Alerts"
 msgstr "Alerts"
 
-msgid "Alerts and badges"
-msgstr "Alerts and badges"
-
 msgid "Alerts, badges, and banners"
 msgstr "Alerts, badges, and banners"
 
@@ -226,9 +223,6 @@ msgstr "Breadcrumb — simple"
 msgid "Browse all recipes"
 msgstr "Browse all recipes"
 
-msgid "Browse and test all UI components."
-msgstr "Browse and test all UI components."
-
 msgid "Burning the midnight oil, {firstName}?"
 msgstr "Burning the midnight oil, {firstName}?"
 
@@ -322,6 +316,9 @@ msgstr "Chicken katsu"
 msgid "Chiles rellenos"
 msgstr "Chiles rellenos"
 
+msgid "Choose which notifications you receive and how."
+msgstr "Choose which notifications you receive and how."
+
 msgid "Chrome"
 msgstr "Chrome"
 
@@ -352,6 +349,12 @@ msgstr "Co-author"
 msgid "Co-cooks"
 msgstr "Co-cooks"
 
+msgid "Collapse Components"
+msgstr "Collapse Components"
+
+msgid "Collapse Examples"
+msgstr "Collapse Examples"
+
 msgid "Collapsible"
 msgstr "Collapsible"
 
@@ -379,14 +382,8 @@ msgstr "Command"
 msgid "Command palette"
 msgstr "Command palette"
 
-msgid "Component preview"
-msgstr "Component preview"
-
 msgid "Components"
 msgstr "Components"
-
-msgid "Composed real-world flows using the UI components."
-msgstr "Composed real-world flows using the UI components."
 
 msgid "Confirm action"
 msgstr "Confirm action"
@@ -514,9 +511,6 @@ msgstr "Developer tools"
 msgid "Dialogs"
 msgstr "Dialogs"
 
-msgid "Dialogs and alert dialogs"
-msgstr "Dialogs and alert dialogs"
-
 msgid "Difficulty"
 msgstr "Difficulty"
 
@@ -604,9 +598,6 @@ msgstr "Email me when a new device signs in."
 msgid "Empty"
 msgstr "Empty"
 
-msgid "Empty and skeleton"
-msgstr "Empty and skeleton"
-
 msgid "Enabled"
 msgstr "Enabled"
 
@@ -621,6 +612,12 @@ msgstr "Escape to close"
 
 msgid "Examples"
 msgstr "Examples"
+
+msgid "Expand Components"
+msgstr "Expand Components"
+
+msgid "Expand Examples"
+msgstr "Expand Examples"
 
 msgid "Export"
 msgstr "Export"
@@ -1047,6 +1044,9 @@ msgstr "Not yet"
 
 msgid "Note"
 msgstr "Note"
+
+msgid "Notifications"
+msgstr "Notifications"
 
 msgid "Number (decimal)"
 msgstr "Number (decimal)"
@@ -1560,6 +1560,9 @@ msgstr "System"
 msgid "Tables and side pane"
 msgstr "Tables and side pane"
 
+msgid "Tabs"
+msgstr "Tabs"
+
 msgid "Tacos al pastor"
 msgstr "Tacos al pastor"
 
@@ -1695,6 +1698,9 @@ msgstr "Underline on hover"
 msgid "Unsaved changes"
 msgstr "Unsaved changes"
 
+msgid "Update your personal information and profile photo."
+msgstr "Update your personal information and profile photo."
+
 msgid "Upgrade now"
 msgstr "Upgrade now"
 
@@ -1730,6 +1736,9 @@ msgstr "Vegetable tempura"
 
 msgid "View all"
 msgstr "View all"
+
+msgid "View invoices and manage your payment method."
+msgstr "View invoices and manage your payment method."
 
 msgid "View profile verification"
 msgstr "View profile verification"

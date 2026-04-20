@@ -1,9 +1,8 @@
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { SampleDish } from "./-components/sampleDishData";
 
@@ -12,6 +11,7 @@ import { DishDetailsSidePane } from "./-components/DishDetailsSidePane";
 import { DishMultiSelectSidePane } from "./-components/DishMultiSelectSidePane";
 import { ExamplesPreview } from "./-components/ExamplesPreview";
 import { PreviewHeader } from "./-components/PreviewHeader";
+import { examplesSections, findSectionLabel } from "./-components/previewSections";
 import { sampleDishes } from "./-components/sampleDishData";
 
 export const Route = createFileRoute("/components/examples")({
@@ -19,10 +19,27 @@ export const Route = createFileRoute("/components/examples")({
   component: ExamplesPage
 });
 
+function useActiveHash(defaultHash: string) {
+  const [hash, setHash] = useState(() => window.location.hash.replace("#", "") || defaultHash);
+  useEffect(() => {
+    const handle = () => setHash(window.location.hash.replace("#", "") || defaultHash);
+    window.addEventListener("hashchange", handle);
+    return () => window.removeEventListener("hashchange", handle);
+  }, [defaultHash]);
+  return hash;
+}
+
 function ExamplesPage() {
   const [selectedDish, setSelectedDish] = useState<SampleDish | null>(null);
   const [selectedDishes, setSelectedDishes] = useState<SampleDish[]>([]);
   const [summaryPaneEnabled, setSummaryPaneEnabled] = useState(false);
+
+  const activeHash = useActiveHash("dialogs");
+  const activeLabel = findSectionLabel(examplesSections, activeHash);
+  const tabLabels = useMemo(
+    () => Object.fromEntries(examplesSections.map((section) => [section.hash, section.label])),
+    []
+  );
 
   // "In play" = selected (the batch) plus the currently-highlighted/activated row. When two or more
   // distinct rows are in play, the details pane no longer fits -- we switch to the batch summary so
@@ -59,21 +76,8 @@ function ExamplesPage() {
         <AppLayout
           variant="full"
           browserTitle={t`Examples`}
-          title={t`Examples`}
-          subtitle={t`Composed real-world flows using the UI components.`}
-          beforeHeader={
-            <PreviewHeader
-              currentPage="examples"
-              defaultTab="dialogs"
-              tabLabels={{
-                dialogs: <Trans>Dialogs and alert dialogs</Trans>,
-                cards: <Trans>Cards</Trans>,
-                tables: <Trans>Tables and side pane</Trans>,
-                empty: <Trans>Empty and skeleton</Trans>,
-                skeleton: <Trans>Skeleton</Trans>
-              }}
-            />
-          }
+          title={activeLabel}
+          beforeHeader={<PreviewHeader currentPage="examples" defaultTab="dialogs" tabLabels={tabLabels} />}
           sidePane={getSidePane()}
         >
           <ExamplesPreview
