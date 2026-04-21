@@ -298,14 +298,15 @@ function Sidebar({
       data-slot="sidebar"
     >
       {/* Backdrop: dims content behind the expanded sidebar in overlay mode (below `lg`).
-          Hidden at `lg+` where the sidebar pushes content instead of overlaying. Click to collapse. */}
+          Hidden at `lg+` where the sidebar pushes content instead of overlaying. Click to collapse.
+          Starts below any banner strip so banners (which push all top-positioned UI down) stay visible. */}
       <button
         type="button"
         aria-label={t`Close sidebar`}
         tabIndex={-1}
         onClick={() => setOpen(false)}
         className={cn(
-          "pointer-events-none fixed inset-0 z-[35] bg-black/50 opacity-0 transition-opacity duration-100 ease-linear lg:hidden",
+          "pointer-events-none fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-[35] bg-black/50 opacity-0 transition-opacity duration-100 ease-linear lg:hidden",
           "group-data-[state=expanded]:pointer-events-auto group-data-[state=expanded]:opacity-100"
         )}
       />
@@ -326,7 +327,10 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-40 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-100 ease-linear sm:flex",
+          // Start below any banner strip (push-down behavior) and shrink the height to match so the
+          // sidebar never extends past the viewport bottom. `--banner-offset` falls back to 0 when no
+          // banner is mounted (see `BannerPortal`).
+          "fixed top-(--banner-offset,0rem) bottom-0 z-40 hidden h-[calc(100svh-var(--banner-offset,0rem))] w-(--sidebar-width) transition-[left,right,width] duration-100 ease-linear sm:flex",
           "group-data-[resizing=true]/sidebar-wrapper:transition-none",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
