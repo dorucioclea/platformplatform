@@ -1,5 +1,6 @@
 import type * as React from "react";
 
+import { useRouterState } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
@@ -145,6 +146,27 @@ function SidePane({
   const isOpenRef = useRef(isOpen);
   isOpenRef.current = isOpen;
 
+  // Auto-close when the user navigates to a different pathname/hash. Consumers whose pane visibility
+  // is derived state (not a boolean they can flip) still benefit — the pane unmounts internally even
+  // if `isOpen` stays true until the consumer clears its source state on the next interaction.
+  const currentLocation = useRouterState({ select: (s) => `${s.location.pathname}${s.location.hash}` });
+  const openedAtLocationRef = useRef<string | null>(null);
+  const [closedByNavigation, setClosedByNavigation] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      openedAtLocationRef.current = null;
+      setClosedByNavigation(false);
+      return;
+    }
+    if (openedAtLocationRef.current === null) {
+      openedAtLocationRef.current = currentLocation;
+    } else if (openedAtLocationRef.current !== currentLocation) {
+      setClosedByNavigation(true);
+      onOpenChange(false);
+    }
+  }, [isOpen, currentLocation, onOpenChange]);
+
   useEffect(() => {
     const opened = isOpen && !prevOpen.current;
     const contentChanged = isOpen && prevOpen.current && trackingKey !== undefined && trackingKey !== prevKey.current;
@@ -178,7 +200,7 @@ function SidePane({
 
   useSidePaneAccessibility(isOpen, onClose, needsFullscreen, paneRef);
 
-  if (!isOpen) {
+  if (!isOpen || closedByNavigation) {
     return null;
   }
 
