@@ -841,7 +841,8 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
         // Expanded: `ml-[1.6875rem]` (27px) puts the left border at 40px from the sidebar edge — the same
         // column as the parent icon's center (8px group p-2 + 4px item mx-1 + 27px ml + 1px translate = 40px).
         // Sub buttons then render to the right of the connector line with their usual indent.
-        "mr-3.5 ml-[1.6875rem] flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5",
+        // Right edge aligns with the parent item's right edge (SidebarMenuItem's mx-1 already reserves the gap).
+        "ml-[1.6875rem] flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border py-0.5 pr-0 pl-2.5",
         // Collapsed: drop the connector line and paint a muted band so the sub group stands out from
         // the top-level items at a glance.
         "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-muted/50 group-data-[collapsible=icon]:px-0",
@@ -865,7 +866,7 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
         // sits inside the ul's px-2.5 content area, so `-left-[0.78125rem]` backs the 4px marker up over
         // the 1px border so it reads as a primary-colored segment of the guide.
         // Collapsed: flush with sidebar edge via `-left-3` (aligns with the top-level marker column).
-        "group/menu-sub-item relative before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-[0.78125rem] before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0 group-data-[collapsible=icon]:before:-left-3 has-[>[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-100",
+        "group/menu-sub-item relative before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-[0.78125rem] before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0 group-data-[collapsible=icon]:before:-left-3 has-[[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-100",
         className
       )}
       {...props}
