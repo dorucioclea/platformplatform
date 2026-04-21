@@ -89,9 +89,10 @@ export function ComponentsSideMenu() {
                 <SidebarMenuAction
                   onClick={() => toggle("components")}
                   aria-label={expanded.components ? t`Collapse Components` : t`Expand Components`}
-                  data-state={expanded.components ? "open" : "closed"}
                 >
-                  <ChevronRightIcon className="transition-transform duration-100 data-[state=open]:rotate-90" />
+                  <ChevronRightIcon
+                    className={`transition-transform duration-100 ${expanded.components ? "rotate-90" : ""}`}
+                  />
                 </SidebarMenuAction>
                 {expanded.components && (
                   <SidebarMenuSub>
@@ -130,9 +131,10 @@ export function ComponentsSideMenu() {
                 <SidebarMenuAction
                   onClick={() => toggle("examples")}
                   aria-label={expanded.examples ? t`Collapse Examples` : t`Expand Examples`}
-                  data-state={expanded.examples ? "open" : "closed"}
                 >
-                  <ChevronRightIcon className="transition-transform duration-100 data-[state=open]:rotate-90" />
+                  <ChevronRightIcon
+                    className={`transition-transform duration-100 ${expanded.examples ? "rotate-90" : ""}`}
+                  />
                 </SidebarMenuAction>
                 {expanded.examples && (
                   <SidebarMenuSub>

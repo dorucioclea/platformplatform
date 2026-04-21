@@ -596,10 +596,17 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 uppercase outline-ring transition-opacity duration-100 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        // Keep the label's layout space when collapsed so menu icons stay at the exact same vertical
-        // position as when expanded. Hide visually via `invisible` (not `-mt-8`, which would collapse height).
-        "group-data-[collapsible=icon]:invisible",
+        // `pl-[1.375rem]` aligns the label's left edge with the menu button's icon column (SidebarMenuItem
+        // mx-1 + SidebarMenuButton pl-[1.125rem] = 22px inside SidebarGroup).
+        "relative flex h-8 shrink-0 items-center rounded-md pr-2 pl-[1.375rem] text-xs font-medium text-sidebar-foreground/70 uppercase outline-ring transition-opacity duration-100 ease-linear focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        // Keep layout height when collapsed so menu icons stay at the same vertical position. Hide the text
+        // via `text-transparent` (works for raw text nodes) and render a short thick separator via `before:`.
+        "group-data-[collapsible=icon]:text-transparent",
+        // `left-[2rem]` is the horizontal center of the collapsed sidebar measured from the label's
+        // left edge (label starts at p-2 = 0.5rem; collapsed sidebar center = --sidebar-width-icon/2 = 2.5rem → 2rem).
+        // Using a fixed value (not `left-1/2`) keeps the separator from sliding as the sidebar width
+        // animates during collapse/expand — the before stays pinned to the collapsed center.
+        "group-data-[collapsible=icon]:before:absolute group-data-[collapsible=icon]:before:top-1/2 group-data-[collapsible=icon]:before:left-[2rem] group-data-[collapsible=icon]:before:h-1 group-data-[collapsible=icon]:before:w-6 group-data-[collapsible=icon]:before:-translate-x-1/2 group-data-[collapsible=icon]:before:-translate-y-1/2 group-data-[collapsible=icon]:before:bg-sidebar-border group-data-[collapsible=icon]:before:transition-none group-data-[collapsible=icon]:before:content-['']",
         className
       )}
       {...props}
@@ -656,11 +663,17 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
       className={cn(
-        // Active indicator: vertical bar visible inside the sidebar content area (not flush with the
-        // browser edge) — sits just to the left of the menu item's rounded background.
-        // Direct-child selector ensures only THIS item's own button drives the marker; nested sub-items
-        // render their own marker on SidebarMenuSubItem.
-        "group/menu-item relative mx-1 before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-1 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-primary before:opacity-0 has-[>[data-sidebar=menu-button][data-active=true]]:before:opacity-100",
+        // Active indicator: vertical bar flush with the sidebar's left edge (which is the browser edge).
+        // Base rule shows the marker whenever this item's own button is active. Override (higher
+        // specificity — more variants) hides it in expanded state when a nested sub item is active, so
+        // the sub item's own marker takes over. Collapsed sub items aren't in play so the marker stays.
+        "group/menu-item relative mx-1 before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-3 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0",
+        // Matches any descendant menu-button with data-active (top-level button; sub buttons have a different
+        // data-sidebar value, so they don't match this rule).
+        "has-[[data-sidebar=menu-button][data-active=true]]:before:opacity-100",
+        // Override: if a nested sub-button is active (in any state), the sub item's own marker takes over
+        // so the parent doesn't duplicate it.
+        "has-[[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-0",
         className
       )}
       {...props}
@@ -759,11 +772,9 @@ function SidebarMenuAction({
       data-slot="sidebar-menu-action"
       data-sidebar="menu-action"
       className={cn(
-        "absolute top-1.5 right-1 flex aspect-square w-5 cursor-pointer items-center justify-center rounded-md p-0 text-sidebar-foreground outline-ring transition-transform peer-hover/menu-button:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        // Vertically centered on the parent menu button (--control-height = 38px / 44px mobile).
+        "absolute top-[calc(var(--control-height)/2)] right-1 flex aspect-square w-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md p-0 text-sidebar-foreground outline-ring transition-transform peer-hover/menu-button:text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&>svg]:size-4 [&>svg]:shrink-0",
         "after:absolute after:-inset-2 sm:after:hidden",
-        "peer-data-[size=sm]/menu-button:top-1",
-        "peer-data-[size=default]/menu-button:top-1.5",
-        "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
           "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground data-[state=open]:opacity-100 sm:opacity-0",
@@ -827,8 +838,13 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        "mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5",
-        "group-data-[collapsible=icon]:hidden",
+        // Expanded: `ml-[1.6875rem]` (27px) puts the left border at 40px from the sidebar edge — the same
+        // column as the parent icon's center (8px group p-2 + 4px item mx-1 + 27px ml + 1px translate = 40px).
+        // Sub buttons then render to the right of the connector line with their usual indent.
+        "mr-3.5 ml-[1.6875rem] flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5",
+        // Collapsed: drop the connector line and paint a muted band so the sub group stands out from
+        // the top-level items at a glance.
+        "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-muted/50 group-data-[collapsible=icon]:px-0",
         className
       )}
       {...props}
@@ -842,9 +858,14 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
       data-slot="sidebar-menu-sub-item"
       data-sidebar="menu-sub-item"
       className={cn(
-        // Active indicator for sub items: positioned just left of the button's rounded background so it
-        // visually matches the parent marker's column treatment (inside the sidebar content area).
-        "group/menu-sub-item relative before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-1 before:h-[2rem] before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-primary before:opacity-0 has-[>[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-100",
+        // Active indicator for sub items: centered on the SidebarMenuSub's left connector line when
+        // expanded; flush with the sidebar edge (`-left-3`) when collapsed so it aligns with the
+        // top-level marker column.
+        // Active indicator for sub items: centered on the SidebarMenuSub's left connector line. The item
+        // sits inside the ul's px-2.5 content area, so `-left-[0.78125rem]` backs the 4px marker up over
+        // the 1px border so it reads as a primary-colored segment of the guide.
+        // Collapsed: flush with sidebar edge via `-left-3` (aligns with the top-level marker column).
+        "group/menu-sub-item relative before:pointer-events-none before:absolute before:top-[calc(var(--control-height)/2)] before:-left-[0.78125rem] before:h-[2rem] before:w-1 before:-translate-y-1/2 before:bg-primary before:opacity-0 group-data-[collapsible=icon]:before:-left-3 has-[>[data-sidebar=menu-sub-button][data-active=true]]:before:opacity-100",
         className
       )}
       {...props}
@@ -873,12 +894,15 @@ function SidebarMenuSubButton({
       className={cn(
         // Matches the top-level menu button height for consistency (38px desktop / 44px mobile per Apple HIG).
         // Dim by default (muted), brighten on hover/active — mirrors SidebarMenuButton styling.
-        "flex h-[var(--control-height)] min-w-0 -translate-x-px cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 text-muted-foreground outline-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+        "flex h-[var(--control-height)] min-w-0 -translate-x-px cursor-pointer items-center gap-2 overflow-hidden rounded-md px-2 text-muted-foreground outline-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0",
         // Active: no background fill — only marker (on SidebarMenuSubItem) + brighter text + weight.
         "data-[active=true]:font-medium data-[active=true]:text-foreground",
         size === "sm" && "text-xs",
         size === "md" && "text-sm",
-        "group-data-[collapsible=icon]:hidden",
+        // Collapsed: render like a top-level icon button — icon-only, centered, same ml/size as SidebarMenuButton.
+        // The surrounding SidebarMenuSub provides the muted background band.
+        "group-data-[collapsible=icon]:ml-[0.5625rem] group-data-[collapsible=icon]:w-[var(--control-height)] group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
+        "group-data-[collapsible=icon]:[&>span:last-child]:hidden",
         className
       )}
       {...props}

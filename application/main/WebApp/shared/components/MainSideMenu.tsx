@@ -32,7 +32,7 @@ export function MainSideMenu() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="h-[var(--side-menu-collapsed-width)] justify-center px-0">
         <HeaderUserMenu />
       </SidebarHeader>
       <SidebarContent>
