@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
@@ -10,15 +12,19 @@ import {
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
+  SidebarMenuCollapsibleProvider,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarRail
+  SidebarRail,
+  useSidebarMenuCollapsible
 } from "@repo/ui/components/Sidebar";
 import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { BlocksIcon, ChevronRightIcon, LayersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import type { PreviewSection } from "./previewSections";
 
 import { PreviewAvatarMenu } from "./PreviewAvatarMenu";
 import { chartsIcon as ChartsIcon, chartsLabel, componentsSections, examplesSections } from "./previewSections";
@@ -35,7 +41,76 @@ function useHash(defaultHash: string) {
   return hash;
 }
 
-type CollapsibleKey = "components" | "examples";
+type CollapsibleMenuProps = Readonly<{
+  groupKey: string;
+  icon: LucideIcon;
+  label: React.ReactNode;
+  collapseLabel: string;
+  expandLabel: string;
+  tooltip: string;
+  routePath: string;
+  isOnPage: boolean;
+  activeHash: string;
+  sections: readonly PreviewSection[];
+}>;
+
+function CollapsibleMenu({
+  groupKey,
+  icon: Icon,
+  label,
+  collapseLabel,
+  expandLabel,
+  tooltip,
+  routePath,
+  isOnPage,
+  activeHash,
+  sections
+}: CollapsibleMenuProps) {
+  // Arriving at a matching page auto-expands this group (and auto-collapses any sibling).
+  const { isExpanded, toggle, expand } = useSidebarMenuCollapsible(groupKey);
+  useEffect(() => {
+    if (isOnPage) {
+      expand();
+    }
+  }, [isOnPage, expand]);
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild={true} isActive={isOnPage} tooltip={tooltip}>
+        <RouterLink to={routePath}>
+          <Icon />
+          <span>{label}</span>
+        </RouterLink>
+      </SidebarMenuButton>
+      <SidebarMenuAction onClick={toggle} aria-label={isExpanded ? collapseLabel : expandLabel}>
+        <ChevronRightIcon className={`transition-transform duration-100 ${isExpanded ? "rotate-90" : ""}`} />
+      </SidebarMenuAction>
+      {isExpanded && (
+        <SidebarMenuSub>
+          {sections.map(({ hash, label: sectionLabel, icon: SectionIcon }) => (
+            <SidebarMenuSubItem key={hash}>
+              <SidebarMenuSubButton asChild={true} isActive={isOnPage && activeHash === hash}>
+                {isOnPage ? (
+                  // Same-route hash change: native anchor so the browser updates window.location.hash
+                  // and fires `hashchange`, which the content components listen for.
+                  <a href={`#${hash}`}>
+                    <SectionIcon />
+                    <span>{sectionLabel}</span>
+                  </a>
+                ) : (
+                  <RouterLink to={routePath} hash={hash}>
+                    <SectionIcon />
+                    <span>{sectionLabel}</span>
+                  </RouterLink>
+                )}
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      )}
+    </SidebarMenuItem>
+  );
+}
 
 export function ComponentsSideMenu() {
   const router = useRouter();
@@ -46,24 +121,6 @@ export function ComponentsSideMenu() {
 
   const componentsHash = useHash("controls");
   const examplesHash = useHash("dialogs");
-
-  // Expanded by default when the user is on the matching page. Users can still toggle manually
-  // via the chevron action. Deliberately not persisted — resets per session.
-  const [expanded, setExpanded] = useState<Record<CollapsibleKey, boolean>>({
-    components: isComponentsPage,
-    examples: isExamplesPage
-  });
-
-  useEffect(() => {
-    setExpanded((prev) => ({
-      components: prev.components || isComponentsPage,
-      examples: prev.examples || isExamplesPage
-    }));
-  }, [isComponentsPage, isExamplesPage]);
-
-  const toggle = (key: CollapsibleKey) => {
-    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
 
   return (
     <Sidebar collapsible="icon">
@@ -77,87 +134,34 @@ export function ComponentsSideMenu() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isComponentsPage} tooltip={t`Components`}>
-                  <RouterLink to="/components">
-                    <BlocksIcon />
-                    <span>
-                      <Trans>Components</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-                <SidebarMenuAction
-                  onClick={() => toggle("components")}
-                  aria-label={expanded.components ? t`Collapse Components` : t`Expand Components`}
-                >
-                  <ChevronRightIcon
-                    className={`transition-transform duration-100 ${expanded.components ? "rotate-90" : ""}`}
-                  />
-                </SidebarMenuAction>
-                {expanded.components && (
-                  <SidebarMenuSub>
-                    {componentsSections.map(({ hash, label, icon: Icon }) => (
-                      <SidebarMenuSubItem key={hash}>
-                        <SidebarMenuSubButton asChild={true} isActive={isComponentsPage && componentsHash === hash}>
-                          {isComponentsPage ? (
-                            // Same-route hash change: use a native anchor so the browser updates
-                            // window.location.hash and fires `hashchange`, which the content components listen for.
-                            <a href={`#${hash}`}>
-                              <Icon />
-                              <span>{label}</span>
-                            </a>
-                          ) : (
-                            <RouterLink to="/components" hash={hash}>
-                              <Icon />
-                              <span>{label}</span>
-                            </RouterLink>
-                          )}
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                )}
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isExamplesPage} tooltip={t`Examples`}>
-                  <RouterLink to="/components/examples">
-                    <LayersIcon />
-                    <span>
-                      <Trans>Examples</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-                <SidebarMenuAction
-                  onClick={() => toggle("examples")}
-                  aria-label={expanded.examples ? t`Collapse Examples` : t`Expand Examples`}
-                >
-                  <ChevronRightIcon
-                    className={`transition-transform duration-100 ${expanded.examples ? "rotate-90" : ""}`}
-                  />
-                </SidebarMenuAction>
-                {expanded.examples && (
-                  <SidebarMenuSub>
-                    {examplesSections.map(({ hash, label, icon: Icon }) => (
-                      <SidebarMenuSubItem key={hash}>
-                        <SidebarMenuSubButton asChild={true} isActive={isExamplesPage && examplesHash === hash}>
-                          {isExamplesPage ? (
-                            <a href={`#${hash}`}>
-                              <Icon />
-                              <span>{label}</span>
-                            </a>
-                          ) : (
-                            <RouterLink to="/components/examples" hash={hash}>
-                              <Icon />
-                              <span>{label}</span>
-                            </RouterLink>
-                          )}
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                )}
-              </SidebarMenuItem>
+              <SidebarMenuCollapsibleProvider
+                defaultExpanded={isComponentsPage ? "components" : isExamplesPage ? "examples" : null}
+              >
+                <CollapsibleMenu
+                  groupKey="components"
+                  icon={BlocksIcon}
+                  label={<Trans>Components</Trans>}
+                  collapseLabel={t`Collapse Components`}
+                  expandLabel={t`Expand Components`}
+                  tooltip={t`Components`}
+                  routePath="/components"
+                  isOnPage={isComponentsPage}
+                  activeHash={componentsHash}
+                  sections={componentsSections}
+                />
+                <CollapsibleMenu
+                  groupKey="examples"
+                  icon={LayersIcon}
+                  label={<Trans>Examples</Trans>}
+                  collapseLabel={t`Collapse Examples`}
+                  expandLabel={t`Expand Examples`}
+                  tooltip={t`Examples`}
+                  routePath="/components/examples"
+                  isOnPage={isExamplesPage}
+                  activeHash={examplesHash}
+                  sections={examplesSections}
+                />
+              </SidebarMenuCollapsibleProvider>
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild={true} isActive={isChartsPage} tooltip={t`Charts`}>

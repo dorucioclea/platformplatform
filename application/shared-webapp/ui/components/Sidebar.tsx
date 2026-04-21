@@ -873,6 +873,64 @@ function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">)
   );
 }
 
+// SidebarMenuCollapsible — shared single-expand coordination for menu items with nested sub groups.
+// Consumers wrap their SidebarMenu (or a slice of it) in the provider and use `useSidebarMenuCollapsible`
+// from each collapsible item. Only one item's sub group can be expanded at a time; expanding another
+// auto-collapses the previous one. Defaults can be seeded from the current route for a sensible initial
+// state. The provider doesn't persist — reset per session, matches the rest of the Sidebar UX.
+type SidebarMenuCollapsibleContextValue = {
+  expanded: string | null;
+  toggle: (key: string) => void;
+  expand: (key: string) => void;
+  collapse: () => void;
+};
+
+const SidebarMenuCollapsibleContext = React.createContext<SidebarMenuCollapsibleContextValue | null>(null);
+
+function SidebarMenuCollapsibleProvider({
+  defaultExpanded = null,
+  children
+}: {
+  defaultExpanded?: string | null;
+  children: React.ReactNode;
+}) {
+  const [expanded, setExpanded] = React.useState<string | null>(defaultExpanded);
+  const toggle = React.useCallback((key: string) => {
+    setExpanded((prev) => (prev === key ? null : key));
+  }, []);
+  const expand = React.useCallback((key: string) => setExpanded(key), []);
+  const collapse = React.useCallback(() => setExpanded(null), []);
+  const value = React.useMemo(() => ({ expanded, toggle, expand, collapse }), [expanded, toggle, expand, collapse]);
+  return <SidebarMenuCollapsibleContext value={value}>{children}</SidebarMenuCollapsibleContext>;
+}
+
+function useSidebarMenuCollapsible(key: string) {
+  const context = React.useContext(SidebarMenuCollapsibleContext);
+  if (!context) {
+    throw new Error("useSidebarMenuCollapsible must be used within a SidebarMenuCollapsibleProvider.");
+  }
+  // Stabilize returned callbacks via refs. Without this, `toggle`/`expand` take a new reference every
+  // time the provider's value updates (which happens each time `expanded` changes), causing any effect
+  // that depends on them to re-fire and fight manual toggles (e.g., "expand when on this page" would
+  // immediately re-expand after a user collapses).
+  const contextRef = React.useRef(context);
+  contextRef.current = context;
+  const keyRef = React.useRef(key);
+  keyRef.current = key;
+  const stable = React.useMemo(
+    () => ({
+      toggle: () => contextRef.current.toggle(keyRef.current),
+      expand: () => contextRef.current.expand(keyRef.current),
+      collapse: () => contextRef.current.collapse()
+    }),
+    []
+  );
+  return {
+    isExpanded: context.expanded === key,
+    ...stable
+  };
+}
+
 function SidebarMenuSubButton({
   asChild = false,
   size = "md",
@@ -926,6 +984,7 @@ export {
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
+  SidebarMenuCollapsibleProvider,
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarMenuSub,
@@ -936,5 +995,6 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  useSidebarMenuCollapsible,
   useSidebarSafe
 };
