@@ -832,11 +832,12 @@ function SidebarMenuSkeleton({
   );
 }
 
-function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
-  return (
+function SidebarMenuSub({ className, isExpanded, ...props }: React.ComponentProps<"ul"> & { isExpanded?: boolean }) {
+  const ul = (
     <ul
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
+      data-state={isExpanded === undefined ? undefined : isExpanded ? "open" : "closed"}
       className={cn(
         // Expanded: `ml-[1.6875rem]` (27px) puts the left border at 40px from the sidebar edge — the same
         // column as the parent icon's center (8px group p-2 + 4px item mx-1 + 27px ml + 1px translate = 40px).
@@ -850,6 +851,33 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
       )}
       {...props}
     />
+  );
+
+  // `isExpanded` not provided → always rendered. Otherwise wrap in a grid-rows animator:
+  // `0fr → 1fr` expands/collapses to natural content height; `overflow-hidden` on the inner wrapper
+  // clips during the transition. The sub is always in the DOM so both entry and exit animations play.
+  // Runs in both expanded and collapsed sidebar modes for consistent motion.
+  if (isExpanded === undefined) {
+    return ul;
+  }
+
+  return (
+    <div
+      data-slot="sidebar-menu-sub-wrapper"
+      className={cn(
+        "grid transition-[grid-template-rows] duration-200 ease-in-out",
+        isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+      )}
+      // When collapsed, `inert` removes the clipped sub items from the tab order and blocks
+      // pointer/keyboard interaction, so Tab skips hidden entries.
+      inert={!isExpanded}
+    >
+      {/* `overflow-hidden` clips during the height transition. `-mx-3 px-3` extends horizontally so
+          the sub-item marker (sits at `-left-3`) and the right-side focus ring stay visible. `-my-1
+          py-1` extends vertically by 4px (outline 2px + offset 2px) so the first/last items' focus
+          rings aren't clipped at the top/bottom of the wrapper. */}
+      <div className="-mx-3 -my-1 min-h-0 overflow-hidden px-3 py-1">{ul}</div>
+    </div>
   );
 }
 
@@ -895,7 +923,17 @@ function SidebarMenuCollapsibleProvider({
   defaultExpanded?: string | null;
   children: React.ReactNode;
 }) {
-  const [expanded, setExpanded] = React.useState<string | null>(defaultExpanded);
+  // Start collapsed (null) and apply `defaultExpanded` in a layout effect after mount. That way the
+  // grid-rows transition in `SidebarMenuSub` plays even on the very first render of a freshly mounted
+  // component (e.g., navigating between routes that remount the sidebar).
+  const [expanded, setExpanded] = React.useState<string | null>(null);
+  React.useLayoutEffect(() => {
+    if (defaultExpanded) {
+      const frame = requestAnimationFrame(() => setExpanded(defaultExpanded));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [defaultExpanded]);
+
   const toggle = React.useCallback((key: string) => {
     setExpanded((prev) => (prev === key ? null : key));
   }, []);

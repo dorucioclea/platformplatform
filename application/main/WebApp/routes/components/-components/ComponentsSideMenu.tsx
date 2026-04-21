@@ -76,7 +76,10 @@ function CollapsibleMenu({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild={true} isActive={isOnPage} tooltip={tooltip}>
+      {/* Clicking the top-level button both navigates and expands the sub group. The route-change
+          effect only fires on `isOnPage` transitions, so an explicit `expand()` on click also covers
+          the "already on this page, user manually collapsed, clicks again" case. */}
+      <SidebarMenuButton asChild={true} isActive={isOnPage} tooltip={tooltip} onClick={expand}>
         <RouterLink to={routePath}>
           <Icon />
           <span>{label}</span>
@@ -85,33 +88,31 @@ function CollapsibleMenu({
       <SidebarMenuAction onClick={toggle} aria-label={isExpanded ? collapseLabel : expandLabel}>
         <ChevronRightIcon className={`transition-transform duration-100 ${isExpanded ? "rotate-90" : ""}`} />
       </SidebarMenuAction>
-      {isExpanded && (
-        <SidebarMenuSub>
-          {sections.map(({ hash, label: sectionLabel, icon: SectionIcon }) => (
-            <SidebarMenuSubItem key={hash}>
-              <SidebarMenuSubButton
-                asChild={true}
-                isActive={isOnPage && activeHash === hash}
-                tooltip={{ children: sectionLabel }}
-              >
-                {isOnPage ? (
-                  // Same-route hash change: native anchor so the browser updates window.location.hash
-                  // and fires `hashchange`, which the content components listen for.
-                  <a href={`#${hash}`}>
-                    <SectionIcon />
-                    <span>{sectionLabel}</span>
-                  </a>
-                ) : (
-                  <RouterLink to={routePath} hash={hash}>
-                    <SectionIcon />
-                    <span>{sectionLabel}</span>
-                  </RouterLink>
-                )}
-              </SidebarMenuSubButton>
-            </SidebarMenuSubItem>
-          ))}
-        </SidebarMenuSub>
-      )}
+      <SidebarMenuSub isExpanded={isExpanded}>
+        {sections.map(({ hash, label: sectionLabel, icon: SectionIcon }) => (
+          <SidebarMenuSubItem key={hash}>
+            <SidebarMenuSubButton
+              asChild={true}
+              isActive={isOnPage && activeHash === hash}
+              tooltip={{ children: sectionLabel }}
+            >
+              {isOnPage ? (
+                // Same-route hash change: native anchor so the browser updates window.location.hash
+                // and fires `hashchange`, which the content components listen for.
+                <a href={`#${hash}`}>
+                  <SectionIcon />
+                  <span>{sectionLabel}</span>
+                </a>
+              ) : (
+                <RouterLink to={routePath} hash={hash}>
+                  <SectionIcon />
+                  <span>{sectionLabel}</span>
+                </RouterLink>
+              )}
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+        ))}
+      </SidebarMenuSub>
     </SidebarMenuItem>
   );
 }
