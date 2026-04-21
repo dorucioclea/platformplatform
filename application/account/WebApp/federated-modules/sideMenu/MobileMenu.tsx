@@ -1,18 +1,23 @@
 import { t } from "@lingui/core/macro";
-import { trackInteraction } from "@repo/infrastructure/applicationInsights/ApplicationInsightsProvider";
+import { Trans } from "@lingui/react/macro";
+import { trackInteraction, useTrackOpen } from "@repo/infrastructure/applicationInsights/ApplicationInsightsProvider";
 import { authSyncService, type TenantSwitchedMessage } from "@repo/infrastructure/auth/AuthSyncService";
 import { loggedInPath } from "@repo/infrastructure/auth/constants";
 import { useUserInfo } from "@repo/infrastructure/auth/hooks";
-import { useEffect, useState } from "react";
+import { Button } from "@repo/ui/components/Button";
+import { overlayContext } from "@repo/ui/components/Sidebar";
+import { TenantLogo } from "@repo/ui/components/TenantLogo";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/Tooltip";
+import { LayoutDashboardIcon, MessageCircleQuestion } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 
 import { SupportDialog } from "../common/SupportDialog";
 import { SwitchingAccountLoader } from "../common/SwitchingAccountLoader";
-import { switchTenantApi, type TenantInfo } from "../common/tenantUtils";
+import { fetchTenants, switchTenantApi, type TenantInfo } from "../common/tenantUtils";
+import { menuItemClassName } from "./menuUtils";
+import { MobileMenuContent } from "./MobileMenuContent";
 import { TenantSwitcherDrawer } from "./TenantSwitcherDrawer";
 
-// Lives at this path because UserMenu (federated) imports MobileMenuDialogs from here. The original
-// default-exported MobileMenu component (used by the legacy SideMenu's mobile overlay) is gone — the new
-// Sidebar handles mobile via its built-in Sheet and doesn't need a separate mobile overlay component.
 export function MobileMenuDialogs() {
   const userInfo = useUserInfo();
   const [isTenantSwitcherOpen, setIsTenantSwitcherOpen] = useState(false);
@@ -84,5 +89,116 @@ export function MobileMenuDialogs() {
       {isSwitching && <SwitchingAccountLoader />}
       <SupportDialog isOpen={isSupportDialogOpen} onOpenChange={setIsSupportDialogOpen} />
     </>
+  );
+}
+
+export interface MobileMenuProps {
+  onNavigate?: (path: string) => void;
+}
+
+// Rich mobile navigation surface rendered inside the Sidebar's mobile Sheet. Shows tenant info,
+// user actions, tenant switcher, navigation links, and a support button. Federated so both the
+// Main and Account apps can reuse it inside their mobile sidebars.
+export default function MobileMenu({ onNavigate }: Readonly<MobileMenuProps>) {
+  const userInfo = useUserInfo();
+  const overlayCtx = useContext(overlayContext);
+  const [tenants, setTenants] = useState<TenantInfo[]>([]);
+  const pathname = window.location.pathname;
+
+  useTrackOpen("Mobile menu", "menu");
+
+  useEffect(() => {
+    if (userInfo?.isAuthenticated) {
+      fetchTenants()
+        .then((response) => setTenants(response.tenants || []))
+        .catch(() => setTenants([]));
+    }
+  }, [userInfo?.isAuthenticated]);
+
+  const closeMenu = () => {
+    if (overlayCtx?.isOpen) {
+      overlayCtx.close();
+    }
+  };
+
+  const handleOpenSupportDialog = () => {
+    window.dispatchEvent(new CustomEvent("open-support-dialog"));
+    setTimeout(closeMenu, 100);
+  };
+
+  const handleOpenTenantSwitcher = () => {
+    trackInteraction("Switch account", "menu", "Open");
+    window.dispatchEvent(new CustomEvent("open-tenant-switcher", { detail: { tenants } }));
+    setTimeout(closeMenu, 100);
+  };
+
+  const currentTenant = tenants.find((tenant) => tenant.tenantId === userInfo?.tenantId);
+  const currentTenantName = currentTenant?.tenantName || userInfo?.tenantName || "PlatformPlatform";
+  const currentTenantNameForLogo = currentTenant?.tenantName || userInfo?.tenantName || "";
+  const currentTenantLogoUrl = currentTenant ? currentTenant.logoUrl : userInfo?.tenantLogoUrl;
+
+  return (
+    <div className="flex h-full flex-col">
+      {userInfo?.isAuthenticated && (
+        <div className="-mx-3 -mt-5 mb-2 flex items-center justify-center gap-3 bg-muted px-3 py-2.5 dark:bg-transparent">
+          <TenantLogo logoUrl={currentTenantLogoUrl} tenantName={currentTenantNameForLogo} size="sm" />
+          <h5 className="min-w-0 overflow-hidden font-normal text-ellipsis whitespace-nowrap">{currentTenantName}</h5>
+        </div>
+      )}
+      <div className="flex-1 overflow-x-hidden overflow-y-auto px-1 py-1">
+        <MobileMenuContent tenants={tenants} onOpenTenantSwitcher={handleOpenTenantSwitcher} />
+
+        <div className="my-3 border-b border-border" />
+
+        <div className="flex flex-col">
+          <div className="px-2 pt-2 pb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            <Trans>Navigation</Trans>
+          </div>
+          {/* `onNavigate` is provided by the Account app (federated) and the Main app's Dashboard
+              SCS-local navigator, avoiding full page reloads when both apps are loaded together.
+              When absent, fall back to a hard navigation — correct for /dashboard since it may live
+              in a different SCS than the current Account sidebar. */}
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (onNavigate) {
+                onNavigate("/dashboard");
+              } else {
+                window.location.href = "/dashboard";
+              }
+              closeMenu();
+            }}
+            className={menuItemClassName(pathname, "/dashboard")}
+            aria-label={t`Dashboard`}
+          >
+            <div className="flex size-6 shrink-0 items-center justify-center">
+              <LayoutDashboardIcon className="size-5 stroke-current" />
+            </div>
+            <Trans>Dashboard</Trans>
+          </Button>
+        </div>
+      </div>
+
+      <div className="absolute bottom-3 left-3 z-10 supports-[bottom:max(0px)]:bottom-[max(0.5rem,calc(env(safe-area-inset-bottom)-0.5rem))]">
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t`Contact support`}
+                className="size-14 rounded-full border border-border bg-background/80 shadow-lg backdrop-blur-sm hover:bg-background/90 active:bg-muted"
+                onClick={handleOpenSupportDialog}
+              />
+            }
+          >
+            <MessageCircleQuestion className="size-7 text-foreground" />
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <Trans>Contact support</Trans>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </div>
   );
 }

@@ -404,6 +404,9 @@ msgstr "Ryd søgning"
 msgid "Close"
 msgstr "Luk"
 
+msgid "Close menu"
+msgstr "Luk menu"
+
 msgid "Close sidebar"
 msgstr "Luk sidemenu"
 
@@ -466,6 +469,9 @@ msgstr "Farezone"
 
 msgid "Dark"
 msgstr "Mørk"
+
+msgid "Dashboard"
+msgstr ""
 
 msgid "Data Processing Agreement"
 msgstr "Databehandleraftale"
@@ -536,9 +542,6 @@ msgstr "Enheder, der har logget ind på din konto. Tilbagekald alle sessioner, d
 
 msgid "Different user logged in"
 msgstr "En anden bruger loggede ind"
-
-msgid "Displays the mobile sidebar."
-msgstr "Viser sidemenuen på mobil."
 
 msgid "Do you already have an account?"
 msgstr "Har du allerede en konto?"
@@ -855,6 +858,9 @@ msgstr "Microsoft opdaterer og sikrer automatisk al PaaS infrastruktur"
 msgid "Mobile"
 msgstr "Mobil"
 
+msgid "Mobile navigation"
+msgstr "Mobilnavigation"
+
 msgid "Modified date"
 msgstr "Ændret dato"
 
@@ -866,6 +872,9 @@ msgstr "Navn"
 
 msgid "Name as it appears on invoices"
 msgstr "Navn som det fremgår på fakturaer"
+
+msgid "Navigation"
+msgstr ""
 
 msgid "Need help? Our support team is here to assist you."
 msgstr "Har du brug for hjælp? Vores supportteam er klart til at hjælpe."
@@ -917,6 +926,9 @@ msgstr "Kun betroet personale får adgang til data gennem Azure AD autentificeri
 
 msgid "Open calendar"
 msgstr ""
+
+msgid "Open menu"
+msgstr "Åbn menu"
 
 msgid "or"
 msgstr "eller"
@@ -1206,9 +1218,6 @@ msgstr "Vis flere"
 
 msgid "Show search filters"
 msgstr "Vis søgefiltre"
-
-msgid "Sidebar"
-msgstr "Sidemenu"
 
 msgid "Sign up"
 msgstr "Tilmeld dig"

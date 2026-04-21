@@ -38,6 +38,9 @@ msgstr "Ryd datoer"
 msgid "Close"
 msgstr ""
 
+msgid "Close menu"
+msgstr "Luk menu"
+
 msgid "Close sidebar"
 msgstr "Luk sidemenu"
 
@@ -52,9 +55,6 @@ msgstr "Dashboard"
 
 msgid "Decrease"
 msgstr "Formindsk"
-
-msgid "Displays the mobile sidebar."
-msgstr "Viser sidemenuen på mobil."
 
 msgid "Drop files here, or click to browse"
 msgstr ""
@@ -89,6 +89,9 @@ msgstr "Hovedindhold"
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
 
+msgid "Mobile navigation"
+msgstr "Mobilnavigation"
+
 msgid "More pages"
 msgstr "Flere sider"
 
@@ -103,6 +106,9 @@ msgstr "Ingen resultater fundet"
 
 msgid "Open calendar"
 msgstr ""
+
+msgid "Open menu"
+msgstr "Åbn menu"
 
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
@@ -133,9 +139,6 @@ msgstr "Vis detaljer"
 
 msgid "Show more"
 msgstr "Vis flere"
-
-msgid "Sidebar"
-msgstr "Sidemenu"
 
 msgid "Something went wrong"
 msgstr "Noget gik galt"

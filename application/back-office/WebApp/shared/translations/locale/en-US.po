@@ -38,6 +38,9 @@ msgstr "Clear dates"
 msgid "Close"
 msgstr "Close"
 
+msgid "Close menu"
+msgstr "Close menu"
+
 msgid "Close sidebar"
 msgstr "Close sidebar"
 
@@ -52,9 +55,6 @@ msgstr "Dashboard"
 
 msgid "Decrease"
 msgstr "Decrease"
-
-msgid "Displays the mobile sidebar."
-msgstr "Displays the mobile sidebar."
 
 msgid "Drop files here, or click to browse"
 msgstr "Drop files here, or click to browse"
@@ -89,6 +89,9 @@ msgstr "Main content"
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 
+msgid "Mobile navigation"
+msgstr "Mobile navigation"
+
 msgid "More pages"
 msgstr "More pages"
 
@@ -103,6 +106,9 @@ msgstr "No results found"
 
 msgid "Open calendar"
 msgstr "Open calendar"
+
+msgid "Open menu"
+msgstr "Open menu"
 
 msgid "Page not found"
 msgstr "Page not found"
@@ -133,9 +139,6 @@ msgstr "Show details"
 
 msgid "Show more"
 msgstr "Show more"
-
-msgid "Sidebar"
-msgstr "Sidebar"
 
 msgid "Something went wrong"
 msgstr "Something went wrong"

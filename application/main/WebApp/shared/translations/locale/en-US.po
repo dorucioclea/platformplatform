@@ -334,6 +334,9 @@ msgstr "Click a row to open the side pane. Use Shift or Cmd/Ctrl with click or a
 msgid "Close"
 msgstr "Close"
 
+msgid "Close menu"
+msgstr "Close menu"
+
 msgid "Close recipe details"
 msgstr "Close recipe details"
 
@@ -528,9 +531,6 @@ msgstr "Dish name"
 
 msgid "Dish name is required"
 msgstr "Dish name is required"
-
-msgid "Displays the mobile sidebar."
-msgstr "Displays the mobile sidebar."
 
 msgid "Done"
 msgstr "Done"
@@ -943,6 +943,9 @@ msgstr "Middle"
 msgid "Mobile"
 msgstr "Mobile"
 
+msgid "Mobile navigation"
+msgstr "Mobile navigation"
+
 msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 msgstr "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 
@@ -1059,6 +1062,9 @@ msgstr "Open calendar"
 
 msgid "Open command palette"
 msgstr "Open command palette"
+
+msgid "Open menu"
+msgstr "Open menu"
 
 msgid "Open side pane"
 msgstr "Open side pane"

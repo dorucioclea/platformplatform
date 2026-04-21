@@ -334,6 +334,9 @@ msgstr "Klik på en række for at åbne sidepanelet. Brug Shift eller Cmd/Ctrl s
 msgid "Close"
 msgstr "Luk"
 
+msgid "Close menu"
+msgstr "Luk menu"
+
 msgid "Close recipe details"
 msgstr "Luk opskriftsdetaljer"
 
@@ -528,9 +531,6 @@ msgstr "Rettens navn"
 
 msgid "Dish name is required"
 msgstr "Rettens navn er påkrævet"
-
-msgid "Displays the mobile sidebar."
-msgstr "Viser sidemenuen på mobil."
 
 msgid "Done"
 msgstr "Udført"
@@ -943,6 +943,9 @@ msgstr "Midte"
 msgid "Mobile"
 msgstr "Mobil"
 
+msgid "Mobile navigation"
+msgstr "Mobilnavigation"
+
 msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 msgstr "Mobile-first panel med trækhåndtag og swipe-to-dismiss. Brug det når indholdet er kort og brugeren skal kunne flicke det væk. Venstre- og højre-drawers er smalle som standard; top og bund spænder fuld bredde med mindre du begrænser DrawerContent med mx-auto og max-w-*."
 
@@ -1059,6 +1062,9 @@ msgstr ""
 
 msgid "Open command palette"
 msgstr "Åbn kommandopalette"
+
+msgid "Open menu"
+msgstr "Åbn menu"
 
 msgid "Open side pane"
 msgstr "Åbn sidepanel"

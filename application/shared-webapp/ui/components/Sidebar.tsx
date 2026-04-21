@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronsLeftIcon, PanelLeftIcon } from "lucide-react";
+import { ChevronsLeftIcon, MenuIcon, PanelLeftIcon, XIcon } from "lucide-react";
 import * as React from "react";
 
 import { useViewportResize } from "../hooks/useViewportResize";
@@ -16,13 +16,11 @@ import {
 import { Button } from "./Button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./HoverCard";
 import { Separator } from "./Separator";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "./Sheet";
 import { Skeleton } from "./Skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./Tooltip";
 
 // Width is in rem (persisted to localStorage as a rem number).
 // Icon-collapsed width comes from responsive.ts so it stays in sync with the old SideMenu migration.
-const SIDEBAR_WIDTH_MOBILE_REM = 18;
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 const SIDEBAR_STORAGE_KEY_COLLAPSED = "side-menu-collapsed"; // "true" means collapsed
 const SIDEBAR_STORAGE_KEY_WIDTH = "side-menu-size"; // rem number
@@ -247,11 +245,17 @@ function Sidebar({
   collapsible = "icon",
   className,
   children,
+  mobileContent,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
+  // Optional override for what appears inside the full-screen mobile overlay. Consumers (e.g.
+  // AccountSideMenu, MainSideMenu) pass a richer mobile navigation surface — tenant info, user
+  // actions, tenant switcher, support button — that wouldn't fit in the desktop icon rail. When
+  // omitted, the sidebar's regular `children` render on mobile as well.
+  mobileContent?: React.ReactNode;
 }) {
   const { isMobile, state, openMobile, setOpenMobile, setOpen } = useSidebar();
 
@@ -269,23 +273,45 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-        <SheetContent
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          className="w-[var(--sidebar-width)] bg-sidebar p-0 text-sidebar-foreground data-[side=left]:sm:max-w-none data-[side=right]:sm:max-w-none [&>button]:hidden"
-          style={{ "--sidebar-width": `${SIDEBAR_WIDTH_MOBILE_REM}rem` } as React.CSSProperties}
-          side={side}
-          showCloseButton={false}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>{t`Sidebar`}</SheetTitle>
-            <SheetDescription>{t`Displays the mobile sidebar.`}</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+      <>
+        {!openMobile && (
+          <div className="fixed right-3 bottom-3 z-20 supports-[bottom:max(0px)]:bottom-[max(0.5rem,calc(env(safe-area-inset-bottom)-0.5rem))] sm:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t`Open menu`}
+              className="size-14 rounded-full border border-border bg-background shadow-lg hover:bg-hover-background focus:bg-hover-background active:bg-muted dark:hover:bg-hover-background"
+              onClick={() => setOpenMobile(true)}
+            >
+              <MenuIcon className="size-7 text-foreground" />
+            </Button>
+          </div>
+        )}
+        {openMobile && (
+          <div
+            data-sidebar="sidebar"
+            data-slot="sidebar"
+            data-mobile="true"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t`Mobile navigation`}
+            className="fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-40 flex flex-col bg-sidebar text-sidebar-foreground sm:hidden"
+          >
+            <div className="flex h-full w-full flex-col overflow-y-auto px-3 pt-5">{mobileContent ?? children}</div>
+            <div className="fixed right-3 bottom-3 z-10 supports-[bottom:max(0px)]:bottom-[max(0.5rem,calc(env(safe-area-inset-bottom)-0.5rem))]">
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t`Close menu`}
+                className="size-14 rounded-full border border-border bg-background/80 shadow-lg backdrop-blur-sm hover:bg-background/90 active:bg-muted"
+                onClick={() => setOpenMobile(false)}
+              >
+                <XIcon className="size-7 text-foreground" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 
@@ -855,7 +881,7 @@ function SidebarMenuSub({ className, isExpanded, ...props }: React.ComponentProp
         "ml-[1.6875rem] flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border py-0.5 pr-0 pl-2.5",
         // Collapsed: drop the connector line and paint a muted band so the sub group stands out from
         // the top-level items at a glance.
-        "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-white/60 group-data-[collapsible=icon]:dark:bg-white/5 group-data-[collapsible=icon]:px-0",
+        "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-white/60 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:dark:bg-white/5",
         className
       )}
       {...props}

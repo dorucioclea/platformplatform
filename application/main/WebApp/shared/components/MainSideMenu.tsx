@@ -13,7 +13,8 @@ import {
   SidebarMenuItem,
   SidebarRail
 } from "@repo/ui/components/Sidebar";
-import { Link as RouterLink, useRouter } from "@tanstack/react-router";
+import { Link as RouterLink, useNavigate, useRouter } from "@tanstack/react-router";
+import MobileMenu from "account/MobileMenu";
 import UserMenu from "account/UserMenu";
 import { LayoutDashboardIcon } from "lucide-react";
 import { use } from "react";
@@ -29,9 +30,13 @@ function HeaderUserMenu() {
 export function MainSideMenu() {
   const router = useRouter();
   const currentPath = normalizePath(router.state.location.pathname);
+  const navigate = useNavigate();
+  const handleNavigate = (path: string) => {
+    navigate({ to: path });
+  };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" mobileContent={<MobileMenu onNavigate={handleNavigate} />}>
       <SidebarHeader>
         <HeaderUserMenu />
       </SidebarHeader>

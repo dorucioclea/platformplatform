@@ -26,7 +26,9 @@ import {
 } from "lucide-react";
 import { use } from "react";
 
+import MobileMenu from "@/federated-modules/sideMenu/MobileMenu";
 import UserMenu from "@/federated-modules/userMenu/UserMenu";
+import { useMainNavigation } from "@/shared/hooks/useMainNavigation";
 
 const normalizePath = (path: string): string => path.replace(/\/$/, "") || "/";
 
@@ -40,6 +42,7 @@ export function AccountSideMenu() {
   const userInfo = useUserInfo();
   const router = useRouter();
   const currentPath = normalizePath(router.state.location.pathname);
+  const { navigateToMain } = useMainNavigation();
 
   const isActive = (target: string, matchPrefix = false) => {
     const normalized = normalizePath(target);
@@ -49,7 +52,7 @@ export function AccountSideMenu() {
   const showBilling = userInfo?.role === "Owner" && import.meta.runtime_env.PUBLIC_SUBSCRIPTION_ENABLED === "true";
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" mobileContent={<MobileMenu onNavigate={navigateToMain ?? undefined} />}>
       <SidebarHeader>
         <HeaderUserMenu />
       </SidebarHeader>
