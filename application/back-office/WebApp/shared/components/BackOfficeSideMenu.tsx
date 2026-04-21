@@ -25,33 +25,35 @@ export function BackOfficeSideMenu() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <div className="flex items-center gap-3 pl-[0.875rem] text-sm font-semibold">
-          <img className="size-9 shrink-0" src={logoMark} alt={t`PlatformPlatform logo`} />
-          <span className="truncate group-data-[collapsible=icon]:hidden">PlatformPlatform</span>
-        </div>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            <Trans>Navigation</Trans>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={currentPath === "/back-office"} tooltip={t`Dashboard`}>
-                  <RouterLink to="/back-office">
-                    <BoxIcon />
-                    <span>
-                      <Trans>Dashboard</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+      <nav className="contents" aria-label={t`Main navigation`}>
+        <SidebarHeader>
+          <div className="flex items-center gap-3 pl-[0.875rem] text-sm font-semibold">
+            <img className="size-9 shrink-0" src={logoMark} alt={t`PlatformPlatform logo`} />
+            <span className="truncate group-data-[collapsible=icon]:hidden">PlatformPlatform</span>
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              <Trans>Navigation</Trans>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={currentPath === "/back-office"} tooltip={t`Dashboard`}>
+                    <RouterLink to="/back-office">
+                      <BoxIcon />
+                      <span>
+                        <Trans>Dashboard</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </nav>
       <SidebarRail />
     </Sidebar>
   );

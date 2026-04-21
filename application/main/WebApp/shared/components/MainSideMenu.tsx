@@ -37,30 +37,32 @@ export function MainSideMenu() {
 
   return (
     <Sidebar collapsible="icon" mobileContent={<MobileMenu onNavigate={handleNavigate} />}>
-      <SidebarHeader>
-        <HeaderUserMenu />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            <Trans>Navigation</Trans>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={currentPath === "/dashboard"} tooltip={t`Dashboard`}>
-                  <RouterLink to="/dashboard">
-                    <LayoutDashboardIcon />
-                    <span>
-                      <Trans>Dashboard</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+      <nav className="contents" aria-label={t`Main navigation`}>
+        <SidebarHeader>
+          <HeaderUserMenu />
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              <Trans>Navigation</Trans>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={currentPath === "/dashboard"} tooltip={t`Dashboard`}>
+                    <RouterLink to="/dashboard">
+                      <LayoutDashboardIcon />
+                      <span>
+                        <Trans>Dashboard</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </nav>
       <SidebarRail />
     </Sidebar>
   );

@@ -289,7 +289,7 @@ function Sidebar({
             <Button
               variant="ghost"
               size="icon"
-              aria-label={t`Open menu`}
+              aria-label={t`Open navigation menu`}
               className="size-14 rounded-full border border-border bg-background shadow-lg hover:bg-hover-background focus:bg-hover-background active:bg-muted dark:hover:bg-hover-background"
               onClick={() => setOpenMobile(true)}
             >
@@ -304,7 +304,7 @@ function Sidebar({
             data-mobile="true"
             role="dialog"
             aria-modal="true"
-            aria-label={t`Mobile navigation`}
+            aria-label={t`Mobile navigation menu`}
             className="fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-40 flex flex-col bg-sidebar text-sidebar-foreground sm:hidden"
           >
             <div className="flex h-full w-full flex-col overflow-y-auto">{mobileContent ?? children}</div>
@@ -509,10 +509,10 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
       <button
         data-sidebar="rail"
         data-slot="sidebar-rail"
-        aria-label={t`Toggle sidebar`}
+        aria-label={t`Resize sidebar`}
         tabIndex={-1}
         onPointerDown={handleRailPointerDown}
-        title={t`Toggle sidebar`}
+        title={t`Resize sidebar`}
         className={cn(
           "absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear sm:flex",
           "group-data-[side=left]:-right-4 group-data-[side=right]:left-0",

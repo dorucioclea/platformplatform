@@ -816,6 +816,9 @@ msgstr "Logo"
 msgid "Main content"
 msgstr "Hovedindhold"
 
+msgid "Main navigation"
+msgstr "Hovednavigation"
+
 msgid "Manage subscription"
 msgstr "Administrer abonnement"
 
@@ -858,8 +861,8 @@ msgstr "Microsoft opdaterer og sikrer automatisk al PaaS infrastruktur"
 msgid "Mobile"
 msgstr "Mobil"
 
-msgid "Mobile navigation"
-msgstr "Mobilnavigation"
+msgid "Mobile navigation menu"
+msgstr "Mobilnavigationsmenu"
 
 msgid "Modified date"
 msgstr "Ændret dato"
@@ -927,8 +930,8 @@ msgstr "Kun betroet personale får adgang til data gennem Azure AD autentificeri
 msgid "Open calendar"
 msgstr ""
 
-msgid "Open menu"
-msgstr "Åbn menu"
+msgid "Open navigation menu"
+msgstr "Åbn navigationsmenu"
 
 msgid "or"
 msgstr "eller"
@@ -1113,6 +1116,9 @@ msgstr "Fjern profilbillede"
 
 msgid "Request a new code"
 msgstr "Anmod om en ny kode"
+
+msgid "Resize sidebar"
+msgstr "Ændr bredde på sidepanel"
 
 msgid "Restore"
 msgstr "Gendan"

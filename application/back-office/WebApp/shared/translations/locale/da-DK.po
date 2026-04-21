@@ -86,11 +86,14 @@ msgstr "Log ud"
 msgid "Main content"
 msgstr "Hovedindhold"
 
+msgid "Main navigation"
+msgstr "Hovednavigation"
+
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
 
-msgid "Mobile navigation"
-msgstr "Mobilnavigation"
+msgid "Mobile navigation menu"
+msgstr "Mobilnavigationsmenu"
 
 msgid "More pages"
 msgstr "Flere sider"
@@ -107,8 +110,8 @@ msgstr "Ingen resultater fundet"
 msgid "Open calendar"
 msgstr ""
 
-msgid "Open menu"
-msgstr "Åbn menu"
+msgid "Open navigation menu"
+msgstr "Åbn navigationsmenu"
 
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
@@ -127,6 +130,9 @@ msgstr "Prøv venligst igen eller vend tilbage til forsiden."
 
 msgid "Previous"
 msgstr "Forrige"
+
+msgid "Resize sidebar"
+msgstr "Ændr bredde på sidepanel"
 
 msgid "Select dates"
 msgstr "Vælg datoer"

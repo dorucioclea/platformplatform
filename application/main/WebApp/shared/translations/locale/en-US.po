@@ -910,6 +910,9 @@ msgstr "Main"
 msgid "Main content"
 msgstr "Main content"
 
+msgid "Main navigation"
+msgstr "Main navigation"
+
 msgid "Manage"
 msgstr "Manage"
 
@@ -943,8 +946,8 @@ msgstr "Middle"
 msgid "Mobile"
 msgstr "Mobile"
 
-msgid "Mobile navigation"
-msgstr "Mobile navigation"
+msgid "Mobile navigation menu"
+msgstr "Mobile navigation menu"
 
 msgid "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
 msgstr "Mobile-first sheet with a drag handle and swipe-to-dismiss. Reach for it when content is short and the user should be able to flick it away. Left and right drawers are narrow by default; top and bottom span the full width unless you constrain DrawerContent with mx-auto and max-w-*."
@@ -1063,8 +1066,8 @@ msgstr "Open calendar"
 msgid "Open command palette"
 msgstr "Open command palette"
 
-msgid "Open menu"
-msgstr "Open menu"
+msgid "Open navigation menu"
+msgstr "Open navigation menu"
 
 msgid "Open side pane"
 msgstr "Open side pane"
@@ -1276,6 +1279,9 @@ msgstr "Resizable app shell"
 
 msgid "Resizable panels"
 msgstr "Resizable panels"
+
+msgid "Resize sidebar"
+msgstr "Resize sidebar"
 
 msgid "Responsive layout"
 msgstr "Responsive layout"

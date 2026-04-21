@@ -86,11 +86,14 @@ msgstr "Log out"
 msgid "Main content"
 msgstr "Main content"
 
+msgid "Main navigation"
+msgstr "Main navigation"
+
 msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 msgstr "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
 
-msgid "Mobile navigation"
-msgstr "Mobile navigation"
+msgid "Mobile navigation menu"
+msgstr "Mobile navigation menu"
 
 msgid "More pages"
 msgstr "More pages"
@@ -107,8 +110,8 @@ msgstr "No results found"
 msgid "Open calendar"
 msgstr "Open calendar"
 
-msgid "Open menu"
-msgstr "Open menu"
+msgid "Open navigation menu"
+msgstr "Open navigation menu"
 
 msgid "Page not found"
 msgstr "Page not found"
@@ -127,6 +130,9 @@ msgstr "Please try again or return to the home page."
 
 msgid "Previous"
 msgstr "Previous"
+
+msgid "Resize sidebar"
+msgstr "Resize sidebar"
 
 msgid "Select dates"
 msgstr "Select dates"

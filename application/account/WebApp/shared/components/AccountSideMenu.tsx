@@ -53,102 +53,112 @@ export function AccountSideMenu() {
 
   return (
     <Sidebar collapsible="icon" mobileContent={<MobileMenu onNavigate={navigateToMain ?? undefined} />}>
-      <SidebarHeader>
-        <HeaderUserMenu />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            <Trans>User</Trans>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/user/profile")} tooltip={t`Profile`}>
-                  <RouterLink to="/user/profile">
-                    <UserIcon />
-                    <span>
-                      <Trans>Profile</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/user/preferences")} tooltip={t`Preferences`}>
-                  <RouterLink to="/user/preferences">
-                    <SlidersHorizontalIcon />
-                    <span>
-                      <Trans>Preferences</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/user/sessions")} tooltip={t`Sessions`}>
-                  <RouterLink to="/user/sessions">
-                    <MonitorSmartphoneIcon />
-                    <span>
-                      <Trans>Sessions</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            <Trans>Account</Trans>
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/account")} tooltip={t`Overview`}>
-                  <RouterLink to="/account">
-                    <HomeIcon />
-                    <span>
-                      <Trans>Overview</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/account/settings")} tooltip={t`Settings`}>
-                  <RouterLink to="/account/settings">
-                    <Building2Icon />
-                    <span>
-                      <Trans>Settings</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild={true} isActive={isActive("/account/users", true)} tooltip={t`Users`}>
-                  <RouterLink to="/account/users">
-                    <UsersIcon />
-                    <span>
-                      <Trans>Users</Trans>
-                    </span>
-                  </RouterLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              {showBilling && (
+      <nav className="contents" aria-label={t`Main navigation`}>
+        <SidebarHeader>
+          <HeaderUserMenu />
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              <Trans>User</Trans>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild={true} isActive={isActive("/account/billing", true)} tooltip={t`Billing`}>
-                    <RouterLink to="/account/billing">
-                      <CreditCardIcon />
+                  <SidebarMenuButton asChild={true} isActive={isActive("/user/profile")} tooltip={t`User profile`}>
+                    <RouterLink to="/user/profile" aria-label={t`User profile`}>
+                      <UserIcon />
                       <span>
-                        <Trans>Billing</Trans>
+                        <Trans>Profile</Trans>
                       </span>
                     </RouterLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild={true}
+                    isActive={isActive("/user/preferences")}
+                    tooltip={t`User preferences`}
+                  >
+                    <RouterLink to="/user/preferences" aria-label={t`User preferences`}>
+                      <SlidersHorizontalIcon />
+                      <span>
+                        <Trans>Preferences</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={isActive("/user/sessions")} tooltip={t`User sessions`}>
+                    <RouterLink to="/user/sessions" aria-label={t`User sessions`}>
+                      <MonitorSmartphoneIcon />
+                      <span>
+                        <Trans>Sessions</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              <Trans>Account</Trans>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={isActive("/account")} tooltip={t`Overview`}>
+                    <RouterLink to="/account">
+                      <HomeIcon />
+                      <span>
+                        <Trans>Overview</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={isActive("/account/settings")} tooltip={t`Settings`}>
+                    <RouterLink to="/account/settings">
+                      <Building2Icon />
+                      <span>
+                        <Trans>Settings</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild={true} isActive={isActive("/account/users", true)} tooltip={t`Users`}>
+                    <RouterLink to="/account/users">
+                      <UsersIcon />
+                      <span>
+                        <Trans>Users</Trans>
+                      </span>
+                    </RouterLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                {showBilling && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      asChild={true}
+                      isActive={isActive("/account/billing", true)}
+                      tooltip={t`Billing`}
+                    >
+                      <RouterLink to="/account/billing">
+                        <CreditCardIcon />
+                        <span>
+                          <Trans>Billing</Trans>
+                        </span>
+                      </RouterLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </nav>
       <SidebarRail />
     </Sidebar>
   );
