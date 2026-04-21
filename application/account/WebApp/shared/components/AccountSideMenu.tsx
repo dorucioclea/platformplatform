@@ -50,7 +50,7 @@ export function AccountSideMenu() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="h-[var(--side-menu-collapsed-width)] justify-center px-0">
+      <SidebarHeader>
         <HeaderUserMenu />
       </SidebarHeader>
       <SidebarContent>

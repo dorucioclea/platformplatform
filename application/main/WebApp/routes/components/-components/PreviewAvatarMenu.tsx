@@ -124,7 +124,7 @@ export function PreviewAvatarMenu() {
     );
 
   const triggerClassName = `relative flex h-11 cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 py-2 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
-    isCollapsed ? "-ml-0.5 w-11 justify-center" : "w-full pr-2 pl-1"
+    isCollapsed ? "ml-1.5 w-11 justify-center" : "w-full pr-2 pl-3"
   } ${isMenuOpen ? "bg-hover-background" : ""}`;
 
   return (

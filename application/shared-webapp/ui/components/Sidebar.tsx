@@ -536,7 +536,11 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      // Fixed 5rem header with content vertically centered — gives every sidebar the same "menu at
+      // the top" placement (UserMenu / TenantLogo / preview avatar all align on the same row as the
+      // breadcrumbs on the right). Horizontal padding stays 0 so the consumer's own inner padding
+      // controls logo/avatar alignment with the menu icons below.
+      className={cn("flex h-[var(--side-menu-collapsed-width)] flex-col justify-center gap-2 px-0 py-2", className)}
       {...props}
     />
   );
@@ -877,10 +881,10 @@ function SidebarMenuSub({ className, isExpanded, ...props }: React.ComponentProp
       inert={!isExpanded}
     >
       {/* `overflow-hidden` clips during the height transition. `-mx-3 px-3` extends horizontally so
-          the sub-item marker (sits at `-left-3`) and the right-side focus ring stay visible. `-my-1
-          py-1` extends vertically by 4px (outline 2px + offset 2px) so the first/last items' focus
-          rings aren't clipped at the top/bottom of the wrapper. */}
-      <div className="-mx-3 -my-1 min-h-0 overflow-hidden px-3 py-1">{ul}</div>
+          the sub-item marker (sits at `-left-3`) and the right-side focus ring stay visible. `min-h-0`
+          allows the wrapper to fully collapse to 0 when `grid-rows-[0fr]` — without it the sub-list's
+          muted background strip bleeds through on collapsed top-level items. */}
+      <div className="-mx-3 min-h-0 overflow-hidden px-3">{ul}</div>
     </div>
   );
 }

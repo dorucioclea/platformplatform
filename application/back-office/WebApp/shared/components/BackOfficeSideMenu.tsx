@@ -26,7 +26,7 @@ export function BackOfficeSideMenu() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div className="-mt-2 flex h-[var(--side-menu-collapsed-width)] items-center gap-3 pl-[0.875rem] text-sm font-semibold">
+        <div className="flex items-center gap-3 pl-[0.875rem] text-sm font-semibold">
           <img className="size-9 shrink-0" src={logoMark} alt={t`PlatformPlatform logo`} />
           <span className="truncate group-data-[collapsible=icon]:hidden">PlatformPlatform</span>
         </div>
