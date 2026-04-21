@@ -89,7 +89,11 @@ function CollapsibleMenu({
         <SidebarMenuSub>
           {sections.map(({ hash, label: sectionLabel, icon: SectionIcon }) => (
             <SidebarMenuSubItem key={hash}>
-              <SidebarMenuSubButton asChild={true} isActive={isOnPage && activeHash === hash}>
+              <SidebarMenuSubButton
+                asChild={true}
+                isActive={isOnPage && activeHash === hash}
+                tooltip={{ children: sectionLabel }}
+              >
                 {isOnPage ? (
                   // Same-route hash change: native anchor so the browser updates window.location.hash
                   // and fires `hashchange`, which the content components listen for.

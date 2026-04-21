@@ -935,15 +935,19 @@ function SidebarMenuSubButton({
   asChild = false,
   size = "md",
   isActive = false,
+  tooltip,
   className,
   ...props
 }: React.ComponentProps<"a"> & {
   asChild?: boolean;
   size?: "sm" | "md";
   isActive?: boolean;
+  tooltip?: string | React.ComponentProps<typeof TooltipContent>;
 }) {
   const Comp = asChild ? Slot : "a";
-  return (
+  const { isMobile, state } = useSidebar();
+
+  const button = (
     <Comp
       data-slot="sidebar-menu-sub-button"
       data-sidebar="menu-sub-button"
@@ -965,6 +969,18 @@ function SidebarMenuSubButton({
       )}
       {...props}
     />
+  );
+
+  // Only render the tooltip when collapsed on desktop — the label is already visible next to the icon otherwise.
+  if (!tooltip || state !== "collapsed" || isMobile) {
+    return button;
+  }
+  const tooltipProps = typeof tooltip === "string" ? { children: tooltip } : tooltip;
+  return (
+    <Tooltip>
+      <TooltipTrigger render={<span className="block w-full" />}>{button}</TooltipTrigger>
+      <TooltipContent side="right" align="center" {...tooltipProps} />
+    </Tooltip>
   );
 }
 
