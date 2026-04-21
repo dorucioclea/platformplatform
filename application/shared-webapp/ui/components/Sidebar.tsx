@@ -14,6 +14,7 @@ import {
   SIDE_MENU_MIN_WIDTH_REM
 } from "../utils/responsive";
 import { Button } from "./Button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./HoverCard";
 import { Separator } from "./Separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "./Sheet";
 import { Skeleton } from "./Skeleton";
@@ -854,7 +855,7 @@ function SidebarMenuSub({ className, isExpanded, ...props }: React.ComponentProp
         "ml-[1.6875rem] flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border py-0.5 pr-0 pl-2.5",
         // Collapsed: drop the connector line and paint a muted band so the sub group stands out from
         // the top-level items at a glance.
-        "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-muted/50 group-data-[collapsible=icon]:px-0",
+        "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:rounded-md group-data-[collapsible=icon]:border-l-0 group-data-[collapsible=icon]:bg-white/60 group-data-[collapsible=icon]:dark:bg-white/5 group-data-[collapsible=icon]:px-0",
         className
       )}
       {...props}
@@ -978,6 +979,35 @@ function useSidebarMenuCollapsible(key: string) {
   };
 }
 
+// SidebarMenuFlyout — hover popover with sub items for collapsed sidebars. Wraps a trigger (usually
+// SidebarMenuButton) and opens a panel to the right when the sidebar is in icon-only mode. In
+// expanded mode or on mobile (where labels are already visible) it's transparent and just renders
+// the children. Pass `disabled` to skip the flyout when the sub items are already visible inline
+// (e.g. the group is expanded as an icon band in the collapsed sidebar), so the flyout doesn't
+// duplicate what's already on screen.
+function SidebarMenuFlyout({
+  content,
+  disabled = false,
+  children
+}: Readonly<{
+  content: React.ReactNode;
+  disabled?: boolean;
+  children: React.ReactNode;
+}>) {
+  const { state, isMobile } = useSidebar();
+  if (disabled || state !== "collapsed" || isMobile) {
+    return <>{children}</>;
+  }
+  return (
+    <HoverCard>
+      <HoverCardTrigger render={<span className="block w-full" />}>{children}</HoverCardTrigger>
+      <HoverCardContent side="right" align="start" sideOffset={12} className="w-auto min-w-[12rem] p-1">
+        {content}
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+
 function SidebarMenuSubButton({
   asChild = false,
   size = "md",
@@ -1048,6 +1078,7 @@ export {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuCollapsibleProvider,
+  SidebarMenuFlyout,
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarMenuSub,

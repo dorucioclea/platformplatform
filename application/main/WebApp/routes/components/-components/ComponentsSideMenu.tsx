@@ -13,6 +13,7 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuCollapsibleProvider,
+  SidebarMenuFlyout,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
@@ -47,7 +48,6 @@ type CollapsibleMenuProps = Readonly<{
   label: React.ReactNode;
   collapseLabel: string;
   expandLabel: string;
-  tooltip: string;
   routePath: string;
   isOnPage: boolean;
   activeHash: string;
@@ -60,7 +60,6 @@ function CollapsibleMenu({
   label,
   collapseLabel,
   expandLabel,
-  tooltip,
   routePath,
   isOnPage,
   activeHash,
@@ -74,17 +73,44 @@ function CollapsibleMenu({
     }
   }, [isOnPage, expand]);
 
+  // In collapsed sidebar mode, hovering the top-level icon shows a popover listing the sub sections —
+  // a compact version of the expanded sub list. Built from the same `sections` data so there's no
+  // duplication.
+  const flyout = (
+    <div className="flex flex-col gap-1 p-1">
+      <div className="px-2 pt-1 pb-0.5 text-xs font-medium text-muted-foreground uppercase">{label}</div>
+      {sections.map(({ hash, label: sectionLabel, icon: SectionIcon }) => (
+        <RouterLink
+          key={hash}
+          to={routePath}
+          hash={hash}
+          data-active={isOnPage && activeHash === hash}
+          className="flex items-center gap-3 rounded-md px-2 py-1.5 text-sm text-muted-foreground outline-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 data-[active=true]:font-medium data-[active=true]:text-foreground [&>svg]:size-4 [&>svg]:shrink-0"
+        >
+          <SectionIcon />
+          <span>{sectionLabel}</span>
+        </RouterLink>
+      ))}
+    </div>
+  );
+
   return (
     <SidebarMenuItem>
       {/* Clicking the top-level button both navigates and expands the sub group. The route-change
           effect only fires on `isOnPage` transitions, so an explicit `expand()` on click also covers
           the "already on this page, user manually collapsed, clicks again" case. */}
-      <SidebarMenuButton asChild={true} isActive={isOnPage} tooltip={tooltip} onClick={expand}>
-        <RouterLink to={routePath}>
-          <Icon />
-          <span>{label}</span>
-        </RouterLink>
-      </SidebarMenuButton>
+      {/* Skip the tooltip here — the flyout already shows the group's label in its header, so the
+          collapsed-sidebar tooltip would just duplicate it. `disabled={isExpanded}` suppresses the
+          flyout when the group's sub items are already visible inline (expanded icon band), so they
+          aren't shown twice. */}
+      <SidebarMenuFlyout content={flyout} disabled={isExpanded}>
+        <SidebarMenuButton asChild={true} isActive={isOnPage} onClick={expand}>
+          <RouterLink to={routePath}>
+            <Icon />
+            <span>{label}</span>
+          </RouterLink>
+        </SidebarMenuButton>
+      </SidebarMenuFlyout>
       <SidebarMenuAction onClick={toggle} aria-label={isExpanded ? collapseLabel : expandLabel}>
         <ChevronRightIcon className={`transition-transform duration-100 ${isExpanded ? "rotate-90" : ""}`} />
       </SidebarMenuAction>
@@ -148,7 +174,6 @@ export function ComponentsSideMenu() {
                   label={<Trans>Components</Trans>}
                   collapseLabel={t`Collapse Components`}
                   expandLabel={t`Expand Components`}
-                  tooltip={t`Components`}
                   routePath="/components"
                   isOnPage={isComponentsPage}
                   activeHash={componentsHash}
@@ -160,7 +185,6 @@ export function ComponentsSideMenu() {
                   label={<Trans>Examples</Trans>}
                   collapseLabel={t`Collapse Examples`}
                   expandLabel={t`Expand Examples`}
-                  tooltip={t`Examples`}
                   routePath="/components/examples"
                   isOnPage={isExamplesPage}
                   activeHash={examplesHash}
