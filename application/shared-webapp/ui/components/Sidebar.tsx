@@ -1,4 +1,5 @@
 import { t } from "@lingui/core/macro";
+import { useRouterState } from "@tanstack/react-router";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronsLeftIcon, MenuIcon, PanelLeftIcon, XIcon } from "lucide-react";
 import * as React from "react";
@@ -188,6 +189,15 @@ function SidebarProvider({
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
+  // Auto-close the mobile menu on navigation. Menu items inside federated content (e.g. Account's
+  // MobileMenuContent) route through TanStack Router; relying on each item to call close() is
+  // fragile and already misses the declarative `<RouterLink>` path used in AccountSideMenu.
+  // Watches hash too because /components sub-items navigate by hash only.
+  const location = useRouterState({ select: (s) => `${s.location.pathname}${s.location.hash}` });
+  React.useEffect(() => {
+    setOpenMobile(false);
+  }, [location]);
+
   const state = open ? "expanded" : "collapsed";
 
   const contextValue = React.useMemo<SidebarContextProps>(
@@ -297,7 +307,7 @@ function Sidebar({
             aria-label={t`Mobile navigation`}
             className="fixed top-(--banner-offset,0rem) right-0 bottom-0 left-0 z-40 flex flex-col bg-sidebar text-sidebar-foreground sm:hidden"
           >
-            <div className="flex h-full w-full flex-col overflow-y-auto px-3 pt-5">{mobileContent ?? children}</div>
+            <div className="flex h-full w-full flex-col overflow-y-auto">{mobileContent ?? children}</div>
             <div className="fixed right-3 bottom-3 z-10 supports-[bottom:max(0px)]:bottom-[max(0.5rem,calc(env(safe-area-inset-bottom)-0.5rem))]">
               <Button
                 variant="ghost"
