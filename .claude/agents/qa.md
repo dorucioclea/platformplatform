@@ -38,8 +38,8 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 ### Parallel Execution Awareness
 
 You work in parallel with backend and frontend engineers and their reviewers:
-- You can START writing tests while reviewers are reviewing backend/frontend code
-- Do NOT RUN tests until ALL reviewers across ALL tracks (backend, frontend, E2E) have approved and all files are staged. Running tests during active review risks code changing under you and hot reload interfering with test execution
+- Write your tests while backend and frontend are being reviewed
+- Run your changed test files as you go for fast feedback
 - If engineers change contracts or UI during review, they will interrupt you. Update your tests accordingly
 - For verification-only tasks, you may be spawned later after dependencies are committed
 
@@ -74,11 +74,19 @@ When many tests fail at once (50+), the root cause is almost always a single sha
 
 ### After Implementing
 
-Run all tests using the **end_to_end** MCP tool with `waitForAspire=true`. This ensures Aspire is healthy before tests run, including after Guardian restarts. Zero tolerance for failures. Iterate until all pass.
+Run only the test files you changed using the **end_to_end** MCP tool with `waitForAspire=true`. Zero tolerance for failures. Iterate until all changed tests pass.
+
+If `end_to_end` reports Aspire-level errors (connection refused, 503s everywhere, unhealthy containers), notify the Guardian to restart Aspire. Wait for the Guardian's `Aspire restarted` reply, then retry.
+
+The QA reviewer runs the full regression across all browsers before approving -- you do not need to run everything yourself. Exception: if the reviewer reports flaky tests, you may re-run the full suite to reproduce and diagnose before fixing.
 
 Boy Scout Rule: fix pre-existing test code issues (naming conventions, import ordering, assertion style). Changes must be cosmetic only -- never change the behavior of working code. NEVER modify shared helper functions or fixtures used by multiple test files. If a shared helper seems wrong, notify the team lead rather than changing it yourself.
 
 All failures are your responsibility to fix. Main is always clean (CI enforces this), so any failure on the branch was introduced by us. If you modified shared code and tests start failing, assume your change is the cause until proven otherwise. Investigate and fix -- do not dismiss or deflect.
+
+### Handling Flaky Tests
+
+A test is flaky if it fails once and passes on re-run. Flakiness always indicates a real bug (race condition, missing wait, timing assumption). Fix the root cause; never `test.skip`, retry-wrap, or add the `@slow` tag to paper over it. If the bug is in the product (not the test), interrupt the backend or frontend engineer. Do not proceed until the test passes reliably, no matter if you believe this is a pre-existing flaky test. ALL tests must pass.
 
 ### Divergence Notes
 
@@ -94,12 +102,11 @@ Do NOT change the original task description. The reviewer needs the original ask
 ### Pre-Handoff Checklist
 
 Before notifying the reviewer, verify:
-1. All feature-specific tests pass across all browsers
-2. Full regression passes (end_to_end without search terms) -- this is mandatory, not optional
-3. If you modified any shared helpers or fixtures, confirm those changes do not break tests outside your feature scope
-4. [Task] divergence notes updated
+1. All test files you changed pass
+2. If you modified any shared helpers or fixtures, confirm the affected tests still pass
+3. [Task] divergence notes updated
 
-Do NOT submit to reviewer until all checks pass. The reviewer should never be the one to discover regressions. Include test execution evidence: X tests passed, Y failed, Z skipped across N browsers.
+Never request review with known failing tests. Include test execution evidence: X passed, Z skipped. The reviewer runs the full regression across all browsers.
 
 ### Working With Your Reviewer
 

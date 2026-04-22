@@ -32,37 +32,32 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 3. Write a test scenario checklist with expected coverage
 4. Write down expected test files, fixtures, and critical assertions
 
-### Phase 2: Review (run tests first, then code)
+### Phase 2: Review code
 
-5. **Verify Aspire is running**: Send a message to the Guardian asking for Aspire status. Do not proceed until the Guardian confirms Aspire is running and healthy. If the Guardian reports it is down, wait for restart confirmation before running tests
-6. **Run feature-specific tests**: `end_to_end(searchTerms=["feature-name"])`. If ANY fail, reject immediately. Send failure output to the engineer. Do not proceed to code review
-7. **Search for prohibited patterns**: grep for `waitForTimeout`, `sleep`, `delay`, `setTimeout`. If found, reject immediately
-8. **Review each changed test file individually:**
+5. **Search for prohibited patterns**: grep for `waitForTimeout`, `sleep`, `delay`, `setTimeout`. If found, reject immediately
+6. **Review each changed test file individually:**
    - Read the ENTIRE file
    - Check step naming: every step must follow "Do something & Verify result"
    - Check test efficiency: many things in few steps, no excessive navigation
    - Check pattern consistency: fixtures, helpers, no duplicated logic
    - Record verdict: "Approved" or "Issues found: [description]"
-9. **Send findings immediately** so the engineer can fix while you continue. Interrupt the engineer if they are actively working:
+7. **Send findings immediately** so the engineer can fix while you continue. Interrupt the engineer if they are actively working:
    ```
    Finding: [file]:[line]
    Issue: [description]
    Rule: [.claude/rules/ reference or codebase example]
    ```
-10. When the engineer reports fixes, note them for Phase 3
+8. When the engineer reports fixes, note them for Phase 3
 
-### Phase 3: Verify
+### Phase 3: Verify and run full regression
 
-11. **Re-read all fixed files** and verify each fix is correct
-12. **Final Gate**: if the engineer made ANY code changes after the initial test run, re-run feature-specific tests. If ANY fail, reject and return to Phase 2
-13. **Requirements verification**. Return to your Phase 1 checklist. For EACH scenario:
+9. **Re-read all fixed files** and verify each fix is correct
+10. **Requirements verification**. Return to your Phase 1 checklist. For EACH scenario:
     - Cite the test file:line that covers it
-    - If any scenario is missing, reject (fail fast before expensive regression)
-14. **Run full regression**: `end_to_end()` without search terms. ALL tests must pass across all browsers. If ANY fail:
-    - If failure is in reviewed code: send to engineer, reject
-    - If failure is in other code: notify the team lead with the specific error
-15. Record test execution evidence: X tests passed, Y failed, Z skipped across N browsers
-16. **Send the Guardian one approval message** (only after full regression passes):
+    - If any scenario is missing, reject
+11. **Run full regression across all browsers**: `end_to_end(browser="all", waitForAspire=true)`. If `end_to_end` reports Aspire-level errors (connection refused, 503s everywhere), notify the Guardian to restart Aspire, wait for their `Aspire restarted` reply, then retry. If ANY test fails or is flaky (fails once, passes on re-run), reject. Ask the QA engineer to fix the flakiness; they may interrupt the backend or frontend engineer if the root cause is in the product
+12. Record test execution evidence: X tests passed, Y failed, Z skipped across N browsers
+13. **Send the Guardian one approval message** (only after every test passes reliably):
 
     > I approve the following E2E test files for [task ID]: /path/test1.spec.ts, /path/test2.spec.ts. Full regression: X passed, 0 failed, 0 skipped across N browsers.
 
@@ -83,7 +78,7 @@ Never accept these excuses:
 - "Console error unrelated to E2E code": reject
 - "It's just a warning": reject, zero means zero
 - "Previous test run passed": reject, re-run now
-- "Flaky test, passes on retry": reject, fix the flakiness
+- "Flaky test, passes on retry": reject, a failure that passes on re-run is still a failure -- fix the root cause
 - "Infrastructure issue": reject, report problem
 
 ## When Tests Fail
