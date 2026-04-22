@@ -129,7 +129,7 @@ You may use Claude in Chrome for troubleshooting (console errors, network reques
 
 ### Task Scope
 
-Avoid `git stash`/`git stash pop`. Popping restores files into the staging area (making them appear reviewer-approved) and disrupts other agents. Only use stash in extraordinary circumstances with cross-team coordination. If the scope is wrong, notify the team lead.
+Only the Guardian modifies git state (see "Git Write Discipline" in `.claude/CLAUDE.md`). If the scope is wrong or something needs undoing, notify the team lead.
 
 ### Pull the Andon Cord
 

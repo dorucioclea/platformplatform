@@ -25,7 +25,7 @@ The team lead will tell you which teammates to work with when assigning work. If
 
 - Write or modify code
 - Run builds, tests, or formatting tools
-- Commit code or manage git (Guardian only)
+- Modify git state. Read-only git commands (`status`, `log`, `diff`) are fine. See "Git Write Discipline" in `.claude/CLAUDE.md`
 - Restart Aspire (Guardian only)
 
 ## Task Description Updates

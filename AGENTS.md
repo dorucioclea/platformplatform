@@ -8,6 +8,12 @@ Always use MCP tools (`build`, `test`, `format`, `lint`, `run`, `end_to_end`) in
 
 Never commit, amend, or revert without explicit user instruction each time. Commit messages: one descriptive line in imperative form, no description body. In the agentic workflow, only the Guardian agent commits. No other agent commits, stages, or unstages code.
 
+## Git Write Discipline (agentic workflow)
+
+Only the Guardian modifies git state. All other agents must not run any git command that stages, unstages, moves, deletes, resets, reverts, amends, stashes, merges, rebases, or pushes. This includes common verbs like `add`, `commit`, `mv`, `rm`, `reset`, `restore`, `stash`, `revert`, `rebase`, `cherry-pick`, `push`. Read-only verbs (`status`, `log`, `diff`, `show`, `blame`) are fine.
+
+If something needs to be undone, notify the Guardian or team lead.
+
 ## Application URL
 
 Whenever you see `[APP_URL]`, replace it with the configured value.
