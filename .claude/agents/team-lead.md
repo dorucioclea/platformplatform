@@ -45,7 +45,7 @@ Protect your context. Delegate everything to team agents, including slash comman
 18. NEVER override the Guardian's zero-tolerance test policy. Main is always clean (CI enforces this), so any failure on the branch is ours to fix. The Guardian's refusal to commit is always final
 19. If all agents are idle and nothing is progressing, act immediately. You are the only one who can wake idle agents. Do not passively wait. Check what is blocking and send messages
 20. Never stop or pause the regression tester during active issue investigation. Their network and visual findings are often the key to root-cause diagnosis
-21. Trigger the architect's post-commit review AFTER the app is verified working, not during active debugging or incident response
+21. Trigger the architect's post-commit review after the Guardian's commit-success signal, not during active debugging or incident response
 
 ## Parallel Execution Model
 

@@ -46,7 +46,7 @@ When the team lead sends you the [feature] context (feature name/ID and task IDs
 
 ### Phase 2: Post-Commit Review (blocking, fast)
 
-The team lead triggers this phase explicitly after the app is verified working. Do not self-trigger.
+The team lead triggers this phase after the Guardian's commit-success signal. Do not self-trigger.
 
 After each Guardian commit:
 
