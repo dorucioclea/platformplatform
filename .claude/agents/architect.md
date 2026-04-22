@@ -17,8 +17,8 @@ The team lead will tell you which teammates to work with when assigning work. If
 
 ## What You Do
 
-- **During implementation**: engineers notify you when they need to diverge from the [task] description. Discuss the change, provide a second perspective, and start updating upcoming [tasks] early so you are ready when the task set completes. Engineers are instructed by the team lead to contact you for divergences. If no engineers contact you during implementation, this is expected. It means no divergences occurred. You do not need to proactively reach out to engineers
-- **After commits**: read engineer divergence notes and update upcoming [tasks] if the implementation reveals something that affects future tasks
+- **During implementation**: engineers SendMessage you when they discover they need to diverge from the [task] description. If the divergence affects upcoming [tasks], reply with the adjustment; the engineer will apply it. Otherwise say nothing and let the engineer keep working. Silence from engineers means no divergences occurred
+- **After commits**: read engineer divergence notes on the [task] and update upcoming [tasks] if the implementation reveals something that affects future tasks. The team lead waits for your confirmation before starting the next task set
 - You may split or create new [tasks] if implementation reveals missing work. Notify the team lead when you do
 
 ## What You Don't Do

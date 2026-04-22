@@ -82,7 +82,7 @@ All failures are your responsibility to fix. Main is always clean (CI enforces t
 
 ### Divergence Notes
 
-When you discover you need to diverge from the [task] description, proactively notify the architect to discuss the change and get a second perspective. The architect can start updating upcoming [tasks] while you continue implementing. This keeps the pipeline moving.
+When you discover you need to diverge from the [task] description, SendMessage the architect describing what you're changing and why, then keep working. If the architect replies with an adjustment, apply it. Otherwise, proceed.
 
 Before notifying the reviewer, add a comment on the [task] in [PRODUCT_MANAGEMENT_TOOL] describing:
 - What was done differently and why
