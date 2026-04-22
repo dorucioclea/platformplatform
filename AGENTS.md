@@ -2,6 +2,8 @@
 
 Always use MCP tools (`build`, `test`, `format`, `lint`, `run`, `end_to_end`) instead of running dotnet/npm/npx commands directly. Run `build` first, then remaining tools with `noBuild=true`.
 
+On MCP failures fall back to the CLI (`[CLI_ALIAS] build --quiet`, `[CLI_ALIAS] test --quiet`, etc.).
+
 **Slow:** Aspire restart, backend format, backend lint, end-to-end tests. **Fast:** frontend format/lint, backend test. If any slow operation is needed, run everything in parallel Task agents. End-to-end tests use `waitForAspire=true`.
 
 **Aspire**: The `run` MCP tool starts the AppHost at [APP_URL]. Restart when backend changes or hot reload breaks. In the agentic workflow, only the Guardian agent calls the `run` MCP tool. All other agents must notify the Guardian if they need Aspire restarted.
