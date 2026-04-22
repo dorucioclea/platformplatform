@@ -249,24 +249,23 @@ public class ClaudeAgentCommand : Command
 
     private static ProcessStartInfo BuildProcessStartInfo(List<string> claudeArgs, string workingDirectory)
     {
-        // Properly escape arguments: escape backslashes and quotes, then wrap in quotes if needed
-        static string EscapeArg(string arg)
-        {
-            // If arg contains quotes or backslashes, escape them
-            var escaped = arg.Replace("\\", "\\\\").Replace("\"", "\\\"");
-            // Wrap in quotes if contains spaces, quotes, or other shell metacharacters
-            return arg.Contains(' ') || arg.Contains('"') || arg.Contains('\\')
-                ? $"\"{escaped}\""
-                : escaped;
-        }
-
-        return new ProcessStartInfo
+        var processStartInfo = new ProcessStartInfo
         {
             FileName = "claude",
-            Arguments = string.Join(" ", claudeArgs.Select(EscapeArg)),
             WorkingDirectory = workingDirectory,
-            UseShellExecute = true
+            UseShellExecute = false
         };
+
+        foreach (var arg in claudeArgs)
+        {
+            processStartInfo.ArgumentList.Add(arg);
+        }
+
+        // Enable Claude Code Agent Teams (see https://code.claude.com/docs/en/agent-teams).
+        // Setting Environment works cross-platform when UseShellExecute is false.
+        processStartInfo.Environment["CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"] = "1";
+
+        return processStartInfo;
     }
 }
 
