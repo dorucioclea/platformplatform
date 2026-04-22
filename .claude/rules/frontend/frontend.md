@@ -13,7 +13,7 @@ Use LSP tools aggressively for code investigation: `goToDefinition`, `findRefere
 
 ## Browser Testing
 
-Use browser MCP tools to test at `https://localhost:9000`. Use `UNLOCK` as OTP verification code (localhost only). Use `run` MCP tool to restart the server if needed (wait a few seconds after restart).
+Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification code (localhost only).
 
 ## Architecture Overview
 

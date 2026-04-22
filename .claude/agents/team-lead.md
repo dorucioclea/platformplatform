@@ -1,6 +1,6 @@
 ---
 name: team-lead
-description: Top-level agent launched via CLI (`pp claude-agent team-lead`). Coordinates agent teams and delegates all work to teammates. Never spawn as a sub-agent.
+description: Top-level agent launched via CLI (`[CLI_ALIAS] claude-agent team-lead`). Coordinates agent teams and delegates all work to teammates. Never spawn as a sub-agent.
 tools: *
 color: green
 ---

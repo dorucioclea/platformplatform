@@ -6,69 +6,40 @@ using Spectre.Console;
 namespace DeveloperCli.Commands;
 
 /// <summary>
-///     Command to manage Aspire AppHost lifecycle - start, stop, and monitor the application host.
+///     Command to start the Aspire AppHost. Use <c>restart</c> to start a fresh instance or <c>stop</c> to stop it.
 /// </summary>
 public class RunCommand : Command
 {
-    private const int AspirePort = 9001;
-    private const int DashboardPort = 9097;
-    private const int ResourceServicePort = 9098;
+    internal const int AspirePort = 9001;
+    internal const int DashboardPort = 9097;
+    internal const int ResourceServicePort = 9098;
 
     public RunCommand() : base("run", "Runs Aspire AppHost (use --watch for hot reload)")
     {
         var watchOption = new Option<bool>("--watch", "-w") { Description = "Enable watch mode for hot reload" };
-        var forceOption = new Option<bool>("--force") { Description = "Force start a fresh Aspire AppHost instance, stopping any existing one" };
-        var stopOption = new Option<bool>("--stop") { Description = "Stop any running Aspire AppHost instance without starting a new one" };
-        var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process" };
-        var detachOption = new Option<bool>("--detach", "-d") { Description = "Run the Aspire process in detached mode (default)" };
+        var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process (detached is the default)" };
         var publicUrlOption = new Option<string?>("--public-url") { Description = "Set the PUBLIC_URL environment variable for the app (e.g., https://example.ngrok-free.app)" };
 
         Options.Add(watchOption);
-        Options.Add(forceOption);
-        Options.Add(stopOption);
         Options.Add(attachOption);
-        Options.Add(detachOption);
         Options.Add(publicUrlOption);
 
         SetAction(parseResult => Execute(
                 parseResult.GetValue(watchOption),
-                parseResult.GetValue(forceOption),
-                parseResult.GetValue(stopOption),
                 parseResult.GetValue(attachOption),
-                parseResult.GetValue(detachOption),
                 parseResult.GetValue(publicUrlOption)
             )
         );
     }
 
-    private static void Execute(bool watch, bool force, bool stop, bool attach, bool detach, string? publicUrl)
+    private static void Execute(bool watch, bool attach, string? publicUrl)
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
-        var isRunning = IsAspireRunning();
-
-        if (stop)
+        if (IsAspireRunning())
         {
-            StopAspire();
-            return;
-        }
-
-        // Both specified is contradictory
-        if (attach && detach)
-        {
-            AnsiConsole.MarkupLine("[red]Cannot specify both --attach and --detach.[/]");
+            AnsiConsole.MarkupLine($"[yellow]Aspire AppHost is already running on port {AspirePort}. Run 'pp stop' to stop it or 'pp restart' to start a fresh instance.[/]");
             Environment.Exit(1);
-        }
-
-        if (isRunning)
-        {
-            if (!force)
-            {
-                AnsiConsole.MarkupLine($"[yellow]Aspire AppHost is already running on port {AspirePort}. Use --force to force a fresh start or --stop to stop it.[/]");
-                Environment.Exit(1);
-            }
-
-            StopAspire();
         }
 
         CheckForPortConflicts();
@@ -76,7 +47,7 @@ public class RunCommand : Command
         StartAspireAppHost(watch, attach, publicUrl);
     }
 
-    private static bool IsAspireRunning()
+    internal static bool IsAspireRunning()
     {
         // Check the main Aspire port
         if (Configuration.IsWindows)
@@ -128,7 +99,7 @@ public class RunCommand : Command
         return false;
     }
 
-    private static void CheckForPortConflicts()
+    internal static void CheckForPortConflicts()
     {
         // Check if any Aspire port is held by a process from a different project
         var ports = new[] { AspirePort, DashboardPort, ResourceServicePort };
@@ -177,7 +148,7 @@ public class RunCommand : Command
         return commandLine[pathStart..index];
     }
 
-    private static void StopAspire()
+    internal static void StopAspire()
     {
         AnsiConsole.MarkupLine("[blue]Stopping Aspire AppHost and all related services...[/]");
 
@@ -266,7 +237,7 @@ public class RunCommand : Command
         ProcessHelper.StartProcess($"kill -9 {processId}", redirectOutput: true, exitOnError: false);
     }
 
-    private static void StartAspireAppHost(bool watch, bool attach, string? publicUrl)
+    internal static void StartAspireAppHost(bool watch, bool attach, string? publicUrl)
     {
         var mode = watch ? "watch" : "run";
         AnsiConsole.MarkupLine($"[blue]Starting Aspire AppHost in {mode} mode ({(attach ? "attached" : "detached")})...[/]");

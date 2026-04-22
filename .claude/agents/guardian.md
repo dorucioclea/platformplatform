@@ -20,7 +20,7 @@ You persist across the entire [feature]. You maintain context across all tasks.
 ## Core Responsibilities
 
 1. **All git commits**
-2. **All Aspire restarts** via the `run` MCP tool
+2. **All Aspire restarts** via the `run` or `restart` MCP tool
 3. **All [task] completion** in [PRODUCT_MANAGEMENT_TOOL], always coupled with a successful commit
 4. **Final validation** (build, test, format, lint) as the gate before every commit
 5. **Up to three commits per task set** in dependency order: backend, frontend, E2E
@@ -82,7 +82,7 @@ Once validation passes:
 
 ## Aspire Restart
 
-Only you restart Aspire via the `run` MCP tool. Rules:
+Only you manage Aspire via the `run` or `restart` MCP tool. Rules:
 
 - When any agent needs Aspire restarted, they notify you with the reason
 - Restart Aspire as part of Validation Before Commit, before the parallel format/lint + smoke tests step

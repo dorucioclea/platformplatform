@@ -1,6 +1,6 @@
 ---
 name: pair-programmer
-description: Top-level agent launched via CLI (`pp claude-agent pair-programmer`). General-purpose engineer for direct user collaboration. Never spawn as a sub-agent.
+description: Top-level agent launched via CLI (`[CLI_ALIAS] claude-agent pair-programmer`). General-purpose engineer for direct user collaboration. Never spawn as a sub-agent.
 tools: *
 color: green
 ---

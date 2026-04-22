@@ -506,16 +506,35 @@ public static partial class DeveloperCliMcpTools
     }
 
     [McpServerTool]
-    [Description("Start .NET Aspire AppHost and run database migrations at https://localhost:9000. Runs in the background so you can continue working while it starts.")]
-    public static async Task<string> Run()
+    [Description("Start .NET Aspire AppHost at https://localhost:9000. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
+    public static Task<string> Run()
     {
-        McpDebugLog.Log("TOOL INVOKED: Run (no parameters)");
+        return ExecuteAspireLifecycleCommand("run", "Run", "Aspire started successfully in detached mode at https://localhost:9000");
+    }
+
+    [McpServerTool]
+    [Description("Stop any running Aspire AppHost and start a fresh instance. Use after backend changes or when hot reload breaks.")]
+    public static Task<string> Restart()
+    {
+        return ExecuteAspireLifecycleCommand("restart", "Restart", "Aspire restarted successfully in detached mode at https://localhost:9000");
+    }
+
+    [McpServerTool]
+    [Description("Stop the running Aspire AppHost.")]
+    public static Task<string> Stop()
+    {
+        return ExecuteAspireLifecycleCommand("stop", "Stop", "Aspire stopped successfully");
+    }
+
+    private static async Task<string> ExecuteAspireLifecycleCommand(string cliCommand, string toolName, string successMessage)
+    {
+        McpDebugLog.Log($"TOOL INVOKED: {toolName} (no parameters)");
         var stopwatch = Stopwatch.StartNew();
 
         try
         {
             var developerCliPath = Path.Combine(Configuration.SourceCodeFolder, "developer-cli");
-            var args = new List<string> { "run", "--project", developerCliPath, "run", "--detach", "--force" };
+            var args = new List<string> { "run", "--project", developerCliPath, cliCommand };
 
             var processStartInfo = new ProcessStartInfo
             {
@@ -542,7 +561,7 @@ public static partial class DeveloperCliMcpTools
                 }
                 catch (Exception exception)
                 {
-                    McpDebugLog.Log($"Run: error in OutputDataReceived -- {exception.Message}");
+                    McpDebugLog.Log($"{toolName}: error in OutputDataReceived -- {exception.Message}");
                 }
             };
             process.ErrorDataReceived += (_, e) =>
@@ -553,12 +572,12 @@ public static partial class DeveloperCliMcpTools
                 }
                 catch (Exception exception)
                 {
-                    McpDebugLog.Log($"Run: error in ErrorDataReceived -- {exception.Message}");
+                    McpDebugLog.Log($"{toolName}: error in ErrorDataReceived -- {exception.Message}");
                 }
             };
 
             process.Start();
-            McpDebugLog.Log($"Run: spawned process PID={process.Id}");
+            McpDebugLog.Log($"{toolName}: spawned process PID={process.Id}");
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
 
@@ -567,18 +586,18 @@ public static partial class DeveloperCliMcpTools
 
             if (process.HasExited && process.ExitCode != 0)
             {
-                var result = $"Failed to start Aspire.\n\n{string.Join("\n", output)}\n{string.Join("\n", errors)}";
-                McpDebugLog.Log($"TOOL FAILED: Run after {stopwatch.ElapsedMilliseconds}ms -- {result}");
+                var result = $"Failed: {toolName}.\n\n{string.Join("\n", output)}\n{string.Join("\n", errors)}";
+                McpDebugLog.Log($"TOOL FAILED: {toolName} after {stopwatch.ElapsedMilliseconds}ms -- {result}");
                 return result;
             }
 
-            McpDebugLog.Log($"TOOL COMPLETED: Run after {stopwatch.ElapsedMilliseconds}ms -- Aspire started");
-            return "Aspire started successfully in detached mode at https://localhost:9000";
+            McpDebugLog.Log($"TOOL COMPLETED: {toolName} after {stopwatch.ElapsedMilliseconds}ms -- {successMessage}");
+            return successMessage;
         }
         catch (Exception exception)
         {
-            McpDebugLog.Log($"TOOL EXCEPTION: Run after {stopwatch.ElapsedMilliseconds}ms -- {exception}");
-            return $"Error starting Aspire: {exception.Message}";
+            McpDebugLog.Log($"TOOL EXCEPTION: {toolName} after {stopwatch.ElapsedMilliseconds}ms -- {exception}");
+            return $"Error during {toolName}: {exception.Message}";
         }
     }
 
