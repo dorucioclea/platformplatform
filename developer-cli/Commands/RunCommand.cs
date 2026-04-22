@@ -259,32 +259,82 @@ public class RunCommand : Command
             ? $"dotnet watch --non-interactive --project {appHostProjectPath}"
             : $"dotnet run --project {appHostProjectPath}";
 
-        if (!attach && Configuration.IsWindows)
+        if (attach)
         {
-            // For Windows in detached mode, use "start" command to truly detach
-            var detachedCommand = $"cmd /c start \"Aspire AppHost\" /min {command}";
-            ProcessHelper.StartProcess(
-                publicUrl is not null ? $"{detachedCommand} --environment PUBLIC_URL={publicUrl}" : detachedCommand,
-                Configuration.ApplicationFolder,
-                waitForExit: false
-            );
-
-            // Give it a moment to start
-            Thread.Sleep(2000);
-            AnsiConsole.MarkupLine("[green]Aspire AppHost started in detached mode.[/]");
-        }
-        else
-        {
-            // Attached mode or non-Windows
             if (publicUrl is not null)
             {
-                ProcessHelper.StartProcess(command, Configuration.ApplicationFolder, waitForExit: attach, environmentVariables: ("PUBLIC_URL", publicUrl));
+                ProcessHelper.StartProcess(command, Configuration.ApplicationFolder, waitForExit: true, environmentVariables: ("PUBLIC_URL", publicUrl));
             }
             else
             {
-                ProcessHelper.StartProcess(command, Configuration.ApplicationFolder, waitForExit: attach);
+                ProcessHelper.StartProcess(command, Configuration.ApplicationFolder, waitForExit: true);
             }
+
+            return;
         }
+
+        var logPath = Path.Combine(Configuration.WorkspaceFolder, "developer-cli", "aspire-apphost.log");
+        Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
+        if (File.Exists(logPath)) File.Delete(logPath);
+
+        var detachedCommand = Configuration.IsWindows
+            ? $"cmd /c start \"\" /min cmd /c \"{command} > \"{logPath}\" 2>&1\""
+            : Configuration.IsMacOs
+                ? $"sh -c \"script -q -t 0 '{logPath}' {command} > /dev/null 2>&1 &\""
+                : $"sh -c \"script -q -f -c '{command}' '{logPath}' > /dev/null 2>&1 &\"";
+
+        if (publicUrl is not null)
+        {
+            ProcessHelper.StartProcess(detachedCommand, Configuration.ApplicationFolder, waitForExit: false, environmentVariables: ("PUBLIC_URL", publicUrl));
+        }
+        else
+        {
+            ProcessHelper.StartProcess(detachedCommand, Configuration.ApplicationFolder, waitForExit: false);
+        }
+
+        TailLogUntilReady(logPath);
+    }
+
+    private static void TailLogUntilReady(string logPath)
+    {
+        const string readyMarker = "Distributed application started.";
+        const string misleadingShutdownHint = " Press Ctrl+C to shut down.";
+        var deadline = DateTime.UtcNow.AddSeconds(60);
+        var offset = 0L;
+        var sawFirstLine = false;
+
+        AnsiConsole.MarkupLine("[dim]Waiting for AppHost output...[/]");
+
+        while (DateTime.UtcNow < deadline)
+        {
+            if (File.Exists(logPath))
+            {
+                using var stream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                stream.Seek(offset, SeekOrigin.Begin);
+                using var reader = new StreamReader(stream);
+
+                while (reader.ReadLine() is { } line)
+                {
+                    sawFirstLine = true;
+                    var displayLine = line.Replace(misleadingShutdownHint, "").TrimEnd();
+                    AnsiConsole.WriteLine(displayLine);
+
+                    if (line.Contains(readyMarker))
+                    {
+                        AnsiConsole.MarkupLine("[green]Aspire AppHost is ready.[/]");
+                        AnsiConsole.MarkupLine($"[dim]Stop with:[/] [yellow]{Configuration.AliasName} stop[/]");
+                        AnsiConsole.MarkupLine($"[dim]Logs:[/] {logPath}");
+                        return;
+                    }
+                }
+
+                offset = stream.Position;
+            }
+
+            Thread.Sleep(sawFirstLine ? 100 : 300);
+        }
+
+        AnsiConsole.MarkupLine($"[yellow]Aspire did not report ready within 60s. Check {logPath}[/]");
     }
 
     private static void StartNgrokIfNeeded(string publicUrl)
