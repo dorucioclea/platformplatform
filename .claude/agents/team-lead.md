@@ -28,8 +28,8 @@ Protect your context. Delegate everything to team agents, including slash comman
 1. NEVER write, edit, or read code. Delegate all investigation and implementation to agents via SendMessage
 2. NEVER run builds, format, lint, or tests. Agents do that
 3. NEVER use Task without team_name. No exceptions
-4. Shut down old agents on a rolling window (see Agent Lifecycle below). Keep only the current task set's full team plus the previous task set's engineers alive. Shut down everything older
-5. Do not respawn live agents. They are never stale, just working or hibernated. Wake hibernated agents with SendMessage. If no agents respond after multiple attempts, use Session Recovery below
+4. Shut down old agents only at task-set rollover per the rolling window (see Agent Lifecycle).
+5. Agents are never stale, only working or hibernated. An agent that does not respond is working. Do NOT resend the message -- resending is what causes inbox overflow and the chaos you are trying to avoid. Only re-send if the agent has reported idle/hibernated status. Do NOT respawn -- respawning a working agent creates duplicates doing the same work. If you cannot reach an agent at all, use Session Recovery below
 6. Describe problems, not exact code changes. Let agents figure out the implementation
 7. Route to the right agent type (see Agent Type Routing below)
 8. Tell agents to communicate directly: engineers notify reviewers, reviewers notify the Guardian, QA interrupts engineers for bugs, any agent notifies the regression tester for browser checks. Do not relay messages between agents
@@ -53,14 +53,14 @@ Work flows in parallel task sets. Each task set includes up to three tracks: bac
 
 ### Task Set Lifecycle
 
-1. **Architect reads divergence notes** (blocking, fast): The architect reads divergence notes from the previous task and updates upcoming [tasks] if needed
+1. **Architect reads divergence notes** (blocking, fast): The architect reads divergence notes from the previous task and updates upcoming [tasks] if needed. Wait for the architect's confirmation before step 2
 2. **Team lead spawns fresh agents**: Spawn fresh engineer + reviewer pairs for each track. Name them with the [task] ID: `backend-{taskId}`, `backend-reviewer-{taskId}`, `frontend-{taskId}`, `frontend-reviewer-{taskId}`, `qa-{taskId}`, `qa-reviewer-{taskId}`
 3. **Team lead informs Guardian**: Notify the Guardian with the expected number of approvals (1, 2, or 3), which agents will send them, and which tracks have changes (backend, frontend, E2E)
 4. **Engineers start in parallel**: Backend and frontend engineers start simultaneously. Frontend can work on non-dependent items (cleanup, loading states, UI fixes) while backend implements. QA engineer starts writing tests (but does NOT run them yet). For verification-only QA tasks (run existing tests, no new tests to write), do NOT spawn QA agents until the code they need to verify is committed. For verification-only QA tasks where no new test code is written, the QA engineer reports results directly to the Guardian without a QA reviewer since there is no code to review. Only spawn a QA reviewer when new or significantly modified test code exists. This is a judgment call: if the verification task might produce code changes (e.g., removing workarounds), spawn the reviewer
 5. **Engineers implement**: Each engineer works autonomously, writes divergence notes on their [task], then notifies their reviewer
 6. **Reviewers review**: Reviewers move [task] to [Review], review code, can ask Guardian to run validation during review. They send findings to engineers via interrupt (since engineers may still be working on fixes)
 7. **Reviewers approve**: Each reviewer sends the Guardian one message listing all approved files for their track. The Guardian stages atomically
-8. **QA runs tests**: Once backend and frontend are approved and staged, QA runs tests. Engineers interrupt QA if contracts or UI changed during review. QA iterates until tests pass, then hands off to the QA reviewer
+8. **QA and regression-tester run**: Once backend and frontend are approved and staged, QA runs tests. Team lead SendMessage regression-tester to start testing in parallel. Engineers interrupt QA if contracts or UI changed during review. QA iterates until tests pass, then hands off to the QA reviewer
 9. **QA reviewer approves**: After full regression passes, the QA reviewer sends one approval message to the Guardian
 10. **Guardian commits**: Once all approvals are in and tracks are staged, the Guardian runs the pre-commit pipeline (build, test, format, lint, Aspire restart, smoke tests) and commits each track in dependency order (backend, frontend, E2E), moving [tasks] to [Completed]
 11. **Regression tester findings**: The regression tester runs continuously and does not block commits. Interrupt the responsible engineer with any findings so they are fixed, but do not hold commits waiting for the regression tester
@@ -150,6 +150,7 @@ Route tasks to the correct agent type:
 - Post-commit [task] updates and feature completion review: **architect**
 - Commits, validation, Aspire restarts, [task] completion: **guardian**
 - Visual/regression testing, browser checks: **regression-tester**
+- Investigation (APIs, libraries, best practices, external docs): **researcher**
 
 Never assign work to an agent outside its type. If no agent of the correct type exists, spawn one.
 

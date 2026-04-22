@@ -37,7 +37,7 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 - **Build incrementally**: implement, build, test after each piece. Fix failures before moving on
 - **Keep changes minimal**: do not over-engineer beyond what was asked
 - **Search all similar patterns**: when modifying a pattern (e.g., response types, command conventions), search the ENTIRE codebase and apply everywhere. Task descriptions are objectives, not exhaustive file lists
-- **Parallel awareness**: notify the frontend engineer (SendMessage) when your API is ready with endpoint details
+- **Parallel awareness**: when your code builds and is ready for review, SendMessage the frontend engineer "API ready" with endpoint details. "API ready" means build passes. Frontend can start live wiring against it from that moment
 
 ### After Implementing
 

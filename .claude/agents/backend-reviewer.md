@@ -62,7 +62,7 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 
     > I approve the following backend files for [task ID]: /path/file1.cs, /path/file2.cs.
 
-    Wait for the Guardian's `Staged N files for [task ID]` reply
+    The Guardian stages silently. No reply is expected
 
 ## Approval
 

@@ -50,7 +50,7 @@ Once all approvals are received and staged, run:
 1. **Build** (both backend and frontend if backend changed)
 2. **Test** (backend)
 3. **Aspire restart** (always, before smoke tests)
-4. **Format + lint** on whichever side changed, **and smoke tests** (`end_to_end(searchTerms=["--smoke"])`) in parallel
+4. **Format + lint** on whichever side changed, **and all smoke tests** (`end_to_end(smokeOnly=true)`) in parallel
 
 Refuse to commit on any failure and report to the relevant reviewer. If format modifies files, stage them with `git add`. Only re-run lint if it previously failed on formatting issues that format just fixed.
 
@@ -68,7 +68,6 @@ On receipt:
 1. Verify the file list matches `git diff --name-only` for that track. Reject if anything is missing or extra
 2. Stage with an explicit file list: `git add <file1> <file2> ...`. Never `git add -A` or `git add .`
 3. Confirm `git diff --cached --name-only` matches the approval list
-4. Reply `Staged N files for [task ID]`
 
 ## Commit Process
 

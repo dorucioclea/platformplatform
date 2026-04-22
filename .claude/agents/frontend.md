@@ -36,7 +36,7 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 - **Build incrementally**: implement, build after each piece. Fix failures before moving on
 - **Keep changes minimal**: do not over-engineer beyond what was asked
 - **Search all similar patterns**: when modifying a pattern (e.g., optimistic updates, form handling), search the ENTIRE codebase and apply everywhere. Task descriptions are objectives, not exhaustive file lists. Missing a call site causes regressions
-- **Parallel awareness**: start building the UI shell immediately using the API contract from the [task] description or by asking the backend engineer for the expected endpoints and types. Hook up real endpoints when the backend engineer sends you a message saying "API ready." "API ready" means the backend code is implemented and building -- it does not require a Guardian commit
+- **Parallel awareness**: start building the UI shell using the API contract from the [task] description or by asking the backend engineer for expected endpoints and types. Hook up real endpoints when the backend engineer sends the "API ready" signal
 - **If backend API unavailable**: use realistic mock data with comments. Document what needs real integration in your review message
 
 ### Translations

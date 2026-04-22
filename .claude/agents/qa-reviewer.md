@@ -61,11 +61,11 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 
     > I approve the following E2E test files for [task ID]: /path/test1.spec.ts, /path/test2.spec.ts. Full regression: X passed, 0 failed, 0 skipped across N browsers.
 
-    Wait for the Guardian's `Staged N files for [task ID]` reply
+    The Guardian stages silently. No reply is expected
 
 ## E2E Trust Rule
 
-The Guardian trusts your approval for the full regression suite. The Guardian runs only the smoke subset (`end_to_end(searchTerms=["--smoke"])`) as a pre-commit sanity check. Full regression must pass before you send approval. If the Guardian's smoke run catches a failure, the commit is blocked and you re-review.
+The Guardian trusts your approval for the full regression suite. The Guardian runs only the smoke suite as a pre-commit sanity check. Full regression must pass before you send approval. If the Guardian's smoke run catches a failure, the commit is blocked and you re-review.
 
 ## Approval
 
