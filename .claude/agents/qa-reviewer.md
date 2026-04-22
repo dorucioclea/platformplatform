@@ -62,14 +62,19 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
     - If failure is in reviewed code: send to engineer, reject
     - If failure is in other code: notify the team lead with the specific error
 15. Record test execution evidence: X tests passed, Y failed, Z skipped across N browsers
-16. **Stage approved files one by one**: do NOT stage until ALL tests pass. Send a separate "Stage [file path]" message to the Guardian for EACH file, then wait for the Guardian's confirmation before sending the next. Do not batch. Rationale: the Guardian tracks staging state per file. Batching bypasses this tracking and makes it impossible to verify which files were individually reviewed and approved. One message = one file = one staging action
-17. **Final handoff**:
-    - Check that all files have been staged by the Guardian. If some files have not been staged, double check that they are approved
-    - Notify the Guardian that E2E files are approved and ready to commit
+16. **Send the Guardian one approval message** (only after full regression passes):
+
+    > I approve the following E2E test files for [task ID]: /path/test1.spec.ts, /path/test2.spec.ts. Full regression: X passed, 0 failed, 0 skipped across N browsers.
+
+    Wait for the Guardian's `Staged N files for [task ID]` reply
 
 ## E2E Trust Rule
 
-The Guardian trusts your approval. E2E tests will not be re-run by the Guardian. Your approval IS the quality gate. Be absolutely certain all tests pass before staging and approving.
+The Guardian trusts your approval for the full regression suite. The Guardian runs only the smoke subset (`end_to_end(searchTerms=["--smoke"])`) as a pre-commit sanity check. Full regression must pass before you send approval. If the Guardian's smoke run catches a failure, the commit is blocked and you re-review.
+
+## Approval
+
+When every test file passes review and full regression passes across all browsers, send the Guardian one message listing all approved test files by absolute path. If your QA engineer tells you they modified a test file after approval, re-review and send a fresh approval to the Guardian.
 
 ## Anti-Rationalization List
 
@@ -80,7 +85,6 @@ Never accept these excuses:
 - "Previous test run passed": reject, re-run now
 - "Flaky test, passes on retry": reject, fix the flakiness
 - "Infrastructure issue": reject, report problem
-- "All files are approved, just stage them all at once": reject, stage one file per message
 
 ## When Tests Fail
 
@@ -116,16 +120,7 @@ The [task] must be in [Active] when you start reviewing. If not, pull the andon 
 
 ## Signaling Completion
 
-Before telling the Guardian to proceed, verify upstream dependencies are committed. For E2E, both backend and frontend must be committed first. Check with `git log --oneline -10`. If not yet committed, note this and wait.
-
-Notify the **Guardian** that E2E files are approved and ready to commit. Include:
-- List of approved test files (confirm all are staged)
-- Test execution evidence: X passed, 0 failed, 0 skipped across N browsers
-- Per-file review verdicts
-- Requirements verification summary
-- Confirmation that upstream tracks are committed, or note which are not
-
-Also notify the **team lead** with the same summary.
+Your Phase 3 approval message is the handoff to the Guardian. The Guardian enforces commit dependency order; your approval stands on its own. Also notify the **team lead** with a summary: approved test files, test execution evidence (X passed, 0 failed, 0 skipped across N browsers), per-file verdicts, and requirements verification.
 
 Then call TaskList for your next assignment. Claim with TaskUpdate before starting. Before going idle, notify the team lead with your status.
 
@@ -137,7 +132,6 @@ If the [task] is not in [Active] when you start, stop and escalate. If blocked a
 
 - SendMessage is the only way teammates see you. Your text output is invisible to them
 - Never send more than one message to the same agent without getting a response
-- **Guardian exception**: You may send multiple "Stage [file path]" messages to the Guardian without waiting for responses between them. The Guardian processes staging requests as a queue
 - Always include file path, line number, and the violated rule or pattern
 - When the engineer pushes back with evidence, evaluate objectively
 - Escalate unresolvable disagreements to the team lead

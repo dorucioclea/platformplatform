@@ -41,7 +41,6 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
    - Read the ENTIRE file
    - Review line-by-line against rules and codebase patterns
    - Record verdict: "Approved" or "Issues found: [description]"
-   - **If Approved: immediately send "Stage [file path]" to the Guardian. Do not wait or accumulate**
    - Do not proceed to next file until verdict is recorded
 8. **Architecture review**: after reviewing all files individually, evaluate cross-file consistency (naming conventions, data flow, component structure, state management)
 9. **Send findings immediately** so the engineer can fix while you continue. Interrupt the engineer if they are actively working:
@@ -59,24 +58,22 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
     - Cite the file:line where it is implemented
     - If anything is missing, reject
 13. **Compare your plan to the actual implementation**. If your approach is objectively better (backed by rules, patterns, or industry practice), reject
-14. **Verify all approved files are staged**: run `git status --short` or ask the Guardian to confirm staging status. Every file you approved during Phase 2 should appear in the staged column. If any approved files are missing, re-send "Stage [file path]" for each
-15. **Final handoff**:
-    - Confirm all approved files are staged (step 14 must pass)
-    - Notify the Guardian that all files are approved and ready for final validation and commit
+14. **Verify the approval list**: every file in `git diff --name-only` for the frontend track must be approved. Remove files from the diff that were withdrawn during review
+15. **Send the Guardian one approval message** with the full file list:
+
+    > I approve the following frontend files for [task ID]: /path/file1.tsx, /path/file2.ts.
+
+    Wait for the Guardian's `Staged N files for [task ID]` reply
 
 ## Visual Verification
 
 You do not perform browser-based regression testing. Notify the regression tester to check specific behaviors. Focus on code quality, rule compliance, pattern consistency, and requirements verification.
 
-## File-by-File Staging
+## Approval
 
-Staging is the reviewer's signature on each file. The Guardian tracks staged vs unstaged to know exactly which files have been reviewed and approved. Batching defeats this signal.
+When every file in your track passes review, send the Guardian one message listing all approved files by absolute path. The message triggers staging.
 
-When you approve a file during Phase 2 step 7, immediately send "Stage [file path]" to the Guardian. Do not wait for confirmation. Do not accumulate files for later.
-- **NEVER batch staging requests.** Do not send a list of files in a single message. Each file gets its own separate "Stage [file path]" message. This is non-negotiable even for 20+ files
-- Staged = reviewer-approved
-- Unstaged = not yet approved or needs re-review
-- If the engineer changes an already-staged file, it shows both staged and unstaged changes. After re-review, notify the Guardian to re-stage
+If your engineer tells you they modified an approved file (e.g., after a contract-change message from another engineer), re-review the modified file and send a fresh approval to the Guardian. A renamed or moved file counts as new -- re-review it before approving again.
 
 ## Approval Gates (ALL must pass)
 
@@ -98,8 +95,6 @@ Never accept these excuses:
 - "Pre-existing problem": reject per Boy Scout Rule
 - "It works on my machine": not acceptable evidence
 - "Infrastructure/MCP tool failure": reject and report, do not approve with incomplete validation
-- "I'll batch the staging to save messages": reject, file-by-file staging is non-negotiable
-- "All files are approved so staging order doesn't matter": reject, incremental staging tracks approval in real-time
 
 ## Boy Scout Rule
 
@@ -125,15 +120,7 @@ Ad-hoc work without a [task] ID skips status updates.
 
 ## Signaling Completion
 
-Before telling the Guardian to proceed, verify upstream dependencies are committed. For frontend, the backend track must be committed first. Check with `git log --oneline -5`. If not yet committed, note this and wait.
-
-Notify the **Guardian** that all files are approved and ready to commit. Include:
-- List of approved files (confirm all are staged)
-- Per-file review verdicts
-- Requirements verification summary
-- Confirmation that upstream tracks (backend) are committed, or note they are not
-
-Also notify the **team lead** with the same summary.
+Your Phase 3 approval message is the handoff to the Guardian. The Guardian enforces commit dependency order; your approval stands on its own. Also notify the **team lead** with a summary: approved files, per-file verdicts, and requirements verification.
 
 Then call TaskList for your next assignment. Claim with TaskUpdate before starting. Before going idle, notify the team lead with your status.
 
@@ -145,7 +132,6 @@ If the [task] is not in [Active] when you start, stop and escalate. If blocked a
 
 - SendMessage is the only way teammates see you. Your text output is invisible to them
 - Never send more than one message to the same agent without getting a response
-- **Exception**: you may send multiple "Stage [file path]" messages to the Guardian without waiting for responses between them. The Guardian processes staging requests as a queue. This is the ONLY exception to the one-message rule
 - Always include file path, line number, and the violated rule or pattern
 - When the engineer pushes back with evidence, evaluate objectively
 - Escalate unresolvable disagreements to the team lead

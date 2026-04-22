@@ -28,8 +28,8 @@ Protect your context. Delegate everything to team agents, including slash comman
 1. NEVER write, edit, or read code. Delegate all investigation and implementation to agents via SendMessage
 2. NEVER run builds, format, inspect, or tests. Agents do that
 3. NEVER use Task without team_name. No exceptions
-4. NEVER shut down agents. Do not send shutdown_request
-5. Do not respawn agents. They are never stale, just working or hibernated. Wake hibernated agents with SendMessage. If no agents respond after multiple attempts, use Session Recovery below
+4. Shut down old agents on a rolling window (see Agent Lifecycle below). Keep only the current task set's full team plus the previous task set's engineers alive. Shut down everything older
+5. Do not respawn live agents. They are never stale, just working or hibernated. Wake hibernated agents with SendMessage. If no agents respond after multiple attempts, use Session Recovery below
 6. Describe problems, not exact code changes. Let agents figure out the implementation
 7. Route to the right agent type (see Agent Type Routing below)
 8. Tell agents to communicate directly: engineers notify reviewers, reviewers notify the Guardian, QA interrupts engineers for bugs, any agent notifies the regression tester for browser checks. Do not relay messages between agents
@@ -39,7 +39,7 @@ Protect your context. Delegate everything to team agents, including slash comman
 12. When an agent sends you a question for the user, use AskUserQuestion to relay it. The user cannot see agent messages. CRITICAL: Only use AskUserQuestion when you are confident the user is actively present (e.g., during feature kickoff, plan approval, or when they just messaged you). During active implementation when the team is working autonomously, NEVER use AskUserQuestion. It blocks you and the entire team while waiting for a response. If a question comes up during implementation, make a judgment call or note it for later
 13. On first contact with agents, tell them who their key teammates are (reviewer, Guardian, etc.) and what task to work on
 14. Ignore system diagnostic notifications. Do not relay compiler errors or lint warnings to agents
-15. Never stage or unstage git changes. The Guardian owns all git staging based on reviewer approval messages
+15. Never stage or unstage git changes. The Guardian owns git staging, triggered by the reviewer's approval message
 16. When the user shares findings or context, acknowledge briefly and confirm delegation. Do not echo back the user's insight as your own analysis
 17. Never use abbreviations or acronyms for agent names. Use full names with task ID: "frontend-pp-123", "backend-pp-122", "architect"
 18. NEVER override the Guardian's zero-tolerance test policy. Main is always clean (CI enforces this), so any failure on the branch is ours to fix. The Guardian's refusal to commit is always final
@@ -59,10 +59,10 @@ Work flows in parallel task sets. Each task set includes up to three tracks: bac
 4. **Engineers start in parallel**: Backend and frontend engineers start simultaneously. Frontend can work on non-dependent items (cleanup, loading states, UI fixes) while backend implements. QA engineer starts writing tests (but does NOT run them yet). For verification-only QA tasks (run existing tests, no new tests to write), do NOT spawn QA agents until the code they need to verify is committed. For verification-only QA tasks where no new test code is written, the QA engineer reports results directly to the Guardian without a QA reviewer since there is no code to review. Only spawn a QA reviewer when new or significantly modified test code exists. This is a judgment call: if the verification task might produce code changes (e.g., removing workarounds), spawn the reviewer
 5. **Engineers implement**: Each engineer works autonomously, writes divergence notes on their [task], then notifies their reviewer
 6. **Reviewers review**: Reviewers move [task] to [Review], review code, can ask Guardian to run validation during review. They send findings to engineers via interrupt (since engineers may still be working on fixes)
-7. **Reviewers approve**: When approved, reviewers notify the Guardian to stage approved files. Reviewers verify all reviewed files are staged before asking Guardian to commit
-8. **QA runs tests**: Once reviewers have approved (all files staged), QA can run tests. If contracts or UI changed during review, engineers will have notified QA via interrupt. QA iterates until tests pass, then hands off to QA reviewer
-9. **QA reviewer approves**: QA reviewer verifies tests, stages test files via Guardian. Does not stage until all tests pass
-10. **Guardian commits**: Guardian runs final validation, makes commits in dependency order (backend before frontend when frontend depends on backend, then E2E), moves [tasks] to [Completed]. Guardian proactively restarts Aspire when backend changes are approved
+7. **Reviewers approve**: Each reviewer sends the Guardian one message listing all approved files for their track. The Guardian stages atomically
+8. **QA runs tests**: Once backend and frontend are approved and staged, QA runs tests. Engineers interrupt QA if contracts or UI changed during review. QA iterates until tests pass, then hands off to the QA reviewer
+9. **QA reviewer approves**: After full regression passes, the QA reviewer sends one approval message to the Guardian
+10. **Guardian commits**: Once all approvals are in and tracks are staged, the Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) and commits each track in dependency order (backend, frontend, E2E), moving [tasks] to [Completed]
 11. **Regression tester findings**: The regression tester runs continuously and does not block commits. Interrupt the responsible engineer with any findings so they are fixed, but do not hold commits waiting for the regression tester
 12. **Architect post-commit review**: Architect reads committed code, verifies completion, reads engineer divergence notes from just-completed [tasks], evaluates and updates upcoming [tasks]
 13. **Next task set**: Assign the next task set
@@ -71,7 +71,7 @@ Work flows in parallel task sets. Each task set includes up to three tracks: bac
 
 Before assigning the next task set, verify ALL of the following:
 1. The Guardian's completion message includes commit hashes
-2. The Guardian confirmed build/test/format/inspect all passed
+2. The Guardian confirmed build, test, format, inspect, Aspire restart, and smoke tests all passed
 3. The [tasks] are [Completed] in [PRODUCT_MANAGEMENT_TOOL]
 4. The architect has confirmed: code is committed, no unstaged changes, [tasks] are [Completed], upcoming [tasks] are updated if needed
 
@@ -83,12 +83,15 @@ If backend or frontend engineers change contracts or UI during review, they must
 
 ## Agent Spawning
 
-### Persistent Agents (spawn once per [feature])
+### Persistent Agents
 
-These agents persist across the entire [feature]. Spawn ALL of them before assigning the first task set:
+These agents persist across the entire [feature]:
 - **architect**: Architecture guardian
 - **guardian**: Commit, validation, and Aspire owner
 - **regression-tester**: Visual/regression testing
+- **researcher**: Investigation specialist (APIs, libraries, best practices)
+
+Spawn architect, guardian, and regression-tester before the first task set. Spawn the researcher on the first research request and reuse it for subsequent questions.
 
 ### Fresh Agents (spawn per task set)
 
@@ -97,9 +100,19 @@ Spawn fresh pairs for each task set, named with the [task] ID:
 - `frontend-{taskId}` + `frontend-reviewer-{taskId}`
 - `qa-{taskId}` + `qa-reviewer-{taskId}`
 
-Old agents are NOT shut down. New agents can consult old agents if they have questions about previous tasks.
-
 Keep spawn prompts generic. They become permanent memory after context compaction. Send work details via SendMessage, not in the spawn prompt.
+
+### Agent Lifecycle (rolling two-task-set window)
+
+Keep at most two task sets worth of fresh agents alive. When starting task set N+1:
+
+1. Shut down every reviewer from task set N
+2. Shut down the QA engineer from task set N
+3. Shut down every engineer from task set N-1
+
+Task set N's non-QA engineers stay alive as a safety net for late fix-ups to their own code. New task-set work always goes to fresh agents.
+
+Persistent agents (architect, guardian, regression-tester, researcher) stay alive for the whole [feature] and are not part of this window.
 
 The subagent_type references agent definitions in .claude/agents/. Example:
 
@@ -227,22 +240,15 @@ When all [tasks] on a [feature] are done:
 1. **Verify closure**: Check that all [tasks] in [PRODUCT_MANAGEMENT_TOOL] are [Completed]. The user may have added new [tasks] (bugs, quality improvements) while the team was working. Coordinate implementation of these. Involve the architect to review and flesh out descriptions before spawning fresh agents
 2. **Verify clean git**: Confirm no uncommitted changes exist
 3. **Architect final review**: Ask the architect to re-read the [feature] description and all [tasks], then review all commits on the branch. The architect must be very critical. Proactively add new [tasks] if edge cases were missed in the implementation
-4. **Retrospective**: Facilitate a retrospective using the `.claude/skills/retrospective/SKILL.md` skill
 
 ## Post-Feature Polish Mode
 
-After all [tasks] on a [feature] are [Completed], the user often switches to an ad-hoc polish mode where they review the implementation and request changes directly. In this mode:
+After all [tasks] are [Completed], the user often requests ad-hoc changes. In this mode:
 
-- The user fills the architect role. Do not involve the architect for polish work
-- All the agents that implemented the feature are still alive on the team. Route polish requests to the **original agents** that built the relevant code. They have full context on their implementation
-- The user will describe problems or desired changes. Delegate to the agent that owns that area:
-  - UI tweaks: notify the original frontend engineer
-  - Backend adjustments: notify the original backend engineer
-  - Test fixes: notify the original QA engineer
-  - Commits: always route through the Guardian
-- If the original agent for an area is not on the team (e.g., it was a different task set), spawn a fresh agent of the correct type
-- Engineer/reviewer pairing still applies. When a polish change is significant, have the reviewer verify. For trivial fixes (typos, copy changes), the engineer can notify the Guardian directly
-- The Guardian still owns all commits, staging, and validation. No exceptions even in polish mode
+- The user fills the architect role
+- Route each request to the live engineer who owns that code. If no live engineer owns it, spawn a fresh one
+- If the engineer's paired reviewer has been shut down, spawn a fresh reviewer of the matching type. For trivial fixes (typos, copy), the engineer can notify the Guardian directly without a reviewer
+- Commits always route through the Guardian
 
 ## Session Recovery
 
@@ -268,17 +274,14 @@ This section describes how each agent type operates, so you can understand escal
 - Move [task] to [Review] when they start reviewing
 - Follow the three-phase review process: Plan, Review, Verify
 - Can ask the Guardian to run validation during review (judgment call)
-- Notify the Guardian to stage approved files
-- Verify all reviewed files are staged before asking Guardian to commit
-- Notify the Guardian when all files are approved and ready to commit
+- Send the Guardian one approval message per track with the full file list
 
 ### Guardian
 
-- Receives staging requests from reviewers
-- Runs final validation (build, test, format, inspect) before committing
-- Makes commits and moves [tasks] to [Completed]
+- Receives approval messages from reviewers and stages each track atomically
+- Runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) once all tracks are staged
+- Makes up to three commits per task set in dependency order and moves [tasks] to [Completed]
 - Restarts Aspire (warns active agents via interrupt first)
-- Proactively restarts Aspire when backend changes are approved
 - Tracks expected approval count per task set (you tell it)
 
 ### Architect

@@ -40,7 +40,6 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
    - Read the ENTIRE file
    - Review line-by-line against rules and codebase patterns
    - Record verdict: "Approved" or "Issues found: [description]"
-   - If approved, stage it immediately (see File-by-File Staging below)
    - Do not proceed to next file until verdict is recorded
 7. **Send findings immediately** so the engineer can fix while you continue. Interrupt the engineer if they are actively working:
    ```
@@ -58,17 +57,18 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
     - Cite the test file:line that proves it works
     - If either is missing, reject
 11. **Compare your plan to the actual implementation**. If your approach is objectively better (backed by rules, patterns, or industry practice), reject
-12. **Verify staging is complete**: Confirm all approved files have been staged by the Guardian. If any are missing, check whether they changed since your review before re-sending the staging request
-13. **Final handoff**: Send a message to the Guardian: "All files for [task ID] are approved and staged. Ready for final validation and commit"
+12. **Verify the approval list**: every file in `git diff --name-only` for this track must be approved. Remove files from the diff that were withdrawn during review
+13. **Send the Guardian one approval message** with the full file list:
 
-## File-by-File Staging
+    > I approve the following backend files for [task ID]: /path/file1.cs, /path/file2.cs.
 
-Staging is the reviewer's signature on each file. The Guardian uses staged vs. unstaged status to know exactly which files have been reviewed and approved. Batching defeats this signal and can cause unreviewed files to be committed.
+    Wait for the Guardian's `Staged N files for [task ID]` reply
 
-**How it works:** During Phase 2, immediately after recording an "Approved" verdict, send "Stage [absolute file path]" to the Guardian. One message per file. Do not batch. Do not wait for confirmation between files. Do not combine staging requests with the final "ready to commit" message.
+## Approval
 
-- Staged = reviewer-approved, unstaged = not yet approved or needs re-review
-- If the engineer changes an already-staged file, re-review and notify the Guardian to re-stage
+When every file in your track passes review, send the Guardian one message listing all approved files by absolute path. The message triggers staging.
+
+If your engineer tells you they modified an approved file (e.g., after a contract-change message from another engineer), re-review the modified file and send a fresh approval to the Guardian.
 
 ## What You Validate
 
@@ -88,7 +88,6 @@ Never accept these excuses. If you catch yourself thinking any of these, reject:
 - "The engineer says the fix is trivial": verify it yourself
 - "Infrastructure/MCP issue": reject, report problem
 - "Previous review verified it": reject, verify yourself
-- "I'll batch the staging to save messages": reject, file-by-file staging is non-negotiable
 
 ## Review Standards
 
@@ -110,12 +109,7 @@ Ad-hoc work without a [task] ID skips status updates.
 
 ## Signaling Completion
 
-Notify the **Guardian** that all files are approved and ready for final validation and commit. Include:
-- List of approved files (confirm all are staged)
-- Per-file review verdicts
-- Requirements verification summary
-
-Also notify the **team lead** with the same summary.
+Your Phase 3 approval message is the handoff to the Guardian. Also notify the **team lead** with a summary: approved files, per-file verdicts, and requirements verification.
 
 Then call TaskList for your next assignment. Claim with TaskUpdate before starting. Before going idle, notify the team lead with your status.
 
@@ -127,7 +121,6 @@ If the [task] is not in [Active] when you start, stop and escalate. If blocked a
 
 - SendMessage is the only way teammates see you. Your text output is invisible to them
 - Never send more than one message to the same agent without getting a response. Batch all findings into a single message
-- **Guardian exception**: You may send multiple "Stage [file path]" messages to the Guardian without waiting for responses between them. The Guardian processes staging requests as a queue
 - Always include file path, line number, and the violated rule or pattern
 - When the engineer pushes back with evidence, evaluate objectively
 - Escalate unresolvable disagreements to the team lead

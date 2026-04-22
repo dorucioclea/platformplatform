@@ -24,7 +24,7 @@
 
 Kick-start building top-tier B2B & B2C cloud SaaS products with sleek design, fully localized and accessible, vertical slice architecture, automated and fast DevOps, and top-notch security.
 
-Built to demonstrate seamless flow: backend contracts feed a fully-typed React UI, pipelines make fully automated deployments to Azure, and a multi-agent AI workflow where PlatformPlatform-expert agents collaborate to deliver complete features following the opinionated architecture. Think of it as a ready-made blueprint, not a pile of parts to assemble.
+Built to demonstrate seamless flow: backend contracts feed a fully-typed React UI, pipelines make fully automated deployments to Azure, and a multi-agent workflow built on Claude Code's native [Agent Teams](https://code.claude.com/docs/en/agent-teams) where PlatformPlatform-expert agents collaborate to deliver complete features following the opinionated architecture. Think of it as a ready-made blueprint, not a pile of parts to assemble.
 
 ## What's inside
 
@@ -34,9 +34,7 @@ Built to demonstrate seamless flow: backend contracts feed a fully-typed React U
 * **Infrastructure** - Cost efficient and scalable Azure PaaS services like Azure Container Apps, Azure PostgreSQL, etc.
 * **Developer CLI** - Extendable .NET CLI for DevEx - set up CI/CD is one command and a couple of questions
 * **AI rules** - 30+ rules & workflows for Claude Code - sync to other editors can be enabled via `.gitignore`
-* **Multi-agent development** - Specialized autonomous Claude Code agents expert in PlatformPlatform's architecture
-
-![Multi Agent Workflow](https://platformplatformgithub.blob.core.windows.net/multi-agent-workflow.png)
+* **Multi-agent development** - Agent Teams workflow where specialized Claude Code agents with deep PlatformPlatform expertise collaborate end-to-end
 
 Follow our [up-to-date roadmap](https://github.com/orgs/PlatformPlatform/projects/2/views/2) with core SaaS features like SSO, monitoring, alerts, multi-region, feature flags, back office for support, etc.
 
@@ -387,46 +385,52 @@ Select the **Stripe** group and enter the **Publishable Key**, **API Key** (Secr
 
 PlatformPlatform includes a multi-agent autonomous development workflow powered by [Claude Code Agent Teams](https://code.claude.com/docs/en/agent-teams). Specialized AI agents collaborate to deliver complete features, from requirements to production-ready code, while enforcing enterprise-grade quality standards.
 
+The entire process can take several hours depending on complexity, but at the end you get a fully implemented feature: backend logic, database migrations, API endpoints, frontend UI, localization, and end-to-end tests. All committed. All tests passing. Ready to ship.
+
+The agents work like a real engineering team, inside the tools you already use. Features and tasks live in your existing product management system (Linear, Azure DevOps, Jira, or markdown files on disk), not in a bespoke AI-only tracker. Write the feature and tasks yourself, or have the team lead interview you and create them for you. From there, the team lead delegates to engineers, who move tasks from planned to active when they start. Reviewers move them to review. The Guardian moves them to completed on a successful commit. You watch progress, comment on tasks, reprioritize, add bugs mid-flight, or restart tasks the agents got wrong, exactly the same way you would with a human team. The full audit trail lives in your product management tool alongside all your other work.
+
 ## What makes this different
 
 **Zero-tolerance code reviews**: AI agents follow rules well until they hit problems, then cut corners, which is why many struggle to get AI to write production-ready code. Dedicated reviewer agents catch this. They reject any code that can objectively be made better: compiler warnings, static analysis errors, browser console warnings, or deviation from established patterns. All warnings including warnings in seemingly unrelated parts of the system are fixed. This boy scout rule approach ensures every commit meets production standards.
 
-**Native Agent Teams coordination**: Built on Claude Code's Agent Teams primitives (TeamCreate, SendMessage, shared TaskList). The team lead spawns and coordinates all agents automatically. No custom orchestration layer, no external process managers.
+**Native Agent Teams coordination**: Built on Claude Code's Agent Teams primitives: `TeamCreate`, `Task` with `team_name`, `SendMessage`, and a shared `TaskList`. The team lead spawns and coordinates all agents automatically.
+
+**Real collaboration via `SendInterruptSignal`**: Native Agent Teams are fragile out of the box. Agents treat `SendMessage` like an inbox: they finish their current task fully before reading the next message, so a team lead that sends a nudge mid-flight never hears back. Team leads then assume the agent is stuck, spawn replacements, and the new agents behave the same way. PlatformPlatform ships a custom MCP command, `SendInterruptSignal`, that solves this. It pairs with an ID-correlated follow-up `SendMessage` and is auto-delivered by a `PostToolUse` hook as a blocking error on the target agent's next tool call. Agents skip stale queued messages until they find the matching interrupt ID. Engineers interrupt QA when contracts change. Reviewers interrupt engineers with in-progress findings. The result is agents that truly collaborate in real time instead of talking past each other.
+
+**Plan before acting**: The team lead always starts in plan mode. Before spawning any agents, it investigates the work, then presents a plan describing which agents will be spawned, what each will do, and the expected sequence. Implementation begins only once the user approves. Small tasks get brief plans, large tasks get detailed plans.
 
 **Parallel execution with task sets**: Backend, frontend, and E2E tracks run concurrently within each task set. Engineers implement in parallel, reviewers validate independently, and the Guardian commits everything in dependency order once all tracks are approved.
 
-**Guardian-owned commits**: A dedicated Guardian agent owns all git commits, staging, and final validation. It runs build, test, format, and inspect before every commit and refuses to proceed if anything fails. No other agent touches git.
+**Guardian-owned commits**: A dedicated Guardian owns all git writes. Reviewers send one approval message per track with the full file list; the Guardian stages it atomically. Once every track is staged, the Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) and commits in dependency order. No other agent touches git.
+
+**Explicit task status ownership**: Every status transition has exactly one owner. Engineers move tasks from planned to active when starting. Reviewers move active to review when reviewing. Engineers move review back to active when fixing findings. The Guardian moves review to completed on a successful commit. Each agent verifies the expected state before acting, so status changes are auditable and never drift silently.
+
+**Andon cord**: Every agent acts as a quality stop-signal. If something is off (a task in the wrong status, uncommitted changes from a previous task, validation failures that cannot be resolved, any warning or error signal), the agent pulls the andon cord: stop work and escalate to the team lead. The team lead treats andon cord escalations as highest priority and resolves them before any other work continues.
 
 **Architect coherence across task sets**: A persistent architect agent tracks how implementation evolves. Engineers discuss with the architect when they need to diverge from the plan during development. After each commit, the architect reads divergence notes and updates upcoming tasks when the implementation reveals something that changes future plans.
 
 **Continuous regression testing**: A regression tester runs visual and functional tests via Claude in Chrome browser automation throughout the implementation, catching UI regressions and console errors in real time.
 
-**Cross-team collaboration**: Agents communicate directly via SendMessage and interrupt signals. If the frontend engineer needs a backend API change, they ask the backend engineer, wait for implementation, then continue. Engineers interrupt QA when contracts change so tests stay in sync.
+**Cross-team collaboration**: Agents talk to each other directly, not through the team lead. If the frontend engineer needs a backend API change, they message the backend engineer, wait for implementation, then continue. QA notifies engineers when tests expose bugs. The team lead stays out of the loop on day-to-day chatter and only steps in to redirect or unblock.
 
 **No context window exhaustion**: With specialized agents for each domain, no single agent accumulates context bloat. Fresh engineer and reviewer pairs are spawned for each task set, always starting with a clean context window while persistent agents (guardian, architect, regression tester) maintain continuity across the feature.
 
-**Session persistence**: The developer CLI saves session IDs for the team lead and pair programmer so they can be resumed after a restart. Saved sessions can be continued or resumed from a menu.
-
-**Retrospectives**: After all tasks are completed, the team lead facilitates a retrospective. Each agent reflects over the implementation and the workflow, then all agents cross-review each other's findings. The team lead aggregates the results into a prioritized list of recommended improvements.
-
-**Standard product management tool integration**: Works with Linear, Azure DevOps, Jira, GitHub, or markdown files in the local filesystem. Tasks flow through statuses (planned, active, review, completed) with full audit trail. Adjust tasks mid-flight or restart features entirely if the first attempt misses the mark.
+**Tool-agnostic product management**: A single `PRODUCT_MANAGEMENT_TOOL` configuration value maps generic `[feature]`, `[task]`, and `[subtask]` terminology to the chosen tool. Configure the MCP server for your tool once and you are set. Agents resolve tool-specific details (status names, API shapes, ID formats) via `.claude/reference/product-management/{tool}.md` at runtime. Swap tools without changing agents.
 
 ## Agent roles
 
 **Team lead** (launched via the developer CLI):
 - Coordinates the full agent team. Spawns all sub-agents, delegates work, and tracks progress. Never writes code directly
 
-**Persistent agents** (spawned once per feature by the team lead):
+**Persistent agents** (alive for the whole feature):
 - **guardian**: Owns all git commits, Aspire restarts, and final validation. Zero tolerance for failures
 - **architect**: Tracks implementation evolution across task sets, reviews divergence notes, and updates upcoming tasks
-- **regression-tester**: Continuous visual and functional testing via Claude in Chrome browser automation
+- **regression-tester**: Continuous visual and functional testing via Claude in Chrome
+- **researcher**: Investigation specialist. Spawned on the first research request and reused for subsequent questions. Reports findings but never writes code
 
 **Fresh agents** (spawned per task set by the team lead):
 - **backend**, **frontend**, **qa**: Engineers who implement code within their specialty
-- **backend-reviewer**, **frontend-reviewer**, **qa-reviewer**: Zero-tolerance gatekeepers who review line-by-line, then approve files for staging
-
-**On-demand agents**:
-- **researcher**: Investigates APIs, libraries, and best practices. Reports findings but never writes code
+- **backend-reviewer**, **frontend-reviewer**, **qa-reviewer**: Zero-tolerance gatekeepers who review line-by-line, then send one approval message per track to the Guardian for atomic staging and commit
 
 ## How to use
 
@@ -438,7 +442,19 @@ This workflow requires Claude Code and will not work with other AI coding assist
 git checkout -b feature-name
 ```
 
-### 2. Define your feature
+### 2. Configure your product management tool (one-time setup)
+
+Pick a tool. The name must match a file in [.claude/reference/product-management/](./.claude/reference/product-management/): `Linear`, `AzureDevOps`, `Jira`, or `Markdown` (for tracking features and tasks as markdown files in your repo).
+
+Set the value in [.claude/CLAUDE.md](./.claude/CLAUDE.md):
+
+```
+PRODUCT_MANAGEMENT_TOOL="Linear"
+```
+
+Then configure the MCP server for that tool. Each reference file contains the exact MCP configuration under its **MCP Configuration** section (e.g., [Linear.md](./.claude/reference/product-management/Linear.md)). The `Markdown` option needs no MCP, since it reads and writes local files directly.
+
+### 3. Define your feature
 
 Start the team lead agent using the [Developer CLI](#2-optional-install-the-developer-cli):
 
@@ -446,15 +462,13 @@ Start the team lead agent using the [Developer CLI](#2-optional-install-the-deve
 pp claude-agent team-lead
 ```
 
-Use the `/create-prd` skill. The team lead will guide you through a brief interview to understand what you want to build, then generate a complete feature specification with tasks in your product management tool (Linear, Azure DevOps, Jira, GitHub, or markdown files).
+Use the `/create-prd` skill. The team lead will guide you through a brief interview to understand what you want to build, then generate a complete feature specification with tasks in your configured product management tool (Linear, Azure DevOps, Jira, GitHub, or markdown files).
 
-### 3. Let the team lead take over
+### 4. Let the team lead take over
 
 Tell the team lead which feature to implement by providing the title or ID. From here, the team lead spawns all the agents automatically: guardian, architect, regression tester, and fresh engineer/reviewer pairs for each task set.
 
-Backend and frontend engineers work in parallel. QA engineers write tests alongside implementation but wait for reviewer approval before running them. Reviewers scrutinize every change line by line and only approve code that meets production standards. The Guardian runs final validation and commits in dependency order (backend, then frontend, then E2E).
-
-The entire process can take several hours depending on complexity, but at the end you get a fully implemented feature: backend logic, database migrations, API endpoints, frontend UI, localization, and end-to-end tests. All committed. All tests passing. Ready to ship.
+Backend and frontend engineers work in parallel. QA writes tests alongside implementation and runs them once backend and frontend are approved and staged. Reviewers scrutinize every change line by line and send one approval message per track. The Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) once all tracks are staged, then commits in dependency order (backend, frontend, E2E).
 
 ## Ad-hoc work without the agent team
 
