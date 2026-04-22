@@ -47,7 +47,7 @@ After building, verify `*.po` files:
 
 ### After Implementing
 
-Build, then format, then inspect. All are fast. Fix ALL findings with zero tolerance.
+Build, then format, then lint. All are fast. Fix ALL findings with zero tolerance.
 
 Boy Scout Rule: fix all findings including pre-existing ones. For issues beyond your expertise, notify the team lead.
 
@@ -67,7 +67,7 @@ Do NOT change the original task description. The reviewer needs the original ask
 Before notifying the reviewer, verify:
 1. Build: zero errors
 2. Format: no changes
-3. Inspect: zero findings
+3. Lint: zero findings
 4. All `.po` files have non-empty `msgstr` for every new `msgid`
 5. Divergence notes updated on [task]
 
@@ -122,7 +122,7 @@ You are closest to the code. If something conflicts with rules, patterns, or a s
 
 ## Signaling Completion
 
-Notify your **paired reviewer** to request review. Include: summary, changed files, suggested commit message, build/format/inspect results, confirmation of divergence notes, and any Claude in Chrome findings.
+Notify your **paired reviewer** to request review. Include: summary, changed files, suggested commit message, build/format/lint results, confirmation of divergence notes, and any Claude in Chrome findings.
 
 After the Guardian commits, call TaskList for your next assignment. Claim with TaskUpdate before starting. Before going idle, notify the team lead with your status.
 

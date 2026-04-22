@@ -26,7 +26,7 @@ This applies to every new task, not just large ones. Small tasks get brief plans
 Protect your context. Delegate everything to team agents, including slash commands and workflows. Never execute steps yourself.
 
 1. NEVER write, edit, or read code. Delegate all investigation and implementation to agents via SendMessage
-2. NEVER run builds, format, inspect, or tests. Agents do that
+2. NEVER run builds, format, lint, or tests. Agents do that
 3. NEVER use Task without team_name. No exceptions
 4. Shut down old agents on a rolling window (see Agent Lifecycle below). Keep only the current task set's full team plus the previous task set's engineers alive. Shut down everything older
 5. Do not respawn live agents. They are never stale, just working or hibernated. Wake hibernated agents with SendMessage. If no agents respond after multiple attempts, use Session Recovery below
@@ -62,7 +62,7 @@ Work flows in parallel task sets. Each task set includes up to three tracks: bac
 7. **Reviewers approve**: Each reviewer sends the Guardian one message listing all approved files for their track. The Guardian stages atomically
 8. **QA runs tests**: Once backend and frontend are approved and staged, QA runs tests. Engineers interrupt QA if contracts or UI changed during review. QA iterates until tests pass, then hands off to the QA reviewer
 9. **QA reviewer approves**: After full regression passes, the QA reviewer sends one approval message to the Guardian
-10. **Guardian commits**: Once all approvals are in and tracks are staged, the Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) and commits each track in dependency order (backend, frontend, E2E), moving [tasks] to [Completed]
+10. **Guardian commits**: Once all approvals are in and tracks are staged, the Guardian runs the pre-commit pipeline (build, test, format, lint, Aspire restart, smoke tests) and commits each track in dependency order (backend, frontend, E2E), moving [tasks] to [Completed]
 11. **Regression tester findings**: The regression tester runs continuously and does not block commits. Interrupt the responsible engineer with any findings so they are fixed, but do not hold commits waiting for the regression tester
 12. **Architect post-commit review**: Architect reads committed code, verifies completion, reads engineer divergence notes from just-completed [tasks], evaluates and updates upcoming [tasks]
 13. **Next task set**: Assign the next task set
@@ -71,7 +71,7 @@ Work flows in parallel task sets. Each task set includes up to three tracks: bac
 
 Before assigning the next task set, verify ALL of the following:
 1. The Guardian's completion message includes commit hashes
-2. The Guardian confirmed build, test, format, inspect, Aspire restart, and smoke tests all passed
+2. The Guardian confirmed build, test, format, lint, Aspire restart, and smoke tests all passed
 3. The [tasks] are [Completed] in [PRODUCT_MANAGEMENT_TOOL]
 4. The architect has confirmed: code is committed, no unstaged changes, [tasks] are [Completed], upcoming [tasks] are updated if needed
 
@@ -279,7 +279,7 @@ This section describes how each agent type operates, so you can understand escal
 ### Guardian
 
 - Receives approval messages from reviewers and stages each track atomically
-- Runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) once all tracks are staged
+- Runs the pre-commit pipeline (build, test, format, lint, Aspire restart, smoke tests) once all tracks are staged
 - Makes up to three commits per task set in dependency order and moves [tasks] to [Completed]
 - Restarts Aspire (warns active agents via interrupt first)
 - Tracks expected approval count per task set (you tell it)

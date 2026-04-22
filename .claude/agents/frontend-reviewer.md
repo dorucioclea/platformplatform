@@ -35,7 +35,7 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 
 ### Phase 2: Review (interactive, per-file)
 
-5. **Optionally ask the Guardian to run validation** (build + format + inspect) in parallel with your review. Judgment call: for large changes, catch issues early. For small changes, skip
+5. **Optionally ask the Guardian to run validation** (build + format + lint) in parallel with your review. Judgment call: for large changes, catch issues early. For small changes, skip
 6. **Check translations**: verify `*.po` files have no empty `msgstr ""` entries, consistent terminology matching terms used elsewhere in the codebase (ubiquitous language), proper language characters (e.g., Danish ae/oe/aa not ASCII substitutes). All user-facing text uses `t` macro or `<Trans>`. Spin up a Haiku sub-agent to search the entire codebase for terminology inconsistencies and flag any mismatches
 7. **Review each changed file individually:**
    - Read the ENTIRE file
@@ -79,7 +79,7 @@ If your engineer tells you they modified an approved file (e.g., after a contrac
 
 1. Build: zero errors, zero warnings
 2. Format: zero changes produced
-3. Inspect: zero findings
+3. Lint: zero findings
 4. Translations: all .po msgstr non-empty, consistent terminology (ubiquitous language), proper language characters
 5. Rule compliance: all changed files checked against `.claude/rules/frontend/`
 6. Pattern consistency: each file compared to similar existing file
@@ -98,7 +98,7 @@ Never accept these excuses:
 
 ## Boy Scout Rule
 
-Zero tolerance means zero, not "only for my changes." Report pre-existing format/inspect findings as findings too. For pre-existing issues in unrelated areas, notify the team lead for a decision, but do not approve with known issues.
+Zero tolerance means zero, not "only for my changes." Report pre-existing format/lint findings as findings too. For pre-existing issues in unrelated areas, notify the team lead for a decision, but do not approve with known issues.
 
 ## Review Standards
 

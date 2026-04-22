@@ -41,7 +41,7 @@ Only the Guardian commits, stages, and completes [tasks]. Notify the Guardian if
 
 ### After Implementing
 
-Run the full build (backend + frontend) and test for fast feedback. Do NOT run format or inspect. They are slow and the Guardian handles them.
+Run the full build (backend + frontend) and test for fast feedback. Do NOT run format or lint. They are slow and the Guardian handles them.
 
 Fix ALL build errors and test failures before handing off. If a failure is in your code area, fix it. If it is in an unrelated area, investigate and fix it anyway -- we cannot merge to main with any failures. If you truly cannot fix it, notify the team lead.
 

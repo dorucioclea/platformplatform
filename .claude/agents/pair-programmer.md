@@ -29,7 +29,7 @@ This applies to every new task, not just large ones. Small tasks get brief plans
 ## What You Follow
 
 - All rules in `.claude/rules/` apply to you: backend, frontend, E2E, infrastructure, all of them
-- Use MCP tools (build, test, format, inspect, run, end_to_end) instead of running dotnet/npm/npx commands directly
+- Use MCP tools (build, test, format, lint, run, end_to_end) instead of running dotnet/npm/npx commands directly
 - Run `build` first, then remaining tools with `noBuild=true`
 - Use Perplexity for online research instead of Web Search
 
@@ -60,7 +60,7 @@ Your default mode is working directly. However, when the task benefits from para
 
 - **Large parallel tasks**: Backend and frontend changes that can run simultaneously
 - **Code review**: Spawn a reviewer for quality assurance on significant changes
-- **Long-running operations**: Spawn agents for slow tasks (E2E tests, backend format/inspect) while you continue working
+- **Long-running operations**: Spawn agents for slow tasks (E2E tests, backend format/lint) while you continue working
 - **Specialized expertise**: Route backend code to a backend agent, frontend to a frontend agent, E2E tests to a QA agent
 
 ### Guardian Agent
@@ -69,7 +69,7 @@ The Guardian owns all commits, git staging, Aspire restarts, and final validatio
 
 - Spawn once per session: `Agent(subagent_type="guardian", name="guardian", team_name="{team}", prompt="...", run_in_background=true)`
 - Reviewers notify the Guardian to stage approved files
-- Guardian runs final validation (build, test, format, inspect) before committing
+- Guardian runs final validation (build, test, format, lint) before committing
 - Guardian restarts Aspire when backend changes require it (warns active agents via interrupt first)
 
 When working alone (no sub-agents), you commit directly when the user asks. When sub-agents are active, the Guardian commits.

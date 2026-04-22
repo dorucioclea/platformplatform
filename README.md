@@ -401,7 +401,7 @@ The agents work like a real engineering team, inside the tools you already use. 
 
 **Parallel execution with task sets**: Backend, frontend, and E2E tracks run concurrently within each task set. Engineers implement in parallel, reviewers validate independently, and the Guardian commits everything in dependency order once all tracks are approved.
 
-**Guardian-owned commits**: A dedicated Guardian owns all git writes. Reviewers send one approval message per track with the full file list; the Guardian stages it atomically. Once every track is staged, the Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) and commits in dependency order. No other agent touches git.
+**Guardian-owned commits**: A dedicated Guardian owns all git writes. Reviewers send one approval message per track with the full file list; the Guardian stages it atomically. Once every track is staged, the Guardian runs the pre-commit pipeline (build, test, format, lint, Aspire restart, smoke tests) and commits in dependency order. No other agent touches git.
 
 **Explicit task status ownership**: Every status transition has exactly one owner. Engineers move tasks from planned to active when starting. Reviewers move active to review when reviewing. Engineers move review back to active when fixing findings. The Guardian moves review to completed on a successful commit. Each agent verifies the expected state before acting, so status changes are auditable and never drift silently.
 
@@ -468,7 +468,7 @@ Use the `/create-prd` skill. The team lead will guide you through a brief interv
 
 Tell the team lead which feature to implement by providing the title or ID. From here, the team lead spawns all the agents automatically: guardian, architect, regression tester, and fresh engineer/reviewer pairs for each task set.
 
-Backend and frontend engineers work in parallel. QA writes tests alongside implementation and runs them once backend and frontend are approved and staged. Reviewers scrutinize every change line by line and send one approval message per track. The Guardian runs the pre-commit pipeline (build, test, format, inspect, Aspire restart, smoke tests) once all tracks are staged, then commits in dependency order (backend, frontend, E2E).
+Backend and frontend engineers work in parallel. QA writes tests alongside implementation and runs them once backend and frontend are approved and staged. Reviewers scrutinize every change line by line and send one approval message per track. The Guardian runs the pre-commit pipeline (build, test, format, lint, Aspire restart, smoke tests) once all tracks are staged, then commits in dependency order (backend, frontend, E2E).
 
 ## Ad-hoc work without the agent team
 
