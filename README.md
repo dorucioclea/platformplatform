@@ -237,14 +237,14 @@ Using Aspire, docker images with PostgreSQL, Blob Storage emulator, and developm
 With the CLI installed:
 
 ```bash
-pp run --attach
+pp run # First time downloading Docker containers will take several minutes
 ```
 
 Or without the CLI:
 
 ```bash
 cd application/AppHost
-dotnet run # First time downloading Docker containers will take several minutes
+dotnet run
 ```
 
 Alternatively, open the [PlatformPlatform](./application/PlatformPlatform.slnx) solution in Rider or Visual Studio and run the [Aspire AppHost](./application/AppHost/AppHost.csproj) project.
