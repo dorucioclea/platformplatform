@@ -12,6 +12,24 @@
             "command": ".claude/hooks/pre-tool-use-bash.sh"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-tool-use-excuse-check.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/stop-excuse-check.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [

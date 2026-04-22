@@ -75,7 +75,7 @@ If your engineer tells you they modified an approved file (e.g., after a contrac
 1. **Rule compliance**: every changed file against `.claude/rules/backend/`
 2. **Pattern consistency**: for each file, find a similar existing file and compare. Flag deviations with codebase examples
 3. **Requirements**: every business rule implemented AND tested (Phase 3, step 10)
-4. **Boy Scout Rule**: report pre-existing format/lint findings too. For pre-existing test failures in unrelated areas, notify the team lead rather than requiring the engineer to fix unfamiliar code
+4. **Boy Scout Rule**: all failures block approval, including anything that looks pre-existing. Main is always clean (CI enforces this), so any failure on the branch is ours. If the failure is outside the engineer's expertise, notify the team lead to route the fix. Never approve with open failures
 5. **Verify changed file list**: always verify against `git diff`. Engineers may list files they intended to change but have zero diff, or miss files they actually changed
 6. **DTO property order**: for DTOs that map to database columns, verify property declaration ORDER matches the database table column order (read the entity class or migration). Property order is a correctness requirement when the DTO maps to a shape
 

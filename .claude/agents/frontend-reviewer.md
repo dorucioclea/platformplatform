@@ -98,7 +98,7 @@ Never accept these excuses:
 
 ## Boy Scout Rule
 
-Zero tolerance means zero, not "only for my changes." Report pre-existing format/lint findings as findings too. For pre-existing issues in unrelated areas, notify the team lead for a decision, but do not approve with known issues.
+All failures block approval, including anything that looks pre-existing. Main is always clean (CI enforces this), so any failure on the branch is ours. If the failure is outside the engineer's expertise, notify the team lead to route the fix. Never approve with open failures.
 
 ## Review Standards
 
