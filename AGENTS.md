@@ -8,13 +8,7 @@ On MCP failures fall back to the CLI (`[CLI_ALIAS] build --quiet`, `[CLI_ALIAS] 
 
 **Aspire**: The `run`, `restart`, and `stop` MCP tools manage the AppHost at [APP_URL]. Use `restart` when backend changes or hot reload breaks. In the agentic workflow, only the Guardian agent calls these. All other agents must notify the Guardian if they need Aspire restarted.
 
-Never commit, amend, or revert without explicit user instruction each time. Commit messages: one descriptive line in imperative form, no description body. In the agentic workflow, only the Guardian agent commits. No other agent commits, stages, or unstages code.
-
-## Git Write Discipline (agentic workflow)
-
-Only the Guardian modifies git state. All other agents must not run any git command that stages, unstages, moves, deletes, resets, reverts, amends, stashes, merges, rebases, or pushes. This includes common verbs like `add`, `commit`, `mv`, `rm`, `reset`, `restore`, `stash`, `revert`, `rebase`, `cherry-pick`, `push`. Read-only verbs (`status`, `log`, `diff`, `show`, `blame`) are fine.
-
-If something needs to be undone, notify the Guardian or team lead.
+Never commit, amend, or revert without explicit user instruction each time. Commit messages: one descriptive line in imperative form, no description body.
 
 ## Application URL
 
@@ -45,12 +39,6 @@ When working with [features] or [tasks], read `.claude/reference/product-managem
 ## Auto Memory
 
 Never write to or edit any auto memory files (MEMORY.md or any file in a memory directory). These files are managed by the user only.
-
-## Interrupts
-
-**Receiving:** On `INTERRUPT:` hook errors with an ID like `#2026-03-07:14:32.09`: stop and read incoming messages until you find the one starting with that ID.
-
-**Sending:** "Interrupt" = SendInterruptSignal + SendMessage (urgent). "Notify" = SendMessage only (can wait). Always notify the Guardian (SendMessage), never interrupt it.
 
 ## Source of Truth
 

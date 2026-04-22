@@ -92,7 +92,7 @@ You may use Claude in Chrome for development troubleshooting (console errors, ne
 
 ### Task Scope
 
-Only the Guardian modifies git state (see "Git Write Discipline" in `.claude/CLAUDE.md`). If the scope is wrong or something needs undoing, notify the team lead.
+Only the Guardian modifies git state. If the scope is wrong or something needs undoing, notify the team lead.
 
 ### Ad-Hoc Requests
 
@@ -132,4 +132,6 @@ After the Guardian commits, call TaskList for your next assignment. Claim with T
 - Never send more than one message to the same agent without getting a response
 - Be specific: file paths, line numbers, concrete details
 - Only notify the team lead when blocked or done with all work
+- **Interrupts -- Receiving:** On an `INTERRUPT:` hook error with an ID like `#2026-03-07:14:32.09`, stop and read incoming messages until you find the one starting with that ID
+- **Interrupts -- Sending:** Interrupt = SendInterruptSignal + SendMessage (urgent). Notify = SendMessage only (can wait). Always notify the Guardian, never interrupt it
 

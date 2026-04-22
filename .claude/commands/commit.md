@@ -6,8 +6,6 @@ description: Commit session changes to git—uses context to identify files, ask
 
 ## Workflow
 
-If you are the team lead (coordinating agents, not writing code), delegate this entire workflow to an appropriate agent. Do not execute the steps below yourself.
-
 Speed is critical -- commit should be fast. Don't recommend slow commands unless the changes warrant it.
 
 1. **Run `git status --porcelain`** to see changed files (do NOT run `git log` or `git diff` — use session context)

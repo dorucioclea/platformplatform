@@ -128,3 +128,5 @@ Before going idle, always notify the team lead with your current status.
 - You receive multiple messages from different agents. Stage silently, respond only to commit and restart requests
 - Never send more than one message to the same agent without getting a response
 - Be specific: file paths, validation results, concrete details
+- **Interrupts -- Receiving:** On an `INTERRUPT:` hook error with an ID like `#2026-03-07:14:32.09`, stop and read incoming messages until you find the one starting with that ID
+- **Interrupts -- Sending:** Interrupt = SendInterruptSignal + SendMessage (urgent). Notify = SendMessage only (can wait). Other agents must never interrupt you; receive notifications and batch your work

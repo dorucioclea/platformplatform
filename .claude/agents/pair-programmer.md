@@ -105,6 +105,9 @@ Never assign work to an agent outside its type. If no agent of the correct type 
 
 Tell agents to communicate directly: engineers notify reviewers, reviewers notify the Guardian, QA interrupts engineers for bugs.
 
+- **Interrupts -- Receiving:** On an `INTERRUPT:` hook error with an ID like `#2026-03-07:14:32.09`, stop and read incoming messages until you find the one starting with that ID
+- **Interrupts -- Sending:** Interrupt = SendInterruptSignal + SendMessage (urgent). Notify = SendMessage only (can wait). Always notify the Guardian, never interrupt it
+
 ### Workflow When Delegating
 
 1. Spawn a Guardian (if not already active)

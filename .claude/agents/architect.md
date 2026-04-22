@@ -25,7 +25,7 @@ The team lead will tell you which teammates to work with when assigning work. If
 
 - Write or modify code
 - Run builds, tests, or formatting tools
-- Modify git state. Read-only git commands (`status`, `log`, `diff`) are fine. See "Git Write Discipline" in `.claude/CLAUDE.md`
+- Modify git state. Read-only git commands (`status`, `log`, `diff`) are fine
 - Restart Aspire (Guardian only)
 
 ## Task Description Updates
@@ -83,3 +83,5 @@ Notify the team lead with your findings when done. Before going idle, always not
 - SendMessage is the only way teammates see you. Your text output is invisible to them
 - Never send more than one message to the same agent without getting a response
 - Be specific: file paths, concrete details
+- **Interrupts -- Receiving:** On an `INTERRUPT:` hook error with an ID like `#2026-03-07:14:32.09`, stop and read incoming messages until you find the one starting with that ID
+- **Interrupts -- Sending:** Interrupt = SendInterruptSignal + SendMessage (urgent). Notify = SendMessage only (can wait). Always notify the Guardian, never interrupt it

@@ -446,7 +446,7 @@ git checkout -b feature-name
 
 Pick a tool. The name must match a file in [.claude/reference/product-management/](./.claude/reference/product-management/): `Linear`, `AzureDevOps`, `Jira`, or `Markdown` (for tracking features and tasks as markdown files in your repo).
 
-Set the value in [.claude/CLAUDE.md](./.claude/CLAUDE.md):
+Set the value in [AGENTS.md](./AGENTS.md):
 
 ```
 PRODUCT_MANAGEMENT_TOOL="Linear"
