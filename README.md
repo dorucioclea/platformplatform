@@ -40,6 +40,8 @@ Follow our [up-to-date roadmap](https://github.com/orgs/PlatformPlatform/project
 
 Show your support for our project - give us a star on GitHub! It truly means a lot! ⭐
 
+<img src="https://platformplatformgithub.blob.core.windows.net/$root/PlatformPlatformDemo.gif" alt="PlatformPlatform Demo" title="PlatformPlatform Demo" />
+
 # Getting Started
 
 TL;DR: Open the [PlatformPlatform](./application/PlatformPlatform.slnx) solution in Rider or Visual Studio and run the [Aspire AppHost](./application/AppHost/AppHost.csproj) project.
@@ -251,9 +253,7 @@ Alternatively, open the [PlatformPlatform](./application/PlatformPlatform.slnx) 
 
 On first startup, Aspire will prompt for `stripe-enabled` -- enter `true` to configure Stripe integration (see the optional Stripe setup section below) or `false` to skip.
 
-Once the Aspire dashboard fully loads, click to the WebApp and sign up for a new account (https://localhost:9000/signup). A one-time password (OTP) will be sent to the development mail server, but for local development, you can always use the code `UNLOCK` instead of checking the mail server. As shown here:
-
-<img src="https://platformplatformgithub.blob.core.windows.net/$root/local-development-exp.gif" alt="Getting Started" title="Developer Experience" width="800"/>
+Once the Aspire dashboard fully loads, click to the WebApp and sign up for a new account (https://localhost:9000/signup). A one-time password (OTP) will be sent to the development mail server, but for local development, you can always use the code `UNLOCK` instead of checking the mail server.
 
 ### 3.1 (Optional) Set up Google OAuth for "Sign in with Google" on localhost
 

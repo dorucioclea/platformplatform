@@ -47,6 +47,7 @@ Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification c
    - **ShadCN 2.0**: Pre-styled components built on BaseUI, using class-variance-authority (cva)
    - Install components via `npx shadcn add <component>` - never copy manually
    - After installing: change `@/utils` to `../utils` and rename file to PascalCase (e.g., `button.tsx` to `Button.tsx`)
+   - **Divergences**: Tracked in `application/shared-webapp/ui/components/README.md` (Component Inventory table + Global Divergence Patterns section). Do not add inline `// NOTE: This diverges from stock ShadCN ...` comments. When reinstalling a component, consult its inventory row and reapply the listed divergences.
    - **Never use `*:` or `**:` variants**: These Tailwind child/descendant variants generate `:is()` CSS selectors that the module federation CSS scoping plugin cannot scope, causing specificity bugs in production. In shared components, use `[&>*]:` or `[&_*]:` selectors instead. In application code, prefer putting the utility class directly on each child element (e.g., `className="max-sm:grow"` on each button instead of `max-sm:*:grow` on the parent)
    - **Focus ring**: Replace ShadCN's default `focus-visible:ring-*` / `focus-visible:border-ring` utilities with `outline-ring focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`. Use `outline-primary` or `outline-destructive` for colored variants instead of `outline-ring`
    - **Apple HIG compliance**: Interactive controls must use CSS variable heights: `h-[var(--control-height)]` (44px default), `h-[var(--control-height-sm)]` (36px), `h-[var(--control-height-xs)]` (28px). For controls like checkboxes/switches where 44px visual size is too large, ensure a 44px minimum tap target using `after:absolute after:-inset-3`
@@ -126,10 +127,11 @@ Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification c
    - `z-100`: **Select popup**: Select dropdown renders above dialogs (ShadCN default)
 
 6. Dialog structure and DirtyDialog patterns:
-   - **Always use DialogBody** for content between DialogHeader and DialogFooter - it provides proper scrolling for tall content
-   - **X button**: Built-in close button shows unsaved warning if dirty
-   - **Cancel button**: Use `<DialogClose render={<Button type="reset" .../>}>` - the `type="reset"` bypasses the warning
-   - Always clear dirty state in `onSuccess` and `onCloseComplete`
+   - Split every dialog into two components in the same file: wrapper owns only `isOpen` + `DirtyDialog`/`DialogContent`/`DialogHeader` shell, body lives inside `<DialogContent>` and owns all state/mutation/form. Body unmounts on close, so state auto-resets on reopen — no `handleCloseComplete`, no `mutation.reset()`
+   - Body signals dirtiness with `useDialogSetDirty()` from `@repo/ui/components/DirtyDialogContext`. `DirtyDialog` tracks the flag internally and clears it on close
+   - `DialogBody` between `DialogHeader` and `DialogFooter` (scroll container)
+   - Cancel button: `<DialogClose render={<Button type="reset" ... />}>` — `type="reset"` skips the unsaved-changes warning
+   - Close on success: call `onClose` from the wrapper. Do not reset anything by hand — unmount does it
 
 7. **Telemetry tracking** (all tracked as `trackPageView`, not custom events): `Dialog`, `AlertDialog`, `SidePane`, and `TablePagination` require a `trackingTitle` prop (e.g., `trackingTitle="Invite user"`). `DropdownMenu` accepts an optional `trackingTitle` prop for menu open/close tracking, and `DropdownMenuItem` accepts an optional `trackingLabel` prop for item selection tracking (e.g., `trackingLabel="Upload logo"`). For custom interactions, use `trackInteraction(name, type, action)` from `ApplicationInsightsProvider`. This also emits a page view, not a custom event. Route-level page tracking uses `staticData: { trackingTitle: "Page name" }` in route definitions
 
@@ -155,91 +157,78 @@ Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification c
 ## Examples
 
 ```tsx
-// ✅ DO: Correct patterns
-export function UserPicker({ isOpen, onOpenChange }: UserPickerProps) {
-  const [isFormDirty, setIsFormDirty] = useState(false);
-  const { data } = api.useQuery("get", "/api/account/users", { enabled: isOpen });
-  const activeUsers = (data?.users ?? []).filter((u) => u.isActive); // ✅ Compute derived values inline
-
-  const inviteMutation = api.useMutation("post", "/api/account/users/invite", {
-    onSuccess: () => { // ✅ Show toast in onSuccess (not useEffect)
-      setIsFormDirty(false);
-      toast.success(t`Success`, { description: t`User invited` });
-      onOpenChange(false);
-    }
-  });
-
-  const handleCloseComplete = () => setIsFormDirty(false);
-
+// ✅ DO: Wrapper + body split; body unmounts on close so state auto-resets
+export function InviteUserDialog({ isOpen, onOpenChange }: InviteUserDialogProps) {
+  const handleClose = () => onOpenChange(false);
   return (
-    <DirtyDialog open={isOpen} onOpenChange={onOpenChange} hasUnsavedChanges={isFormDirty}
-                 onCloseComplete={handleCloseComplete}>
-      <DialogContent className="sm:w-dialog-md"> // ✅ Use dialog width classes, rem for arbitrary values
+    <DirtyDialog open={isOpen} onOpenChange={onOpenChange} trackingTitle="Invite user">
+      <DialogContent className="sm:w-dialog-md"> // ✅ Dialog width classes, not arbitrary values
         <DialogHeader>
-          <DialogTitle><Trans>Select users</Trans></DialogTitle>
+          <DialogTitle><Trans>Invite user</Trans></DialogTitle>
         </DialogHeader>
-        <Form onSubmit={mutationSubmitter(inviteMutation)}>
-          <DialogBody> // ✅ Always wrap content in DialogBody
-            <TextField name="email" label={t`Email`} onChange={() => setIsFormDirty(true)} />
-          </DialogBody>
-          <DialogFooter>
-            <DialogClose render={<Button type="reset" variant="secondary" disabled={inviteMutation.isPending} />}> // ✅ type="reset" bypasses warning
-              <Trans>Cancel</Trans>
-            </DialogClose>
-            <Button type="submit" disabled={inviteMutation.isPending}> // ✅ Use disabled for pending
-              {inviteMutation.isPending ? <Trans>Sending...</Trans> : <Trans>Send invite</Trans>}
-            </Button>
-          </DialogFooter>
-        </Form>
+        <InviteUserDialogBody onClose={handleClose} />
       </DialogContent>
     </DirtyDialog>
   );
 }
 
-// ❌ DON'T: Common anti-patterns
-function BadUserDialog({ users, selectedId, isOpen, onClose }) {
-  const [filteredUsers, setFilteredUsers] = useState([]); // ❌ State for derived values
-  const [isAdmin, setIsAdmin] = useState(false); // ❌ Duplicate state that can be calculated
-
-  const inviteMutation = api.useMutation("post", "/api/users/invite");
-
-  useEffect(() => { // ❌ useEffect for calculations - compute inline instead
-    setFilteredUsers(users.filter(u => u.isActive));
-    setIsAdmin(users.some(u => u.id === selectedId && u.role === "admin")); // ❌ Hardcode strings - use API contract types
-  }, [users, selectedId]);
-
-  useEffect(() => { // ❌ useEffect watching isSuccess causes toast timing issues
-    if (inviteMutation.isSuccess) {
-      toast.success("Success");
+function InviteUserDialogBody({ onClose }: { onClose: () => void }) { // ✅ Body owns all state/mutation
+  const setDirty = useDialogSetDirty();
+  const inviteMutation = api.useMutation("post", "/api/account/users/invite", {
+    onSuccess: () => { // ✅ Toast in onSuccess (not useEffect)
+      toast.success(t`Success`, { description: t`User invited` });
+      onClose(); // ✅ Body unmounts → state gone naturally, no reset code
     }
-  }, [inviteMutation.isSuccess]);
-
-  const getDisplayName = useCallback((user) => { // ❌ Premature useCallback without performance need
-    return `${user.firstName} ${user.lastName}`;
-  }, []);
-
-  const handleSelect = (id) => console.log(id); // ❌ "handle" + noun (use handleSelectUser), console.log
+  });
 
   return (
-    <DirtyDialog open={isOpen} onOpenChange={onClose} hasUnsavedChanges={true}>
+    <Form
+      onSubmit={mutationSubmitter(inviteMutation)}
+      validationErrors={inviteMutation.error?.errors}
+      validationBehavior="aria"
+    >
+      <DialogBody> // ✅ Always wrap content in DialogBody
+        <TextField autoFocus required name="email" label={t`Email`} onChange={() => setDirty(true)} />
+      </DialogBody>
+      <DialogFooter>
+        <DialogClose render={<Button type="reset" variant="secondary" disabled={inviteMutation.isPending} />}> // ✅ type="reset" bypasses warning
+          <Trans>Cancel</Trans>
+        </DialogClose>
+        <Button type="submit" disabled={inviteMutation.isPending}> // ✅ disabled for pending
+          {inviteMutation.isPending ? <Trans>Sending...</Trans> : <Trans>Send invite</Trans>}
+        </Button>
+      </DialogFooter>
+    </Form>
+  );
+}
+
+// ❌ DON'T: State in the wrapper, manual reset plumbing, removed DirtyDialog props
+function BadInviteUserDialog({ isOpen, onOpenChange }) {
+  const [isFormDirty, setIsFormDirty] = useState(false); // ❌ State in wrapper → persists across close/reopen
+  const inviteMutation = api.useMutation("post", "/api/users/invite"); // ❌ Mutation in wrapper → stale errors on reopen
+
+  useEffect(() => { // ❌ useEffect watching isSuccess causes toast timing issues
+    if (inviteMutation.isSuccess) toast.success("Success");
+  }, [inviteMutation.isSuccess]);
+
+  const handleCloseComplete = () => { // ❌ Manual reset plumbing — symptom of wrong state location
+    setIsFormDirty(false);
+    inviteMutation.reset();
+  };
+
+  return (
+    <DirtyDialog open={isOpen} onOpenChange={onOpenChange}
+                 hasUnsavedChanges={isFormDirty} onCloseComplete={handleCloseComplete}> // ❌ Not DirtyDialog props; body owns dirtiness via `useDialogSetDirty()`
       <DialogContent className="sm:max-w-lg bg-white"> // ❌ max-w-lg (use w-dialog-md), hardcoded colors
-        <h2>User Mgmt</h2> // ❌ Use DialogTitle in dialogs (not h2), acronym "Mgmt", missing <Trans>
-        // ❌ Missing DialogBody wrapper - content won't scroll properly
-        <ul> // ❌ Native <ul> - use ListBox
-          {filteredUsers.map(user => (
-            <li key={user.id} onClick={() => handleSelect(user.id)}> // ❌ Native <li>
-              <img src={user.avatarUrl} /> // ❌ Native <img> - use Avatar
-              <Text className="text-sm">{user.email}</Text> // ❌ text-sm with Text causes blur
-              {getDisplayName(user)}
-            </li>
-          ))}
-        </ul>
+        <h2>User Mgmt</h2> // ❌ Use DialogTitle (not h2), acronym "Mgmt", missing <Trans>
+        // ❌ Missing DialogBody → content won't scroll properly
+        <TextField name="email" onChange={() => setIsFormDirty(true)} />
         <DialogFooter>
-          <DialogClose render={<Button variant="secondary" />}> // ❌ Missing type="reset" (will show unwanted warning)
+          <DialogClose render={<Button variant="secondary" />}> // ❌ Missing type="reset"
             Cancel
           </DialogClose>
           <Button type="submit"> // ❌ Missing disabled={isPending}
-            <Trans>Submit</Trans> // ❌ Missing isPending text pattern, generic "Submit" text
+            <Trans>Submit</Trans> // ❌ Missing isPending branch, generic text
           </Button>
         </DialogFooter>
       </DialogContent>
