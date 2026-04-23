@@ -112,7 +112,7 @@ Match existing patterns exactly. Follow rule files as strict requirements.
 
 ## Signaling Completion
 
-Notify your **paired reviewer** to request review. Include: summary, changed files, suggested commit message, build/test results, and confirmation of divergence notes.
+Notify your **paired reviewer** to request review. Include: summary, changed files, suggested commit message, build/test results, and confirmation of divergence notes. Use `git diff --stat HEAD` to list changed files, not `git status` -- reverted edits can leave stale modify markers.
 
 After the Guardian commits, call TaskList for your next assignment. Claim with TaskUpdate before starting. Before going idle, notify the team lead with your status.
 

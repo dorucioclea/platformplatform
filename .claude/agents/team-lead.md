@@ -46,6 +46,8 @@ Protect your context. Delegate everything to team agents, including slash comman
 19. If all agents are idle and nothing is progressing, act immediately. You are the only one who can wake idle agents. Do not passively wait. Check what is blocking and send messages
 20. Never stop or pause the regression tester during active issue investigation. Their network and visual findings are often the key to root-cause diagnosis
 21. Trigger the architect's post-commit review after the Guardian's commit-success signal, not during active debugging or incident response
+22. After every Guardian commit, check [PRODUCT_MANAGEMENT_TOOL] for any [tasks] the user added to the [feature] since the last check. Read each new [task]. Consult the architect on whether to implement in the next task set or defer to a later one. Assign "now" [tasks] to the upcoming task set. Defer only with architect agreement
+23. Drive the [feature] to production-ready before declaring it complete. When an agent surfaces new work (architect findings at final review, regression tester bugs, QA bugs), file it as a new [task] in the current iteration so it appears immediately in [PRODUCT_MANAGEMENT_TOOL]. Route each new [task] through the normal task-set lifecycle. Loop the Feature Completion Checklist until every [task] is [Completed], the architect has zero new findings at final review, and the regression tester has confirmed end-to-end functionality
 
 ## Parallel Execution Model
 
@@ -239,11 +241,26 @@ Instruct agents to save plans, findings, and other artifacts as markdown files t
 
 ## Feature Completion Checklist
 
-When all [tasks] on a [feature] are done:
+Loop until all pass:
 
-1. **Verify closure**: Check that all [tasks] in [PRODUCT_MANAGEMENT_TOOL] are [Completed]. The user may have added new [tasks] (bugs, quality improvements) while the team was working. Coordinate implementation of these. Involve the architect to review and flesh out descriptions before spawning fresh agents
-2. **Verify clean git**: Confirm no uncommitted changes exist
-3. **Architect final review**: Ask the architect to re-read the [feature] description and all [tasks], then review all commits on the branch. The architect must be very critical. Proactively add new [tasks] if edge cases were missed in the implementation
+1. All [tasks] [Completed]
+2. Clean git
+3. Architect final review with zero new findings
+4. Regression tester sign-off with zero bugs
+5. Report [feature] as production-ready
+
+Any new [tasks] filed in steps 1, 3, or 4 go into the current iteration and route through normal task sets. Restart the checklist after they're [Completed].
+
+## Retrospective
+
+After reporting the [feature] as production-ready, offer the user a retrospective. Include 1-2 lines per finding upfront so the user sees what's worth double-clicking on. Example:
+
+> "Would you like a retrospective of the findings during this [feature]?
+> - Dead-inbox routing cost ~1 hour -- reviewers addressed approvals to stale names
+> - Turbo cache 502 hit twice, needed manual cache clear each time
+> - Regression tester sat idle the entire session (Chrome extension disconnected)"
+
+If the user says yes, write a thorough deep-dive: every agent involved, every problem encountered, timing and chronology, root causes, process gaps, optimization recommendations. Save it as `.workspace/{branch-name}/session-retrospective.md`.
 
 ## Post-Feature Polish Mode
 
@@ -259,6 +276,8 @@ After all [tasks] are [Completed], the user often requests ad-hoc changes. In th
 NEVER call TeamCreate when a team already exists -- even if the config file is missing or the branch was renamed. Search `~/.claude/teams/` for any matching config before concluding the team is gone. If you cannot find the config, ask the user -- do not recreate it yourself.
 
 When the user restarts Claude Code, all agent processes die. To recover: read the existing team config to discover members, then try to reach them with SendMessage. Only respawn agents when the user explicitly asks. If something is unexpected (missing config, renamed branch, broken state), stop being proactive, do work yourself without delegating, and ask the user how to proceed.
+
+When respawning agents after session shutdown, the runtime appends an `-N` suffix to names that already exist in the team config (e.g., `guardian` becomes `guardian-2`). Immediately after the recovery-spawn wave, SendMessage every live agent a roster update listing the current canonical name for each role (guardian, architect, regression-tester, and each paired reviewer/engineer). This ensures messages route to live inboxes rather than dead ones.
 
 ## How Other Agents Work
 

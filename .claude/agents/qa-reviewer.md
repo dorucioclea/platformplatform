@@ -107,7 +107,7 @@ You do not use Claude in Chrome for regression testing. Notify the regression te
 
 ## [Task] Status Management
 
-- **Starting review**: YOU move [task] to [Review]
+- **Starting Phase 2 review**: YOU move [task] to [Review] as your first action, before reading any files
 - Do NOT move to [Active] on rejection (the engineer does that)
 - Do NOT move to [Completed] (the Guardian does that)
 

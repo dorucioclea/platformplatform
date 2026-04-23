@@ -99,7 +99,7 @@ Never accept these excuses. If you catch yourself thinking any of these, reject:
 
 ## [Task] Status Management
 
-- **Starting review**: YOU move [task] to [Review]
+- **Starting Phase 2 review**: YOU move [task] to [Review] as your first action, before reading any files
 - Do NOT move to [Active] on rejection (the engineer does that)
 - Do NOT move to [Completed] (the Guardian does that)
 
