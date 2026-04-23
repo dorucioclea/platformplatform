@@ -1,6 +1,5 @@
 import type { DateRange } from "react-day-picker";
 
-import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { format, isValid, parse } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -17,6 +16,7 @@ import {
   toIsoDateString,
   toParseFormat
 } from "./dateFieldInternals";
+import { translationContext } from "./translationContext";
 import { useFieldError } from "./useFieldError";
 import { useFormatDate, useFormatLongDate, useFormatRelativeDate } from "./useSmartDate";
 

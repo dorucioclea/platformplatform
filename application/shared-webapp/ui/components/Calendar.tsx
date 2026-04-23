@@ -1,4 +1,3 @@
-import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import * as React from "react";
 import {
@@ -12,6 +11,7 @@ import {
 } from "react-day-picker";
 import { da, enUS } from "react-day-picker/locale";
 
+import { translationContext } from "../hooks/translationContext";
 import { cn } from "../utils";
 import { Button, buttonVariants } from "./Button";
 

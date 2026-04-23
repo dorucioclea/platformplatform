@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
-import { translationContext } from "@repo/infrastructure/translations/TranslationContext";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
+import { translationContext } from "../hooks/translationContext";
 import { useFieldError } from "../hooks/useFieldError";
 import { cn } from "../utils";
 import { Field, FieldDescription, FieldError, FieldLabel } from "./Field";
