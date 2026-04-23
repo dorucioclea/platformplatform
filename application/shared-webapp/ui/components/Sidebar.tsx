@@ -240,6 +240,12 @@ function SidebarProvider({
               )}
               {...props}
             >
+              {/* Keyboard users can jump past the sidebar to #main-content (set by AppLayout). */}
+              <Button
+                render={<a href="#main-content">{t`Skip to main content`}</a>}
+                className="absolute top-4 left-4 z-[100] -translate-y-[200%] focus-visible:translate-y-0"
+              />
+
               {children}
             </div>
           </TooltipProvider>

@@ -1482,6 +1482,9 @@ msgstr "Enkelt-udfoldning vs multi-udfoldning"
 msgid "Skeleton"
 msgstr "Skelet"
 
+msgid "Skip to main content"
+msgstr "Spring til hovedindhold"
+
 msgid "Slider (range)"
 msgstr ""
 

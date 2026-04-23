@@ -1482,6 +1482,9 @@ msgstr "Single-expand vs multi-expand"
 msgid "Skeleton"
 msgstr "Skeleton"
 
+msgid "Skip to main content"
+msgstr "Skip to main content"
+
 msgid "Slider (range)"
 msgstr "Slider (range)"
 

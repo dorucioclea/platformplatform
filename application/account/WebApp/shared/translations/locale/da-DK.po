@@ -1240,6 +1240,9 @@ msgstr "Tilmeld dig med Google"
 msgid "Signup verification code"
 msgstr "Tilmeldingsbekræftelseskode"
 
+msgid "Skip to main content"
+msgstr "Spring til hovedindhold"
+
 msgid "SLA"
 msgstr "SLA"
 

@@ -146,6 +146,9 @@ msgstr "Vis detaljer"
 msgid "Show more"
 msgstr "Vis flere"
 
+msgid "Skip to main content"
+msgstr "Spring til hovedindhold"
+
 msgid "Something went wrong"
 msgstr "Noget gik galt"
 
