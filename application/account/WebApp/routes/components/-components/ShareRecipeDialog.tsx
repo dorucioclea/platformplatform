@@ -169,7 +169,7 @@ function ShareRecipeDialogBody({
         <DialogClose render={<Button type="reset" variant="secondary" disabled={mutation.isPending} />}>
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" isPending={mutation.isPending}>
           {mutation.isPending ? <Trans>Sharing...</Trans> : <Trans>Share recipe</Trans>}
         </Button>
       </DialogFooter>

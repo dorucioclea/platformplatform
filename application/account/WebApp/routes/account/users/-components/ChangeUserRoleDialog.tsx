@@ -151,7 +151,7 @@ function ChangeUserRoleDialogBody({ user, onClose }: { user: UserDetails; onClos
         <DialogClose render={<Button type="reset" variant="secondary" disabled={changeUserRoleMutation.isPending} />}>
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={changeUserRoleMutation.isPending}>
+        <Button type="submit" isPending={changeUserRoleMutation.isPending}>
           {changeUserRoleMutation.isPending ? <Trans>Saving...</Trans> : <Trans>Save changes</Trans>}
         </Button>
       </DialogFooter>

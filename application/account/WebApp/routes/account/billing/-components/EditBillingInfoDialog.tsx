@@ -132,7 +132,7 @@ function EditBillingInfoDialogBody({
         <DialogClose render={<Button type="reset" variant="secondary" disabled={mutation.isPending} />}>
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" isPending={mutation.isPending}>
           {mutation.isPending ? (pendingLabel ?? t`Saving...`) : (submitLabel ?? t`Save`)}
         </Button>
       </DialogFooter>

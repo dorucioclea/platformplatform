@@ -69,7 +69,7 @@ function InviteUserDialogBody({ onClose }: { onClose: () => void }) {
         <DialogClose render={<Button type="reset" variant="secondary" disabled={inviteUserMutation.isPending} />}>
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={inviteUserMutation.isPending}>
+        <Button type="submit" isPending={inviteUserMutation.isPending}>
           {inviteUserMutation.isPending ? <Trans>Sending...</Trans> : <Trans>Send invite</Trans>}
         </Button>
       </DialogFooter>

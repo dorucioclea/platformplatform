@@ -138,7 +138,7 @@ export function SubscribeConfirmationDialog({
           <DialogClose render={<Button type="reset" variant="secondary" disabled={isPending} />}>
             <Trans>Cancel</Trans>
           </DialogClose>
-          <Button onClick={onConfirm} disabled={isPending || isPreviewLoading}>
+          <Button onClick={onConfirm} isPending={isPending} disabled={isPreviewLoading}>
             {isPending ? <Trans>Processing...</Trans> : <Trans>Pay and subscribe</Trans>}
           </Button>
         </DialogFooter>

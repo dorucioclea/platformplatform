@@ -86,7 +86,7 @@ export function CategorizationStep({ mutation, onBack, onChange }: Readonly<Cate
           <ChevronLeftIcon />
           <Trans>Back</Trans>
         </Button>
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" isPending={mutation.isPending}>
           {mutation.isPending ? <Trans>Saving...</Trans> : <Trans>Save changes</Trans>}
         </Button>
       </DialogFooter>
