@@ -38,6 +38,7 @@ Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification c
 4. **API Integration**:
    - API client auto-generated from OpenAPI spec
    - Located in `shared/lib/api/client.ts`
+   - A SPA only calls its own self-contained system's endpoints via that system's generated OpenAPI client. Prefixes: `main` → `/api/*`, `account` → `/api/account/*`, `back-office` → `/api/back-office/*`, etc. Cross-system needs go backend-to-backend via `/internal-api/...`, exposed to the SPA through a facade endpoint in its own system
    - Never make direct fetch calls
    - Server state lives in TanStack Query only
    - Use `queryClient.invalidateQueries()` to refresh data after mutations
