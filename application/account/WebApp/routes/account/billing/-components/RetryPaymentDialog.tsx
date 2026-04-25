@@ -127,7 +127,7 @@ export function RetryPaymentDialog({
           <DialogClose render={<Button type="reset" variant="secondary" disabled={isPending} />}>
             <Trans>Cancel</Trans>
           </DialogClose>
-          <Button onClick={() => retryMutation.mutate({})} disabled={isPending}>
+          <Button onClick={() => retryMutation.mutate({})} isPending={isPending}>
             {isPending ? <Trans>Processing...</Trans> : <Trans>Pay</Trans>}
           </Button>
         </DialogFooter>

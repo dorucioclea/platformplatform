@@ -9,12 +9,12 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogForm,
   DialogHeader,
   DialogTitle
 } from "@repo/ui/components/Dialog";
 import { DirtyDialog } from "@repo/ui/components/DirtyDialog";
 import { useDialogSetDirty } from "@repo/ui/components/DirtyDialogContext";
-import { Form } from "@repo/ui/components/Form";
 import { mutationSubmitter } from "@repo/ui/forms/mutationSubmitter";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -113,11 +113,7 @@ function EditBillingInfoDialogBody({
   const markDirty = () => setDirty(true);
 
   return (
-    <Form
-      onSubmit={mutationSubmitter(mutation)}
-      validationErrors={mutation.error?.errors}
-      className="flex min-h-0 flex-1 flex-col"
-    >
+    <DialogForm onSubmit={mutationSubmitter(mutation)} validationErrors={mutation.error?.errors}>
       <DialogBody>
         <BillingInfoFormFields
           billingInfo={billingInfo}
@@ -136,10 +132,10 @@ function EditBillingInfoDialogBody({
         <DialogClose render={<Button type="reset" variant="secondary" disabled={mutation.isPending} />}>
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" isPending={mutation.isPending}>
           {mutation.isPending ? (pendingLabel ?? t`Saving...`) : (submitLabel ?? t`Save`)}
         </Button>
       </DialogFooter>
-    </Form>
+    </DialogForm>
   );
 }

@@ -204,7 +204,7 @@ function PaymentForm({ onSuccess, onError }: Readonly<PaymentFormProps>) {
           <DialogClose render={<Button type="reset" variant="secondary" disabled={isPending} />}>
             <Trans>Cancel</Trans>
           </DialogClose>
-          <Button onClick={handleSubmit} disabled={isPending || !stripe || !elements}>
+          <Button onClick={handleSubmit} isPending={isPending} disabled={!stripe || !elements}>
             {isPending ? <Trans>Updating...</Trans> : <Trans>Update payment method</Trans>}
           </Button>
         </DialogFooter>
