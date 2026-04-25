@@ -131,6 +131,7 @@ Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification c
    - Split every dialog into two components in the same file: wrapper owns only `isOpen` + `DirtyDialog`/`DialogContent`/`DialogHeader` shell, body lives inside `<DialogContent>` and owns all state/mutation/form. Body unmounts on close, so state auto-resets on reopen — no `handleCloseComplete`, no `mutation.reset()`
    - Body signals dirtiness with `useDialogSetDirty()` from `@repo/ui/components/DirtyDialogContext`. `DirtyDialog` tracks the flag internally and clears it on close
    - `DialogBody` between `DialogHeader` and `DialogFooter` (scroll container)
+   - In dialogs use `DialogForm` (not `Form`); a `<Form>` between `DialogContent` and `DialogBody` breaks the scroll chain
    - Cancel button: `<DialogClose render={<Button type="reset" ... />}>` — `type="reset"` skips the unsaved-changes warning
    - Close on success: call `onClose` from the wrapper. Do not reset anything by hand — unmount does it
 
@@ -183,23 +184,22 @@ function InviteUserDialogBody({ onClose }: { onClose: () => void }) { // ✅ Bod
   });
 
   return (
-    <Form
+    <DialogForm // ✅ DialogForm (not Form) preserves the DialogBody scroll chain
       onSubmit={mutationSubmitter(inviteMutation)}
       validationErrors={inviteMutation.error?.errors}
-      validationBehavior="aria"
     >
       <DialogBody> // ✅ Always wrap content in DialogBody
         <TextField autoFocus required name="email" label={t`Email`} onChange={() => setDirty(true)} />
       </DialogBody>
       <DialogFooter>
-        <DialogClose render={<Button type="reset" variant="secondary" disabled={inviteMutation.isPending} />}> // ✅ type="reset" bypasses warning
+        <DialogClose render={<Button type="reset" variant="secondary" disabled={inviteMutation.isPending} />}> // ✅ type="reset" bypasses warning; disabled (not isPending) — no spinner on Cancel
           <Trans>Cancel</Trans>
         </DialogClose>
-        <Button type="submit" disabled={inviteMutation.isPending}> // ✅ disabled for pending
+        <Button type="submit" isPending={inviteMutation.isPending}> // ✅ isPending auto-disables and prepends <Spinner />
           {inviteMutation.isPending ? <Trans>Sending...</Trans> : <Trans>Send invite</Trans>}
         </Button>
       </DialogFooter>
-    </Form>
+    </DialogForm>
   );
 }
 
