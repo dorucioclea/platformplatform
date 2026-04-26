@@ -800,10 +800,19 @@ public sealed class UpdatePackagesCommand : Command
         {
             var packageName = package.Name;
 
+            // npm outdated returns an array when the package is installed in multiple locations (e.g. workspaces); use the first entry
+            var packageInfo = package.Value;
+            if (packageInfo.ValueKind == JsonValueKind.Array)
+            {
+                var firstEntry = packageInfo.EnumerateArray().FirstOrDefault();
+                if (firstEntry.ValueKind != JsonValueKind.Object) continue;
+                packageInfo = firstEntry;
+            }
+
             // Skip excluded packages
             if (IsPackageExcluded(packageName, excludedPackages))
             {
-                if (package.Value.TryGetProperty("wanted", out var packageWantedElement))
+                if (packageInfo.TryGetProperty("wanted", out var packageWantedElement))
                 {
                     var packageWantedVersion = packageWantedElement.GetString() ?? "unknown";
                     table.AddRow(packageName, packageWantedVersion, "-", "[blue]Excluded[/]");
@@ -812,8 +821,6 @@ public sealed class UpdatePackagesCommand : Command
 
                 continue;
             }
-
-            var packageInfo = package.Value;
 
             if (!packageInfo.TryGetProperty("current", out var currentElement) ||
                 !packageInfo.TryGetProperty("wanted", out var wantedElement) ||
