@@ -798,7 +798,9 @@ public sealed class UpdatePackagesCommand : Command
         table.AddColumn("Update Type");
 
         var npmPackageUpdatesToApply = new List<string>();
+        var npmCandidates = new List<NpmCandidate>();
 
+        // First pass: collect all candidates
         foreach (var package in outdatedPackages.RootElement.EnumerateObject())
         {
             var packageName = package.Name;
@@ -812,16 +814,12 @@ public sealed class UpdatePackagesCommand : Command
                 packageInfo = firstEntry;
             }
 
-            // Skip excluded packages
             if (IsPackageExcluded(packageName, excludedPackages))
             {
-                if (packageInfo.TryGetProperty("wanted", out var packageWantedElement))
-                {
-                    var packageWantedVersion = packageWantedElement.GetString() ?? "unknown";
-                    table.AddRow(packageName, packageWantedVersion, "-", "[blue]Excluded[/]");
-                    FrontendSummary.Excluded++;
-                }
-
+                var excludedWanted = packageInfo.TryGetProperty("wanted", out var packageWantedElement)
+                    ? packageWantedElement.GetString() ?? "unknown"
+                    : "unknown";
+                npmCandidates.Add(new NpmCandidate(packageName, excludedWanted, null) { IsExcluded = true });
                 continue;
             }
 
@@ -838,32 +836,62 @@ public sealed class UpdatePackagesCommand : Command
 
             if (currentVersion is null || wantedVersion is null || latestVersion is null) continue;
 
-            // Use wanted version (from package.json) as the base for comparison
-            // Skip packages that are already at the latest version
+            // Skip packages already at latest
             if (wantedVersion == latestVersion) continue;
 
-            // Restrict @types/node to minor updates unless explicitly allowed
+            // Restrict @types/node to current major unless explicitly allowed
             if (packageName == "@types/node" && !includeMajorFrameworkUpdates)
             {
-                var currentMajor = int.Parse(wantedVersion.Split('-')[0].Split('.')[0]);
-                var latestMajor = int.Parse(latestVersion.Split('-')[0].Split('.')[0]);
-                if (latestMajor > currentMajor)
+                var resolved = GetHighestNpmVersionInMajor(packageName, GetMajorVersion(wantedVersion));
+                if (resolved is null || !IsNewerVersion(resolved, wantedVersion))
                 {
-                    var versionsOutput = ProcessHelper.StartProcess("npm view @types/node versions --json", Configuration.ApplicationFolder, true, exitOnError: false, throwOnError: false);
-                    var candidates = JsonDocument.Parse(versionsOutput).RootElement.EnumerateArray().Select(v => v.GetString()!).Where(v => !v.Contains('-') && int.Parse(v.Split('.')[0]) == currentMajor).ToArray();
-                    latestVersion = wantedVersion;
-                    foreach (var candidate in candidates)
-                    {
-                        if (IsNewerVersion(candidate, latestVersion)) latestVersion = candidate;
-                    }
+                    continue;
                 }
+
+                latestVersion = resolved;
             }
 
-            // Skip if versions are equal after special handling
-            if (wantedVersion == latestVersion) continue;
+            npmCandidates.Add(new NpmCandidate(packageName, wantedVersion, latestVersion));
+        }
 
-            // Check update type based on what's in package.json (wanted) vs latest
-            var updateType = GetUpdateType(wantedVersion, latestVersion);
+        // Family logic: when packages share the same current version (likely the same family),
+        // an npm install fails with peer-dependency conflicts if some members can reach a new
+        // major and others cannot. Pin the whole family to the lowest reachable target major.
+        var npmFamilies = npmCandidates
+            .Where(c => c is { IsExcluded: false, LatestVersion: not null })
+            .GroupBy(c => c.WantedVersion)
+            .Where(g => g.Count() > 1)
+            .ToList();
+
+        foreach (var family in npmFamilies)
+        {
+            var familyMembers = family.ToList();
+            var familyTargetMajors = familyMembers.Select(c => GetMajorVersion(c.LatestVersion!)).Distinct().ToArray();
+            if (familyTargetMajors.Length <= 1) continue;
+
+            var lowestTargetMajor = familyTargetMajors.Min();
+            foreach (var member in familyMembers.Where(c => GetMajorVersion(c.LatestVersion!) > lowestTargetMajor))
+            {
+                var safeVersion = GetHighestNpmVersionInMajor(member.PackageName, lowestTargetMajor);
+                member.LatestVersion = safeVersion is not null && IsNewerVersion(safeVersion, member.WantedVersion)
+                    ? safeVersion
+                    : null;
+            }
+        }
+
+        // Second pass: build table and install list from final candidate state
+        foreach (var candidate in npmCandidates)
+        {
+            if (candidate.IsExcluded)
+            {
+                table.AddRow(candidate.PackageName, candidate.WantedVersion, "-", "[blue]Excluded[/]");
+                FrontendSummary.Excluded++;
+                continue;
+            }
+
+            if (candidate.LatestVersion is null) continue;
+
+            var updateType = GetUpdateType(candidate.WantedVersion, candidate.LatestVersion);
             FrontendSummary.IncrementUpdateType(updateType);
 
             var statusColor = updateType switch
@@ -874,9 +902,8 @@ public sealed class UpdatePackagesCommand : Command
                 _ => "[green]Minor[/]"
             };
 
-            // Show wanted version (from package.json) in the table
-            table.AddRow(packageName, wantedVersion, latestVersion, statusColor);
-            npmPackageUpdatesToApply.Add($"{packageName}@{latestVersion}");
+            table.AddRow(candidate.PackageName, candidate.WantedVersion, candidate.LatestVersion, statusColor);
+            npmPackageUpdatesToApply.Add($"{candidate.PackageName}@{candidate.LatestVersion}");
         }
 
         if (table.Rows.Count > 0)
@@ -1560,6 +1587,32 @@ public sealed class UpdatePackagesCommand : Command
         AnsiConsole.Write(table);
     }
 
+    private static string? GetHighestNpmVersionInMajor(string packageName, int major)
+    {
+        var output = ProcessHelper.StartProcess($"npm view {packageName} versions --json", Configuration.ApplicationFolder, true, exitOnError: false, throwOnError: false);
+        if (string.IsNullOrWhiteSpace(output)) return null;
+
+        var jsonStart = output.IndexOf('[');
+        var jsonEnd = output.LastIndexOf(']');
+        if (jsonStart == -1 || jsonEnd == -1 || jsonEnd < jsonStart) return null;
+
+        var versions = JsonDocument.Parse(output.Substring(jsonStart, jsonEnd - jsonStart + 1)).RootElement
+            .EnumerateArray()
+            .Select(element => element.GetString()!)
+            .Where(version => !IsPreReleaseVersion(version) && GetMajorVersion(version) == major)
+            .ToList();
+
+        if (versions.Count == 0) return null;
+
+        var highestVersion = versions[0];
+        foreach (var version in versions)
+        {
+            if (IsNewerVersion(version, highestVersion)) highestVersion = version;
+        }
+
+        return highestVersion;
+    }
+
     private class VersionComparer : IComparer<int[]>
     {
         public int Compare(int[]? x, int[]? y)
@@ -1577,6 +1630,17 @@ public sealed class UpdatePackagesCommand : Command
 
             return 0;
         }
+    }
+
+    private sealed class NpmCandidate(string packageName, string wantedVersion, string? latestVersion)
+    {
+        public string PackageName { get; } = packageName;
+
+        public string WantedVersion { get; } = wantedVersion;
+
+        public string? LatestVersion { get; set; } = latestVersion;
+
+        public bool IsExcluded { get; init; }
     }
 
     private record PackageDependency(string PackageName, string VersionRange);
