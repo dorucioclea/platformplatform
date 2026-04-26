@@ -16,6 +16,7 @@ public sealed class UpdatePackagesCommand : Command
     private static readonly Dictionary<string, string?> NuGetApiCache = new();
     private static readonly UpdateSummary BackendSummary = new();
     private static readonly UpdateSummary FrontendSummary = new();
+    private static readonly HttpClient HttpClient = CreateHttpClient();
 
     public UpdatePackagesCommand() : base("update-packages", "Updates packages to their latest versions while preserving major versions for restricted packages")
     {
@@ -39,6 +40,13 @@ public sealed class UpdatePackagesCommand : Command
                 parseResult.GetValue(includeMajorFrameworkUpdatesOption)
             )
         );
+    }
+
+    private static HttpClient CreateHttpClient()
+    {
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("PlatformPlatform-CLI/1.0");
+        return client;
     }
 
     private static async Task Execute(bool backend, bool frontend, bool dryRun, string? exclude, bool includeMajorFrameworkUpdates)
@@ -476,8 +484,7 @@ public sealed class UpdatePackagesCommand : Command
             return cachedVersion;
         }
 
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
+        var response = await HttpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
         var json = JsonDocument.Parse(response);
         var versions = json.RootElement.GetProperty("versions");
 
@@ -501,8 +508,7 @@ public sealed class UpdatePackagesCommand : Command
             return cachedVersion;
         }
 
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
+        var response = await HttpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
         var json = JsonDocument.Parse(response);
         var versions = json.RootElement.GetProperty("versions");
 
@@ -562,9 +568,8 @@ public sealed class UpdatePackagesCommand : Command
 
         try
         {
-            using var httpClient = new HttpClient();
             var catalogUrl = $"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.nuspec";
-            var nuspecXml = await httpClient.GetStringAsync(catalogUrl);
+            var nuspecXml = await HttpClient.GetStringAsync(catalogUrl);
 
             var doc = XDocument.Parse(nuspecXml);
             var ns = doc.Root?.GetDefaultNamespace() ?? XNamespace.None;
@@ -671,8 +676,7 @@ public sealed class UpdatePackagesCommand : Command
     {
         try
         {
-            using var httpClient = new HttpClient();
-            var response = await httpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
+            var response = await HttpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
             var json = JsonDocument.Parse(response);
             var versions = json.RootElement.GetProperty("versions");
 
@@ -741,8 +745,7 @@ public sealed class UpdatePackagesCommand : Command
     {
         try
         {
-            using var httpClient = new HttpClient();
-            var response = await httpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
+            var response = await HttpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
             var json = JsonDocument.Parse(response);
             var versions = json.RootElement.GetProperty("versions");
 
@@ -930,8 +933,7 @@ public sealed class UpdatePackagesCommand : Command
 
     private static async Task<string?> FindLatestVersionInMajor(string packageName, int majorVersion)
     {
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
+        var response = await HttpClient.GetStringAsync($"https://api.nuget.org/v3-flatcontainer/{packageName.ToLower()}/index.json");
         var json = JsonDocument.Parse(response);
         var versions = json.RootElement.GetProperty("versions");
 
@@ -1372,12 +1374,9 @@ public sealed class UpdatePackagesCommand : Command
 
     private static async Task<int> GetLatestDotnetMajorVersion()
     {
-        using var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("PlatformPlatform-CLI/1.0");
-
         // Get the releases index
         const string dotnetReleaseBaseUrl = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata";
-        var response = await httpClient.GetStringAsync($"{dotnetReleaseBaseUrl}/releases-index.json");
+        var response = await HttpClient.GetStringAsync($"{dotnetReleaseBaseUrl}/releases-index.json");
         var releasesIndex = JsonDocument.Parse(response);
 
         // Find the latest major version
@@ -1398,12 +1397,9 @@ public sealed class UpdatePackagesCommand : Command
 
     private static async Task<string> GetLatestDotnetSdkVersion(int majorVersion)
     {
-        using var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("PlatformPlatform-CLI/1.0");
-
         // Get the releases index
         const string dotnetReleaseBaseUrl = "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata";
-        var response = await httpClient.GetStringAsync($"{dotnetReleaseBaseUrl}/releases-index.json");
+        var response = await HttpClient.GetStringAsync($"{dotnetReleaseBaseUrl}/releases-index.json");
         var releasesIndex = JsonDocument.Parse(response);
 
         // Find the channel for the major version
@@ -1415,7 +1411,7 @@ public sealed class UpdatePackagesCommand : Command
 
         // Get the channel releases
         var channelUrl = $"{dotnetReleaseBaseUrl}/{channelVersion}/releases.json";
-        var channelResponse = await httpClient.GetStringAsync(channelUrl);
+        var channelResponse = await HttpClient.GetStringAsync(channelUrl);
         var channelData = JsonDocument.Parse(channelResponse);
 
         // Find the latest SDK version - the first release is always the latest
