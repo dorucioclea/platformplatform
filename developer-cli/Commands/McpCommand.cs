@@ -507,17 +507,23 @@ public static partial class DeveloperCliMcpTools
     }
 
     [McpServerTool]
-    [Description("Start .NET Aspire AppHost on the configured base port from .workspace/port.txt. Call get_ports to discover the actual URL. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
-    public static Task<string> Run()
+    [Description("Start .NET Aspire AppHost. By default uses the base port from .workspace/port.txt. Pass basePort to override (writes the new value to .workspace/port.txt) -- useful for running parallel stacks from different git worktrees. Call get_ports to discover the actual URL. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
+    public static Task<string> Run(
+        [Description("Optional base port. When set, overwrites .workspace/port.txt. Leave unset to use the existing base port.")]
+        int? basePort = null)
     {
-        return ExecuteAspireLifecycleCommand("run", "Run", $"Aspire started successfully in detached mode at https://app.dev.localhost:{RunCommand.Ports.AppGateway}");
+        var gatewayPort = basePort ?? RunCommand.Ports.AppGateway;
+        return ExecuteAspireLifecycleCommand("run", "Run", $"Aspire started successfully in detached mode at https://app.dev.localhost:{gatewayPort}", basePort);
     }
 
     [McpServerTool]
-    [Description("Stop any running Aspire AppHost and start a fresh instance. Use after backend changes or when hot reload breaks.")]
-    public static Task<string> Restart()
+    [Description("Stop any running Aspire AppHost and start a fresh instance. Pass basePort to override the base port (writes the new value to .workspace/port.txt). Use after backend changes or when hot reload breaks.")]
+    public static Task<string> Restart(
+        [Description("Optional base port. When set, overwrites .workspace/port.txt. Leave unset to use the existing base port.")]
+        int? basePort = null)
     {
-        return ExecuteAspireLifecycleCommand("restart", "Restart", $"Aspire restarted successfully in detached mode at https://app.dev.localhost:{RunCommand.Ports.AppGateway}");
+        var gatewayPort = basePort ?? RunCommand.Ports.AppGateway;
+        return ExecuteAspireLifecycleCommand("restart", "Restart", $"Aspire restarted successfully in detached mode at https://app.dev.localhost:{gatewayPort}", basePort);
     }
 
     [McpServerTool]
@@ -557,15 +563,16 @@ public static partial class DeveloperCliMcpTools
         );
     }
 
-    private static async Task<string> ExecuteAspireLifecycleCommand(string cliCommand, string toolName, string successMessage)
+    private static async Task<string> ExecuteAspireLifecycleCommand(string cliCommand, string toolName, string successMessage, int? basePort = null)
     {
-        McpDebugLog.Log($"TOOL INVOKED: {toolName} (no parameters)");
+        McpDebugLog.Log($"TOOL INVOKED: {toolName} (basePort={(basePort.HasValue ? basePort.Value.ToString() : "default")})");
         var stopwatch = Stopwatch.StartNew();
 
         try
         {
             var developerCliPath = Path.Combine(Configuration.SourceCodeFolder, "developer-cli");
-            var args = new List<string> { "run", "--project", developerCliPath, cliCommand };
+            var args = new List<string> { "run", "--project", developerCliPath, "--", cliCommand };
+            if (basePort.HasValue) args.Add(basePort.Value.ToString());
 
             var processStartInfo = new ProcessStartInfo
             {
