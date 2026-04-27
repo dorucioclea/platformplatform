@@ -1,5 +1,6 @@
 using System.CommandLine;
 using DeveloperCli.Installation;
+using SharedKernel.Configuration;
 
 namespace DeveloperCli.Commands;
 
@@ -33,10 +34,10 @@ public class RestartCommand : Command
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
-        // Stop the running stack on the OLD port before writing the new one; otherwise the stop
-        // logic would look for processes on the new port and miss the still-running old stack.
-        if (RunCommand.IsAspireRunning())
+        // Skip stop in a fresh worktree (no port.txt) -- nothing to stop, and the check would otherwise false-positive on another worktree's stack.
+        if (PortAllocation.PortFileExists(Configuration.SourceCodeFolder) && RunCommand.IsAspireRunning())
         {
+            // Stop on the OLD port before writing the new one; otherwise stop would look at the new port and miss the running old stack.
             RunCommand.StopAspire();
         }
 

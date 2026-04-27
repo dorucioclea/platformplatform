@@ -513,7 +513,7 @@ public static partial class DeveloperCliMcpTools
         int? basePort = null)
     {
         var gatewayPort = basePort ?? RunCommand.Ports.AppGateway;
-        return ExecuteAspireLifecycleCommand("run", "Run", $"Aspire started successfully in detached mode at https://app.dev.localhost:{gatewayPort}", basePort);
+        return ExecuteAspireLifecycleCommand("run", "Run", $"Aspire is starting on https://app.dev.localhost:{gatewayPort}", basePort);
     }
 
     [McpServerTool]
@@ -523,7 +523,7 @@ public static partial class DeveloperCliMcpTools
         int? basePort = null)
     {
         var gatewayPort = basePort ?? RunCommand.Ports.AppGateway;
-        return ExecuteAspireLifecycleCommand("restart", "Restart", $"Aspire restarted successfully in detached mode at https://app.dev.localhost:{gatewayPort}", basePort);
+        return ExecuteAspireLifecycleCommand("restart", "Restart", $"Aspire is restarting on https://app.dev.localhost:{gatewayPort}", basePort);
     }
 
     [McpServerTool]

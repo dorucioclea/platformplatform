@@ -49,10 +49,9 @@ public class RunCommand : Command
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
-        // Aspire is detected via the *currently configured* port. If a caller asks to start on a
-        // new port while Aspire still runs on the old one, refuse early with a clear remediation;
-        // updating port.txt now would orphan the running stack and break IsAspireRunning() below.
-        if (IsAspireRunning())
+        // Refuse if Aspire is already on the currently configured port -- updating port.txt now would orphan the running stack.
+        // Skipped in a fresh worktree (no port.txt) where the check would false-positive on another worktree's stack.
+        if (PortAllocation.PortFileExists(Configuration.SourceCodeFolder) && IsAspireRunning())
         {
             var alias = Configuration.AliasName;
             var message = basePort is null

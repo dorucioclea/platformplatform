@@ -92,6 +92,13 @@ public sealed record PortAllocation(int BasePort)
         return new PortAllocation(basePort);
     }
 
+    // True if .workspace/port.txt already exists -- distinguishes a fresh worktree from a configured one.
+    public static bool PortFileExists(string repositoryRoot)
+    {
+        var portFilePath = Path.Combine(repositoryRoot, WorkspaceDirectoryName, PortFileName);
+        return File.Exists(portFilePath);
+    }
+
     // Atomically writes the base port to .workspace/port.txt under the given repository root.
     // Callers (e.g., the developer CLI's positional base-port argument on run/restart) use this to
     // update the file before any code path lazily loads PortAllocation -- otherwise the lazy load
