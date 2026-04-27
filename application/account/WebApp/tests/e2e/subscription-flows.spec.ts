@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
 import { test } from "@shared/e2e/fixtures/page-auth";
-import { createTestContext, expectToastMessage } from "@shared/e2e/utils/test-assertions";
+import { createTestContext, expectToastMessage, selectOption } from "@shared/e2e/utils/test-assertions";
 import { step } from "@shared/e2e/utils/test-step-wrapper";
 
 test.beforeEach(async ({ ownerPage }) => {
@@ -80,9 +80,30 @@ test.describe("@smoke", () => {
       await expect(ownerPage.getByLabel("Tax ID (VAT number)")).toBeVisible();
       await expect(ownerPage.getByRole("button", { name: "Next" })).toBeVisible();
       await expect(ownerPage.getByRole("button", { name: "Cancel" })).toBeVisible();
+    })();
 
-      await ownerPage.getByRole("button", { name: "Cancel" }).click();
-      await expect(ownerPage.getByRole("heading", { name: "Add billing information" })).not.toBeVisible();
+    await step("Submit billing info & verify Stripe checkout dialog initializes successfully")(async () => {
+      await ownerPage.getByLabel("Billing email").fill("billing@example.com");
+      await selectOption(ownerPage.getByLabel("Country"), ownerPage, "Denmark");
+      await ownerPage.getByLabel("Name").fill("Test Organization");
+      await ownerPage.getByLabel("Address").fill("Vestergade 12");
+      await ownerPage.getByLabel("Postal code").fill("1456");
+      await ownerPage.getByLabel("City").fill("Copenhagen");
+
+      // Stripe.js makes a request to api.stripe.com only when the Custom Checkout SDK has
+      // initialised successfully. If the wrong provider/options shape is used (e.g. v9's
+      // CheckoutFormProvider with the legacy elementsOptions shape), Stripe.js fails inside
+      // initCheckoutFormSdk and never reaches its API call. We assert the API call happens
+      // as the deterministic signal that SDK init succeeded.
+      const stripeApiCall = ownerPage.waitForRequest((request) => request.url().includes("api.stripe.com"));
+
+      await ownerPage.getByRole("button", { name: "Next" }).click();
+
+      const subscribeDialog = ownerPage.getByRole("dialog", { name: "Subscribe" });
+      await expect(subscribeDialog).toBeVisible();
+      await expect(subscribeDialog.getByText("Total")).toBeVisible();
+
+      await stripeApiCall;
     })();
 
     await step("Mock active Standard subscription & verify subscription overview with payment history")(async () => {

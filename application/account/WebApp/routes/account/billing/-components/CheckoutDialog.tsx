@@ -15,7 +15,7 @@ import {
   DialogTitle
 } from "@repo/ui/components/Dialog";
 import { Skeleton } from "@repo/ui/components/Skeleton";
-import { CheckoutProvider } from "@stripe/react-stripe-js/checkout";
+import { CheckoutElementsProvider } from "@stripe/react-stripe-js/checkout";
 import { loadStripe } from "@stripe/stripe-js/pure";
 import { LoaderCircleIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -167,9 +167,9 @@ export function CheckoutDialog({
               {isLoading && <CheckoutSkeleton />}
               {paymentError && <div className="text-sm text-destructive">{paymentError}</div>}
               {isReady && (
-                <CheckoutProvider stripe={stripePromise} options={checkoutOptions}>
+                <CheckoutElementsProvider stripe={stripePromise} options={checkoutOptions}>
                   <CheckoutForm plan={plan} onConfirmed={handleConfirmed} onError={setPaymentError} />
-                </CheckoutProvider>
+                </CheckoutElementsProvider>
               )}
             </>
           )}
