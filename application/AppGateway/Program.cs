@@ -1,18 +1,30 @@
+using AppGateway;
 using AppGateway.ApiAggregation;
 using AppGateway.Filters;
 using AppGateway.Middleware;
 using AppGateway.Transformations;
 using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using SharedKernel.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddOptions<HostnamesOptions>()
+    .Bind(builder.Configuration.GetSection(HostnamesOptions.SectionName))
+    .ValidateDataAnnotations()
+    .Validate(o => !string.IsNullOrWhiteSpace(o.App), "Hostnames:App must be configured.")
+    .Validate(o => !string.IsNullOrWhiteSpace(o.BackOffice), "Hostnames:BackOffice must be configured.")
+    .ValidateOnStart();
 
 var reverseProxyBuilder = builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
     .AddConfigFilter<ClusterDestinationConfigFilter>()
     .AddConfigFilter<ApiExplorerRouteFilter>()
+    .AddConfigFilter<HostMatchConfigFilter>()
     .AddTransforms(context => context.RequestTransforms.Add(context.Services.GetRequiredService<BlockInternalApiTransform>()));
 
 if (SharedInfrastructureConfiguration.IsRunningInAzure)
@@ -74,5 +86,25 @@ app.MapScalarApiReference("/openapi", options =>
 );
 
 app.MapReverseProxy();
+
+app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions) =>
+    {
+        var hostnames = hostnameOptions.Value;
+        var port = context.Request.Host.Port ?? 9000;
+        var problemDetails = new ProblemDetails
+        {
+            Status = StatusCodes.Status404NotFound,
+            Title = "Unknown host",
+            Detail = $"The host '{context.Request.Host}' is not recognized. Use one of the canonical URLs.",
+            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+            Extensions =
+            {
+                ["canonicalUrls"] = new[] { $"https://{hostnames.App}:{port}", $"https://{hostnames.BackOffice}:{port}" }
+            }
+        };
+
+        return Results.Problem(problemDetails);
+    }
+);
 
 await app.RunAsync();
