@@ -72,6 +72,7 @@ var accountWorkers = builder
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
     .WithUrlConfiguration(appHostname, "/account")
+    .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:9000")
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)
