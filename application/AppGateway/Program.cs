@@ -65,6 +65,7 @@ builder.Services
 builder.Services
     .AddSingleton(SharedDependencyConfiguration.GetTokenSigningService())
     .AddSingleton<BlockInternalApiTransform>()
+    .AddSingleton<LocalhostRedirectMiddleware>()
     .AddSingleton<AuthenticationCookieMiddleware>()
     .AddScoped<ApiAggregationService>();
 
@@ -73,6 +74,7 @@ var app = builder.Build();
 app.ApiAggregationEndpoints();
 
 app.UseForwardedHeaders() // Enable support for proxy headers such as X-Forwarded-For and X-Forwarded-Proto. Should run before other middleware.
+    .UseMiddleware<LocalhostRedirectMiddleware>()
     .UseOutputCache()
     .UseMiddleware<AuthenticationCookieMiddleware>();
 
