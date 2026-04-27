@@ -10,15 +10,18 @@ public class RestartCommand : Command
 {
     public RestartCommand() : base("restart", "Stops any running Aspire AppHost and starts a fresh instance")
     {
+        var basePortArgument = new Argument<int?>("basePort") { Description = "Optional base port. If provided, written to .workspace/port.txt before Aspire starts.", DefaultValueFactory = _ => null };
         var watchOption = new Option<bool>("--watch", "-w") { Description = "Enable watch mode for hot reload" };
         var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process (detached is the default)" };
         var publicUrlOption = new Option<string?>("--public-url") { Description = "Set the PUBLIC_URL environment variable for the app (e.g., https://example.ngrok-free.app)" };
 
+        Arguments.Add(basePortArgument);
         Options.Add(watchOption);
         Options.Add(attachOption);
         Options.Add(publicUrlOption);
 
         SetAction(parseResult => Execute(
+                parseResult.GetValue(basePortArgument),
                 parseResult.GetValue(watchOption),
                 parseResult.GetValue(attachOption),
                 parseResult.GetValue(publicUrlOption)
@@ -26,14 +29,18 @@ public class RestartCommand : Command
         );
     }
 
-    private static void Execute(bool watch, bool attach, string? publicUrl)
+    private static void Execute(int? basePort, bool watch, bool attach, string? publicUrl)
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
+        // Stop the running stack on the OLD port before writing the new one; otherwise the stop
+        // logic would look for processes on the new port and miss the still-running old stack.
         if (RunCommand.IsAspireRunning())
         {
             RunCommand.StopAspire();
         }
+
+        RunCommand.WriteBasePortIfProvided(basePort);
 
         RunCommand.CheckForPortConflicts();
 

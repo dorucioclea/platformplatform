@@ -11,27 +11,20 @@ namespace DeveloperCli.Commands;
 /// </summary>
 public class RunCommand : Command
 {
-    // The CLI binary is published outside the repo, so PortAllocation.Load (which walks up from
-    // AppContext.BaseDirectory) cannot find the repo. Use the CLI's known SourceCodeFolder instead.
-    private static readonly Lazy<PortAllocation> LazyPorts = new(() => PortAllocation.LoadFrom(Configuration.SourceCodeFolder));
-
-    internal static PortAllocation Ports => LazyPorts.Value;
-
-    internal static int AspirePort => Ports.Aspire;
-    internal static int DashboardPort => Ports.OtelEndpoint;
-    internal static int ResourceServicePort => Ports.ResourceService;
-
     public RunCommand() : base("run", "Runs Aspire AppHost (use --watch for hot reload)")
     {
+        var basePortArgument = new Argument<int?>("basePort") { Description = "Optional base port. If provided, written to .workspace/port.txt before Aspire starts.", DefaultValueFactory = _ => null };
         var watchOption = new Option<bool>("--watch", "-w") { Description = "Enable watch mode for hot reload" };
         var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process (detached is the default)" };
         var publicUrlOption = new Option<string?>("--public-url") { Description = "Set the PUBLIC_URL environment variable for the app (e.g., https://example.ngrok-free.app)" };
 
+        Arguments.Add(basePortArgument);
         Options.Add(watchOption);
         Options.Add(attachOption);
         Options.Add(publicUrlOption);
 
         SetAction(parseResult => Execute(
+                parseResult.GetValue(basePortArgument),
                 parseResult.GetValue(watchOption),
                 parseResult.GetValue(attachOption),
                 parseResult.GetValue(publicUrlOption)
@@ -39,19 +32,49 @@ public class RunCommand : Command
         );
     }
 
-    private static void Execute(bool watch, bool attach, string? publicUrl)
+    // The CLI binary is published outside the repo, so PortAllocation.Load (which walks up from
+    // AppContext.BaseDirectory) cannot find the repo. Use the CLI's known SourceCodeFolder instead.
+    // Re-read on every access so a run/restart invocation with a positional base port picks up the
+    // freshly written .workspace/port.txt without any cached PortAllocation lingering from earlier
+    // in the call.
+    internal static PortAllocation Ports => PortAllocation.LoadFrom(Configuration.SourceCodeFolder);
+
+    internal static int AspirePort => Ports.Aspire;
+
+    internal static int DashboardPort => Ports.OtelEndpoint;
+
+    internal static int ResourceServicePort => Ports.ResourceService;
+
+    private static void Execute(int? basePort, bool watch, bool attach, string? publicUrl)
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
+        // Aspire is detected via the *currently configured* port. If a caller asks to start on a
+        // new port while Aspire still runs on the old one, refuse early with a clear remediation;
+        // updating port.txt now would orphan the running stack and break IsAspireRunning() below.
         if (IsAspireRunning())
         {
-            AnsiConsole.MarkupLine($"[yellow]Aspire AppHost is already running on port {AspirePort}. Run 'pp stop' to stop it or 'pp restart' to start a fresh instance.[/]");
+            var alias = Configuration.AliasName;
+            var message = basePort is null
+                ? $"Aspire AppHost is already running on port {AspirePort}. Run '{alias} stop' to stop it or '{alias} restart' to start a fresh instance."
+                : $"Aspire AppHost is already running on port {AspirePort}. Run '{alias} stop' first or use '{alias} restart {basePort}' to switch.";
+            AnsiConsole.MarkupLine($"[yellow]{message}[/]");
             Environment.Exit(1);
         }
+
+        WriteBasePortIfProvided(basePort);
 
         CheckForPortConflicts();
 
         StartAspireAppHost(watch, attach, publicUrl);
+    }
+
+    internal static void WriteBasePortIfProvided(int? basePort)
+    {
+        if (basePort is null) return;
+
+        PortAllocation.WriteBasePort(Configuration.SourceCodeFolder, basePort.Value);
+        AnsiConsole.MarkupLine($"[blue]Set base port to {basePort.Value}.[/]");
     }
 
     internal static bool IsAspireRunning()

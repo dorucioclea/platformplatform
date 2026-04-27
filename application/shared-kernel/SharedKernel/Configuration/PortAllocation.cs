@@ -86,6 +86,23 @@ public sealed record PortAllocation(int BasePort)
         return new PortAllocation(basePort);
     }
 
+    // Atomically writes the base port to .workspace/port.txt under the given repository root.
+    // Callers (e.g., the developer CLI's positional base-port argument on run/restart) use this to
+    // update the file before any code path lazily loads PortAllocation -- otherwise the lazy load
+    // would race with the write and could bootstrap with the default port.
+    public static void WriteBasePort(string repositoryRoot, int basePort)
+    {
+        if (basePort <= 0) throw new ArgumentOutOfRangeException(nameof(basePort), basePort, "Base port must be a positive integer.");
+
+        var workspaceDirectory = Path.Combine(repositoryRoot, WorkspaceDirectoryName);
+        var portFilePath = Path.Combine(workspaceDirectory, PortFileName);
+        var temporaryFilePath = portFilePath + ".tmp";
+
+        Directory.CreateDirectory(workspaceDirectory);
+        File.WriteAllText(temporaryFilePath, $"{basePort}{Environment.NewLine}");
+        File.Move(temporaryFilePath, portFilePath, true);
+    }
+
     private static string FindRepositoryRoot(string startDirectory)
     {
         var current = new DirectoryInfo(startDirectory);

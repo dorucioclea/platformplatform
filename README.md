@@ -242,6 +242,8 @@ With the CLI installed:
 pp run # First time downloading Docker containers will take several minutes
 ```
 
+Pass an optional base port (e.g. `pp run 11000`) to run a parallel stack from another worktree.
+
 Or without the CLI:
 
 ```bash
