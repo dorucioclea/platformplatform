@@ -46,7 +46,7 @@
     "update-translations": "lingui extract --clean && lingui compile --typescript"
   },
   "dependencies": {
-    "@base-ui/react": "1.2.0",
+    "@base-ui/react": "1.4.1",
     "cmdk": "1.1.1",
     "react-dropzone": "15.0.0",
     "react-resizable-panels": "4.10.0",
