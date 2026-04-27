@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Sockets;
 using AppHost;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
 using Projects;
 using SharedKernel.Configuration;
 
@@ -53,7 +52,7 @@ var azureStorage = builder
             Tag = "latest"
         }
     )
-    .AddBlobs("blobs");
+    .AddBlobs("blob-storage");
 
 builder
     .AddContainer("mail-server", "axllent/mailpit")
@@ -286,7 +285,11 @@ void AddStripeCliContainer()
 
 void CreateBlobContainer(string containerName)
 {
-    var connectionString = builder.Configuration.GetConnectionString("blob-storage");
+    // Build the Azurite connection string dynamically from the actual blob port so this works on
+    // any base port (parallel stacks from git worktrees rely on this). The default development
+    // account key is the well-known Azurite credential and is safe to keep in source.
+    var connectionString =
+        $"DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:{ports.Blob}/devstoreaccount1";
 
     new Task(() =>
         {
