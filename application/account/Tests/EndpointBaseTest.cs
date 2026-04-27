@@ -202,8 +202,7 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
             LastName = user.LastName,
             Title = user.Title,
             AvatarUrl = user.Avatar.Url,
-            Locale = user.Locale,
-            IsInternalUser = user.IsInternalUser
+            Locale = user.Locale
         };
     }
 }

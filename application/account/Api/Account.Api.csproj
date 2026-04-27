@@ -9,6 +9,12 @@
         <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)\..\WebApp\shared\lib\api\</OpenApiDocumentsDirectory>
         <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
         <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
+        <!--
+            Emit only the 'account' document at build time so account/WebApp keeps consuming Account.Api.json unchanged.
+            Without a file-name override, dotnet-getdocument emits the document as {ProjectName}.json (Account.Api.json).
+            The 'back-office' document is served at runtime via /openapi/back-office.json and will be wired into BackOfficeWebApp's build in PP-1148.
+        -->
+        <OpenApiGenerateDocumentsOptions>--document-name account</OpenApiGenerateDocumentsOptions>
         <DefaultItemExcludes>$(DefaultItemExcludes);publish\**;Dockerfile</DefaultItemExcludes>
     </PropertyGroup>
 

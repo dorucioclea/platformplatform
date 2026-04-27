@@ -1,5 +1,6 @@
 using Account;
 using SharedKernel.Configuration;
+using SharedKernel.OpenApi;
 using SharedKernel.SinglePageApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,7 @@ builder
 
 // Configure dependency injection services like Repositories, MediatR, Pipelines, FluentValidation validators, etc.
 builder.Services
-    .AddApiServices([Assembly.GetExecutingAssembly(), Configuration.Assembly])
+    .AddApiServices([Assembly.GetExecutingAssembly(), Configuration.Assembly], ApiDocumentLayout.AccountAndBackOffice)
     .AddAccountServices();
 
 var app = builder.Build();

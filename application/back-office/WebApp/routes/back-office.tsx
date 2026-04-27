@@ -1,9 +1,8 @@
-import { hasPermission, requireAuthentication } from "@repo/infrastructure/auth/routeGuards";
+import { requireAuthentication } from "@repo/infrastructure/auth/routeGuards";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { BackOfficeSideMenu } from "@/shared/components/BackOfficeSideMenu";
-import { AccessDeniedPage } from "@/shared/components/errorPages/AccessDeniedPage";
 
 export const Route = createFileRoute("/back-office")({
   beforeLoad: () => requireAuthentication(),
@@ -11,9 +10,6 @@ export const Route = createFileRoute("/back-office")({
 });
 
 function BackOfficeLayout() {
-  if (!hasPermission({ requiresInternalUser: true })) {
-    return <AccessDeniedPage />;
-  }
   return (
     <SidebarProvider>
       <BackOfficeSideMenu />

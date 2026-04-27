@@ -3,6 +3,7 @@ using Account.Features.Tenants.Queries;
 using SharedKernel.ApiResults;
 using SharedKernel.Domain;
 using SharedKernel.Endpoints;
+using SharedKernel.OpenApi;
 
 namespace Account.Api.Endpoints;
 
@@ -12,7 +13,7 @@ public sealed class TenantEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("Tenants").RequireAuthorization().ProducesValidationProblem();
+        var group = routes.MapGroup(RoutesPrefix).WithTags("Tenants").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/current", async Task<ApiResult<TenantResponse>> (IMediator mediator)
             => await mediator.Send(new GetCurrentTenantQuery())
@@ -36,6 +37,6 @@ public sealed class TenantEndpoints : IEndpoints
 
         routes.MapDelete("/internal-api/account/tenants/{id}", async Task<ApiResult> (TenantId id, IMediator mediator)
             => await mediator.Send(new DeleteTenantCommand(id))
-        );
+        ).WithGroupName(OpenApiDocumentNames.Account);
     }
 }
