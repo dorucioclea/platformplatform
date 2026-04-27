@@ -34,6 +34,7 @@ if (!isMcpCommand && !args.Contains("-q") && !args.Contains("--quiet"))
         var figletText = new FigletText(solutionName);
         AnsiConsole.Write(figletText);
         Prerequisite.Recommend(Prerequisite.TypeScriptLanguageServer, Prerequisite.CSharpLanguageServer);
+        Prerequisite.WarnIfAspireCliDoesNotMatchSdk();
     }
 
     AnsiConsole.WriteLine($"Source code folder: {Configuration.SourceCodeFolder} \n");
