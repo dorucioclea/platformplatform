@@ -33,7 +33,7 @@ var stripeFullyConfigured = stripeConfigured && builder.Configuration["Parameter
 
 var postgresPassword = builder.CreateStablePassword("postgres-password");
 var postgres = builder.AddPostgres("postgres", password: postgresPassword, port: ports.Postgres)
-    .WithDataVolume("platform-platform-postgres-data")
+    .WithDataVolume($"platform-platform{ports.VolumeNameInfix}-postgres-data")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithArgs("-c", "wal_level=logical");
 
@@ -41,7 +41,7 @@ var azureStorage = builder
     .AddAzureStorage("azure-storage")
     .RunAsEmulator(resourceBuilder =>
         {
-            resourceBuilder.WithDataVolume("platform-platform-azure-storage-data");
+            resourceBuilder.WithDataVolume($"platform-platform{ports.VolumeNameInfix}-azure-storage-data");
             resourceBuilder.WithBlobPort(ports.Blob);
             resourceBuilder.WithLifetime(ContainerLifetime.Persistent);
         }

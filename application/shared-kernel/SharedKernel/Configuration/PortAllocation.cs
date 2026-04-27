@@ -53,6 +53,12 @@ public sealed record PortAllocation(int BasePort)
         MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeApi, BackOfficeStatic, BackOfficeWorkers
     ];
 
+    // Empty on the default base port so existing developers' Docker volumes are reused unchanged on
+    // upgrade; non-empty on any other base port so parallel Aspire stacks (typically run from
+    // separate git worktrees with different .workspace/port.txt values) get isolated volumes
+    // instead of corrupting each other's state.
+    public string VolumeNameInfix => BasePort == DefaultBasePort ? string.Empty : $"-{BasePort}";
+
     // Resolves the repository root by walking up from AppContext.BaseDirectory looking for the
     // .git folder (always present in a checked-out repo, including git worktrees where .git is a
     // file pointing at the real worktree directory), then reads or bootstraps .workspace/port.txt.
