@@ -925,6 +925,13 @@ public sealed class UpdatePackagesCommand : Command
             var updateCommand = $"npm install --save-exact {string.Join(" ", npmPackageUpdatesToApply)}";
             ProcessHelper.StartProcess(updateCommand, Configuration.ApplicationFolder);
             AnsiConsole.MarkupLine("[green]npm packages updated successfully![/]");
+
+            // Patch transitive vulnerabilities that resolve within the current semver ranges.
+            // Running this here keeps the update-packages command as the single source of truth
+            // for dependency hygiene; otherwise transitive vulns linger silently between bumps.
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[blue]Running npm audit fix...[/]");
+            ProcessHelper.StartProcess("npm audit fix", Configuration.ApplicationFolder, exitOnError: false, throwOnError: false);
         }
         else if (npmPackageUpdatesToApply.Count > 0)
         {
