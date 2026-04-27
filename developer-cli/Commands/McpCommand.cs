@@ -506,17 +506,17 @@ public static partial class DeveloperCliMcpTools
     }
 
     [McpServerTool]
-    [Description("Start .NET Aspire AppHost at https://localhost:9000. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
+    [Description("Start .NET Aspire AppHost at https://app.dev.localhost:9000. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
     public static Task<string> Run()
     {
-        return ExecuteAspireLifecycleCommand("run", "Run", "Aspire started successfully in detached mode at https://localhost:9000");
+        return ExecuteAspireLifecycleCommand("run", "Run", "Aspire started successfully in detached mode at https://app.dev.localhost:9000");
     }
 
     [McpServerTool]
     [Description("Stop any running Aspire AppHost and start a fresh instance. Use after backend changes or when hot reload breaks.")]
     public static Task<string> Restart()
     {
-        return ExecuteAspireLifecycleCommand("restart", "Restart", "Aspire restarted successfully in detached mode at https://localhost:9000");
+        return ExecuteAspireLifecycleCommand("restart", "Restart", "Aspire restarted successfully in detached mode at https://app.dev.localhost:9000");
     }
 
     [McpServerTool]
