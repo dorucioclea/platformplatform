@@ -10,6 +10,9 @@ CheckPortAvailability();
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var appHostname = builder.Configuration["Hostnames:App"] ?? "app.dev.localhost";
+var backOfficeHostname = builder.Configuration["Hostnames:BackOffice"] ?? "back-office.dev.localhost";
+
 var certificatePassword = await builder.CreateSslCertificateIfNotExists();
 
 SecretManagerHelper.GenerateAuthenticationTokenSigningKey("authentication-token-signing-key");
@@ -68,7 +71,7 @@ var accountWorkers = builder
 
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
-    .WithUrlConfiguration("/account")
+    .WithUrlConfiguration(appHostname, "/account")
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)
@@ -92,7 +95,7 @@ var backOfficeWorkers = builder
 
 var backOfficeApi = builder
     .AddProject<BackOffice_Api>("back-office-api")
-    .WithUrlConfiguration("/back-office")
+    .WithUrlConfiguration(backOfficeHostname, "")
     .WithReference(backOfficeDatabase)
     .WithReference(azureStorage)
     .WaitFor(backOfficeWorkers);
@@ -108,14 +111,14 @@ var mainWorkers = builder
 
 var mainApi = builder
     .AddProject<Main_Api>("main-api")
-    .WithUrlConfiguration("")
+    .WithUrlConfiguration(appHostname, "")
     .WithReference(mainDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("PUBLIC_GOOGLE_OAUTH_ENABLED", googleOAuthConfigured ? "true" : "false")
     .WithEnvironment("PUBLIC_SUBSCRIPTION_ENABLED", stripeFullyConfigured ? "true" : "false")
     .WaitFor(mainWorkers);
 
-var appGateway = builder
+builder
     .AddProject<AppGateway>("app-gateway")
     .WithReference(frontendBuild)
     .WithReference(accountApi)
@@ -123,10 +126,18 @@ var appGateway = builder
     .WithReference(mainApi)
     .WaitFor(accountApi)
     .WaitFor(frontendBuild)
-    .WithUrlForEndpoint("https", url => url.DisplayText = "Web App");
-
-appGateway.WithUrl($"{appGateway.GetEndpoint("https")}/back-office", "Back Office");
-appGateway.WithUrl($"{appGateway.GetEndpoint("https")}/openapi", "Open API");
+    .WithEnvironment("Hostnames__App", appHostname)
+    .WithEnvironment("Hostnames__BackOffice", backOfficeHostname)
+    .WithUrls(context =>
+        {
+            // Replace the auto-published "https" endpoint URL with three explicit dashboard URLs.
+            // DisplayOrder: higher values sort higher in the list (Web App > Back Office > Open API).
+            context.Urls.Clear();
+            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{appHostname}:9000", DisplayText = "Web App", DisplayOrder = 300 });
+            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{backOfficeHostname}:9000", DisplayText = "Back Office", DisplayOrder = 200 });
+            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{appHostname}:9000/openapi", DisplayText = "Open API", DisplayOrder = 100 });
+        }
+    );
 
 AddStripeCliContainer();
 
@@ -140,7 +151,8 @@ void AddStripeCliContainer()
     {
         builder
             .AddContainer("stripe-cli", "stripe/stripe-cli:latest")
-            .WithArgs("listen", "--forward-to", "https://host.docker.internal:9000/api/account/subscriptions/stripe-webhook", "--skip-verify")
+            .WithContainerRuntimeArgs("--add-host", $"{appHostname}:host-gateway")
+            .WithArgs("listen", "--forward-to", $"https://{appHostname}:9000/api/account/subscriptions/stripe-webhook", "--skip-verify")
             .WithEnvironment("STRIPE_API_KEY", stripeApiKey)
             .WithLifetime(ContainerLifetime.Persistent);
     }
