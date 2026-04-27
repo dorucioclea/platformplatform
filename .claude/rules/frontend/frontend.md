@@ -13,7 +13,7 @@ Use LSP tools aggressively for code investigation: `goToDefinition`, `findRefere
 
 ## Browser Testing
 
-Use browser MCP tools to test at `[APP_URL]`. Use `UNLOCK` as OTP verification code (localhost only).
+Use browser MCP tools to test at `https://app.dev.localhost:<appGateway>` (call the `get_ports` MCP tool to find the current `appGateway` port). Use `UNLOCK` as OTP verification code (localhost only).
 
 ## Architecture Overview
 

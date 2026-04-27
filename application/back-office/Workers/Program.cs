@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure storage infrastructure like Database, BlobStorage, Logging, Telemetry, Entity Framework DB Context, etc.
 builder
-    .AddDevelopmentPort(9299)
+    .AddDevelopmentPort()
     .AddBackOfficeInfrastructure();
 
 // Configure dependency injection services like Repositories, MediatR, Pipelines, FluentValidation validators, etc.

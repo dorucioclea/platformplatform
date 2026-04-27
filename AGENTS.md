@@ -6,17 +6,9 @@ On MCP failures fall back to the CLI (`[CLI_ALIAS] build --quiet`, `[CLI_ALIAS] 
 
 **Slow:** Aspire restart, backend format, backend lint, end-to-end tests. **Fast:** frontend format/lint, backend test. If any slow operation is needed, run everything in parallel Task agents. End-to-end tests use `waitForAspire=true`.
 
-**Aspire**: The `run`, `restart`, and `stop` MCP tools manage the AppHost at [APP_URL]. Use `restart` when backend changes or hot reload breaks. In the agentic workflow, only the Guardian agent calls these. All other agents must notify the Guardian if they need Aspire restarted.
+**Aspire**: The `run`, `restart`, and `stop` MCP tools manage the AppHost. Call the `get_ports` MCP tool to look up service URLs. Use `restart` when backend changes or hot reload breaks. In the agentic workflow, only the Guardian agent calls these. All other agents must notify the Guardian if they need Aspire restarted.
 
 Never commit, amend, or revert without explicit user instruction each time. Commit messages: one descriptive line in imperative form, no description body.
-
-## Application URL
-
-Whenever you see `[APP_URL]`, replace it with the configured value.
-
-```
-APP_URL="https://localhost:9000"
-```
 
 ## CLI Alias Configuration
 

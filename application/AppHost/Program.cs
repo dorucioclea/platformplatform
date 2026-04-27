@@ -4,14 +4,23 @@ using AppHost;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using Projects;
+using SharedKernel.Configuration;
 
-// Check for port conflicts before starting
-CheckPortAvailability();
+// Read the port allocation before CreateBuilder so we can set Aspire's dashboard env vars
+// (ASPNETCORE_URLS, DOTNET_DASHBOARD_OTLP_ENDPOINT_URL, etc.) before Aspire reads them.
+var ports = PortAllocation.Load();
+
+OverrideAspireDashboardEnvironmentVariables(ports);
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+CheckPortAvailability(ports);
+
 var appHostname = builder.Configuration["Hostnames:App"] ?? "app.dev.localhost";
 var backOfficeHostname = builder.Configuration["Hostnames:BackOffice"] ?? "back-office.dev.localhost";
+
+var appBaseUrl = $"https://{appHostname}:{ports.AppGateway}";
+var backOfficeBaseUrl = $"https://{backOfficeHostname}:{ports.AppGateway}";
 
 var certificatePassword = await builder.CreateSslCertificateIfNotExists();
 
@@ -23,7 +32,7 @@ var (stripeConfigured, stripePublishableKey, stripeApiKey, stripeWebhookSecret) 
 var stripeFullyConfigured = stripeConfigured && builder.Configuration["Parameters:stripe-webhook-secret"] is not null and not "not-configured";
 
 var postgresPassword = builder.CreateStablePassword("postgres-password");
-var postgres = builder.AddPostgres("postgres", password: postgresPassword, port: 9002)
+var postgres = builder.AddPostgres("postgres", password: postgresPassword, port: ports.Postgres)
     .WithDataVolume("platform-platform-postgres-data")
     .WithLifetime(ContainerLifetime.Persistent)
     .WithArgs("-c", "wal_level=logical");
@@ -33,7 +42,7 @@ var azureStorage = builder
     .RunAsEmulator(resourceBuilder =>
         {
             resourceBuilder.WithDataVolume("platform-platform-azure-storage-data");
-            resourceBuilder.WithBlobPort(10000);
+            resourceBuilder.WithBlobPort(ports.Blob);
             resourceBuilder.WithLifetime(ContainerLifetime.Persistent);
         }
     )
@@ -48,8 +57,8 @@ var azureStorage = builder
 
 builder
     .AddContainer("mail-server", "axllent/mailpit")
-    .WithHttpEndpoint(9003, 8025)
-    .WithEndpoint(9004, 1025)
+    .WithHttpEndpoint(ports.MailpitHttp, 8025)
+    .WithEndpoint(ports.MailpitSmtp, 1025)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithUrlForEndpoint("http", u => u.DisplayText = "Read mail here");
 
@@ -58,21 +67,29 @@ CreateBlobContainer("logos");
 
 var frontendBuild = builder
     .AddJavaScriptApp("frontend-build", "../")
-    .WithEnvironment("CERTIFICATE_PASSWORD", certificatePassword);
+    .WithEnvironment("CERTIFICATE_PASSWORD", certificatePassword)
+    .WithEnvironment("MAIN_STATIC_PORT", ports.MainStatic.ToString())
+    .WithEnvironment("ACCOUNT_STATIC_PORT", ports.AccountStatic.ToString())
+    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString());
 
 var accountDatabase = postgres
     .AddDatabase("account-database", "account");
 
 var accountWorkers = builder
     .AddProject<Account_Workers>("account-workers")
+    .WithEnvironment("KESTREL_PORT", ports.AccountWorkers.ToString())
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WaitFor(accountDatabase);
 
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
-    .WithUrlConfiguration(appHostname, "/account")
-    .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:9000")
+    .WithEnvironment("KESTREL_PORT", ports.AccountApi.ToString())
+    .WithUrlConfiguration(appHostname, ports.AppGateway, "/account")
+    // Google OAuth's redirect_uri whitelist requires literal 'localhost', not subdomains like
+    // 'app.dev.localhost'. The callback then 301's via LocalhostRedirectMiddleware back to the
+    // canonical 'app.dev.localhost' so OAuth-state session cookies flow with the redirected request.
+    .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:" + ports.AppGateway)
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)
@@ -90,13 +107,15 @@ var backOfficeDatabase = postgres
 
 var backOfficeWorkers = builder
     .AddProject<BackOffice_Workers>("back-office-workers")
+    .WithEnvironment("KESTREL_PORT", ports.BackOfficeWorkers.ToString())
     .WithReference(backOfficeDatabase)
     .WithReference(azureStorage)
     .WaitFor(backOfficeDatabase);
 
 var backOfficeApi = builder
     .AddProject<BackOffice_Api>("back-office-api")
-    .WithUrlConfiguration(backOfficeHostname, "")
+    .WithEnvironment("KESTREL_PORT", ports.BackOfficeApi.ToString())
+    .WithUrlConfiguration(backOfficeHostname, ports.AppGateway, "")
     .WithReference(backOfficeDatabase)
     .WithReference(azureStorage)
     .WaitFor(backOfficeWorkers);
@@ -106,13 +125,15 @@ var mainDatabase = postgres
 
 var mainWorkers = builder
     .AddProject<Main_Workers>("main-workers")
+    .WithEnvironment("KESTREL_PORT", ports.MainWorkers.ToString())
     .WithReference(mainDatabase)
     .WithReference(azureStorage)
     .WaitFor(mainDatabase);
 
 var mainApi = builder
     .AddProject<Main_Api>("main-api")
-    .WithUrlConfiguration(appHostname, "")
+    .WithEnvironment("KESTREL_PORT", ports.MainApi.ToString())
+    .WithUrlConfiguration(appHostname, ports.AppGateway, "")
     .WithReference(mainDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("PUBLIC_GOOGLE_OAUTH_ENABLED", googleOAuthConfigured ? "true" : "false")
@@ -127,6 +148,7 @@ builder
     .WithReference(mainApi)
     .WaitFor(accountApi)
     .WaitFor(frontendBuild)
+    .WithEnvironment("ASPNETCORE_URLS", "https://localhost:" + ports.AppGateway)
     .WithEnvironment("Hostnames__App", appHostname)
     .WithEnvironment("Hostnames__BackOffice", backOfficeHostname)
     .WithUrls(context =>
@@ -134,9 +156,9 @@ builder
             // Replace the auto-published "https" endpoint URL with three explicit dashboard URLs.
             // DisplayOrder: higher values sort higher in the list (Web App > Back Office > Open API).
             context.Urls.Clear();
-            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{appHostname}:9000", DisplayText = "Web App", DisplayOrder = 300 });
-            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{backOfficeHostname}:9000", DisplayText = "Back Office", DisplayOrder = 200 });
-            context.Urls.Add(new ResourceUrlAnnotation { Url = $"https://{appHostname}:9000/openapi", DisplayText = "Open API", DisplayOrder = 100 });
+            context.Urls.Add(new ResourceUrlAnnotation { Url = appBaseUrl, DisplayText = "Web App", DisplayOrder = 300 });
+            context.Urls.Add(new ResourceUrlAnnotation { Url = backOfficeBaseUrl, DisplayText = "Back Office", DisplayOrder = 200 });
+            context.Urls.Add(new ResourceUrlAnnotation { Url = $"{appBaseUrl}/openapi", DisplayText = "Open API", DisplayOrder = 100 });
         }
     );
 
@@ -153,7 +175,7 @@ void AddStripeCliContainer()
         builder
             .AddContainer("stripe-cli", "stripe/stripe-cli:latest")
             .WithContainerRuntimeArgs("--add-host", $"{appHostname}:host-gateway")
-            .WithArgs("listen", "--forward-to", $"https://{appHostname}:9000/api/account/subscriptions/stripe-webhook", "--skip-verify")
+            .WithArgs("listen", "--forward-to", $"{appBaseUrl}/api/account/subscriptions/stripe-webhook", "--skip-verify")
             .WithEnvironment("STRIPE_API_KEY", stripeApiKey)
             .WithLifetime(ContainerLifetime.Persistent);
     }
@@ -275,10 +297,24 @@ void CreateBlobContainer(string containerName)
     ).Start();
 }
 
-void CheckPortAvailability()
+void OverrideAspireDashboardEnvironmentVariables(PortAllocation portAllocation)
 {
-    var ports = new[] { (9098, "Resource Service"), (9097, "Dashboard"), (9001, "Aspire") };
-    var blocked = ports.Where(p => !IsPortAvailable(p.Item1)).ToList();
+    // Must be set before DistributedApplication.CreateBuilder so Aspire picks them up.
+    Environment.SetEnvironmentVariable("ASPNETCORE_URLS", $"https://localhost:{portAllocation.Aspire}");
+    Environment.SetEnvironmentVariable("DOTNET_DASHBOARD_OTLP_ENDPOINT_URL", $"https://localhost:{portAllocation.OtelEndpoint}");
+    Environment.SetEnvironmentVariable("DOTNET_RESOURCE_SERVICE_ENDPOINT_URL", $"https://localhost:{portAllocation.ResourceService}");
+    Environment.SetEnvironmentVariable("ASPIRE_DASHBOARD_MCP_ENDPOINT_URL", $"http://localhost:{portAllocation.Mcp}/mcp");
+}
+
+void CheckPortAvailability(PortAllocation portAllocation)
+{
+    var portsToCheck = new[]
+    {
+        (portAllocation.ResourceService, "Resource Service"),
+        (portAllocation.OtelEndpoint, "Dashboard"),
+        (portAllocation.Aspire, "Aspire")
+    };
+    var blocked = portsToCheck.Where(p => !IsPortAvailable(p.Item1)).ToList();
 
     if (blocked.Count > 0)
     {

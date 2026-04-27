@@ -11,6 +11,19 @@ import { pluginTypeCheck } from "@rsbuild/plugin-type-check";
 
 const customBuildEnv: CustomBuildEnv = {};
 
+function requirePort(name: string): number {
+  // In production builds, port env vars aren't relevant (no dev server). Returning 0 keeps the
+  // dev-server config valid; the dev-server plugin no-ops in production anyway.
+  if (process.env.NODE_ENV === "production") return 0;
+  const value = process.env[name];
+  if (!value) throw new Error(`${name} must be set. rsbuild must be launched via Aspire AppHost.`);
+  const port = Number.parseInt(value, 10);
+  if (!Number.isFinite(port) || port <= 0) throw new Error(`${name} is not a valid positive integer: '${value}'.`);
+  return port;
+}
+
+const backOfficeStaticPort = requirePort("BACK_OFFICE_STATIC_PORT");
+
 export default defineConfig({
   dev: {
     lazyCompilation: false
@@ -29,6 +42,6 @@ export default defineConfig({
     FileSystemRouterPlugin(),
     RunTimeEnvironmentPlugin(customBuildEnv),
     LinguiPlugin(),
-    DevelopmentServerPlugin({ port: 9201 })
+    DevelopmentServerPlugin({ port: backOfficeStaticPort })
   ]
 });

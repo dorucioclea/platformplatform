@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using DeveloperCli.Installation;
 using Microsoft.Extensions.DependencyInjection;
@@ -506,17 +507,17 @@ public static partial class DeveloperCliMcpTools
     }
 
     [McpServerTool]
-    [Description("Start .NET Aspire AppHost at https://app.dev.localhost:9000. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
+    [Description("Start .NET Aspire AppHost on the configured base port from .workspace/port.txt. Call get_ports to discover the actual URL. Fails if already running -- use Restart to replace a running instance, or Stop to stop it.")]
     public static Task<string> Run()
     {
-        return ExecuteAspireLifecycleCommand("run", "Run", "Aspire started successfully in detached mode at https://app.dev.localhost:9000");
+        return ExecuteAspireLifecycleCommand("run", "Run", $"Aspire started successfully in detached mode at https://app.dev.localhost:{RunCommand.Ports.AppGateway}");
     }
 
     [McpServerTool]
     [Description("Stop any running Aspire AppHost and start a fresh instance. Use after backend changes or when hot reload breaks.")]
     public static Task<string> Restart()
     {
-        return ExecuteAspireLifecycleCommand("restart", "Restart", "Aspire restarted successfully in detached mode at https://app.dev.localhost:9000");
+        return ExecuteAspireLifecycleCommand("restart", "Restart", $"Aspire restarted successfully in detached mode at https://app.dev.localhost:{RunCommand.Ports.AppGateway}");
     }
 
     [McpServerTool]
@@ -524,6 +525,36 @@ public static partial class DeveloperCliMcpTools
     public static Task<string> Stop()
     {
         return ExecuteAspireLifecycleCommand("stop", "Stop", "Aspire stopped successfully");
+    }
+
+    [McpServerTool]
+    [Description("Get the local development port allocation as JSON. Use this to discover the actual ports for any local URLs (AppGateway, Aspire dashboard, individual APIs, static dev servers, etc.).")]
+    public static string GetPorts()
+    {
+        var ports = RunCommand.Ports;
+        return JsonSerializer.Serialize(new
+            {
+                basePort = ports.BasePort,
+                appGateway = ports.AppGateway,
+                aspire = ports.Aspire,
+                postgres = ports.Postgres,
+                blob = ports.Blob,
+                mailpitSmtp = ports.MailpitSmtp,
+                mailpitHttp = ports.MailpitHttp,
+                mcp = ports.Mcp,
+                otelEndpoint = ports.OtelEndpoint,
+                resourceService = ports.ResourceService,
+                mainApi = ports.MainApi,
+                mainStatic = ports.MainStatic,
+                mainWorkers = ports.MainWorkers,
+                accountApi = ports.AccountApi,
+                accountStatic = ports.AccountStatic,
+                accountWorkers = ports.AccountWorkers,
+                backOfficeApi = ports.BackOfficeApi,
+                backOfficeStatic = ports.BackOfficeStatic,
+                backOfficeWorkers = ports.BackOfficeWorkers
+            }, new JsonSerializerOptions { WriteIndented = true }
+        );
     }
 
     private static async Task<string> ExecuteAspireLifecycleCommand(string cliCommand, string toolName, string successMessage)

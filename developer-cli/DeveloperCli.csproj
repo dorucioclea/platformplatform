@@ -31,4 +31,11 @@
         <None Remove="DeveloperCli.slnx.DotSettings" />
         <None Remove="Directory.Build.props" />
     </ItemGroup>
+    <ItemGroup>
+        <!-- Linked source from shared-kernel: developer-cli is a single-file CLI that intentionally
+             stays isolated from shared-kernel's heavy dependency closure (MediatR, EFCore, NSwag,
+             OpenTelemetry, multiple Azure SDKs). PortAllocation is the shared definition; AppGateway
+             and AppHost get it natively, developer-cli compiles the same file. -->
+        <Compile Include="..\application\shared-kernel\SharedKernel\Configuration\PortAllocation.cs" Link="Utilities\PortAllocation.cs"/>
+    </ItemGroup>
 </Project>
