@@ -80,7 +80,15 @@ For development, you need .NET, Docker, and Node. And GitHub and Azure CLI for s
     winget install OpenJS.NodeJS
     ```
 
-4.	(Recommended) Install language servers for enhanced Claude Code support:
+4.	(Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces:
+
+    ```powershell
+    irm https://aspire.dev/install.ps1 | iex
+    ```
+
+    Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+5.	(Recommended) Install language servers for enhanced Claude Code support:
 
     ```powershell
     npm install -g typescript-language-server typescript
@@ -115,7 +123,15 @@ Open a terminal and run the following commands (if not installed):
    brew install node
    ```
 
-4. (Recommended) Install language servers for enhanced Claude Code support:
+4. (Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces:
+
+   ```bash
+   curl -sSL https://aspire.dev/install.sh | bash
+   ```
+
+   Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+5. (Recommended) Install language servers for enhanced Claude Code support:
 
    ```bash
    npm install -g typescript-language-server typescript
@@ -167,7 +183,15 @@ Open a terminal and run the following commands (if not installed):
    sudo apt-get install -y nodejs
    ```
 
-5. Trust the HTTPS development certificate
+5. (Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces
+
+   ```bash
+   curl -sSL https://aspire.dev/install.sh | bash
+   ```
+
+   Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+6. Trust the HTTPS development certificate
 
    ```bash
    echo 'export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:${SSL_CERT_DIR:-/usr/lib/ssl/certs}"' >> ~/.bashrc
@@ -181,23 +205,23 @@ Open a terminal and run the following commands (if not installed):
    dotnet dev-certs https --trust
    ```
 
-6. **Log out and log back in** to apply Docker group and shell configuration changes.
+7. **Log out and log back in** to apply Docker group and shell configuration changes.
 
-7. (Recommended) Install language servers for enhanced Claude Code support
+8. (Recommended) Install language servers for enhanced Claude Code support
 
    ```bash
    npm install -g typescript-language-server typescript
    dotnet tool install -g csharp-ls
    ```
 
-8. (Optional) If using Snap Chromium, trust the certificate in its sandbox
+9. (Optional) If using Snap Chromium, trust the certificate in its sandbox
 
    ```bash
    certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -L >/dev/null 2>&1 || (mkdir -p $HOME/snap/chromium/current/.pki/nssdb && certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -N --empty-password)
    dotnet dev-certs https --trust
    ```
 
-9. (Optional) Install GitHub CLI and Azure CLI (needed for CI/CD setup)
+10. (Optional) Install GitHub CLI and Azure CLI (needed for CI/CD setup)
 
    ```bash
    (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \

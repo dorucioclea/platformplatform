@@ -9,8 +9,8 @@
       "args": ["-y", "shadcn@latest", "mcp"]
     },
     "aspire": {
-      "url": "http://localhost:9007/mcp",
-      "type": "http"
+      "command": "aspire",
+      "args": ["agent", "mcp"]
     }
   }
 }
