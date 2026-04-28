@@ -1,6 +1,7 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using Polly.CircuitBreaker;
 using SharedKernel.Domain;
 
 namespace Account.Integrations.Gravatar;
@@ -37,6 +38,18 @@ public sealed class GravatarClient(HttpClient httpClient, ILogger<GravatarClient
         catch (TaskCanceledException ex)
         {
             logger.LogError(ex, "Timeout when fetching gravatar for user {UserId}", userId);
+            return null;
+        }
+        catch (HttpRequestException ex)
+        {
+            // Surfaced by the standard resilience handler after retries exhaust on transient failures (5xx, network errors).
+            logger.LogError(ex, "Failed to fetch gravatar for user {UserId} after retries. Treating as unavailable", userId);
+            return null;
+        }
+        catch (BrokenCircuitException ex)
+        {
+            // Polly opened the circuit after repeated failures; subsequent calls fail fast until the circuit closes.
+            logger.LogError(ex, "Circuit open while fetching gravatar for user {UserId}. Treating as unavailable", userId);
             return null;
         }
     }
