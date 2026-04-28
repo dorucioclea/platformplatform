@@ -495,6 +495,7 @@ public class DeployCommand : Command
                 * STAGING_SERVICE_PRINCIPAL_ID: [blue]{stagingServicePrincipal}[/]
                 * STAGING_POSTGRES_ADMIN_OBJECT_ID: [blue]{stagingPostgresAdminObject}[/]
                 * STAGING_DOMAIN_NAME: [blue]-[/] ([yellow]Manually changed this and triggered deployment to set up the domain[/])
+                * STAGING_BACK_OFFICE_DOMAIN_NAME: [blue]-[/] ([yellow]Manually change this to enable the back-office subdomain (e.g. back-office.staging.your-saas-company.com)[/])
 
                 [bold]Staging Cluster Variables:[/]
                 * STAGING_CLUSTER_ENABLED: [blue]true[/]
@@ -508,6 +509,7 @@ public class DeployCommand : Command
                 * PRODUCTION_SERVICE_PRINCIPAL_OBJECT_ID: [blue]{Config.ProductionSubscription.AppRegistration.ServicePrincipalObjectId}[/]
                 * PRODUCTION_POSTGRES_ADMIN_OBJECT_ID: [blue]{productionPostgresAdminObject}[/]
                 * PRODUCTION_DOMAIN_NAME: [blue]-[/] ([yellow]Manually changed this and triggered deployment to set up the domain[/])
+                * PRODUCTION_BACK_OFFICE_DOMAIN_NAME: [blue]-[/] ([yellow]Manually change this to enable the back-office subdomain (e.g. back-office.your-saas-company.com)[/])
 
                 [bold]Production Cluster 1 Variables:[/]
                 * PRODUCTION_CLUSTER1_ENABLED: [blue]false[/] ([yellow]Change this to 'true' when ready to deploy to production[/])
@@ -725,6 +727,7 @@ public class DeployCommand : Command
         SetGithubVariable(VariableNames.STAGING_SHARED_LOCATION, Config.StagingLocation.SharedLocation);
         SetGithubVariable(VariableNames.STAGING_POSTGRES_ADMIN_OBJECT_ID, Config.StagingSubscription.PostgresAdminsGroup.ObjectId!);
         SetGithubVariable(VariableNames.STAGING_DOMAIN_NAME, "-");
+        SetGithubVariable(VariableNames.STAGING_BACK_OFFICE_DOMAIN_NAME, "-");
 
         SetGithubVariable(VariableNames.STAGING_CLUSTER_ENABLED, "true");
         SetGithubVariable(VariableNames.STAGING_CLUSTER_LOCATION, Config.StagingLocation.ClusterLocation);
@@ -736,6 +739,7 @@ public class DeployCommand : Command
         SetGithubVariable(VariableNames.PRODUCTION_SHARED_LOCATION, Config.ProductionLocation.SharedLocation);
         SetGithubVariable(VariableNames.PRODUCTION_POSTGRES_ADMIN_OBJECT_ID, Config.ProductionSubscription.PostgresAdminsGroup.ObjectId!);
         SetGithubVariable(VariableNames.PRODUCTION_DOMAIN_NAME, "-");
+        SetGithubVariable(VariableNames.PRODUCTION_BACK_OFFICE_DOMAIN_NAME, "-");
 
         SetGithubVariable(VariableNames.PRODUCTION_CLUSTER1_ENABLED, "false");
         SetGithubVariable(VariableNames.PRODUCTION_CLUSTER1_LOCATION, Config.ProductionLocation.ClusterLocation);
@@ -885,7 +889,7 @@ public class DeployCommand : Command
 
              - Configure the Domain Name for the staging and production environments. This involves two steps:
 
-                 a. Go to [blue]{Config.GithubInfo!.Url}/settings/variables/actions[/] to set the [blue]DOMAIN_NAME_STAGING[/] and [blue]DOMAIN_NAME_PRODUCTION[/] variables. E.g. [blue]staging.your-saas-company.com[/] and [blue]your-saas-company.com[/].
+                 a. Go to [blue]{Config.GithubInfo!.Url}/settings/variables/actions[/] to set the [blue]STAGING_DOMAIN_NAME[/] and [blue]PRODUCTION_DOMAIN_NAME[/] variables. E.g. [blue]staging.your-saas-company.com[/] and [blue]your-saas-company.com[/]. To enable the back-office subdomain, also set the [blue]STAGING_BACK_OFFICE_DOMAIN_NAME[/] and [blue]PRODUCTION_BACK_OFFICE_DOMAIN_NAME[/] variables. E.g. [blue]back-office.staging.your-saas-company.com[/] and [blue]back-office.your-saas-company.com[/].
 
                  b. Run the [blue]Cloud Infrastructure - Deployment[/] workflow again. Note that it might fail with an error message to set up a DNS TXT and CNAME record. Once done, re-run the failed jobs.
 
@@ -1068,6 +1072,7 @@ public enum VariableNames
     STAGING_SHARED_LOCATION,
     STAGING_POSTGRES_ADMIN_OBJECT_ID,
     STAGING_DOMAIN_NAME,
+    STAGING_BACK_OFFICE_DOMAIN_NAME,
 
     STAGING_CLUSTER_ENABLED,
     STAGING_CLUSTER_LOCATION,
@@ -1079,6 +1084,7 @@ public enum VariableNames
     PRODUCTION_SHARED_LOCATION,
     PRODUCTION_POSTGRES_ADMIN_OBJECT_ID,
     PRODUCTION_DOMAIN_NAME,
+    PRODUCTION_BACK_OFFICE_DOMAIN_NAME,
 
     PRODUCTION_CLUSTER1_ENABLED,
     PRODUCTION_CLUSTER1_LOCATION,
