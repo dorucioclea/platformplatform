@@ -7,7 +7,7 @@ namespace SharedKernel.Authentication.MockEasyAuth;
 
 public static class MockEasyAuthCookie
 {
-    public const string CookieName = "DevEasyAuth";
+    public const string CookieName = "__Host-DevEasyAuth";
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 

@@ -101,7 +101,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
         context.Response.Cookies.Append(MockEasyAuthCookie.CookieName, identity.Id, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = context.Request.IsHttps,
+                Secure = true,
                 SameSite = SameSiteMode.Lax,
                 Path = "/"
             }
@@ -111,7 +111,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
 
     private static void HandleLogout(HttpContext context)
     {
-        context.Response.Cookies.Delete(MockEasyAuthCookie.CookieName, new CookieOptions { Path = "/" });
+        context.Response.Cookies.Delete(MockEasyAuthCookie.CookieName, new CookieOptions { Secure = true, Path = "/" });
         var redirect = context.Request.Query["post_logout_redirect_uri"].ToString();
         if (string.IsNullOrEmpty(redirect)) redirect = "/";
         context.Response.Redirect(redirect);
