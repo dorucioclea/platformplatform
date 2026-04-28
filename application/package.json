@@ -7,7 +7,6 @@
   "workspaces": [
     "account/BackOfficeWebApp",
     "account/WebApp",
-    "back-office/WebApp",
     "main/WebApp",
     "shared-webapp/*"
   ],

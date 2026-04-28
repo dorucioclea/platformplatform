@@ -26,6 +26,7 @@ public sealed class RouteConfigurationTests(AppGatewayApplicationFactory factory
 
     [Theory]
     [InlineData("back-office-api")]
+    [InlineData("back-office-auth")]
     [InlineData("back-office-spa")]
     [InlineData("back-office-static")]
     [InlineData("back-office-hmr")]

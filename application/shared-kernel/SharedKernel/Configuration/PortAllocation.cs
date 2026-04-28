@@ -47,22 +47,12 @@ public sealed record PortAllocation(int BasePort)
 
     public int AccountWorkers => BasePort + 15;
 
-    public int BackOfficeApi => BasePort + 16;
-
-    public int BackOfficeStatic => BasePort + 17;
-
-    public int BackOfficeWorkers => BasePort + 18;
-
-    // The new account/BackOfficeWebApp dev server. Distinct from BackOfficeStatic above which is
-    // still in use by the legacy back-office/WebApp until PP-1149 deletes that folder; the two SPAs
-    // run side by side until then so the branch keeps building end-to-end.
-    public int AccountBackOfficeStatic => BasePort + 19;
+    public int BackOfficeStatic => BasePort + 16;
 
     public int[] AllPorts =>
     [
         AppGateway, Aspire, Postgres, Blob, MailpitSmtp, MailpitHttp, OtelEndpoint, ResourceService,
-        MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeApi, BackOfficeStatic, BackOfficeWorkers,
-        AccountBackOfficeStatic
+        MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeStatic
     ];
 
     // Empty on the default base port so existing developers' Docker volumes are reused unchanged on

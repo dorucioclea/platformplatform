@@ -22,8 +22,7 @@ function requirePort(name: string): number {
   return port;
 }
 
-// Distinct from BACK_OFFICE_STATIC_PORT (still used by legacy back-office/WebApp until PP-1149).
-const accountBackOfficeStaticPort = requirePort("ACCOUNT_BACK_OFFICE_STATIC_PORT");
+const backOfficeStaticPort = requirePort("BACK_OFFICE_STATIC_PORT");
 
 export default defineConfig({
   dev: {
@@ -43,6 +42,6 @@ export default defineConfig({
     FileSystemRouterPlugin(),
     RunTimeEnvironmentPlugin(customBuildEnv),
     LinguiPlugin(),
-    DevelopmentServerPlugin({ port: accountBackOfficeStaticPort })
+    DevelopmentServerPlugin({ port: backOfficeStaticPort })
   ]
 });

@@ -69,8 +69,7 @@ var frontendBuild = builder
     .WithEnvironment("CERTIFICATE_PASSWORD", certificatePassword)
     .WithEnvironment("MAIN_STATIC_PORT", ports.MainStatic.ToString())
     .WithEnvironment("ACCOUNT_STATIC_PORT", ports.AccountStatic.ToString())
-    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString())
-    .WithEnvironment("ACCOUNT_BACK_OFFICE_STATIC_PORT", ports.AccountBackOfficeStatic.ToString());
+    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString());
 
 var accountDatabase = postgres
     .AddDatabase("account-database", "account");
@@ -82,6 +81,8 @@ var accountWorkers = builder
     .WithReference(azureStorage)
     .WaitFor(accountDatabase);
 
+var backOfficeGroupId = builder.Configuration["BackOffice:GroupId"];
+
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
     .WithEnvironment("KESTREL_PORT", ports.AccountApi.ToString())
@@ -90,6 +91,9 @@ var accountApi = builder
     // 'app.dev.localhost'. The callback then 301's via LocalhostRedirectMiddleware back to the
     // canonical 'app.dev.localhost' so OAuth-state session cookies flow with the redirected request.
     .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:" + ports.AppGateway)
+    .WithEnvironment("Hostnames__App", appHostname)
+    .WithEnvironment("BackOffice__Host", backOfficeHostname)
+    .WithEnvironment("BackOffice__GroupId", backOfficeGroupId ?? string.Empty)
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)
@@ -101,24 +105,6 @@ var accountApi = builder
     .WithEnvironment("Stripe__PublishableKey", stripePublishableKey)
     .WithEnvironment("Stripe__AllowMockProvider", "true")
     .WaitFor(accountWorkers);
-
-var backOfficeDatabase = postgres
-    .AddDatabase("back-office-database", "back-office");
-
-var backOfficeWorkers = builder
-    .AddProject<BackOffice_Workers>("back-office-workers")
-    .WithEnvironment("KESTREL_PORT", ports.BackOfficeWorkers.ToString())
-    .WithReference(backOfficeDatabase)
-    .WithReference(azureStorage)
-    .WaitFor(backOfficeDatabase);
-
-var backOfficeApi = builder
-    .AddProject<BackOffice_Api>("back-office-api")
-    .WithEnvironment("KESTREL_PORT", ports.BackOfficeApi.ToString())
-    .WithUrlConfiguration(backOfficeHostname, ports.AppGateway, "")
-    .WithReference(backOfficeDatabase)
-    .WithReference(azureStorage)
-    .WaitFor(backOfficeWorkers);
 
 var mainDatabase = postgres
     .AddDatabase("main-database", "main");
@@ -144,7 +130,6 @@ builder
     .AddProject<AppGateway>("app-gateway")
     .WithReference(frontendBuild)
     .WithReference(accountApi)
-    .WithReference(backOfficeApi)
     .WithReference(mainApi)
     .WaitFor(accountApi)
     .WaitFor(frontendBuild)
