@@ -93,10 +93,10 @@ then
     custom_domain_verification_id=$(echo "$env_details" | jq -r '.properties.customDomainConfiguration.customDomainVerificationId')
     default_domain=$(echo "$env_details" | jq -r '.properties.defaultDomain')
 
-    # Display instructions for setting up DNS entries. Both the user-facing domain (served by app-gateway)
-    # and the back-office domain (served by account-api directly, since EasyAuth runs at the platform layer)
-    # require their own asuid TXT + CNAME records. Print both when configured so the user can see every
-    # missing record at once instead of one per redeploy.
+    # Display instructions for setting up DNS entries. The user-facing domain is served by the app-gateway
+    # container, while the back-office domain is served by its own dedicated back-office container with
+    # platform-level Easy Auth. Print both when configured so the user can see every missing record at
+    # once instead of one per redeploy.
     echo -e "${RED}$(date +"%Y-%m-%dT%H:%M:%S") Please add the following DNS entries and then retry:${RESET}"
     if [[ -n "$DOMAIN_NAME" ]]; then
       echo -e "${RED}- A TXT record with the name 'asuid.$DOMAIN_NAME' and the value '$custom_domain_verification_id'.${RESET}"
@@ -104,7 +104,7 @@ then
     fi
     if [[ -n "$BACK_OFFICE_DOMAIN_NAME" ]]; then
       echo -e "${RED}- A TXT record with the name 'asuid.$BACK_OFFICE_DOMAIN_NAME' and the value '$custom_domain_verification_id'.${RESET}"
-      echo -e "${RED}- A CNAME record with the Host name '$BACK_OFFICE_DOMAIN_NAME' that points to address 'account-api.$default_domain'.${RESET}"
+      echo -e "${RED}- A CNAME record with the Host name '$BACK_OFFICE_DOMAIN_NAME' that points to address 'back-office.$default_domain'.${RESET}"
     fi
     exit 1
   elif [[ $output == *"ERROR:"* ]]; then

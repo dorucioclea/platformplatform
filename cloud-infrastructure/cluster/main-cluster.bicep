@@ -169,6 +169,13 @@ var publicUrl = isCustomDomainSet
   : 'https://${appGatewayContainerAppName}.${containerAppsEnvironment.outputs.defaultDomainName}'
 var cdnUrl = publicUrl
 
+// Back-office is reachable on its custom domain when set, else on the auto-generated ACA FQDN. Both code
+// paths must agree on the same hostname for Easy Auth redirect URLs and for the application's host-aware
+// routing (HostScopedSinglePageApp, BackOffice__Host, Hostnames__BackOffice).
+var backOfficeHost = backOfficeDomainName != ''
+  ? backOfficeDomainName
+  : 'back-office.${containerAppsEnvironment.outputs.defaultDomainName}'
+
 // Account
 
 var accountIdentityName = '${clusterResourceGroupName}-account'
@@ -268,7 +275,7 @@ var accountApiEnvironmentVariables = concat(accountEnvironmentVariables, [
   }
   {
     name: 'BackOffice__Host'
-    value: backOfficeDomainName
+    value: backOfficeHost
   }
   {
     name: 'BackOffice__GroupId'
@@ -321,26 +328,55 @@ module accountApi '../modules/container-app.bicep' = {
     userAssignedIdentityName: accountIdentityName
     ingress: true
     hasProbesEndpoint: true
-    additionalDomainName: backOfficeDomainName
-    external: backOfficeDomainName != ''
+    external: false
     revisionSuffix: revisionSuffix
     environmentVariables: accountApiEnvironmentVariables
   }
   dependsOn: [accountWorkers]
 }
 
-module accountApiAuthConfig '../modules/container-app-auth-config.bicep' = if (backOfficeDomainName != '' && backOfficeEntraClientId != '') {
-  name: '${clusterResourceGroupName}-account-api-auth-config'
+// Back-office runs the same image as account-api on a separate external container app. Easy Auth is bound here
+// only (RedirectToLoginPage), so account-api can stay internal-only and reachable solely through AppGateway.
+module backOffice '../modules/container-app.bicep' = {
+  name: '${clusterResourceGroupName}-back-office-container-app'
   scope: clusterResourceGroup
   params: {
-    containerAppName: 'account-api'
+    name: 'back-office'
+    location: location
+    tags: tags
+    clusterResourceGroupName: clusterResourceGroupName
+    containerAppsEnvironmentId: containerAppsEnvironment.outputs.environmentId
+    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
+    containerRegistryName: containerRegistryName
+    containerImageName: 'account-api'
+    containerImageTag: accountVersion
+    cpu: '0.25'
+    memory: '0.5Gi'
+    minReplicas: 0
+    maxReplicas: 1
+    userAssignedIdentityName: accountIdentityName
+    ingress: true
+    hasProbesEndpoint: true
+    additionalDomainName: backOfficeDomainName
+    external: true
+    revisionSuffix: revisionSuffix
+    environmentVariables: accountApiEnvironmentVariables
+  }
+  dependsOn: [accountApi]
+}
+
+module backOfficeAuthConfig '../modules/container-app-auth-config.bicep' = if (backOfficeEntraClientId != '') {
+  name: '${clusterResourceGroupName}-back-office-auth-config'
+  scope: clusterResourceGroup
+  params: {
+    containerAppName: 'back-office'
     tenantId: subscription().tenantId
     clientId: backOfficeEntraClientId
     allowedExternalRedirectUrls: [
-      'https://${backOfficeDomainName}/.auth/login/aad/callback'
+      'https://${backOfficeHost}/.auth/login/aad/callback'
     ]
   }
-  dependsOn: [accountApi]
+  dependsOn: [backOffice]
 }
 
 // Main
@@ -546,7 +582,7 @@ module appGateway '../modules/container-app.bicep' = {
       }
       {
         name: 'Hostnames__BackOffice'
-        value: backOfficeDomainName
+        value: backOfficeHost
       }
     ]
   }

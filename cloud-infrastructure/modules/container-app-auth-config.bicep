@@ -15,7 +15,7 @@ resource authConfig 'Microsoft.App/containerApps/authConfigs@2025-10-02-preview'
       enabled: true
     }
     globalValidation: {
-      unauthenticatedClientAction: 'AllowAnonymous'
+      unauthenticatedClientAction: 'RedirectToLoginPage'
     }
     identityProviders: {
       azureActiveDirectory: {

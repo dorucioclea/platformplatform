@@ -116,16 +116,21 @@ jobs:
             fi
 
             if [[ "${{ inputs.back_office_domain_name }}" != "" ]] && [[ "${{ inputs.back_office_domain_name }}" != "-" ]]; then
-              # Check if account-api already has the back-office custom domain configured
-              account_api_details=$(az containerapp show --name account-api --resource-group $CLUSTER_RESOURCE_GROUP_NAME 2>&1 || echo "")
-              account_api_custom_domains=$(echo "$account_api_details" | jq -r '.properties.configuration.ingress.customDomains // []')
+              # Check if back-office already has the back-office custom domain configured
+              back_office_details=$(az containerapp show --name back-office --resource-group $CLUSTER_RESOURCE_GROUP_NAME 2>&1 || echo "")
 
-              if [[ "$account_api_custom_domains" != "[]" ]] && [[ "$account_api_custom_domains" != "null" ]]; then
-                echo "$(date +"%Y-%m-%dT%H:%M:%S") Custom domain '${{ inputs.back_office_domain_name }}' is already configured correctly on account-api."
+              if [[ "$back_office_details" != "" ]] && [[ "$back_office_details" != *"ResourceNotFound"* ]] && [[ "$back_office_details" != *"ResourceGroupNotFound"* ]]; then
+                back_office_custom_domains=$(echo "$back_office_details" | jq -r '.properties.configuration.ingress.customDomains // []')
+              else
+                back_office_custom_domains="[]"
+              fi
+
+              if [[ "$back_office_custom_domains" != "[]" ]] && [[ "$back_office_custom_domains" != "null" ]]; then
+                echo "$(date +"%Y-%m-%dT%H:%M:%S") Custom domain '${{ inputs.back_office_domain_name }}' is already configured correctly on back-office."
               else
                 echo "$(date +"%Y-%m-%dT%H:%M:%S") Please add the following DNS entries for the back-office hostname and then retry:"
                 echo "- A TXT record with the name 'asuid.${{ inputs.back_office_domain_name }}' and the value '$custom_domain_verification_id'."
-                echo "- A CNAME record with the Host name '${{ inputs.back_office_domain_name }}' that points to address 'account-api.$default_domain'."
+                echo "- A CNAME record with the Host name '${{ inputs.back_office_domain_name }}' that points to address 'back-office.$default_domain'."
               fi
             fi
           else
