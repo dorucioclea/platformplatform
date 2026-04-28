@@ -15,7 +15,7 @@ public static class MockEasyAuthCookie
     {
         var claims = new List<BackOfficeClientPrincipalClaim>
         {
-            new() { Type = ClaimTypes.Name, Value = identity.Name },
+            new() { Type = BackOfficeIdentityDefaults.NameClaimType, Value = identity.Name },
             new() { Type = ClaimTypes.NameIdentifier, Value = identity.ObjectId }
         };
         claims.AddRange(identity.Groups.Select(group => new BackOfficeClientPrincipalClaim

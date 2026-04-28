@@ -45,8 +45,8 @@ public sealed class BackOfficeIdentityHandler(
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var name = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalNameHeader].ToString();
-        if (string.IsNullOrWhiteSpace(name))
+        var headerName = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalNameHeader].ToString();
+        if (string.IsNullOrWhiteSpace(headerName))
         {
             return Task.FromResult(AuthenticateResult.NoResult());
         }
@@ -54,9 +54,20 @@ public sealed class BackOfficeIdentityHandler(
         var oid = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalIdHeader].ToString();
         var payload = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalPayloadHeader].ToString();
 
+        // The PrincipalNameHeader carries the UPN/email in real Easy Auth. The friendly display name
+        // lives in the payload's OIDC `name` claim, which we prefer when present.
+        var principal = string.IsNullOrWhiteSpace(payload) ? null : TryDecodePayload(payload);
+        var displayName = principal?.Claims?
+            .FirstOrDefault(claim => claim.Type == BackOfficeIdentityDefaults.NameClaimType)?
+            .Value;
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            displayName = headerName;
+        }
+
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, name)
+            new(ClaimTypes.Name, displayName)
         };
 
         if (!string.IsNullOrWhiteSpace(oid))
@@ -64,17 +75,14 @@ public sealed class BackOfficeIdentityHandler(
             claims.Add(new Claim(ClaimTypes.NameIdentifier, oid));
         }
 
-        if (!string.IsNullOrWhiteSpace(payload))
+        if (principal?.Claims is not null)
         {
-            var principal = TryDecodePayload(payload);
-            if (principal?.Claims is not null)
+            foreach (var claim in principal.Claims)
             {
-                foreach (var claim in principal.Claims)
-                {
-                    if (string.IsNullOrEmpty(claim.Type)) continue;
-                    if (claim.Type is ClaimTypes.Name or ClaimTypes.NameIdentifier) continue;
-                    claims.Add(new Claim(claim.Type, claim.Value));
-                }
+                if (string.IsNullOrEmpty(claim.Type)) continue;
+                if (claim.Type is ClaimTypes.Name or ClaimTypes.NameIdentifier) continue;
+                if (claim.Type == BackOfficeIdentityDefaults.NameClaimType) continue;
+                claims.Add(new Claim(claim.Type, claim.Value));
             }
         }
 

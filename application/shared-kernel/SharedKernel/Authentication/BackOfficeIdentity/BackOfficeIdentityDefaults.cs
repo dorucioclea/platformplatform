@@ -21,6 +21,10 @@ public static class BackOfficeIdentityDefaults
 
     public const string GroupsClaimType = "groups";
 
+    // OIDC `name` claim — the friendly display name issued by Entra ID (e.g., "Thomas Jespersen").
+    // Distinct from the `X-MS-CLIENT-PRINCIPAL-NAME` header, which carries the UPN/email.
+    public const string NameClaimType = "name";
+
     public const string LoginPath = "/.auth/login/aad";
 
     public const string CallbackPath = "/.auth/login/aad/callback";
