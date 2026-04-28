@@ -13,7 +13,7 @@ Use LSP tools aggressively for code investigation: `goToDefinition`, `findRefere
 
 ## Browser Testing
 
-Use browser MCP tools to test at `https://app.dev.localhost:<appGateway>` (call the `get_ports` MCP tool to find the current `appGateway` port). Use `UNLOCK` as OTP verification code (localhost only).
+Use browser MCP tools to test at `https://app.dev.localhost:<appGateway>`. Look up the `appGateway` port via the Aspire MCP `list_resources` tool, or read `.workspace/port.txt` for the base port (the gateway runs on the base port itself). Use `UNLOCK` as OTP verification code (localhost only).
 
 ## Architecture Overview
 
@@ -147,11 +147,11 @@ Use browser MCP tools to test at `https://app.dev.localhost:<appGateway>` (call 
     - Reference existing implementations to maintain consistency
 
 11. Build and format your changes:
-    - After each minor change, use the **build** MCP tool for frontend
+    - After each minor change, use the **build** skill (`--frontend --quiet`)
     - This ensures consistent code style across the codebase
 
 12. Verify your changes:
-    - When a feature is complete, run these MCP tools for frontend in sequence: **build**, **format**, **lint**
+    - When a feature is complete, run **build**, then **format** and **lint** in parallel (with `--no-build`), all scoped with `--frontend --quiet`
     - **ALL lint findings are blocking** - CI pipeline fails on any result marked "Issues found"
     - Severity level (note/warning/error) is irrelevant - fix all findings before proceeding
     - Fix any compiler warnings or test failures before proceeding
