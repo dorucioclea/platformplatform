@@ -1,7 +1,5 @@
 {
-  "enabledMcpjsonServers": [
-    "developer-cli"
-  ],
+  "enabledMcpjsonServers": [],
   "hooks": {
     "PreToolUse": [
       {
