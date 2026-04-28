@@ -218,20 +218,29 @@ public static class SinglePageAppFallbackExtensions
                     }
                 ).RequireHost(spa.Host);
 
-                var fallback = app.MapFallback((HttpContext context, IAntiforgery antiforgery) =>
-                    {
-                        var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+                Task RenderShell(HttpContext context, IAntiforgery antiforgery)
+                {
+                    var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
 
-                        SetResponseHttpHeaders(configuration, context.Response.Headers, "text/html; charset=utf-8", nonce);
+                    SetResponseHttpHeaders(configuration, context.Response.Headers, "text/html; charset=utf-8", nonce);
 
-                        var antiforgeryHttpHeaderToken = GenerateAntiforgeryTokens(antiforgery, context);
+                    var antiforgeryHttpHeaderToken = GenerateAntiforgeryTokens(antiforgery, context);
 
-                        var userInfo = spa.UserInfoFactory(context);
-                        var html = GetHtmlWithEnvironment(configuration, userInfo, antiforgeryHttpHeaderToken, nonce);
+                    var userInfo = spa.UserInfoFactory(context);
+                    var html = GetHtmlWithEnvironment(configuration, userInfo, antiforgeryHttpHeaderToken, nonce);
 
-                        return context.Response.WriteAsync(html);
-                    }
-                ).RequireHost(spa.Host);
+                    return context.Response.WriteAsync(html);
+                }
+
+                // Unauthenticated SPA-shell routes registered as higher-priority GETs so the auth-gated
+                // fallback below does not challenge them. Used for paths the SPA itself must serve while
+                // the user is anonymous (e.g. development-only mock-login picker on the back-office host).
+                foreach (var unauthenticatedPath in spa.UnauthenticatedPaths)
+                {
+                    app.MapGet(unauthenticatedPath, RenderShell).RequireHost(spa.Host);
+                }
+
+                var fallback = app.MapFallback(RenderShell).RequireHost(spa.Host);
 
                 // When a host carries an authorization policy, the SPA-shell request must run through the
                 // auth pipeline before UserInfoFactory inspects HttpContext.User. Without it, the back-office

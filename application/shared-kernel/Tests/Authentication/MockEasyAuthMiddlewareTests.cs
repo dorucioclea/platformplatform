@@ -12,29 +12,49 @@ namespace SharedKernel.Tests.Authentication;
 public sealed class MockEasyAuthMiddlewareTests
 {
     [Fact]
-    public async Task Invoke_WhenLoginPathRequested_ShouldRenderHtmlPageListingIdentities()
+    public async Task Invoke_WhenLoginPathRequested_ShouldRedirectToMockLoginPage()
     {
         // Arrange
         var middleware = new MockEasyAuthMiddleware(_ => Task.CompletedTask);
         var context = new DefaultHttpContext
         {
-            Request = { Path = BackOfficeIdentityDefaults.LoginPath, Method = HttpMethods.Get },
-            Response = { Body = new MemoryStream() }
+            Request =
+            {
+                Path = BackOfficeIdentityDefaults.LoginPath,
+                Method = HttpMethods.Get,
+                QueryString = new QueryString("?post_login_redirect_uri=/dashboard")
+            }
         };
 
         // Act
         await middleware.InvokeAsync(context);
 
         // Assert
-        context.Response.StatusCode.Should().Be((int)HttpStatusCode.OK);
-        context.Response.ContentType.Should().StartWith("text/html");
+        context.Response.StatusCode.Should().Be((int)HttpStatusCode.Redirect);
+        context.Response.Headers.Location.ToString().Should().Be("/login?returnPath=%2Fdashboard");
+    }
 
-        context.Response.Body.Seek(0, SeekOrigin.Begin);
-        var body = await new StreamReader(context.Response.Body).ReadToEndAsync();
-        foreach (var identity in MockEasyAuthIdentities.Default)
+    [Fact]
+    public async Task Invoke_WhenLoginPathRedirectTargetIsPickerItself_ShouldRedirectHome()
+    {
+        // Arrange
+        var middleware = new MockEasyAuthMiddleware(_ => Task.CompletedTask);
+        var context = new DefaultHttpContext
         {
-            body.Should().Contain(identity.Name);
-        }
+            Request =
+            {
+                Path = BackOfficeIdentityDefaults.LoginPath,
+                Method = HttpMethods.Get,
+                QueryString = new QueryString("?post_login_redirect_uri=/login")
+            }
+        };
+
+        // Act
+        await middleware.InvokeAsync(context);
+
+        // Assert
+        context.Response.StatusCode.Should().Be((int)HttpStatusCode.Redirect);
+        context.Response.Headers.Location.ToString().Should().Be("/login?returnPath=%2F");
     }
 
     [Fact]

@@ -37,6 +37,16 @@ var appCdnUrl = Environment.GetEnvironmentVariable(SinglePageAppConfiguration.Cd
 var backOfficePublicUrl = appPublicUrl is null ? null : ReplaceHost(appPublicUrl, appHostname, backOfficeHostname);
 var backOfficeCdnUrl = backOfficePublicUrl;
 
+// The /login picker is the dev-only MockEasyAuth identity selector. In Azure-deployed instances the
+// path must not be reachable: it is removed from the auth-gate exemption list (so the back-office
+// authorize policy applies) and short-circuited to 401 below to reject even authenticated requests.
+string[] backOfficeUnauthenticatedPaths = SharedInfrastructureConfiguration.IsRunningInAzure ? [] : ["/login"];
+
+if (SharedInfrastructureConfiguration.IsRunningInAzure)
+{
+    app.MapGet("/login", Results.Unauthorized).RequireHost(backOfficeHostname);
+}
+
 app
     .UseApiServices() // Add common configuration for all APIs like Swagger, HSTS, and DeveloperExceptionPage.
     .UseHostScopedSinglePageAppFallback(
@@ -53,7 +63,8 @@ app
             BuildBackOfficeUserInfo,
             backOfficePublicUrl,
             backOfficeCdnUrl,
-            BackOfficeIdentityDefaults.PolicyName
+            BackOfficeIdentityDefaults.PolicyName,
+            unauthenticatedPaths: backOfficeUnauthenticatedPaths
         )
     );
 

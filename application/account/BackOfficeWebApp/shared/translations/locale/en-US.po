@@ -19,11 +19,17 @@ msgstr "Accounts"
 msgid "Accounts (coming soon)"
 msgstr "Accounts (coming soon)"
 
+msgid "Admin User"
+msgstr "Admin User"
+
 msgid "An unexpected error occurred while processing your request."
 msgstr "An unexpected error occurred while processing your request."
 
 msgid "Back Office"
 msgstr "Back Office"
+
+msgid "BackOffice - Localhost"
+msgstr "BackOffice - Localhost"
 
 msgid "Change language"
 msgstr "Change language"
@@ -76,8 +82,32 @@ msgstr "Larger"
 msgid "Light"
 msgstr "Light"
 
+msgid "Local development sign-in. Production uses Azure Container Apps built-in Entra ID authentication."
+msgstr "Local development sign-in. Production uses Azure Container Apps built-in Entra ID authentication."
+
+msgid "Log in"
+msgstr "Log in"
+
+msgid "Log in with admin rights"
+msgstr "Log in with admin rights"
+
+msgid "Log in with read-only rights"
+msgstr "Log in with read-only rights"
+
+msgid "Log in with support rights"
+msgstr "Log in with support rights"
+
+msgid "Log in without group claims"
+msgstr "Log in without group claims"
+
 msgid "Log out"
 msgstr "Log out"
+
+msgid "Logging in..."
+msgstr "Logging in..."
+
+msgid "Logo"
+msgstr "Logo"
 
 msgid "Main navigation"
 msgstr "Main navigation"
@@ -97,6 +127,9 @@ msgstr "None"
 msgid "Page not found"
 msgstr "Page not found"
 
+msgid "Plain User"
+msgstr "Plain User"
+
 msgid "PlatformPlatform logo"
 msgstr "PlatformPlatform logo"
 
@@ -105,6 +138,12 @@ msgstr "Please check the URL or return to the home page."
 
 msgid "Please try again or return to the home page."
 msgstr "Please try again or return to the home page."
+
+msgid "Read Only"
+msgstr "Read Only"
+
+msgid "Screenshots of the dashboard project with desktop and mobile versions"
+msgstr "Screenshots of the dashboard project with desktop and mobile versions"
 
 msgid "Show details"
 msgstr "Show details"
@@ -120,6 +159,9 @@ msgstr "Support"
 
 msgid "Support (coming soon)"
 msgstr "Support (coming soon)"
+
+msgid "Support User"
+msgstr "Support User"
 
 msgid "System"
 msgstr "System"

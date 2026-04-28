@@ -35,18 +35,19 @@ test.describe("@smoke", () => {
       expect(response.headers().location).toBe("/.auth/login/aad?post_login_redirect_uri=%2F");
     })();
 
-    await step("Navigate to authenticated back-office endpoint & verify redirect to mock easy auth login")(async () => {
-      await page.goto("/api/back-office/me");
+    await step("Navigate to authenticated back-office endpoint & verify redirect to mock easy auth picker")(
+      async () => {
+        await page.goto("/api/back-office/me");
 
-      await expect(page).toHaveURL(
-        `${BACK_OFFICE_BASE_URL}/.auth/login/aad?post_login_redirect_uri=%2Fapi%2Fback-office%2Fme`
-      );
-      await expect(page.getByRole("heading", { name: "Mock Easy Auth - pick an identity" })).toBeVisible();
-      await expect(page.getByRole("link", { name: "Admin User Groups: BackOfficeAdmins" })).toBeVisible();
-    })();
+        await expect(page).toHaveURL(`${BACK_OFFICE_BASE_URL}/login?returnPath=%2Fapi%2Fback-office%2Fme`);
+        await expect(page.getByRole("heading", { name: "BackOffice - Localhost" })).toBeVisible();
+        await expect(page.getByRole("radio", { name: "Admin User Log in with admin rights" })).toBeVisible();
+      }
+    )();
 
     await step("Pick the Admin identity & verify callback redirects back to the protected endpoint")(async () => {
-      await page.getByRole("link", { name: "Admin User Groups: BackOfficeAdmins" }).click();
+      await page.getByRole("radio", { name: "Admin User Log in with admin rights" }).click();
+      await page.getByRole("button", { name: "Log in" }).click();
 
       await expect(page).toHaveURL(`${BACK_OFFICE_BASE_URL}/api/back-office/me`);
     })();

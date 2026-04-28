@@ -17,7 +17,8 @@ public sealed class HostScopedSinglePageApp(
     string? publicUrl = null,
     string? cdnUrl = null,
     string? authorizationPolicy = null,
-    Dictionary<string, string>? environmentVariables = null
+    Dictionary<string, string>? environmentVariables = null,
+    string[]? unauthenticatedPaths = null
 )
 {
     /// <summary>The hostname this SPA is served on (used for <c>RequireHost</c>).</summary>
@@ -56,4 +57,13 @@ public sealed class HostScopedSinglePageApp(
 
     /// <summary>Per-SPA runtime environment variables embedded into the HTML alongside <c>userInfo</c>.</summary>
     public Dictionary<string, string>? EnvironmentVariables { get; } = environmentVariables;
+
+    /// <summary>
+    ///     Paths under this host that must render the SPA shell WITHOUT applying <see cref="AuthorizationPolicy" />.
+    ///     Used for routes the SPA itself owns that need to be reachable while unauthenticated (e.g. the
+    ///     development-only mock-login picker on the back-office host). Each entry must be an absolute path
+    ///     starting with <c>/</c>. Has no observable effect when <see cref="AuthorizationPolicy" /> is null,
+    ///     since the fallback is already anonymous.
+    /// </summary>
+    public string[] UnauthenticatedPaths { get; } = unauthenticatedPaths ?? [];
 }
