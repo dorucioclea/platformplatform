@@ -1,5 +1,8 @@
 {
-  "enabledMcpjsonServers": [],
+  "enabledMcpjsonServers": [
+    "aspire",
+    "shadcn"
+  ],
   "hooks": {
     "PreToolUse": [
       {
