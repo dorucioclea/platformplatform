@@ -2,21 +2,13 @@
 
 Always use MCP tools (`build`, `test`, `format`, `lint`, `run`, `restart`, `stop`, `end_to_end`) instead of running dotnet/npm/npx commands directly. Run `build` first, then remaining tools with `noBuild=true`.
 
-On MCP failures fall back to the CLI (`[CLI_ALIAS] build --quiet`, `[CLI_ALIAS] test --quiet`, etc.).
+On MCP failures fall back to the developer CLI directly via `cd developer-cli && dotnet run -- <command> --quiet` (e.g., `cd developer-cli && dotnet run -- build --quiet`, `cd developer-cli && dotnet run -- test --quiet`). Do NOT use the global `pp` shim -- it is bound to the original install path and ignores the current worktree.
 
 **Slow:** Aspire restart, backend format, backend lint, end-to-end tests. **Fast:** frontend format/lint, backend test. If any slow operation is needed, run everything in parallel Task agents. End-to-end tests use `waitForAspire=true`.
 
 **Aspire**: The `run`, `restart`, and `stop` MCP tools manage the AppHost. Call the `get_ports` MCP tool to look up service URLs. Use `restart` when backend changes or hot reload breaks. In the agentic workflow, only the Guardian agent calls these. All other agents must notify the Guardian if they need Aspire restarted.
 
 Never commit, amend, or revert without explicit user instruction each time. Commit messages: one descriptive line in imperative form, no description body.
-
-## CLI Alias Configuration
-
-Whenever you see `[CLI_ALIAS]`, replace it with the configured value.
-
-```
-CLI_ALIAS="pp"
-```
 
 ## Product Management Tool
 
