@@ -17,7 +17,7 @@ public sealed record PortAllocation(int BasePort)
     private const string PortFileName = "port.txt";
 
     // Worktrees scan these in order and pick the first base port whose full allocation is free.
-    private static readonly int[] WorktreeCandidateBasePorts = [9100, 9200, 9300, 9400, 9500, 9600, 9700, 9800, 9900];
+    internal static readonly int[] WorktreeCandidateBasePorts = [9100, 9200, 9300, 9400, 9500, 9600, 9700, 9800, 9900];
 
     public int AppGateway => BasePort;
 
