@@ -15,7 +15,7 @@ import {
 import { Link as RouterLink, useRouter } from "@tanstack/react-router";
 import { Building2Icon, FlagIcon, HomeIcon, LifeBuoyIcon, ListIcon, UsersIcon } from "lucide-react";
 
-import logoMark from "@/shared/images/logo-mark.svg";
+import { BackOfficeAvatarMenu } from "./BackOfficeAvatarMenu";
 
 const normalizePath = (path: string): string => path.replace(/\/$/, "") || "/";
 
@@ -27,12 +27,7 @@ export function BackOfficeSideMenu() {
     <Sidebar collapsible="icon">
       <nav className="contents" aria-label={t`Main navigation`}>
         <SidebarHeader>
-          <div className="flex items-center gap-3 pl-[0.875rem] text-sm font-semibold">
-            <img className="size-9 shrink-0" src={logoMark} alt={t`PlatformPlatform logo`} />
-            <span className="truncate group-data-[collapsible=icon]:hidden">
-              <Trans>Back Office</Trans>
-            </span>
-          </div>
+          <BackOfficeAvatarMenu />
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
@@ -61,10 +56,10 @@ export function BackOfficeSideMenu() {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton disabled={true} tooltip={t`Tenants (coming soon)`}>
+                  <SidebarMenuButton disabled={true} tooltip={t`Accounts (coming soon)`}>
                     <Building2Icon />
                     <span>
-                      <Trans>Tenants</Trans>
+                      <Trans>Accounts</Trans>
                     </span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -13,11 +13,26 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: @lingui/cli\n"
 
+msgid "Accounts"
+msgstr "Konti"
+
+msgid "Accounts (coming soon)"
+msgstr "Konti (kommer snart)"
+
 msgid "An unexpected error occurred while processing your request."
 msgstr "Der opstod en uventet fejl ved behandlingen."
 
 msgid "Back Office"
 msgstr "Back Office"
+
+msgid "Change language"
+msgstr "Skift sprog"
+
+msgid "Change theme"
+msgstr "Skift tema"
+
+msgid "Change zoom level"
+msgstr "Skift zoomniveau"
 
 msgid "Coming soon"
 msgstr "Kommer snart"
@@ -25,8 +40,14 @@ msgstr "Kommer snart"
 msgid "Contact your administrator."
 msgstr "Kontakt din administrator."
 
+msgid "Dark"
+msgstr "Mørk"
+
 msgid "Dashboard"
 msgstr "Dashboard"
+
+msgid "Default"
+msgstr "Standard"
 
 msgid "Feature flags"
 msgstr "Feature flags"
@@ -43,11 +64,26 @@ msgstr "Gruppeclaims"
 msgid "Hide details"
 msgstr "Skjul detaljer"
 
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Large"
+msgstr "Stor"
+
+msgid "Larger"
+msgstr "Større"
+
+msgid "Light"
+msgstr "Lys"
+
+msgid "Log out"
+msgstr "Log ud"
+
 msgid "Main navigation"
 msgstr "Hovednavigation"
 
-msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
-msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
+msgid "Manage accounts, view system data, see exceptions, and perform various tasks for operational and support teams."
+msgstr "Administrer konti, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
 
 msgid "Navigation"
 msgstr "Navigation"
@@ -61,9 +97,6 @@ msgstr "Ingen"
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
 
-msgid "PlatformPlatform Back Office"
-msgstr "PlatformPlatform Back Office"
-
 msgid "PlatformPlatform logo"
 msgstr "PlatformPlatform logo"
 
@@ -76,8 +109,8 @@ msgstr "Prøv venligst igen eller vend tilbage til forsiden."
 msgid "Show details"
 msgstr "Vis detaljer"
 
-msgid "Sign out"
-msgstr "Log ud"
+msgid "Small"
+msgstr "Lille"
 
 msgid "Something went wrong"
 msgstr "Noget gik galt"
@@ -88,17 +121,20 @@ msgstr "Support"
 msgid "Support (coming soon)"
 msgstr "Support (kommer snart)"
 
-msgid "Tenants"
-msgstr "Lejere"
-
-msgid "Tenants (coming soon)"
-msgstr "Lejere (kommer snart)"
+msgid "System"
+msgstr "System"
 
 msgid "The page you are looking for does not exist or was moved."
 msgstr "Siden du leder efter findes ikke eller er blevet flyttet."
 
+msgid "Theme"
+msgstr "Tema"
+
 msgid "Try again"
 msgstr "Prøv igen"
+
+msgid "User menu"
+msgstr "Brugermenu"
 
 msgid "Users"
 msgstr "Brugere"
@@ -124,3 +160,6 @@ msgstr "Velkommen, {0}"
 
 msgid "Your account is not in the required group."
 msgstr "Din konto er ikke i den krævede gruppe."
+
+msgid "Zoom"
+msgstr "Zoom"

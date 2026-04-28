@@ -13,11 +13,26 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid "Accounts"
+msgstr "Accounts"
+
+msgid "Accounts (coming soon)"
+msgstr "Accounts (coming soon)"
+
 msgid "An unexpected error occurred while processing your request."
 msgstr "An unexpected error occurred while processing your request."
 
 msgid "Back Office"
 msgstr "Back Office"
+
+msgid "Change language"
+msgstr "Change language"
+
+msgid "Change theme"
+msgstr "Change theme"
+
+msgid "Change zoom level"
+msgstr "Change zoom level"
 
 msgid "Coming soon"
 msgstr "Coming soon"
@@ -25,8 +40,14 @@ msgstr "Coming soon"
 msgid "Contact your administrator."
 msgstr "Contact your administrator."
 
+msgid "Dark"
+msgstr "Dark"
+
 msgid "Dashboard"
 msgstr "Dashboard"
+
+msgid "Default"
+msgstr "Default"
 
 msgid "Feature flags"
 msgstr "Feature flags"
@@ -43,11 +64,26 @@ msgstr "Group claims"
 msgid "Hide details"
 msgstr "Hide details"
 
+msgid "Language"
+msgstr "Language"
+
+msgid "Large"
+msgstr "Large"
+
+msgid "Larger"
+msgstr "Larger"
+
+msgid "Light"
+msgstr "Light"
+
+msgid "Log out"
+msgstr "Log out"
+
 msgid "Main navigation"
 msgstr "Main navigation"
 
-msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
-msgstr "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
+msgid "Manage accounts, view system data, see exceptions, and perform various tasks for operational and support teams."
+msgstr "Manage accounts, view system data, see exceptions, and perform various tasks for operational and support teams."
 
 msgid "Navigation"
 msgstr "Navigation"
@@ -61,9 +97,6 @@ msgstr "None"
 msgid "Page not found"
 msgstr "Page not found"
 
-msgid "PlatformPlatform Back Office"
-msgstr "PlatformPlatform Back Office"
-
 msgid "PlatformPlatform logo"
 msgstr "PlatformPlatform logo"
 
@@ -76,8 +109,8 @@ msgstr "Please try again or return to the home page."
 msgid "Show details"
 msgstr "Show details"
 
-msgid "Sign out"
-msgstr "Sign out"
+msgid "Small"
+msgstr "Small"
 
 msgid "Something went wrong"
 msgstr "Something went wrong"
@@ -88,17 +121,20 @@ msgstr "Support"
 msgid "Support (coming soon)"
 msgstr "Support (coming soon)"
 
-msgid "Tenants"
-msgstr "Tenants"
-
-msgid "Tenants (coming soon)"
-msgstr "Tenants (coming soon)"
+msgid "System"
+msgstr "System"
 
 msgid "The page you are looking for does not exist or was moved."
 msgstr "The page you are looking for does not exist or was moved."
 
+msgid "Theme"
+msgstr "Theme"
+
 msgid "Try again"
 msgstr "Try again"
+
+msgid "User menu"
+msgstr "User menu"
 
 msgid "Users"
 msgstr "Users"
@@ -124,3 +160,6 @@ msgstr "Welcome, {0}"
 
 msgid "Your account is not in the required group."
 msgstr "Your account is not in the required group."
+
+msgid "Zoom"
+msgstr "Zoom"

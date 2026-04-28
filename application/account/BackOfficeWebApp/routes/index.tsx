@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/Ca
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { BackOfficeHeader } from "@/shared/components/BackOfficeHeader";
 import { BackOfficeSideMenu } from "@/shared/components/BackOfficeSideMenu";
 import { useMe } from "@/shared/hooks/useMe";
 
@@ -21,11 +20,10 @@ function DashboardPage() {
     <SidebarProvider>
       <BackOfficeSideMenu />
       <SidebarInset>
-        <BackOfficeHeader displayName={me?.displayName} />
         <AppLayout
           browserTitle={t`Dashboard`}
           title={t`Welcome to the Back Office`}
-          subtitle={t`Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams.`}
+          subtitle={t`Manage accounts, view system data, see exceptions, and perform various tasks for operational and support teams.`}
         >
           <Card className="w-full max-w-[40rem]">
             <CardHeader>

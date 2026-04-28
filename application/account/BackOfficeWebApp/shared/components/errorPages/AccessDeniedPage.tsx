@@ -18,14 +18,14 @@ function AccessDeniedNavigation() {
       <div className="flex items-center gap-6">
         <Button
           variant="outline"
-          aria-label={t`Sign out`}
+          aria-label={t`Log out`}
           onClick={() => {
             globalThis.location.href = "/.auth/logout";
           }}
         >
           <LogOutIcon size={16} />
           <span className="hidden sm:inline">
-            <Trans>Sign out</Trans>
+            <Trans>Log out</Trans>
           </span>
         </Button>
       </div>
