@@ -646,6 +646,11 @@ public class DeployCommand : Command
             CreateBackOfficeAppRegistration(Config.ProductionSubscription.BackOfficeAppRegistration);
         }
 
+        // ACA Easy Auth uses the OAuth implicit flow and requires the app registration to issue ID tokens.
+        // `az ad app create` leaves this disabled by default, so self-heal on every run for both fresh and reused app registrations.
+        EnsureBackOfficeIdTokenIssuance(Config.StagingSubscription.BackOfficeAppRegistration);
+        EnsureBackOfficeIdTokenIssuance(Config.ProductionSubscription.BackOfficeAppRegistration);
+
         return;
 
         void CreateAppRegistration(AppRegistration appRegistration)
@@ -681,6 +686,40 @@ public class DeployCommand : Command
                 $"[green]Successfully created an App Registration '{appRegistration.Name}' ({appRegistration.AppRegistrationId}).[/]"
             );
         }
+    }
+
+    private static void EnsureBackOfficeIdTokenIssuance(BackOfficeAppRegistration appRegistration)
+    {
+        var objectId = RequireAzureValue(
+            RunAzureCliCommand($"ad app show --id {appRegistration.AppRegistrationId} --query id -o tsv").Trim(),
+            $"Looking up object id for App Registration '{appRegistration.Name}'"
+        );
+
+        var currentValue = RunAzureCliCommand(
+            $"""rest --method GET --url "https://graph.microsoft.com/v1.0/applications/{objectId}" --query "web.implicitGrantSettings.enableIdTokenIssuance" -o tsv"""
+        ).Trim();
+
+        if (string.Equals(currentValue, "true", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        ProcessHelper.StartProcess(new ProcessStartInfo
+            {
+                FileName = Configuration.IsWindows ? "cmd.exe" : "az",
+                Arguments =
+                    $"""{(Configuration.IsWindows ? "/C az" : string.Empty)} rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/{objectId}" --body @-""",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = !Configuration.TraceEnabled,
+                RedirectStandardError = !Configuration.TraceEnabled
+            },
+            """{"web":{"implicitGrantSettings":{"enableIdTokenIssuance":true}}}""",
+            exitOnError: false
+        );
+
+        AnsiConsole.MarkupLine(
+            $"[green]Enabled ID token issuance on App Registration '{appRegistration.Name}' for ACA Easy Auth.[/]"
+        );
     }
 
     private static void CreateAppRegistrationCredentials()
