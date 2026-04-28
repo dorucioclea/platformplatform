@@ -646,10 +646,24 @@ public class DeployCommand : Command
             CreateBackOfficeAppRegistration(Config.ProductionSubscription.BackOfficeAppRegistration);
         }
 
-        // ACA Easy Auth uses the OAuth implicit flow and requires the app registration to issue ID tokens.
-        // `az ad app create` leaves this disabled by default, so self-heal on every run for both fresh and reused app registrations.
-        EnsureBackOfficeIdTokenIssuance(Config.StagingSubscription.BackOfficeAppRegistration);
-        EnsureBackOfficeIdTokenIssuance(Config.ProductionSubscription.BackOfficeAppRegistration);
+        // ACA Easy Auth uses the OAuth implicit flow and requires the app registration to issue ID tokens
+        // and have its callback URL registered as a reply URL. Self-heal both on every run for fresh and reused app registrations.
+        var stagingRedirectUris = ResolveBackOfficeRedirectUris(
+            Config.StagingSubscription.Id,
+            Config.UniquePrefix,
+            "stage",
+            Config.StagingLocation.ClusterLocationAcronym,
+            Config.GithubVariables.GetValueOrDefault(nameof(VariableNames.STAGING_BACK_OFFICE_DOMAIN_NAME), string.Empty)
+        );
+        var productionRedirectUris = ResolveBackOfficeRedirectUris(
+            Config.ProductionSubscription.Id,
+            Config.UniquePrefix,
+            "prod",
+            Config.ProductionLocation.ClusterLocationAcronym,
+            Config.GithubVariables.GetValueOrDefault(nameof(VariableNames.PRODUCTION_BACK_OFFICE_DOMAIN_NAME), string.Empty)
+        );
+        EnsureBackOfficeAppRegistrationConfiguration(Config.StagingSubscription.BackOfficeAppRegistration, stagingRedirectUris);
+        EnsureBackOfficeAppRegistrationConfiguration(Config.ProductionSubscription.BackOfficeAppRegistration, productionRedirectUris);
 
         return;
 
@@ -688,21 +702,69 @@ public class DeployCommand : Command
         }
     }
 
-    private static void EnsureBackOfficeIdTokenIssuance(BackOfficeAppRegistration appRegistration)
+    private static string[] ResolveBackOfficeRedirectUris(string subscriptionId, string uniquePrefix, string environment, string clusterLocationAcronym, string backOfficeDomainName)
+    {
+        var redirectUris = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(backOfficeDomainName) && backOfficeDomainName != "-")
+        {
+            redirectUris.Add($"https://{backOfficeDomainName}/.auth/login/aad/callback");
+        }
+
+        var clusterResourceGroupName = $"{uniquePrefix}-{environment}-{clusterLocationAcronym}";
+        var defaultDomain = RunAzureCliCommand(
+            $"""containerapp env show --subscription "{subscriptionId}" --resource-group {clusterResourceGroupName} --name {clusterResourceGroupName} --query properties.defaultDomain -o tsv"""
+        ).Trim();
+
+        if (!string.IsNullOrWhiteSpace(defaultDomain))
+        {
+            redirectUris.Add($"https://back-office.{defaultDomain}/.auth/login/aad/callback");
+        }
+
+        return redirectUris.ToArray();
+    }
+
+    private static void EnsureBackOfficeAppRegistrationConfiguration(BackOfficeAppRegistration appRegistration, string[] expectedRedirectUris)
     {
         var objectId = RequireAzureValue(
             RunAzureCliCommand($"ad app show --id {appRegistration.AppRegistrationId} --query id -o tsv").Trim(),
             $"Looking up object id for App Registration '{appRegistration.Name}'"
         );
 
-        var currentValue = RunAzureCliCommand(
-            $"""rest --method GET --url "https://graph.microsoft.com/v1.0/applications/{objectId}" --query "web.implicitGrantSettings.enableIdTokenIssuance" -o tsv"""
-        ).Trim();
+        var webJson = RunAzureCliCommand(
+            $"""rest --method GET --url "https://graph.microsoft.com/v1.0/applications/{objectId}" --query "web" -o json"""
+        );
 
-        if (string.Equals(currentValue, "true", StringComparison.OrdinalIgnoreCase))
+        using var webDocument = JsonDocument.Parse(webJson);
+        var webRoot = webDocument.RootElement;
+
+        var idTokenIssuanceEnabled =
+            webRoot.TryGetProperty("implicitGrantSettings", out var implicitGrantElement) &&
+            implicitGrantElement.TryGetProperty("enableIdTokenIssuance", out var idTokenElement) &&
+            idTokenElement.ValueKind == JsonValueKind.True;
+
+        var existingRedirectUris = webRoot.TryGetProperty("redirectUris", out var redirectUrisElement) && redirectUrisElement.ValueKind == JsonValueKind.Array
+            ? redirectUrisElement.EnumerateArray().Select(uri => uri.GetString() ?? string.Empty).Where(uri => uri.Length > 0).ToArray()
+            : [];
+
+        var missingRedirectUris = expectedRedirectUris.Where(uri => !existingRedirectUris.Contains(uri)).ToArray();
+
+        if (idTokenIssuanceEnabled && missingRedirectUris.Length == 0)
         {
             return;
         }
+
+        var mergedRedirectUris = existingRedirectUris.Concat(missingRedirectUris).ToArray();
+
+        var patchBody = JsonSerializer.Serialize(new
+            {
+                web = new
+                {
+                    redirectUris = mergedRedirectUris,
+                    implicitGrantSettings = new { enableIdTokenIssuance = true }
+                }
+            }
+        );
 
         ProcessHelper.StartProcess(new ProcessStartInfo
             {
@@ -713,12 +775,12 @@ public class DeployCommand : Command
                 RedirectStandardOutput = !Configuration.TraceEnabled,
                 RedirectStandardError = !Configuration.TraceEnabled
             },
-            """{"web":{"implicitGrantSettings":{"enableIdTokenIssuance":true}}}""",
+            patchBody,
             exitOnError: false
         );
 
         AnsiConsole.MarkupLine(
-            $"[green]Enabled ID token issuance on App Registration '{appRegistration.Name}' for ACA Easy Auth.[/]"
+            $"[green]Configured App Registration '{appRegistration.Name}' for ACA Easy Auth (ID token issuance + reply URLs).[/]"
         );
     }
 
