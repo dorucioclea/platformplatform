@@ -23,8 +23,6 @@ public sealed record PortAllocation(int BasePort)
 
     public int MailpitHttp => BasePort + 5;
 
-    public int Mcp => BasePort + 7;
-
     public int OtelEndpoint => BasePort + 8;
 
     public int ResourceService => BasePort + 9;
@@ -49,7 +47,7 @@ public sealed record PortAllocation(int BasePort)
 
     public int[] AllPorts =>
     [
-        AppGateway, Aspire, Postgres, Blob, MailpitSmtp, MailpitHttp, Mcp, OtelEndpoint, ResourceService,
+        AppGateway, Aspire, Postgres, Blob, MailpitSmtp, MailpitHttp, OtelEndpoint, ResourceService,
         MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeApi, BackOfficeStatic, BackOfficeWorkers
     ];
 

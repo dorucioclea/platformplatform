@@ -547,7 +547,6 @@ public static partial class DeveloperCliMcpTools
                 blob = ports.Blob,
                 mailpitSmtp = ports.MailpitSmtp,
                 mailpitHttp = ports.MailpitHttp,
-                mcp = ports.Mcp,
                 otelEndpoint = ports.OtelEndpoint,
                 resourceService = ports.ResourceService,
                 mainApi = ports.MainApi,

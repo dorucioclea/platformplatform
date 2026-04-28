@@ -306,7 +306,6 @@ void OverrideAspireDashboardEnvironmentVariables(PortAllocation portAllocation)
     Environment.SetEnvironmentVariable("ASPNETCORE_URLS", $"https://localhost:{portAllocation.Aspire}");
     Environment.SetEnvironmentVariable("DOTNET_DASHBOARD_OTLP_ENDPOINT_URL", $"https://localhost:{portAllocation.OtelEndpoint}");
     Environment.SetEnvironmentVariable("DOTNET_RESOURCE_SERVICE_ENDPOINT_URL", $"https://localhost:{portAllocation.ResourceService}");
-    Environment.SetEnvironmentVariable("ASPIRE_DASHBOARD_MCP_ENDPOINT_URL", $"http://localhost:{portAllocation.Mcp}/mcp");
 }
 
 void CheckPortAvailability(PortAllocation portAllocation)
