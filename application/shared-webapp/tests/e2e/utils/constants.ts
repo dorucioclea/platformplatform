@@ -28,6 +28,7 @@ function readBasePort(): number {
 
 const BASE_PORT = readBasePort();
 const DEFAULT_BASE_URL = `https://app.dev.localhost:${BASE_PORT}`;
+const DEFAULT_BACK_OFFICE_BASE_URL = `https://back-office.dev.localhost:${BASE_PORT}`;
 
 export const isWindows = process.platform === "win32";
 export const isLinux = process.platform === "linux";
@@ -37,6 +38,14 @@ export const isLinux = process.platform === "linux";
  */
 export function getBaseUrl(): string {
   return process.env.PUBLIC_URL ?? DEFAULT_BASE_URL;
+}
+
+/**
+ * Get the back-office base URL for tests. Mirrors getBaseUrl(): both share the
+ * same port so a single AppGateway instance handles both hosts in local dev.
+ */
+export function getBackOfficeBaseUrl(): string {
+  return process.env.BACK_OFFICE_PUBLIC_URL ?? DEFAULT_BACK_OFFICE_BASE_URL;
 }
 
 /**
