@@ -11,11 +11,15 @@ public class SinglePageAppConfiguration
 {
     public const string PublicUrlKey = "PUBLIC_URL";
     public const string CdnUrlKey = "CDN_URL";
+    public const string DefaultWebAppProjectName = "WebApp";
     private const string PublicKeyPrefix = "PUBLIC_";
     private const string ApplicationVersionKey = "APPLICATION_VERSION";
     public static readonly string[] SupportedLocalizations = ["en-US", "da-DK"];
 
-    public static readonly string BuildRootPath = GetWebAppDistRoot("WebApp", "dist");
+    // Default bundle directory for callers that host a single SPA (the original layout). Multi-SPA
+    // hosts (e.g. consolidated account-api hosting both account/WebApp and account/BackOfficeWebApp)
+    // construct one SinglePageAppConfiguration per SPA via the WebAppProjectName parameter.
+    public static readonly string BuildRootPath = GetWebAppDistRoot(DefaultWebAppProjectName, "dist");
 
     public static readonly JsonSerializerOptions JsonHtmlEncodingOptions =
         new(SharedDependencyConfiguration.DefaultJsonSerializerOptions)
@@ -30,7 +34,11 @@ public class SinglePageAppConfiguration
     private string? _htmlTemplate;
     private string? _remoteEntryJsContent;
 
-    public SinglePageAppConfiguration(bool isDevelopment, Dictionary<string, string>? environmentVariables)
+    public SinglePageAppConfiguration(
+        bool isDevelopment,
+        Dictionary<string, string>? environmentVariables,
+        string webAppProjectName = DefaultWebAppProjectName
+    )
     {
         // Environment variables are empty when generating EF Core migrations
         PublicUrl = Environment.GetEnvironmentVariable(PublicUrlKey) ?? string.Empty;
@@ -60,11 +68,14 @@ public class SinglePageAppConfiguration
         VerifyRuntimeEnvironment(StaticRuntimeEnvironment);
 
         _isDevelopment = isDevelopment;
-        _htmlTemplatePath = Path.Combine(BuildRootPath, "index.html");
-        _remoteEntryJsPath = Path.Combine(BuildRootPath, "remoteEntry.js");
+        BundleDirectory = webAppProjectName == DefaultWebAppProjectName ? BuildRootPath : GetWebAppDistRoot(webAppProjectName, "dist");
+        _htmlTemplatePath = Path.Combine(BundleDirectory, "index.html");
+        _remoteEntryJsPath = Path.Combine(BundleDirectory, "remoteEntry.js");
         PermissionPolicies = GetPermissionsPolicies();
         ContentSecurityPolicies = GetContentSecurityPolicies();
     }
+
+    public string BundleDirectory { get; }
 
     private string CdnUrl { get; }
 

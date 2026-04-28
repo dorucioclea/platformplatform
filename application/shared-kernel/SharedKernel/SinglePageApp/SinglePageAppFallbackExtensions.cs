@@ -159,5 +159,71 @@ public static class SinglePageAppFallbackExtensions
                 .UseStaticFiles(new StaticFileOptions { FileProvider = new PhysicalFileProvider(SinglePageAppConfiguration.BuildRootPath) })
                 .UseRequestLocalization(SinglePageAppConfiguration.SupportedLocalizations);
         }
+
+        // Registers one MapFallback per host-scoped SPA so a single container can serve multiple SPAs
+        // bound to different hostnames (e.g. consolidated account-api hosting account/WebApp on the
+        // user-facing host and account/BackOfficeWebApp on the back-office host). Each entry serves its
+        // own bundle directory, embeds its own userInfo, and is restricted via RequireHost.
+        public IApplicationBuilder UseHostScopedSinglePageAppFallback(params HostScopedSinglePageApp[] singlePageApps)
+        {
+            if (singlePageApps.Length == 0)
+            {
+                throw new ArgumentException("At least one host-scoped SPA must be provided.", nameof(singlePageApps));
+            }
+
+            var environment = app.Services.GetRequiredService<IWebHostEnvironment>();
+
+            foreach (var singlePageApp in singlePageApps)
+            {
+                var configuration = new SinglePageAppConfiguration(
+                    environment.IsDevelopment(),
+                    singlePageApp.EnvironmentVariables,
+                    singlePageApp.WebAppProjectName
+                );
+
+                Directory.CreateDirectory(configuration.BundleDirectory);
+
+                var fileProvider = new PhysicalFileProvider(configuration.BundleDirectory);
+                var spa = singlePageApp;
+
+                app.MapGet("/remoteEntry.js", context =>
+                    {
+                        var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+
+                        SetResponseHttpHeaders(configuration, context.Response.Headers, "application/javascript", nonce);
+
+                        var javaScript = configuration.GetRemoteEntryJs();
+                        return context.Response.WriteAsync(javaScript);
+                    }
+                ).RequireHost(spa.Host);
+
+                app.MapFallback((HttpContext context, IAntiforgery antiforgery) =>
+                    {
+                        if (context.Request.Path.Value?.Contains("/api/", StringComparison.OrdinalIgnoreCase) == true ||
+                            context.Request.Path.Value?.Contains("/internal-api/", StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            context.Response.StatusCode = StatusCodes.Status404NotFound;
+                            context.Response.ContentType = "text/plain";
+                            return context.Response.WriteAsync("404 Not Found");
+                        }
+
+                        var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
+
+                        SetResponseHttpHeaders(configuration, context.Response.Headers, "text/html; charset=utf-8", nonce);
+
+                        var antiforgeryHttpHeaderToken = GenerateAntiforgeryTokens(antiforgery, context);
+
+                        var userInfo = spa.UserInfoFactory(context);
+                        var html = GetHtmlWithEnvironment(configuration, userInfo, antiforgeryHttpHeaderToken, nonce);
+
+                        return context.Response.WriteAsync(html);
+                    }
+                ).RequireHost(spa.Host);
+
+                app.UseStaticFiles(new StaticFileOptions { FileProvider = fileProvider });
+            }
+
+            return app.UseRequestLocalization(SinglePageAppConfiguration.SupportedLocalizations);
+        }
     }
 }

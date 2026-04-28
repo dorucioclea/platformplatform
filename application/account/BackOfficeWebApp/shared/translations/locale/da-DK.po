@@ -1,0 +1,126 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-15 20:50+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: da-DK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: @lingui/cli\n"
+
+msgid "An unexpected error occurred while processing your request."
+msgstr "Der opstod en uventet fejl ved behandlingen."
+
+msgid "Back Office"
+msgstr "Back Office"
+
+msgid "Coming soon"
+msgstr "Kommer snart"
+
+msgid "Contact your administrator."
+msgstr "Kontakt din administrator."
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Feature flags"
+msgstr "Feature flags"
+
+msgid "Feature flags (coming soon)"
+msgstr "Feature flags (kommer snart)"
+
+msgid "Go to home"
+msgstr "Gå til forsiden"
+
+msgid "Group claims"
+msgstr "Gruppeclaims"
+
+msgid "Hide details"
+msgstr "Skjul detaljer"
+
+msgid "Main navigation"
+msgstr "Hovednavigation"
+
+msgid "Manage tenants, view system data, see exceptions, and perform various tasks for operational and support teams."
+msgstr "Administrer lejere, se systemdata, se undtagelser og udfør forskellige opgaver for drifts- og supportteams."
+
+msgid "Navigation"
+msgstr "Navigation"
+
+msgid "No back-office access"
+msgstr "Ingen adgang til Back Office"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Page not found"
+msgstr "Siden blev ikke fundet"
+
+msgid "PlatformPlatform Back Office"
+msgstr "PlatformPlatform Back Office"
+
+msgid "PlatformPlatform logo"
+msgstr "PlatformPlatform logo"
+
+msgid "Please check the URL or return to the home page."
+msgstr "Tjek venligst URL'en eller vend tilbage til forsiden."
+
+msgid "Please try again or return to the home page."
+msgstr "Prøv venligst igen eller vend tilbage til forsiden."
+
+msgid "Show details"
+msgstr "Vis detaljer"
+
+msgid "Sign out"
+msgstr "Log ud"
+
+msgid "Something went wrong"
+msgstr "Noget gik galt"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Support (coming soon)"
+msgstr "Support (kommer snart)"
+
+msgid "Tenants"
+msgstr "Lejere"
+
+msgid "Tenants (coming soon)"
+msgstr "Lejere (kommer snart)"
+
+msgid "The page you are looking for does not exist or was moved."
+msgstr "Siden du leder efter findes ikke eller er blevet flyttet."
+
+msgid "Try again"
+msgstr "Prøv igen"
+
+msgid "Users"
+msgstr "Brugere"
+
+msgid "Users (coming soon)"
+msgstr "Brugere (kommer snart)"
+
+msgid "Wait list"
+msgstr "Venteliste"
+
+msgid "Wait list (coming soon)"
+msgstr "Venteliste (kommer snart)"
+
+msgid "Welcome"
+msgstr "Velkommen"
+
+msgid "Welcome to the Back Office"
+msgstr "Velkommen til Back Office"
+
+#. placeholder {0}: me.displayName
+msgid "Welcome, {0}"
+msgstr "Velkommen, {0}"
+
+msgid "Your account is not in the required group."
+msgstr "Din konto er ikke i den krævede gruppe."

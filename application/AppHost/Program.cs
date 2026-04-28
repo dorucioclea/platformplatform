@@ -69,7 +69,8 @@ var frontendBuild = builder
     .WithEnvironment("CERTIFICATE_PASSWORD", certificatePassword)
     .WithEnvironment("MAIN_STATIC_PORT", ports.MainStatic.ToString())
     .WithEnvironment("ACCOUNT_STATIC_PORT", ports.AccountStatic.ToString())
-    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString());
+    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString())
+    .WithEnvironment("ACCOUNT_BACK_OFFICE_STATIC_PORT", ports.AccountBackOfficeStatic.ToString());
 
 var accountDatabase = postgres
     .AddDatabase("account-database", "account");

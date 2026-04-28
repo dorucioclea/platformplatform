@@ -10,9 +10,12 @@
         <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
         <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
         <!--
-            Emit only the 'account' document at build time so account/WebApp keeps consuming Account.Api.json unchanged.
-            Without a file-name override, dotnet-getdocument emits the document as {ProjectName}.json (Account.Api.json).
-            The 'back-office' document is served at runtime via /openapi/back-office.json and will be wired into BackOfficeWebApp's build in PP-1148.
+            Emit only the 'account' document via the built-in pipeline. With multiple OpenApi documents
+            registered (account + back-office), dotnet-getdocument always appends a {DocumentName} suffix
+            to the project's file name, so this writes 'Account.Api_account.json' (not Account.Api.json).
+            The tool rejects a file-name override containing periods, so we accept the suffix and
+            gitignore the suffixed pattern. The 'back-office' document is emitted by the
+            GenerateBackOfficeOpenApiDocument target below to account/BackOfficeWebApp.
         -->
         <OpenApiGenerateDocumentsOptions>--document-name account</OpenApiGenerateDocumentsOptions>
         <DefaultItemExcludes>$(DefaultItemExcludes);publish\**;Dockerfile</DefaultItemExcludes>
@@ -31,11 +34,30 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server">
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" GeneratePathProperty="true">
             <IncludeAssets>runtime; build; native; contentFiles; analyzers; buildTransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
 
+    <!--
+        Emit the 'back-office' OpenAPI document to account/BackOfficeWebApp so the BackOffice SPA
+        can run openapi-typescript on it. Runs after the built-in GenerateOpenApiDocuments target
+        which emits the 'account' document. Mirrors the dotnet-getdocument invocation defined in
+        Microsoft.Extensions.ApiDescription.Server.targets.
+    -->
+    <Target Name="GenerateBackOfficeOpenApiDocument" AfterTargets="GenerateOpenApiDocuments" Condition="'$(OpenApiGenerateDocuments)' == 'true' AND '$(DesignTimeBuild)' != 'true'">
+        <PropertyGroup>
+            <_BackOfficeOpenApiDocumentsDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\BackOfficeWebApp\shared\lib\api'))</_BackOfficeOpenApiDocumentsDirectory>
+            <_BackOfficeGetDocumentToolsPath>$(PkgMicrosoft_Extensions_ApiDescription_Server)\tools\dotnet-getdocument.dll</_BackOfficeGetDocumentToolsPath>
+            <_BackOfficeGetDocumentCommand>dotnet "$(_BackOfficeGetDocumentToolsPath)" --assembly "$(TargetPath)" --file-list "$(BaseIntermediateOutputPath)$(MSBuildProjectName).BackOfficeOpenApiFiles.cache" --framework "$(TargetFrameworkMoniker)" --output "$(_BackOfficeOpenApiDocumentsDirectory)" --project "$(MSBuildProjectName)"</_BackOfficeGetDocumentCommand>
+            <_BackOfficeGetDocumentCommand Condition=" '$(ProjectAssetsFile)' != '' ">$(_BackOfficeGetDocumentCommand) --assets-file "$(ProjectAssetsFile)"</_BackOfficeGetDocumentCommand>
+            <_BackOfficeGetDocumentCommand>$(_BackOfficeGetDocumentCommand) --document-name back-office</_BackOfficeGetDocumentCommand>
+        </PropertyGroup>
+        <MakeDir Directories="$(_BackOfficeOpenApiDocumentsDirectory)" />
+        <Message Importance="high" Text="%0AGenerateBackOfficeOpenApiDocument:" />
+        <Message Importance="high" Text="  $(_BackOfficeGetDocumentCommand)" />
+        <Exec Command="$(_BackOfficeGetDocumentCommand)" LogStandardErrorAsError="true" />
+    </Target>
 
 </Project>
