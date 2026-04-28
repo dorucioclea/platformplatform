@@ -6,7 +6,7 @@ description: Start or restart the .NET Aspire AppHost via the developer CLI. Alw
 # Restart Aspire
 
 ```bash
-dotnet run --project developer-cli -- restart [<basePort>]
+dotnet run --project developer-cli -- restart
 ```
 
 Use `developer-cli` exactly as written - do not expand to an absolute worktree path.
@@ -15,7 +15,6 @@ Stops any running Aspire AppHost and starts a fresh instance. Detached by defaul
 
 Always use `restart`, even when nothing is running yet. It is a no-op when Aspire is not up, and the safe default in every other case. Never use the developer CLI's `run` command, `aspire run`, or `aspire restart`.
 
-- `<basePort>` - optional positional argument; written to `.workspace/port.txt` before Aspire starts
 - `--public-url <url>` - set `PUBLIC_URL` (e.g. an ngrok URL)
 
 ## When to use
@@ -25,10 +24,9 @@ Always use `restart`, even when nothing is running yet. It is a no-op when Aspir
 - When hot reload breaks or stops picking up changes.
 - Before running e2e tests on a fresh stack.
 
-## Picking the base port
+## Port allocation
 
-- In the git root: omit `<basePort>` (uses the default).
-- In a worktree: on the first start, pick the first free port from `10000`, `11000`, `12000`, `13000` (`lsof -i :<port>` on macOS/Linux, `netstat -ano | findstr :<port>` on Windows). Keep using that port for the lifetime of the worktree - never change it after.
+Fully automatic. On a fresh checkout the developer CLI bootstraps `.workspace/port.txt`: the root gets the default base port; worktrees scan a fixed list of candidates and pick the first one whose ports are all free. Once written, the file is the authoritative allocation for the lifetime of the checkout.
 
 ## Output is fire-and-forget
 

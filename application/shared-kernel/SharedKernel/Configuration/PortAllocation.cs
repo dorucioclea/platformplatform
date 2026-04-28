@@ -1,8 +1,13 @@
+using System.Net;
+using System.Net.Sockets;
+
 namespace SharedKernel.Configuration;
 
 // Single source of truth for the local development port allocation. Reads .workspace/port.txt
-// (single integer, whitespace-tolerant). If the file is missing, self-bootstraps with the default
-// base port so the first run on a fresh checkout just works. Throws on a present-but-invalid file.
+// (single integer, whitespace-tolerant). If the file is missing, self-bootstraps: the root
+// checkout gets the default base port; a worktree scans a fixed list of candidate base ports
+// and picks the first one whose ports are all free locally. Once written, port.txt is the
+// authoritative allocation for the lifetime of the checkout. Throws on a present-but-invalid file.
 public sealed record PortAllocation(int BasePort)
 {
     private const int DefaultBasePort = 9000;
@@ -10,6 +15,9 @@ public sealed record PortAllocation(int BasePort)
     private const string WorkspaceDirectoryName = ".workspace";
 
     private const string PortFileName = "port.txt";
+
+    // Worktrees scan these in order and pick the first base port whose full allocation is free.
+    private static readonly int[] WorktreeCandidateBasePorts = [9100, 9200, 9300, 9400, 9500, 9600, 9700, 9800, 9900];
 
     public int AppGateway => BasePort;
 
@@ -74,9 +82,12 @@ public sealed record PortAllocation(int BasePort)
 
         if (!File.Exists(portFilePath))
         {
+            var bootstrapPort = IsWorktree(repositoryRoot)
+                ? FindFreeBasePortForWorktree()
+                : DefaultBasePort;
             Directory.CreateDirectory(workspaceDirectory);
-            File.WriteAllText(portFilePath, $"{DefaultBasePort}{Environment.NewLine}");
-            return new PortAllocation(DefaultBasePort);
+            File.WriteAllText(portFilePath, $"{bootstrapPort}{Environment.NewLine}");
+            return new PortAllocation(bootstrapPort);
         }
 
         var content = File.ReadAllText(portFilePath).Trim();
@@ -90,28 +101,45 @@ public sealed record PortAllocation(int BasePort)
         return new PortAllocation(basePort);
     }
 
-    // True if .workspace/port.txt already exists -- distinguishes a fresh worktree from a configured one.
+    // True if .workspace/port.txt already exists -- distinguishes a fresh checkout from a configured one.
     public static bool PortFileExists(string repositoryRoot)
     {
         var portFilePath = Path.Combine(repositoryRoot, WorkspaceDirectoryName, PortFileName);
         return File.Exists(portFilePath);
     }
 
-    // Atomically writes the base port to .workspace/port.txt under the given repository root.
-    // Callers (e.g., the developer CLI's positional base-port argument on run/restart) use this to
-    // update the file before any code path lazily loads PortAllocation -- otherwise the lazy load
-    // would race with the write and could bootstrap with the default port.
-    public static void WriteBasePort(string repositoryRoot, int basePort)
+    // .git is a directory in the root checkout and a file in git worktrees.
+    private static bool IsWorktree(string repositoryRoot)
     {
-        if (basePort <= 0) throw new ArgumentOutOfRangeException(nameof(basePort), basePort, "Base port must be a positive integer.");
+        return File.Exists(Path.Combine(repositoryRoot, ".git"));
+    }
 
-        var workspaceDirectory = Path.Combine(repositoryRoot, WorkspaceDirectoryName);
-        var portFilePath = Path.Combine(workspaceDirectory, PortFileName);
-        var temporaryFilePath = portFilePath + ".tmp";
+    private static int FindFreeBasePortForWorktree()
+    {
+        foreach (var candidate in WorktreeCandidateBasePorts)
+        {
+            var allocation = new PortAllocation(candidate);
+            if (allocation.AllPorts.All(IsTcpPortFree)) return candidate;
+        }
 
-        Directory.CreateDirectory(workspaceDirectory);
-        File.WriteAllText(temporaryFilePath, $"{basePort}{Environment.NewLine}");
-        File.Move(temporaryFilePath, portFilePath, true);
+        throw new InvalidOperationException(
+            $"No free base port available for this worktree. Tried: {string.Join(", ", WorktreeCandidateBasePorts)}."
+        );
+    }
+
+    private static bool IsTcpPortFree(int port)
+    {
+        try
+        {
+            var listener = new TcpListener(IPAddress.Loopback, port);
+            listener.Start();
+            listener.Stop();
+            return true;
+        }
+        catch (SocketException)
+        {
+            return false;
+        }
     }
 
     private static string FindRepositoryRoot(string startDirectory)

@@ -4,9 +4,8 @@ namespace DeveloperCli.Commands.ClaudeCommand;
 
 internal sealed class SendInterruptSignalCommand : Command
 {
-    private readonly Option<string> _teamOption = new("--team", "-t") { Description = "Team name", Required = true };
-
     private readonly Option<string> _agentOption = new("--agent", "-a") { Description = "Target agent name", Required = true };
+    private readonly Option<string> _teamOption = new("--team", "-t") { Description = "Team name", Required = true };
 
     public SendInterruptSignalCommand() : base("send-interrupt-signal", "Send an interrupt signal to a team agent")
     {
