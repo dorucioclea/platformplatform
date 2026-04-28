@@ -19,8 +19,8 @@ msgstr "Konti"
 msgid "Accounts (coming soon)"
 msgstr "Konti (kommer snart)"
 
-msgid "Admin User"
-msgstr "Administrator"
+msgid "Admin"
+msgstr "Admin"
 
 msgid "An unexpected error occurred while processing your request."
 msgstr "Der opstod en uventet fejl ved behandlingen."
@@ -91,12 +91,6 @@ msgstr "Log ind"
 msgid "Log in with admin rights"
 msgstr "Log ind med administratorrettigheder"
 
-msgid "Log in with read-only rights"
-msgstr "Log ind med skrivebeskyttede rettigheder"
-
-msgid "Log in with support rights"
-msgstr "Log ind med supportrettigheder"
-
 msgid "Log in without group claims"
 msgstr "Log ind uden gruppeclaims"
 
@@ -127,9 +121,6 @@ msgstr "Ingen"
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"
 
-msgid "Plain User"
-msgstr "Almindelig bruger"
-
 msgid "PlatformPlatform logo"
 msgstr "PlatformPlatform logo"
 
@@ -138,9 +129,6 @@ msgstr "Tjek venligst URL'en eller vend tilbage til forsiden."
 
 msgid "Please try again or return to the home page."
 msgstr "Prøv venligst igen eller vend tilbage til forsiden."
-
-msgid "Read Only"
-msgstr "Skrivebeskyttet"
 
 msgid "Screenshots of the dashboard project with desktop and mobile versions"
 msgstr "Skærmbilleder af dashboard-projektet i desktop- og mobilversioner"
@@ -160,9 +148,6 @@ msgstr "Support"
 msgid "Support (coming soon)"
 msgstr "Support (kommer snart)"
 
-msgid "Support User"
-msgstr "Supportbruger"
-
 msgid "System"
 msgstr "System"
 
@@ -174,6 +159,9 @@ msgstr "Tema"
 
 msgid "Try again"
 msgstr "Prøv igen"
+
+msgid "User"
+msgstr "Bruger"
 
 msgid "User menu"
 msgstr "Brugermenu"

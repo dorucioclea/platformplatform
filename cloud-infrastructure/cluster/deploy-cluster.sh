@@ -31,6 +31,11 @@ if [[ "$BACK_OFFICE_DOMAIN_NAME" == "-" ]]; then
   BACK_OFFICE_DOMAIN_NAME=""
 fi
 
+if [[ "$BACK_OFFICE_ADMINS_GROUP_ID" == "-" ]]; then
+  # "-" is used to indicate that the back-office admins group is not configured
+  BACK_OFFICE_ADMINS_GROUP_ID=""
+fi
+
 if [[ -z "$BACK_OFFICE_ENTRA_CLIENT_ID" ]]; then
   echo "ERROR: BACK_OFFICE_ENTRA_CLIENT_ID is required. Run 'dotnet run --project developer-cli -- deploy' to bootstrap." >&2
   exit 1
@@ -42,6 +47,7 @@ export LOCATION=$CLUSTER_LOCATION
 export DOMAIN_NAME
 export BACK_OFFICE_DOMAIN_NAME
 export BACK_OFFICE_ENTRA_CLIENT_ID
+export BACK_OFFICE_ADMINS_GROUP_ID
 export POSTGRES_ADMIN_OBJECT_ID
 export GOOGLE_OAUTH_CLIENT_ID
 export GOOGLE_OAUTH_CLIENT_SECRET

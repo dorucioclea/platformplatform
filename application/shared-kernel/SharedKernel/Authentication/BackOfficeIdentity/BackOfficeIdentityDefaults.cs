@@ -9,6 +9,10 @@ public static class BackOfficeIdentityDefaults
     // a policy reference instead of an ambiguous scheme-or-policy string.
     public const string PolicyName = "BackOfficePolicy";
 
+    // Authorization policy that requires the principal to be a member of the configured back-office
+    // admins group. Used on endpoints exposing destructive or sensitive admin operations.
+    public const string AdminPolicyName = "BackOfficeAdmin";
+
     public const string PrincipalNameHeader = "X-MS-CLIENT-PRINCIPAL-NAME";
 
     public const string PrincipalIdHeader = "X-MS-CLIENT-PRINCIPAL-ID";

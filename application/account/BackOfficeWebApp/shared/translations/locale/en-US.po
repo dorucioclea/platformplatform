@@ -19,8 +19,8 @@ msgstr "Accounts"
 msgid "Accounts (coming soon)"
 msgstr "Accounts (coming soon)"
 
-msgid "Admin User"
-msgstr "Admin User"
+msgid "Admin"
+msgstr "Admin"
 
 msgid "An unexpected error occurred while processing your request."
 msgstr "An unexpected error occurred while processing your request."
@@ -91,12 +91,6 @@ msgstr "Log in"
 msgid "Log in with admin rights"
 msgstr "Log in with admin rights"
 
-msgid "Log in with read-only rights"
-msgstr "Log in with read-only rights"
-
-msgid "Log in with support rights"
-msgstr "Log in with support rights"
-
 msgid "Log in without group claims"
 msgstr "Log in without group claims"
 
@@ -127,9 +121,6 @@ msgstr "None"
 msgid "Page not found"
 msgstr "Page not found"
 
-msgid "Plain User"
-msgstr "Plain User"
-
 msgid "PlatformPlatform logo"
 msgstr "PlatformPlatform logo"
 
@@ -138,9 +129,6 @@ msgstr "Please check the URL or return to the home page."
 
 msgid "Please try again or return to the home page."
 msgstr "Please try again or return to the home page."
-
-msgid "Read Only"
-msgstr "Read Only"
 
 msgid "Screenshots of the dashboard project with desktop and mobile versions"
 msgstr "Screenshots of the dashboard project with desktop and mobile versions"
@@ -160,9 +148,6 @@ msgstr "Support"
 msgid "Support (coming soon)"
 msgstr "Support (coming soon)"
 
-msgid "Support User"
-msgstr "Support User"
-
 msgid "System"
 msgstr "System"
 
@@ -174,6 +159,9 @@ msgstr "Theme"
 
 msgid "Try again"
 msgstr "Try again"
+
+msgid "User"
+msgstr "User"
 
 msgid "User menu"
 msgstr "User menu"

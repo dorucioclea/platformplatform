@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -246,12 +247,21 @@ public static class ApiDependencyConfiguration
                 )
                 .AddScheme<BackOfficeIdentityOptions, BackOfficeIdentityHandler>(BackOfficeIdentityDefaults.AuthenticationScheme, _ => { });
 
+            services.AddSingleton<IAuthorizationHandler, BackOfficeAdminAuthorizationHandler>();
+
             return services.AddAuthorization(authOptions =>
                 {
                     authOptions.AddPolicy(BackOfficeIdentityDefaults.PolicyName, policy =>
                         {
                             policy.AuthenticationSchemes = [BackOfficeIdentityDefaults.AuthenticationScheme];
                             policy.RequireAuthenticatedUser();
+                        }
+                    );
+                    authOptions.AddPolicy(BackOfficeIdentityDefaults.AdminPolicyName, policy =>
+                        {
+                            policy.AuthenticationSchemes = [BackOfficeIdentityDefaults.AuthenticationScheme];
+                            policy.RequireAuthenticatedUser();
+                            policy.AddRequirements(new BackOfficeAdminRequirement());
                         }
                     );
                 }

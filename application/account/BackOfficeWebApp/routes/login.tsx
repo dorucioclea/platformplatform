@@ -11,7 +11,7 @@ import { useState } from "react";
 import logoMarkUrl from "@/shared/images/logo-mark.svg";
 import { HorizontalHeroLayout } from "@/shared/layouts/HorizontalHeroLayout";
 
-const MOCK_IDENTITY_IDS = ["admin", "support", "readonly", "plain"] as const;
+const MOCK_IDENTITY_IDS = ["admin", "user"] as const;
 
 interface MockLoginSearch {
   returnPath: string;
@@ -84,13 +84,9 @@ function MockLoginPage() {
 function getIdentityName(id: string) {
   switch (id) {
     case "admin":
-      return <Trans>Admin User</Trans>;
-    case "support":
-      return <Trans>Support User</Trans>;
-    case "readonly":
-      return <Trans>Read Only</Trans>;
-    case "plain":
-      return <Trans>Plain User</Trans>;
+      return <Trans>Admin</Trans>;
+    case "user":
+      return <Trans>User</Trans>;
     default:
       return id;
   }
@@ -100,11 +96,7 @@ function getIdentityDescription(id: string) {
   switch (id) {
     case "admin":
       return <Trans>Log in with admin rights</Trans>;
-    case "support":
-      return <Trans>Log in with support rights</Trans>;
-    case "readonly":
-      return <Trans>Log in with read-only rights</Trans>;
-    case "plain":
+    case "user":
       return <Trans>Log in without group claims</Trans>;
     default:
       return null;

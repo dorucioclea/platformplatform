@@ -8,6 +8,7 @@ param containerRegistryName string
 param domainName string
 param backOfficeDomainName string = ''
 param backOfficeEntraClientId string
+param backOfficeAdminsGroupId string = ''
 param appGatewayVersion string
 param accountVersion string
 param mainVersion string
@@ -275,6 +276,10 @@ var accountApiEnvironmentVariables = concat(accountEnvironmentVariables, [
   {
     name: 'BackOffice__Host'
     value: backOfficeHost
+  }
+  {
+    name: 'BackOffice__AdminsGroupId'
+    value: backOfficeAdminsGroupId
   }
 ])
 

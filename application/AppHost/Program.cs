@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using AppHost;
 using Azure.Storage.Blobs;
 using Projects;
+using SharedKernel.Authentication.MockEasyAuth;
 using SharedKernel.Configuration;
 
 // Read the port allocation before CreateBuilder so we can set Aspire's dashboard env vars
@@ -91,6 +92,7 @@ var accountApi = builder
     .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:" + ports.AppGateway)
     .WithEnvironment("Hostnames__App", appHostname)
     .WithEnvironment("BackOffice__Host", backOfficeHostname)
+    .WithEnvironment("BackOffice__AdminsGroupId", MockEasyAuthIdentities.MockAdminsGroupId)
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)

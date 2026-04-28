@@ -6,12 +6,15 @@ public sealed record MockEasyAuthIdentity(string Id, string Name, string ObjectI
 
 public static class MockEasyAuthIdentities
 {
+    // Mirrors the two-option mock-login picker shipped in the back-office SPA. The "admin" identity
+    // carries MockAdminsGroupId as its 'groups' claim, which AppHost wires into BackOffice:AdminsGroupId
+    // so BackOfficeAdminRequirement satisfies in development without any manual configuration.
+    public const string MockAdminsGroupId = "BackOfficeAdmins";
+
     public static readonly ImmutableArray<MockEasyAuthIdentity> Default =
     [
-        new("admin", "Admin User", "00000000-0000-0000-0000-0000000000a1", ["BackOfficeAdmins"]),
-        new("support", "Support User", "00000000-0000-0000-0000-0000000000a2", ["BackOfficeSupport"]),
-        new("readonly", "Read Only", "00000000-0000-0000-0000-0000000000a3", ["BackOfficeReadOnly"]),
-        new("plain", "Plain User", "00000000-0000-0000-0000-0000000000a4", [])
+        new("admin", "Admin", "00000000-0000-0000-0000-0000000000a1", [MockAdminsGroupId]),
+        new("user", "User", "00000000-0000-0000-0000-0000000000a2", [])
     ];
 
     public static MockEasyAuthIdentity? Find(string id)

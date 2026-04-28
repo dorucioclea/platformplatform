@@ -41,12 +41,12 @@ test.describe("@smoke", () => {
 
         await expect(page).toHaveURL(`${BACK_OFFICE_BASE_URL}/login?returnPath=%2Fapi%2Fback-office%2Fme`);
         await expect(page.getByRole("heading", { name: "BackOffice - Localhost" })).toBeVisible();
-        await expect(page.getByRole("radio", { name: "Admin User Log in with admin rights" })).toBeVisible();
+        await expect(page.getByRole("radio", { name: "Admin Log in with admin rights" })).toBeVisible();
       }
     )();
 
     await step("Pick the Admin identity & verify callback redirects back to the protected endpoint")(async () => {
-      await page.getByRole("radio", { name: "Admin User Log in with admin rights" }).click();
+      await page.getByRole("radio", { name: "Admin Log in with admin rights" }).click();
       await page.getByRole("button", { name: "Log in" }).click();
 
       await expect(page).toHaveURL(`${BACK_OFFICE_BASE_URL}/api/back-office/me`);
@@ -59,7 +59,7 @@ test.describe("@smoke", () => {
 
       expect(response.status()).toBe(200);
       const payload = await response.json();
-      expect(payload.displayName).toBe("Admin User");
+      expect(payload.displayName).toBe("Admin");
       expect(payload.groups).toContain("BackOfficeAdmins");
     })();
 
