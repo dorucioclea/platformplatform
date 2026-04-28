@@ -14,6 +14,9 @@ public sealed class HostScopedSinglePageApp(
     string host,
     string webAppProjectName,
     Func<HttpContext, UserInfo> userInfoFactory,
+    string? publicUrl = null,
+    string? cdnUrl = null,
+    string? authorizationPolicy = null,
     Dictionary<string, string>? environmentVariables = null
 )
 {
@@ -29,6 +32,27 @@ public sealed class HostScopedSinglePageApp(
     ///     <c>BackOfficeIdentity</c> claims (see <c>BackOfficeIdentityDefaults.GroupsClaimType</c>).
     /// </summary>
     public Func<HttpContext, UserInfo> UserInfoFactory { get; } = userInfoFactory;
+
+    /// <summary>
+    ///     Per-host <c>PUBLIC_URL</c> override embedded into <c>StaticRuntimeEnvironment</c>. Required when a
+    ///     single process hosts multiple SPAs on different hostnames so each renders bundle URLs scoped to its
+    ///     own host. Falls back to the process-wide <c>PUBLIC_URL</c> environment variable when null.
+    /// </summary>
+    public string? PublicUrl { get; } = publicUrl;
+
+    /// <summary>
+    ///     Per-host <c>CDN_URL</c> override (paired with <see cref="PublicUrl" />). Falls back to the
+    ///     process-wide <c>CDN_URL</c> environment variable when null.
+    /// </summary>
+    public string? CdnUrl { get; } = cdnUrl;
+
+    /// <summary>
+    ///     Authorization policy applied to this host's <c>MapFallback</c>. Required for hosts whose SPA shell
+    ///     must authenticate the principal before <see cref="UserInfoFactory" /> runs (e.g. back-office).
+    ///     Null leaves the fallback anonymous, which is the correct setting for hosts whose API endpoints
+    ///     are gated separately and whose SPA shell should render unauthenticated.
+    /// </summary>
+    public string? AuthorizationPolicy { get; } = authorizationPolicy;
 
     /// <summary>Per-SPA runtime environment variables embedded into the HTML alongside <c>userInfo</c>.</summary>
     public Dictionary<string, string>? EnvironmentVariables { get; } = environmentVariables;

@@ -13,7 +13,9 @@ public sealed class TenantEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("Tenants").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
+        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
+
+        var group = routes.MapGroup(RoutesPrefix).WithTags("Tenants").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/current", async Task<ApiResult<TenantResponse>> (IMediator mediator)
             => await mediator.Send(new GetCurrentTenantQuery())
@@ -35,6 +37,8 @@ public sealed class TenantEndpoints : IEndpoints
             => await mediator.Send(new RemoveTenantLogoCommand())
         );
 
+        // Internal-only endpoint (BlockInternalApiTransform rejects external callers); skips RequireHost so
+        // backend-to-backend callers using the cluster's localhost address still reach it.
         routes.MapDelete("/internal-api/account/tenants/{id}", async Task<ApiResult> (TenantId id, IMediator mediator)
             => await mediator.Send(new DeleteTenantCommand(id))
         ).WithGroupName(OpenApiDocumentNames.Account);

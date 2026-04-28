@@ -12,7 +12,9 @@ public sealed class SubscriptionEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("Subscriptions").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
+        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
+
+        var group = routes.MapGroup(RoutesPrefix).WithTags("Subscriptions").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/pricing-catalog", async Task<ApiResult<PricingCatalogResponse>> ([AsParameters] GetPricingCatalogQuery query, IMediator mediator)
             => await mediator.Send(query)

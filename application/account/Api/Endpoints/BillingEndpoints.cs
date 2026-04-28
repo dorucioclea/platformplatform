@@ -12,7 +12,9 @@ public sealed class BillingEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("Billing").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
+        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
+
+        var group = routes.MapGroup(RoutesPrefix).WithTags("Billing").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/payment-history", async Task<ApiResult<PaymentHistoryResponse>> ([AsParameters] GetPaymentHistoryQuery query, IMediator mediator)
             => await mediator.Send(query)

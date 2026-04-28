@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using SharedKernel.Authentication;
@@ -105,6 +106,18 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
                 builder.ConfigureLogging(logging =>
                     {
                         logging.AddFilter(_ => false); // Suppress all logs during tests
+                    }
+                );
+
+                builder.ConfigureAppConfiguration((_, configuration) =>
+                    {
+                        // Account endpoints declare RequireHost(Hostnames:App). The TestServer sends requests
+                        // to "localhost" by default, so configure the option to match.
+                        configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                            {
+                                ["Hostnames:App"] = "localhost"
+                            }
+                        );
                     }
                 );
 

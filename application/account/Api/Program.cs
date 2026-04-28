@@ -29,23 +29,43 @@ var app = builder.Build();
 var appHostname = app.Configuration["Hostnames:App"] ?? "app.unconfigured.invalid";
 var backOfficeHostname = app.Services.GetRequiredService<IOptions<BackOfficeHostOptions>>().Value.Host;
 
+// Per-host bundle URLs. The process-wide PUBLIC_URL/CDN_URL env vars are set by AppHost for the
+// user-facing host only, so the back-office host must inject its own to avoid embedding the account
+// SPA's bundle URLs into back-office HTML.
+var appPublicUrl = Environment.GetEnvironmentVariable(SinglePageAppConfiguration.PublicUrlKey);
+var appCdnUrl = Environment.GetEnvironmentVariable(SinglePageAppConfiguration.CdnUrlKey);
+var backOfficePublicUrl = appPublicUrl is null ? null : ReplaceHost(appPublicUrl, appHostname, backOfficeHostname);
+var backOfficeCdnUrl = backOfficePublicUrl;
+
 app
     .UseApiServices() // Add common configuration for all APIs like Swagger, HSTS, and DeveloperExceptionPage.
     .UseHostScopedSinglePageAppFallback(
         new HostScopedSinglePageApp(
             appHostname,
             "WebApp",
-            context => context.RequestServices.GetRequiredService<IExecutionContext>().UserInfo
+            context => context.RequestServices.GetRequiredService<IExecutionContext>().UserInfo,
+            appPublicUrl,
+            appCdnUrl
         ),
         new HostScopedSinglePageApp(
             backOfficeHostname,
             "BackOfficeWebApp",
-            BuildBackOfficeUserInfo
+            BuildBackOfficeUserInfo,
+            backOfficePublicUrl,
+            backOfficeCdnUrl,
+            BackOfficeIdentityDefaults.PolicyName
         )
     );
 
 await app.RunAsync();
 return;
+
+static string ReplaceHost(string url, string oldHost, string newHost)
+{
+    var uri = new Uri(url);
+    var builder = new UriBuilder(uri) { Host = uri.Host.Equals(oldHost, StringComparison.OrdinalIgnoreCase) ? newHost : uri.Host };
+    return builder.Uri.ToString().TrimEnd('/');
+}
 
 static UserInfo BuildBackOfficeUserInfo(HttpContext context)
 {

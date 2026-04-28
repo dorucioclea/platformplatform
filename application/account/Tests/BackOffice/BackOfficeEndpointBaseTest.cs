@@ -57,7 +57,10 @@ public abstract class BackOfficeEndpointBaseTest : IDisposable
                     {
                         var backOfficeSettings = new Dictionary<string, string?>
                         {
-                            ["BackOffice:Host"] = BackOfficeHost
+                            ["BackOffice:Host"] = BackOfficeHost,
+                            // Account endpoints declare RequireHost(Hostnames:App). Tests that target the
+                            // user-facing host use app.test.localhost.
+                            ["Hostnames:App"] = "app.test.localhost"
                         };
                         if (configuredGroupId is not null)
                         {

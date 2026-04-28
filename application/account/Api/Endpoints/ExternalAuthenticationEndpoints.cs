@@ -13,7 +13,9 @@ public sealed class ExternalAuthenticationEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("ExternalAuthentication").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
+        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
+
+        var group = routes.MapGroup(RoutesPrefix).WithTags("ExternalAuthentication").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/{provider}/login/start", async Task<ApiResult<string>> (ExternalProviderType provider, [AsParameters] StartExternalLoginCommand command, IMediator mediator)
             => await mediator.Send(command with { ProviderType = provider })

@@ -13,7 +13,9 @@ public sealed class UserEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("Users").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
+        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
+
+        var group = routes.MapGroup(RoutesPrefix).WithTags("Users").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
 
         group.MapGet("/", async Task<ApiResult<UsersResponse>> ([AsParameters] GetUsersQuery query, IMediator mediator)
             => await mediator.Send(query)

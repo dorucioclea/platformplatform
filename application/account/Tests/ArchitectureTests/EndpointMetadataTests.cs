@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.OpenApi;
 using Xunit;
@@ -9,16 +10,33 @@ using Xunit;
 namespace Account.Tests.ArchitectureTests;
 
 // Walks the actual registered endpoints in Account.Api and enforces:
-// - Every endpoint under /api/back-office/* must declare RequireHost.
+// - Every endpoint under /api/back-office/* must declare RequireHost on the back-office host.
+// - Every public endpoint under /api/account/* must declare RequireHost on the user-facing host.
+//   (/internal-api/* is only callable backend-to-backend, so it skips RequireHost; BlockInternalApiTransform in AppGateway rejects external callers.)
 // - Every endpoint under /api/account/* and /internal-api/account/* must declare WithGroupName("account").
 // - Every endpoint under /api/back-office/* must declare WithGroupName("back-office").
 public sealed class EndpointMetadataTests : IDisposable
 {
+    private const string AppHost = "app.test.localhost";
+    private const string BackOfficeHost = "back-office.test.localhost";
+
     private readonly WebApplicationFactory<Program> _webApplicationFactory;
 
     public EndpointMetadataTests()
     {
-        _webApplicationFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.ConfigureLogging(logging => logging.AddFilter(_ => false)));
+        _webApplicationFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureLogging(logging => logging.AddFilter(_ => false));
+                builder.ConfigureAppConfiguration((_, configuration) =>
+                    configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                        {
+                            ["Hostnames:App"] = AppHost,
+                            ["BackOffice:Host"] = BackOfficeHost
+                        }
+                    )
+                );
+            }
+        );
         // Force the host to start so the endpoint data source is populated.
         _ = _webApplicationFactory.Server;
     }
@@ -40,10 +58,28 @@ public sealed class EndpointMetadataTests : IDisposable
 
         // Assert
         var endpointsMissingHost = backOfficeEndpoints
-            .Where(endpoint => endpoint.Metadata.GetMetadata<IHostMetadata>() is null)
+            .Where(endpoint => endpoint.Metadata.GetMetadata<IHostMetadata>() is null || !endpoint.Metadata.GetMetadata<IHostMetadata>()!.Hosts.Contains(BackOfficeHost))
             .Select(endpoint => endpoint.RoutePattern.RawText)
             .ToList();
-        endpointsMissingHost.Should().BeEmpty("back-office endpoints must declare RequireHost so they cannot be reached via the user-facing host");
+        endpointsMissingHost.Should().BeEmpty($"back-office endpoints must declare RequireHost('{BackOfficeHost}') so they cannot be reached via the user-facing host");
+    }
+
+    [Fact]
+    public void PublicAccountEndpoints_ShouldAllRequireHost()
+    {
+        // Arrange
+        var routeEndpoints = GetRouteEndpoints();
+        var publicAccountEndpoints = routeEndpoints
+            .Where(endpoint => endpoint.RoutePattern.RawText is { } pattern && pattern.StartsWith("/api/account", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        publicAccountEndpoints.Should().NotBeEmpty();
+
+        // Assert
+        var endpointsMissingHost = publicAccountEndpoints
+            .Where(endpoint => endpoint.Metadata.GetMetadata<IHostMetadata>() is null || !endpoint.Metadata.GetMetadata<IHostMetadata>()!.Hosts.Contains(AppHost))
+            .Select(endpoint => endpoint.RoutePattern.RawText)
+            .ToList();
+        endpointsMissingHost.Should().BeEmpty($"public account endpoints must declare RequireHost('{AppHost}') so they cannot be reached via the back-office host");
     }
 
     [Fact]

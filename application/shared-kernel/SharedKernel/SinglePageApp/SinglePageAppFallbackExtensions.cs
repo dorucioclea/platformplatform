@@ -178,7 +178,9 @@ public static class SinglePageAppFallbackExtensions
                 var configuration = new SinglePageAppConfiguration(
                     environment.IsDevelopment(),
                     singlePageApp.EnvironmentVariables,
-                    singlePageApp.WebAppProjectName
+                    singlePageApp.WebAppProjectName,
+                    singlePageApp.PublicUrl,
+                    singlePageApp.CdnUrl
                 );
 
                 Directory.CreateDirectory(configuration.BundleDirectory);
@@ -197,16 +199,27 @@ public static class SinglePageAppFallbackExtensions
                     }
                 ).RequireHost(spa.Host);
 
-                app.MapFallback((HttpContext context, IAntiforgery antiforgery) =>
+                // Catch-all for unmatched API paths under this host. Registered as a higher-priority route
+                // than the SPA fallback so the back-office host's auth-gated fallback below does not turn
+                // unmatched cross-host API calls into 401/302 responses (e.g. /api/account/* on back-office
+                // host must surface 404, mirroring /api/back-office/* on the user-facing host).
+                app.MapMethods("/api/{**rest}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
                     {
-                        if (context.Request.Path.Value?.Contains("/api/", StringComparison.OrdinalIgnoreCase) == true ||
-                            context.Request.Path.Value?.Contains("/internal-api/", StringComparison.OrdinalIgnoreCase) == true)
-                        {
-                            context.Response.StatusCode = StatusCodes.Status404NotFound;
-                            context.Response.ContentType = "text/plain";
-                            return context.Response.WriteAsync("404 Not Found");
-                        }
+                        context.Response.StatusCode = StatusCodes.Status404NotFound;
+                        context.Response.ContentType = "text/plain";
+                        return context.Response.WriteAsync("404 Not Found");
+                    }
+                ).RequireHost(spa.Host);
+                app.MapMethods("/internal-api/{**rest}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status404NotFound;
+                        context.Response.ContentType = "text/plain";
+                        return context.Response.WriteAsync("404 Not Found");
+                    }
+                ).RequireHost(spa.Host);
 
+                var fallback = app.MapFallback((HttpContext context, IAntiforgery antiforgery) =>
+                    {
                         var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
 
                         SetResponseHttpHeaders(configuration, context.Response.Headers, "text/html; charset=utf-8", nonce);
@@ -219,6 +232,14 @@ public static class SinglePageAppFallbackExtensions
                         return context.Response.WriteAsync(html);
                     }
                 ).RequireHost(spa.Host);
+
+                // When a host carries an authorization policy, the SPA-shell request must run through the
+                // auth pipeline before UserInfoFactory inspects HttpContext.User. Without it, the back-office
+                // shell renders an anonymous principal and the SSR-injected userInfoEnv is wrong.
+                if (spa.AuthorizationPolicy is not null)
+                {
+                    fallback.RequireAuthorization(spa.AuthorizationPolicy);
+                }
 
                 app.UseStaticFiles(new StaticFileOptions { FileProvider = fileProvider });
             }

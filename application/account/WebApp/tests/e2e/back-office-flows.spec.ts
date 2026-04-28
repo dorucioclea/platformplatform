@@ -25,6 +25,16 @@ test.describe("@smoke", () => {
     const page = await browserContext.newPage();
     createTestContext(page);
 
+    await step("Navigate to back-office root unauthenticated & verify redirect to mock easy auth login")(async () => {
+      const response = await page.request.get(`${BACK_OFFICE_BASE_URL}/`, {
+        headers: { Accept: "text/html" },
+        maxRedirects: 0
+      });
+
+      expect(response.status()).toBe(302);
+      expect(response.headers().location).toBe("/.auth/login/aad?post_login_redirect_uri=%2F");
+    })();
+
     await step("Navigate to authenticated back-office endpoint & verify redirect to mock easy auth login")(async () => {
       await page.goto("/api/back-office/me");
 
@@ -52,7 +62,9 @@ test.describe("@smoke", () => {
       expect(payload.groups).toContain("BackOfficeAdmins");
     })();
 
-    await step("Visit back-office root & verify the BackOfficeWebApp SPA shell is served")(async () => {
+    await step(
+      "Visit back-office root authenticated & verify SPA shell embeds back-office bundle URL and authenticated userInfo"
+    )(async () => {
       const response = await page.request.get(`${BACK_OFFICE_BASE_URL}/`, {
         headers: { Accept: "text/html" }
       });
@@ -61,6 +73,9 @@ test.describe("@smoke", () => {
       const body = await response.text();
       expect(body).toContain('id="back-office"');
       expect(body).toContain("<title>Back Office</title>");
+      expect(body).toContain("back-office.dev.localhost");
+      expect(body).not.toContain("/account/static/");
+      expect(body).toContain("&quot;isAuthenticated&quot;:true");
     })();
 
     await browserContext.close();
@@ -130,6 +145,17 @@ test.describe("@smoke", () => {
 
       expect(response.status()).toBe(401);
     })();
+
+    await step("GET /api/account/users/me on back-office host with account session & verify 404 from RequireHost")(
+      async () => {
+        const response = await accountAuthenticatedContext.get(`${BACK_OFFICE_BASE_URL}/api/account/users/me`, {
+          headers: { Accept: "application/json" },
+          maxRedirects: 0
+        });
+
+        expect(response.status()).toBe(404);
+      }
+    )();
 
     await accountAuthenticatedContext.dispose();
     await anonymousApiContext.dispose();

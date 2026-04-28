@@ -37,12 +37,16 @@ public class SinglePageAppConfiguration
     public SinglePageAppConfiguration(
         bool isDevelopment,
         Dictionary<string, string>? environmentVariables,
-        string webAppProjectName = DefaultWebAppProjectName
+        string webAppProjectName = DefaultWebAppProjectName,
+        string? publicUrlOverride = null,
+        string? cdnUrlOverride = null
     )
     {
-        // Environment variables are empty when generating EF Core migrations
-        PublicUrl = Environment.GetEnvironmentVariable(PublicUrlKey) ?? string.Empty;
-        CdnUrl = Environment.GetEnvironmentVariable(CdnUrlKey) ?? string.Empty;
+        // Per-host overrides win over the process-wide env vars so a single process can host multiple SPAs
+        // on different hostnames (e.g. consolidated account-api). Env vars remain the source of truth for
+        // single-SPA hosts and EF Core migration generation (where neither env vars nor overrides are set).
+        PublicUrl = publicUrlOverride ?? Environment.GetEnvironmentVariable(PublicUrlKey) ?? string.Empty;
+        CdnUrl = cdnUrlOverride ?? Environment.GetEnvironmentVariable(CdnUrlKey) ?? string.Empty;
         var applicationVersion = Assembly.GetEntryAssembly()!.GetName().Version!.ToString();
 
         StaticRuntimeEnvironment = new Dictionary<string, string>
