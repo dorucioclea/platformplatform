@@ -24,6 +24,4 @@ public static class BackOfficeIdentityDefaults
     public const string LogoutPath = "/.auth/logout";
 
     public const string AccessDeniedPath = "/access-denied";
-
-    public const string BackOfficeGroupIdEnvironmentVariable = "BACK_OFFICE_GROUP_ID";
 }

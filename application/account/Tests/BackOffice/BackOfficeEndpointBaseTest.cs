@@ -33,7 +33,7 @@ public abstract class BackOfficeEndpointBaseTest : IDisposable
     protected readonly Faker Faker = new();
     private readonly WebApplicationFactory<Program> _webApplicationFactory;
 
-    protected BackOfficeEndpointBaseTest(string? configuredGroupId = null)
+    protected BackOfficeEndpointBaseTest()
     {
         Environment.SetEnvironmentVariable(SinglePageAppConfiguration.PublicUrlKey, TestPublicUrl);
         Environment.SetEnvironmentVariable(SinglePageAppConfiguration.CdnUrlKey, $"{TestPublicUrl}/account");
@@ -62,10 +62,6 @@ public abstract class BackOfficeEndpointBaseTest : IDisposable
                             // user-facing host use app.test.localhost.
                             ["Hostnames:App"] = "app.test.localhost"
                         };
-                        if (configuredGroupId is not null)
-                        {
-                            backOfficeSettings["BackOffice:GroupId"] = configuredGroupId;
-                        }
 
                         configuration.AddInMemoryCollection(backOfficeSettings);
                     }

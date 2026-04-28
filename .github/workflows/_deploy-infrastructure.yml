@@ -34,6 +34,9 @@ on:
         required: false
         type: string
         default: "-"
+      back_office_entra_client_id:
+        required: true
+        type: string
       postgres_admin_object_id:
         required: true
         type: string
@@ -84,6 +87,7 @@ jobs:
         id: deploy_cluster
         env:
           POSTGRES_ADMIN_OBJECT_ID: ${{ inputs.postgres_admin_object_id }}
+          BACK_OFFICE_ENTRA_CLIENT_ID: ${{ inputs.back_office_entra_client_id }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ vars.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}
@@ -169,6 +173,7 @@ jobs:
         id: deploy_cluster
         env:
           POSTGRES_ADMIN_OBJECT_ID: ${{ inputs.postgres_admin_object_id }}
+          BACK_OFFICE_ENTRA_CLIENT_ID: ${{ inputs.back_office_entra_client_id }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ vars.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           STRIPE_PUBLISHABLE_KEY: ${{ vars.STRIPE_PUBLISHABLE_KEY }}

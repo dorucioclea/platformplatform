@@ -360,6 +360,8 @@ public class DeployCommand : Command
     {
         ConfirmReuseIfAppRegistrationExist(Config.StagingSubscription.AppRegistration);
         ConfirmReuseIfAppRegistrationExist(Config.ProductionSubscription.AppRegistration);
+        ConfirmReuseIfBackOfficeAppRegistrationExist(Config.StagingSubscription.BackOfficeAppRegistration);
+        ConfirmReuseIfBackOfficeAppRegistrationExist(Config.ProductionSubscription.BackOfficeAppRegistration);
         return;
 
         void ConfirmReuseIfAppRegistrationExist(AppRegistration appRegistration)
@@ -400,6 +402,28 @@ public class DeployCommand : Command
                 AnsiConsole.MarkupLine($"[red]The App Registration or Service Principal '{appRegistration}' exists, but not both. Please manually delete and retry.[/]");
                 Environment.Exit(1);
             }
+        }
+
+        void ConfirmReuseIfBackOfficeAppRegistrationExist(BackOfficeAppRegistration appRegistration)
+        {
+            appRegistration.AppRegistrationId = RunAzureCliCommand(
+                $"""ad app list --display-name "{appRegistration.Name}" --query "[].appId" -o tsv"""
+            ).Trim();
+
+            if (appRegistration.AppRegistrationId == string.Empty) return;
+
+            AnsiConsole.MarkupLine(
+                $"[yellow]The App Registration '{appRegistration.Name}' already exists with App ID: {appRegistration.AppRegistrationId}[/]"
+            );
+
+            if (AnsiConsole.Confirm("The existing App Registration will be reused. Do you want to continue?"))
+            {
+                AnsiConsole.WriteLine();
+                return;
+            }
+
+            AnsiConsole.MarkupLine("[red]Please delete the existing App Registration and try again.[/]");
+            Environment.Exit(1);
         }
     }
 
@@ -468,6 +492,8 @@ public class DeployCommand : Command
                 [bold]Active Directory App Registrations/Service Principals:[/]
                 * [blue]{Config.StagingSubscription.AppRegistration.Name}[/] with access to the [blue]{Config.StagingSubscription.Name}[/] subscription.
                 * [blue]{Config.ProductionSubscription.AppRegistration.Name}[/] with access to the [blue]{Config.ProductionSubscription.Name}[/] subscription.
+                * [blue]{Config.StagingSubscription.BackOfficeAppRegistration.Name}[/] for back-office Easy Auth on the [blue]{Config.StagingSubscription.Name}[/] subscription.
+                * [blue]{Config.ProductionSubscription.BackOfficeAppRegistration.Name}[/] for back-office Easy Auth on the [blue]{Config.ProductionSubscription.Name}[/] subscription.
 
                 [yellow]** The Service Principals will get 'Contributor' and 'User Access Administrator' role on the Azure Subscriptions.[/]
 
@@ -496,6 +522,7 @@ public class DeployCommand : Command
                 * STAGING_POSTGRES_ADMIN_OBJECT_ID: [blue]{stagingPostgresAdminObject}[/]
                 * STAGING_DOMAIN_NAME: [blue]-[/] ([yellow]Manually changed this and triggered deployment to set up the domain[/])
                 * STAGING_BACK_OFFICE_DOMAIN_NAME: [blue]-[/] ([yellow]Manually change this to enable the back-office subdomain (e.g. back-office.staging.your-saas-company.com)[/])
+                * STAGING_BACK_OFFICE_ENTRA_CLIENT_ID: [blue]{Config.StagingSubscription.BackOfficeAppRegistration.AppRegistrationId ?? "Will be generated"}[/]
 
                 [bold]Staging Cluster Variables:[/]
                 * STAGING_CLUSTER_ENABLED: [blue]true[/]
@@ -510,6 +537,7 @@ public class DeployCommand : Command
                 * PRODUCTION_POSTGRES_ADMIN_OBJECT_ID: [blue]{productionPostgresAdminObject}[/]
                 * PRODUCTION_DOMAIN_NAME: [blue]-[/] ([yellow]Manually changed this and triggered deployment to set up the domain[/])
                 * PRODUCTION_BACK_OFFICE_DOMAIN_NAME: [blue]-[/] ([yellow]Manually change this to enable the back-office subdomain (e.g. back-office.your-saas-company.com)[/])
+                * PRODUCTION_BACK_OFFICE_ENTRA_CLIENT_ID: [blue]{Config.ProductionSubscription.BackOfficeAppRegistration.AppRegistrationId ?? "Will be generated"}[/]
 
                 [bold]Production Cluster 1 Variables:[/]
                 * PRODUCTION_CLUSTER1_ENABLED: [blue]false[/] ([yellow]Change this to 'true' when ready to deploy to production[/])
@@ -577,21 +605,46 @@ public class DeployCommand : Command
             CreateAppRegistration(Config.ProductionSubscription.AppRegistration);
         }
 
+        if (!Config.StagingSubscription.BackOfficeAppRegistration.Exists)
+        {
+            CreateBackOfficeAppRegistration(Config.StagingSubscription.BackOfficeAppRegistration);
+        }
+
+        if (!Config.ProductionSubscription.BackOfficeAppRegistration.Exists)
+        {
+            CreateBackOfficeAppRegistration(Config.ProductionSubscription.BackOfficeAppRegistration);
+        }
+
         return;
 
         void CreateAppRegistration(AppRegistration appRegistration)
         {
-            appRegistration.AppRegistrationId = RunAzureCliCommand(
-                $"""ad app create --display-name "{appRegistration.Name}" --query appId -o tsv"""
-            ).Trim();
+            appRegistration.AppRegistrationId = RequireAzureValue(
+                RunAzureCliCommand($"""ad app create --display-name "{appRegistration.Name}" --query appId -o tsv""").Trim(),
+                $"Creating App Registration '{appRegistration.Name}'"
+            );
 
-            appRegistration.ServicePrincipalId = RunAzureCliCommand(
-                $"ad sp create --id {appRegistration.AppRegistrationId} --query appId -o tsv"
-            ).Trim();
+            appRegistration.ServicePrincipalId = RequireAzureValue(
+                RunAzureCliCommand($"ad sp create --id {appRegistration.AppRegistrationId} --query appId -o tsv").Trim(),
+                $"Creating Service Principal for '{appRegistration.Name}'"
+            );
 
-            appRegistration.ServicePrincipalObjectId = RunAzureCliCommand(
-                $"""ad sp list --filter "appId eq '{appRegistration.AppRegistrationId}'" --query "[].id" -o tsv"""
-            ).Trim();
+            appRegistration.ServicePrincipalObjectId = RequireAzureValue(
+                RunAzureCliCommand($"""ad sp list --filter "appId eq '{appRegistration.AppRegistrationId}'" --query "[].id" -o tsv""").Trim(),
+                $"Looking up Service Principal object id for '{appRegistration.Name}'"
+            );
+
+            AnsiConsole.MarkupLine(
+                $"[green]Successfully created an App Registration '{appRegistration.Name}' ({appRegistration.AppRegistrationId}).[/]"
+            );
+        }
+
+        void CreateBackOfficeAppRegistration(BackOfficeAppRegistration appRegistration)
+        {
+            appRegistration.AppRegistrationId = RequireAzureValue(
+                RunAzureCliCommand($"""ad app create --display-name "{appRegistration.Name}" --query appId -o tsv""").Trim(),
+                $"Creating App Registration '{appRegistration.Name}'"
+            );
 
             AnsiConsole.MarkupLine(
                 $"[green]Successfully created an App Registration '{appRegistration.Name}' ({appRegistration.AppRegistrationId}).[/]"
@@ -673,9 +726,10 @@ public class DeployCommand : Command
         {
             if (!dbAdminGroup.Exists)
             {
-                dbAdminGroup.ObjectId = RunAzureCliCommand(
-                    $"""ad group create --display-name "{dbAdminGroup.Name}" --mail-nickname "{dbAdminGroup.NickName}" --query "id" -o tsv"""
-                ).Trim();
+                dbAdminGroup.ObjectId = RequireAzureValue(
+                    RunAzureCliCommand($"""ad group create --display-name "{dbAdminGroup.Name}" --mail-nickname "{dbAdminGroup.NickName}" --query "id" -o tsv""").Trim(),
+                    $"Creating PostgreSQL Admins group '{dbAdminGroup.Name}'"
+                );
             }
 
             RunAzureCliCommand(
@@ -728,6 +782,7 @@ public class DeployCommand : Command
         SetGithubVariable(VariableNames.STAGING_POSTGRES_ADMIN_OBJECT_ID, Config.StagingSubscription.PostgresAdminsGroup.ObjectId!);
         SetGithubVariable(VariableNames.STAGING_DOMAIN_NAME, "-");
         SetGithubVariable(VariableNames.STAGING_BACK_OFFICE_DOMAIN_NAME, "-");
+        SetGithubVariable(VariableNames.STAGING_BACK_OFFICE_ENTRA_CLIENT_ID, Config.StagingSubscription.BackOfficeAppRegistration.AppRegistrationId!);
 
         SetGithubVariable(VariableNames.STAGING_CLUSTER_ENABLED, "true");
         SetGithubVariable(VariableNames.STAGING_CLUSTER_LOCATION, Config.StagingLocation.ClusterLocation);
@@ -740,17 +795,36 @@ public class DeployCommand : Command
         SetGithubVariable(VariableNames.PRODUCTION_POSTGRES_ADMIN_OBJECT_ID, Config.ProductionSubscription.PostgresAdminsGroup.ObjectId!);
         SetGithubVariable(VariableNames.PRODUCTION_DOMAIN_NAME, "-");
         SetGithubVariable(VariableNames.PRODUCTION_BACK_OFFICE_DOMAIN_NAME, "-");
+        SetGithubVariable(VariableNames.PRODUCTION_BACK_OFFICE_ENTRA_CLIENT_ID, Config.ProductionSubscription.BackOfficeAppRegistration.AppRegistrationId!);
 
         SetGithubVariable(VariableNames.PRODUCTION_CLUSTER1_ENABLED, "false");
         SetGithubVariable(VariableNames.PRODUCTION_CLUSTER1_LOCATION, Config.ProductionLocation.ClusterLocation);
         SetGithubVariable(VariableNames.PRODUCTION_CLUSTER1_LOCATION_ACRONYM, Config.ProductionLocation.ClusterLocationAcronym);
 
-        AnsiConsole.MarkupLine("[green]Successfully created secrets in GitHub.[/]");
+        AnsiConsole.MarkupLine("[green]GitHub variables synchronised.[/]");
         return;
 
+        // Idempotent: skips the GitHub API call when the existing value already matches. Config.GithubVariables
+        // is populated from a real GitHub API call in PublishExistingGithubVariables (line 180), so this only
+        // touches values that have actually changed.
         void SetGithubVariable(VariableNames name, string value)
         {
-            ProcessHelper.StartProcess($"gh variable set {Enum.GetName(name)} -b\"{value}\" --repo={Config.GithubInfo!.Path}");
+            var variableName = Enum.GetName(name)!;
+            if (Config.GithubVariables.TryGetValue(variableName, out var existingValue))
+            {
+                if (existingValue == value)
+                {
+                    AnsiConsole.MarkupLine($"[blue]Variable {variableName} unchanged.[/]");
+                    return;
+                }
+
+                ProcessHelper.StartProcess($"gh variable set {variableName} -b\"{value}\" --repo={Config.GithubInfo!.Path}");
+                AnsiConsole.MarkupLine($"[green]Variable {variableName} updated.[/]");
+                return;
+            }
+
+            ProcessHelper.StartProcess($"gh variable set {variableName} -b\"{value}\" --repo={Config.GithubInfo!.Path}");
+            AnsiConsole.MarkupLine($"[green]Variable {variableName} created.[/]");
         }
     }
 
@@ -917,6 +991,21 @@ public class DeployCommand : Command
         }
     }
 
+    // Validates output of an Azure CLI call that produces a required identifier (App Registration ID,
+    // Service Principal ID, group object ID, etc.). When the user lacks permissions, az prints the
+    // error to stderr and exits non-zero, but ProcessHelper still returns the empty stdout — without
+    // this guard we'd persist the empty string to GitHub variables. Aborts before any GitHub write.
+    private static string RequireAzureValue(string value, string operation)
+    {
+        if (!string.IsNullOrWhiteSpace(value)) return value;
+
+        AnsiConsole.MarkupLine(
+            $"[red]ERROR: {operation} returned no value. The current Azure user likely lacks the required permissions. Aborting before GitHub variables are touched.[/]"
+        );
+        Environment.Exit(1);
+        return value;
+    }
+
     private static string RunAzureCliCommand(string arguments, bool redirectOutput = true)
     {
         return ProcessHelper.StartProcess(new ProcessStartInfo
@@ -1032,6 +1121,8 @@ public class Subscription(string id, string name, string tenantId, GithubInfo gi
 
     public AppRegistration AppRegistration { get; } = new(githubInfo, environmentName);
 
+    public BackOfficeAppRegistration BackOfficeAppRegistration { get; } = new(githubInfo, environmentName);
+
     public PostgresAdminsGroup PostgresAdminsGroup { get; } = new(githubInfo, environmentName);
 }
 
@@ -1046,6 +1137,19 @@ public class AppRegistration(GithubInfo githubInfo, string environmentName)
     public string? ServicePrincipalId { get; set; }
 
     public string? ServicePrincipalObjectId { get; set; }
+}
+
+// Bare app registration consumed by ACA Easy Auth (clientId only). No service principal, no federated
+// credentials, and no redirect URI at bootstrap — the redirect URI depends on the back-office hostname
+// (custom domain or auto-generated ACA FQDN) which is only known after the first cluster deploy and is
+// added in a later workflow step.
+public class BackOfficeAppRegistration(GithubInfo githubInfo, string environmentName)
+{
+    public string Name => $"BackOffice - {environmentName} - {githubInfo.OrganizationName}/{githubInfo.RepositoryName}";
+
+    public bool Exists => !string.IsNullOrEmpty(AppRegistrationId);
+
+    public string? AppRegistrationId { get; set; }
 }
 
 public class PostgresAdminsGroup(GithubInfo githubInfo, string environmentName)
@@ -1073,6 +1177,7 @@ public enum VariableNames
     STAGING_POSTGRES_ADMIN_OBJECT_ID,
     STAGING_DOMAIN_NAME,
     STAGING_BACK_OFFICE_DOMAIN_NAME,
+    STAGING_BACK_OFFICE_ENTRA_CLIENT_ID,
 
     STAGING_CLUSTER_ENABLED,
     STAGING_CLUSTER_LOCATION,
@@ -1085,6 +1190,7 @@ public enum VariableNames
     PRODUCTION_POSTGRES_ADMIN_OBJECT_ID,
     PRODUCTION_DOMAIN_NAME,
     PRODUCTION_BACK_OFFICE_DOMAIN_NAME,
+    PRODUCTION_BACK_OFFICE_ENTRA_CLIENT_ID,
 
     PRODUCTION_CLUSTER1_ENABLED,
     PRODUCTION_CLUSTER1_LOCATION,

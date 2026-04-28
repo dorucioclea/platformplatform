@@ -81,8 +81,6 @@ var accountWorkers = builder
     .WithReference(azureStorage)
     .WaitFor(accountDatabase);
 
-var backOfficeGroupId = builder.Configuration["BackOffice:GroupId"];
-
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
     .WithEnvironment("KESTREL_PORT", ports.AccountApi.ToString())
@@ -93,7 +91,6 @@ var accountApi = builder
     .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:" + ports.AppGateway)
     .WithEnvironment("Hostnames__App", appHostname)
     .WithEnvironment("BackOffice__Host", backOfficeHostname)
-    .WithEnvironment("BackOffice__GroupId", backOfficeGroupId ?? string.Empty)
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)

@@ -8,6 +8,4 @@ public sealed class BackOfficeHostOptions
 
     [Required(AllowEmptyStrings = false)]
     public string Host { get; init; } = string.Empty;
-
-    public string? GroupId { get; init; }
 }

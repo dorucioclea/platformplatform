@@ -7,8 +7,7 @@ param environment string
 param containerRegistryName string
 param domainName string
 param backOfficeDomainName string = ''
-param backOfficeGroupId string = ''
-param backOfficeEntraClientId string = ''
+param backOfficeEntraClientId string
 param appGatewayVersion string
 param accountVersion string
 param mainVersion string
@@ -277,10 +276,6 @@ var accountApiEnvironmentVariables = concat(accountEnvironmentVariables, [
     name: 'BackOffice__Host'
     value: backOfficeHost
   }
-  {
-    name: 'BackOffice__GroupId'
-    value: backOfficeGroupId
-  }
 ])
 
 module accountWorkers '../modules/container-app.bicep' = {
@@ -365,7 +360,7 @@ module backOffice '../modules/container-app.bicep' = {
   dependsOn: [accountApi]
 }
 
-module backOfficeAuthConfig '../modules/container-app-auth-config.bicep' = if (backOfficeEntraClientId != '') {
+module backOfficeAuthConfig '../modules/container-app-auth-config.bicep' = {
   name: '${clusterResourceGroupName}-back-office-auth-config'
   scope: clusterResourceGroup
   params: {
