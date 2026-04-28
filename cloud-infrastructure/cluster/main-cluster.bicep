@@ -6,9 +6,11 @@ param globalResourceGroupName string
 param environment string
 param containerRegistryName string
 param domainName string
+param backOfficeDomainName string = ''
+param backOfficeGroupId string = ''
+param backOfficeEntraClientId string = ''
 param appGatewayVersion string
 param accountVersion string
-param backOfficeVersion string
 param mainVersion string
 param applicationInsightsConnectionString string
 param communicationServicesDataLocation string = 'europe'
@@ -259,6 +261,21 @@ var accountEnvironmentVariables = [
   }
 ]
 
+var accountApiEnvironmentVariables = concat(accountEnvironmentVariables, [
+  {
+    name: 'Hostnames__App'
+    value: domainName
+  }
+  {
+    name: 'BackOffice__Host'
+    value: backOfficeDomainName
+  }
+  {
+    name: 'BackOffice__GroupId'
+    value: backOfficeGroupId
+  }
+])
+
 module accountWorkers '../modules/container-app.bicep' = {
   name: '${clusterResourceGroupName}-account-workers-container-app'
   scope: clusterResourceGroup
@@ -304,134 +321,26 @@ module accountApi '../modules/container-app.bicep' = {
     userAssignedIdentityName: accountIdentityName
     ingress: true
     hasProbesEndpoint: true
+    additionalDomainName: backOfficeDomainName
+    external: backOfficeDomainName != ''
     revisionSuffix: revisionSuffix
-    environmentVariables: accountEnvironmentVariables
+    environmentVariables: accountApiEnvironmentVariables
   }
   dependsOn: [accountWorkers]
 }
 
-// Back Office
-
-var backOfficeIdentityName = '${clusterResourceGroupName}-back-office'
-module backOfficeIdentity '../modules/user-assigned-managed-identity.bicep' = {
-  name: '${clusterResourceGroupName}-back-office-managed-identity'
+module accountApiAuthConfig '../modules/container-app-auth-config.bicep' = if (backOfficeDomainName != '' && backOfficeEntraClientId != '') {
+  name: '${clusterResourceGroupName}-account-api-auth-config'
   scope: clusterResourceGroup
   params: {
-    name: backOfficeIdentityName
-    location: location
-    tags: tags
-    containerRegistryName: containerRegistryName
-    globalResourceGroupName: globalResourceGroupName
-    keyVaultName: keyVault.outputs.name
+    containerAppName: 'account-api'
+    tenantId: subscription().tenantId
+    clientId: backOfficeEntraClientId
+    allowedExternalRedirectUrls: [
+      'https://${backOfficeDomainName}/.auth/login/aad/callback'
+    ]
   }
-}
-
-module backOfficeDatabase '../modules/postgresql-flexible-database.bicep' = {
-  name: '${clusterResourceGroupName}-back-office-postgres-database'
-  scope: clusterResourceGroup
-  params: {
-    serverName: postgresServer.outputs.serverName
-    databaseName: 'back-office'
-  }
-}
-
-var backOfficeStorageAccountName = '${storageAccountUniquePrefix}backoffice'
-module backOfficeStorageAccount '../modules/storage-account.bicep' = {
-  scope: clusterResourceGroup
-  name: '${clusterResourceGroupName}-back-office-storage-account'
-  params: {
-    location: location
-    name: backOfficeStorageAccountName
-    tags: tags
-    sku: 'Standard_GRS'
-    userAssignedIdentityName: backOfficeIdentity.outputs.name
-  }
-}
-
-var backOfficeEnvironmentVariables = [
-  {
-    name: 'AZURE_CLIENT_ID'
-    value: '${backOfficeIdentity.outputs.clientId} ' // Hack, without this trailing space, Bicep --what-if will ignore all changes to Container App
-  }
-  {
-    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-    value: applicationInsightsConnectionString
-  }
-  {
-    name: 'DATABASE_CONNECTION_STRING'
-    value: '${backOfficeDatabase.outputs.connectionString};Username=${backOfficeIdentityName}'
-  }
-  {
-    name: 'KEYVAULT_URL'
-    value: 'https://${keyVault.outputs.name}${az.environment().suffixes.keyvaultDns}'
-  }
-  {
-    name: 'BLOB_STORAGE_URL'
-    value: 'https://${backOfficeStorageAccountName}.blob.${az.environment().suffixes.storage}'
-  }
-  {
-    name: 'PUBLIC_URL'
-    value: publicUrl
-  }
-  {
-    name: 'CDN_URL'
-    value: '${cdnUrl}/back-office'
-  }
-  {
-    name: 'SENDER_EMAIL_ADDRESS'
-    value: 'no-reply@${communicationService.outputs.fromSenderDomain}'
-  }
-]
-
-module backOfficeWorkers '../modules/container-app.bicep' = {
-  name: '${clusterResourceGroupName}-back-office-workers-container-app'
-  scope: clusterResourceGroup
-  params: {
-    name: 'back-office-workers'
-    location: location
-    tags: tags
-    clusterResourceGroupName: clusterResourceGroupName
-    containerAppsEnvironmentId: containerAppsEnvironment.outputs.environmentId
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistryName
-    containerImageName: 'back-office-workers'
-    containerImageTag: backOfficeVersion
-    cpu: '0.25'
-    memory: '0.5Gi'
-    minReplicas: 0
-    maxReplicas: 1
-    userAssignedIdentityName: backOfficeIdentityName
-    ingress: true
-    hasProbesEndpoint: false
-    revisionSuffix: revisionSuffix
-    environmentVariables: backOfficeEnvironmentVariables
-  }
-}
-
-module backOfficeApi '../modules/container-app.bicep' = {
-  name: '${clusterResourceGroupName}-back-office-api-container-app'
-  scope: clusterResourceGroup
-  params: {
-    name: 'back-office-api'
-    location: location
-    tags: tags
-    clusterResourceGroupName: clusterResourceGroupName
-    containerAppsEnvironmentId: containerAppsEnvironment.outputs.environmentId
-    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
-    containerRegistryName: containerRegistryName
-    containerImageName: 'back-office-api'
-    containerImageTag: backOfficeVersion
-    cpu: '0.25'
-    memory: '0.5Gi'
-    minReplicas: 0
-    maxReplicas: 1
-    userAssignedIdentityName: backOfficeIdentityName
-    ingress: true
-    hasProbesEndpoint: true
-    revisionSuffix: revisionSuffix
-    environmentVariables: backOfficeEnvironmentVariables
-  }
-  dependsOn: [backOfficeWorkers]
+  dependsOn: [accountApi]
 }
 
 // Main
@@ -628,12 +537,16 @@ module appGateway '../modules/container-app.bicep' = {
         value: 'https://account-api.internal.${containerAppsEnvironment.outputs.defaultDomainName}'
       }
       {
-        name: 'BACK_OFFICE_API_URL'
-        value: 'https://back-office-api.internal.${containerAppsEnvironment.outputs.defaultDomainName}'
-      }
-      {
         name: 'MAIN_API_URL'
         value: 'https://main-api.internal.${containerAppsEnvironment.outputs.defaultDomainName}'
+      }
+      {
+        name: 'Hostnames__App'
+        value: domainName
+      }
+      {
+        name: 'Hostnames__BackOffice'
+        value: backOfficeDomainName
       }
     ]
   }
@@ -649,5 +562,4 @@ module appGatewayAccountStorageBlobDataReaderRoleAssignment '../modules/role-ass
 }
 
 output accountIdentityClientId string = accountIdentity.outputs.clientId
-output backOfficeIdentityClientId string = backOfficeIdentity.outputs.clientId
 output mainIdentityClientId string = mainIdentity.outputs.clientId
