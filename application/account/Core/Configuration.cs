@@ -53,6 +53,7 @@ public static class Configuration
             services.AddScoped<OAuthProviderFactory>();
 
             services.AddMemoryCache();
+            services.AddSingleton<MockStripeState>();
             services.AddKeyedScoped<IStripeClient, StripeClient>("stripe");
             services.AddKeyedScoped<IStripeClient, MockStripeClient>("mock-stripe");
             services.AddKeyedScoped<IStripeClient, UnconfiguredStripeClient>("unconfigured-stripe");

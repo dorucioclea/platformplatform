@@ -3,7 +3,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Account.Integrations.Stripe;
 
-public sealed class MockStripeClient(IConfiguration configuration, TimeProvider timeProvider) : IStripeClient
+public sealed class MockStripeState
+{
+    public string? OverrideSubscriptionStatus { get; set; }
+
+    public bool SimulateSubscriptionDeleted { get; set; }
+
+    public bool SimulateCustomerDeleted { get; set; }
+
+    public bool SimulateOpenInvoice { get; set; }
+}
+
+public sealed class MockStripeClient(IConfiguration configuration, TimeProvider timeProvider, MockStripeState state) : IStripeClient
 {
     public const string MockCustomerId = "cus_mock_12345";
     public const string MockSubscriptionId = "sub_mock_12345";
@@ -13,14 +24,6 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
     public const string MockWebhookEventId = "evt_mock_12345";
 
     private readonly bool _isEnabled = configuration.GetValue<bool>("Stripe:AllowMockProvider");
-
-    public static string? OverrideSubscriptionStatus { get; set; }
-
-    public static bool SimulateSubscriptionDeleted { get; set; }
-
-    public static bool SimulateCustomerDeleted { get; set; }
-
-    public static bool SimulateOpenInvoice { get; set; }
 
     public Task<StripeCustomerId?> CreateCustomerAsync(string tenantName, string email, long tenantId, CancellationToken cancellationToken)
     {
@@ -38,7 +41,7 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
     {
         EnsureEnabled();
 
-        if (SimulateSubscriptionDeleted)
+        if (state.SimulateSubscriptionDeleted)
         {
             return Task.FromResult<SubscriptionSyncResult?>(null);
         }
@@ -70,7 +73,7 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
             null,
             transactions,
             new PaymentMethod("visa", "4242", 12, 2026),
-            OverrideSubscriptionStatus ?? StripeSubscriptionStatus.Active
+            state.OverrideSubscriptionStatus ?? StripeSubscriptionStatus.Active
         );
 
         return Task.FromResult<SubscriptionSyncResult?>(result);
@@ -151,12 +154,12 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
     {
         EnsureEnabled();
 
-        if (SimulateCustomerDeleted)
+        if (state.SimulateCustomerDeleted)
         {
             return Task.FromResult<CustomerBillingResult?>(new CustomerBillingResult(null, true));
         }
 
-        var billingInfo = new BillingInfo("Test Organization", new BillingAddress("Vestergade 12", null, "1456", "K\u00f8benhavn K", null, "DK"), "billing@example.com", null);
+        var billingInfo = new BillingInfo("Test Organization", new BillingAddress("Vestergade 12", null, "1456", "København K", null, "DK"), "billing@example.com", null);
         var paymentMethod = new PaymentMethod("visa", "4242", 12, 2026);
         return Task.FromResult<CustomerBillingResult?>(new CustomerBillingResult(billingInfo, false, paymentMethod));
     }
@@ -205,7 +208,7 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
     public Task<OpenInvoiceResult?> GetOpenInvoiceAsync(StripeSubscriptionId stripeSubscriptionId, CancellationToken cancellationToken)
     {
         EnsureEnabled();
-        if (SimulateOpenInvoice)
+        if (state.SimulateOpenInvoice)
         {
             return Task.FromResult<OpenInvoiceResult?>(new OpenInvoiceResult(29.99m, "USD"));
         }
@@ -216,7 +219,7 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
     public Task<InvoiceRetryResult?> RetryOpenInvoicePaymentAsync(StripeSubscriptionId stripeSubscriptionId, string? paymentMethodId, CancellationToken cancellationToken)
     {
         EnsureEnabled();
-        if (SimulateOpenInvoice)
+        if (state.SimulateOpenInvoice)
         {
             return Task.FromResult<InvoiceRetryResult?>(new InvoiceRetryResult(true, null));
         }
@@ -258,14 +261,6 @@ public sealed class MockStripeClient(IConfiguration configuration, TimeProvider 
                 new PaymentTransaction(PaymentTransactionId.NewId(), 29.99m, "USD", PaymentTransactionStatus.Succeeded, now, null, MockInvoiceUrl, null)
             ]
         );
-    }
-
-    public static void ResetOverrides()
-    {
-        OverrideSubscriptionStatus = null;
-        SimulateSubscriptionDeleted = false;
-        SimulateCustomerDeleted = false;
-        SimulateOpenInvoice = false;
     }
 
     private void EnsureEnabled()

@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using Account.Features.Users.Domain;
 using Account.Integrations.OAuth;
+using Account.Integrations.Stripe;
 using Bogus;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
@@ -181,6 +182,8 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
     protected HttpClient AuthenticatedOwnerHttpClient { get; }
 
     protected HttpClient AuthenticatedMemberHttpClient { get; }
+
+    protected MockStripeState StripeState => _webApplicationFactory.Services.GetRequiredService<MockStripeState>();
 
     public void Dispose()
     {

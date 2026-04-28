@@ -11,16 +11,9 @@ using Xunit;
 
 namespace Account.Tests.Subscriptions;
 
-[Collection("StripeTests")]
 public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbContext>
 {
     private const string WebhookUrl = "/api/account/subscriptions/stripe-webhook";
-
-    protected override void Dispose(bool disposing)
-    {
-        MockStripeClient.ResetOverrides();
-        base.Dispose(disposing);
-    }
 
     private void SetupSubscription(string? stripeCustomerId = MockStripeClient.MockCustomerId, string? stripeSubscriptionId = MockStripeClient.MockSubscriptionId, string plan = nameof(SubscriptionPlan.Standard), DateTimeOffset? firstPaymentFailedAt = null, string? cancellationReason = null)
     {
@@ -139,7 +132,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenFirstPaymentFailed_ShouldSetFailure()
     {
         // Arrange
-        MockStripeClient.OverrideSubscriptionStatus = StripeSubscriptionStatus.PastDue;
+        StripeState.OverrideSubscriptionStatus = StripeSubscriptionStatus.PastDue;
         SetupSubscription();
         TelemetryEventsCollectorSpy.Reset();
 
@@ -165,7 +158,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenSubsequentPaymentFailed_ShouldNotUpdateFailureTimestamp()
     {
         // Arrange
-        MockStripeClient.OverrideSubscriptionStatus = StripeSubscriptionStatus.PastDue;
+        StripeState.OverrideSubscriptionStatus = StripeSubscriptionStatus.PastDue;
         var now = TimeProvider.GetUtcNow();
         SetupSubscription(firstPaymentFailedAt: now.AddHours(-48));
         TelemetryEventsCollectorSpy.Reset();
@@ -189,7 +182,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenSubscriptionDeletedInvoluntarily_ShouldSuspendTenant()
     {
         // Arrange
-        MockStripeClient.SimulateSubscriptionDeleted = true;
+        StripeState.SimulateSubscriptionDeleted = true;
         var now = TimeProvider.GetUtcNow();
         SetupSubscription(firstPaymentFailedAt: now.AddDays(-5));
         TelemetryEventsCollectorSpy.Reset();
@@ -216,7 +209,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenSubscriptionDeletedVoluntarily_ShouldKeepTenantActive()
     {
         // Arrange
-        MockStripeClient.SimulateSubscriptionDeleted = true;
+        StripeState.SimulateSubscriptionDeleted = true;
         SetupSubscription(cancellationReason: nameof(CancellationReason.NoLongerNeeded));
         TelemetryEventsCollectorSpy.Reset();
 
@@ -265,7 +258,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenCustomerDeleted_ShouldSuspendTenant()
     {
         // Arrange
-        MockStripeClient.SimulateCustomerDeleted = true;
+        StripeState.SimulateCustomerDeleted = true;
         SetupSubscription();
         TelemetryEventsCollectorSpy.Reset();
 
@@ -291,7 +284,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenSubscriptionDeletedAndTenantAlreadySuspended_ShouldNotOverrideSuspension()
     {
         // Arrange - tenant already suspended with CustomerDeleted (e.g., customer.deleted processed in previous batch)
-        MockStripeClient.SimulateSubscriptionDeleted = true;
+        StripeState.SimulateSubscriptionDeleted = true;
         SetupSubscription(cancellationReason: nameof(CancellationReason.NoLongerNeeded));
         Connection.Update("tenants", "id", DatabaseSeeder.Tenant1.Id.Value, [("state", nameof(TenantState.Suspended)), ("suspension_reason", nameof(SuspensionReason.CustomerDeleted))]);
         TelemetryEventsCollectorSpy.Reset();
@@ -318,7 +311,7 @@ public sealed class AcknowledgeStripeWebhookTests : EndpointBaseTest<AccountDbCo
     public async Task AcknowledgeStripeWebhook_WhenCustomerDeletedAndSubscriptionDeletedInSameBatch_ShouldSuspendWithCustomerDeleted()
     {
         // Arrange - pre-insert a pending customer.deleted event so both events process in the same batch
-        MockStripeClient.SimulateCustomerDeleted = true;
+        StripeState.SimulateCustomerDeleted = true;
         SetupSubscription(cancellationReason: nameof(CancellationReason.NoLongerNeeded));
         Connection.Insert("stripe_events", [
                 ("tenant_id", null),
