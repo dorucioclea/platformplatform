@@ -13,8 +13,8 @@ public static class MockEasyAuthIdentities
 
     public static readonly ImmutableArray<MockEasyAuthIdentity> Default =
     [
-        new("admin", "Admin", "admin@back-office.dev", "00000000-0000-0000-0000-0000000000a1", [MockAdminsGroupId]),
-        new("user", "User", "user@back-office.dev", "00000000-0000-0000-0000-0000000000a2", [])
+        new("admin", "Admin", "admin@dev.localhost", "00000000-0000-0000-0000-0000000000a1", [MockAdminsGroupId]),
+        new("user", "User", "user@dev.localhost", "00000000-0000-0000-0000-0000000000a2", [])
     ];
 
     public static MockEasyAuthIdentity? Find(string id)
