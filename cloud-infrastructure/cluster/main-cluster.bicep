@@ -580,10 +580,6 @@ module appGateway '../modules/container-app.bicep' = {
         name: 'Hostnames__App'
         value: domainName
       }
-      {
-        name: 'Hostnames__BackOffice'
-        value: backOfficeHost
-      }
     ]
   }
 }
