@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +18,7 @@ using SharedKernel.OpenApi;
 using SharedKernel.SinglePageApp;
 using SharedKernel.StronglyTypedIds;
 using SharedKernel.Telemetry;
+using IPNetwork = System.Net.IPNetwork;
 
 namespace SharedKernel.Configuration;
 
@@ -128,6 +130,7 @@ public static class ApiDependencyConfiguration
 
             app
                 .UseForwardedHeaders()
+                .UseRouting() // Explicit so it runs AFTER UseForwardedHeaders. Without this, ASP.NET Core inserts UseRouting at the start of the pipeline and endpoint matching (RequireHost) sees the unrewritten Host header.
                 .UseMockEasyAuthInDevelopment() // Dev-only: serve /.auth/login/aad and inject X-MS-CLIENT-PRINCIPAL-* headers from a dev cookie. Must run before authentication.
                 .UseAuthentication() // Must be above TelemetryContextMiddleware to ensure authentication happens first
                 .UseAuthorization()
@@ -277,8 +280,16 @@ public static class ApiDependencyConfiguration
                     // Enable support for proxy headers such as X-Forwarded-For, X-Forwarded-Proto, and X-Forwarded-Host
                     // X-Forwarded-Host is required so RequireHost("back-office.example.com") matches when YARP forwards the request
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+                    options.ForwardLimit = 1;
+                    // Forwarded headers are honored only when the immediate caller is a trusted proxy.
+                    // Trust IPv4/IPv6 loopback for Aspire localhost and the Container Apps environment
+                    // subnet for Azure (see cloud-infrastructure virtual-network bicep, /23). Anything
+                    // reaching the API from outside these networks (e.g. a direct request that bypasses
+                    // AppGateway) cannot spoof X-Forwarded-* headers.
                     options.KnownIPNetworks.Clear();
-                    options.KnownProxies.Clear();
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("127.0.0.0"), 8));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 23));
                 }
             );
         }
