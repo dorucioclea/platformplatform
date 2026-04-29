@@ -731,33 +731,48 @@ public class DeployCommand : Command
             $"Looking up object id for App Registration '{appRegistration.Name}'"
         );
 
-        var webJson = RunAzureCliCommand(
-            $"""rest --method GET --url "https://graph.microsoft.com/v1.0/applications/{objectId}" --query "web" -o json"""
+        var appJson = RunAzureCliCommand(
+            $"""rest --method GET --url "https://graph.microsoft.com/v1.0/applications/{objectId}" -o json"""
         );
 
-        using var webDocument = JsonDocument.Parse(webJson);
-        var webRoot = webDocument.RootElement;
+        using var appDocument = JsonDocument.Parse(appJson);
+        var appRoot = appDocument.RootElement;
+        var webRoot = appRoot.TryGetProperty("web", out var webElement) ? webElement : default;
 
         var idTokenIssuanceEnabled =
+            webRoot.ValueKind == JsonValueKind.Object &&
             webRoot.TryGetProperty("implicitGrantSettings", out var implicitGrantElement) &&
             implicitGrantElement.TryGetProperty("enableIdTokenIssuance", out var idTokenElement) &&
             idTokenElement.ValueKind == JsonValueKind.True;
 
-        var existingRedirectUris = webRoot.TryGetProperty("redirectUris", out var redirectUrisElement) && redirectUrisElement.ValueKind == JsonValueKind.Array
+        var existingRedirectUris = webRoot.ValueKind == JsonValueKind.Object &&
+                                   webRoot.TryGetProperty("redirectUris", out var redirectUrisElement) &&
+                                   redirectUrisElement.ValueKind == JsonValueKind.Array
             ? redirectUrisElement.EnumerateArray().Select(uri => uri.GetString() ?? string.Empty).Where(uri => uri.Length > 0).ToArray()
             : [];
 
         var missingRedirectUris = expectedRedirectUris.Where(uri => !existingRedirectUris.Contains(uri)).ToArray();
 
-        if (idTokenIssuanceEnabled && missingRedirectUris.Length == 0)
+        // Entra defaults to no group claims in ID tokens. ACA Easy Auth surfaces what's in the token,
+        // so the back-office app sees no `groups` claim until we set this. "SecurityGroup" is the most
+        // conservative value that still includes the BackOfficeAdmins group; "All" is also acceptable
+        // and preserved if a user has manually picked it.
+        var existingGroupMembershipClaims = appRoot.TryGetProperty("groupMembershipClaims", out var claimsElement) && claimsElement.ValueKind == JsonValueKind.String
+            ? claimsElement.GetString()
+            : null;
+        var groupClaimsAcceptable = existingGroupMembershipClaims is "SecurityGroup" or "All";
+
+        if (idTokenIssuanceEnabled && missingRedirectUris.Length == 0 && groupClaimsAcceptable)
         {
             return;
         }
 
         var mergedRedirectUris = existingRedirectUris.Concat(missingRedirectUris).ToArray();
+        var groupMembershipClaims = groupClaimsAcceptable ? existingGroupMembershipClaims! : "SecurityGroup";
 
         var patchBody = JsonSerializer.Serialize(new
             {
+                groupMembershipClaims,
                 web = new
                 {
                     redirectUris = mergedRedirectUris,
@@ -780,7 +795,7 @@ public class DeployCommand : Command
         );
 
         AnsiConsole.MarkupLine(
-            $"[green]Configured App Registration '{appRegistration.Name}' for ACA Easy Auth (ID token issuance + reply URLs).[/]"
+            $"[green]Configured App Registration '{appRegistration.Name}' for ACA Easy Auth (ID token issuance + reply URLs + group claims).[/]"
         );
     }
 
