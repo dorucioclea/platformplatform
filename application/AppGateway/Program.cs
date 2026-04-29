@@ -19,7 +19,14 @@ builder.Services
     .Validate(o => !string.IsNullOrWhiteSpace(o.BackOffice), "Hostnames:BackOffice must be configured.")
     .ValidateOnStart();
 
-builder.Services.AddSingleton(PortAllocation.Load());
+// PortAllocation reads .workspace/port.txt by walking up to the repo root for .git, which doesn't
+// exist in Azure Container Apps (working dir /app). Only register it when running locally; the two
+// downstream consumers (Account HttpClient base address, MapFallback canonical URL hint) fall back
+// to environment variables / request host when the service isn't available.
+if (!SharedInfrastructureConfiguration.IsRunningInAzure)
+{
+    builder.Services.AddSingleton(PortAllocation.Load());
+}
 
 var reverseProxyBuilder = builder.Services
     .AddReverseProxy()
@@ -56,11 +63,10 @@ builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
 builder.Services.AddHttpClient("Account", (sp, client) =>
     {
-        var ports = sp.GetRequiredService<PortAllocation>();
         var productionUrl = Environment.GetEnvironmentVariable("ACCOUNT_API_URL");
         client.BaseAddress = !string.IsNullOrEmpty(productionUrl)
             ? new Uri(productionUrl)
-            : new Uri($"https://localhost:{ports.AccountApi}");
+            : new Uri($"https://localhost:{sp.GetRequiredService<PortAllocation>().AccountApi}");
     }
 );
 
@@ -96,20 +102,19 @@ app.MapScalarApiReference("/openapi", options =>
 
 app.MapReverseProxy();
 
-app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions, PortAllocation ports) =>
+app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions, IServiceProvider services) =>
     {
         var hostnames = hostnameOptions.Value;
-        var port = context.Request.Host.Port ?? ports.AppGateway;
+        var port = context.Request.Host.Port ?? services.GetService<PortAllocation>()?.AppGateway;
+        var canonicalApp = port is null ? $"https://{hostnames.App}" : $"https://{hostnames.App}:{port}";
+        var canonicalBackOffice = port is null ? $"https://{hostnames.BackOffice}" : $"https://{hostnames.BackOffice}:{port}";
         var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status404NotFound,
             Title = "Unknown host",
             Detail = $"The host '{context.Request.Host}' is not recognized. Use one of the canonical URLs.",
             Type = "https://tools.ietf.org/html/rfc9110#section-15.5.5",
-            Extensions =
-            {
-                ["canonicalUrls"] = new[] { $"https://{hostnames.App}:{port}", $"https://{hostnames.BackOffice}:{port}" }
-            }
+            Extensions = { ["canonicalUrls"] = new[] { canonicalApp, canonicalBackOffice } }
         };
 
         return Results.Problem(problemDetails);
