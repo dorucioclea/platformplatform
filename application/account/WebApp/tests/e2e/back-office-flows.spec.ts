@@ -89,8 +89,12 @@ test.describe("@smoke", () => {
    * the back-office host (RequireHost predicate produces 404 elsewhere), and
    * an authenticated account session does not authorize back-office requests.
    * BackOfficeIdentity is a separate authentication scheme and ignores the
-   * account session cookie even if present. The user-facing host continues to
-   * serve account endpoints with normal 401 behavior when unauthenticated.
+   * account session cookie even if present. Account endpoints intentionally do
+   * NOT declare RequireHost post-split (AppGateway and ACA internal ingress are
+   * the trust boundaries), but the account session cookie is host-scoped to the
+   * user-facing host so requests on the back-office host return 401. The
+   * user-facing host continues to serve account endpoints with normal 401
+   * behavior when unauthenticated.
    */
   test("should isolate back-office endpoints to the back-office host and reject account-authenticated requests", async ({
     ownerPage
@@ -147,16 +151,16 @@ test.describe("@smoke", () => {
       expect(response.status()).toBe(401);
     })();
 
-    await step("GET /api/account/users/me on back-office host with account session & verify 404 from RequireHost")(
-      async () => {
-        const response = await accountAuthenticatedContext.get(`${BACK_OFFICE_BASE_URL}/api/account/users/me`, {
-          headers: { Accept: "application/json" },
-          maxRedirects: 0
-        });
+    await step(
+      "GET /api/account/users/me on back-office host with account session & verify 401 (account endpoints serve on any host post-split, but the account session cookie is host-scoped to the user-facing host so cross-host requests fail authentication)"
+    )(async () => {
+      const response = await accountAuthenticatedContext.get(`${BACK_OFFICE_BASE_URL}/api/account/users/me`, {
+        headers: { Accept: "application/json" },
+        maxRedirects: 0
+      });
 
-        expect(response.status()).toBe(404);
-      }
-    )();
+      expect(response.status()).toBe(401);
+    })();
 
     await accountAuthenticatedContext.dispose();
     await anonymousApiContext.dispose();
