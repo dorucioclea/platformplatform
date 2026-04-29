@@ -4,7 +4,6 @@ import { Trans } from "@lingui/react/macro";
 import { preferredLocaleKey } from "@repo/infrastructure/translations/constants";
 import localeMap from "@repo/infrastructure/translations/i18n.config.json";
 import { type Locale, translationContext } from "@repo/infrastructure/translations/TranslationContext";
-import { Avatar, AvatarFallback } from "@repo/ui/components/Avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +18,6 @@ import { collapsedContext } from "@repo/ui/components/Sidebar";
 import { SIDE_MENU_DEFAULT_WIDTH_REM } from "@repo/ui/utils/responsive";
 import {
   CheckIcon,
-  ChevronsUpDownIcon,
   GlobeIcon,
   LogOutIcon,
   MoonIcon,
@@ -31,6 +29,7 @@ import {
 import { useTheme } from "next-themes";
 import { use, useContext, useEffect, useState } from "react";
 
+import { AvatarMenuTriggerContent } from "@/shared/components/AvatarMenuTriggerContent";
 import { useMe } from "@/shared/hooks/useMe";
 
 const zoomLevelStorageKey = "zoom-level";
@@ -54,6 +53,8 @@ export function BackOfficeAvatarMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: me } = useMe();
   const displayName = me?.displayName ?? "";
+  const email = me?.email ?? "";
+  const isAdmin = me?.isAdmin ?? false;
   const initials = displayName
     ? displayName
         .split(/\s+/)
@@ -103,7 +104,8 @@ export function BackOfficeAvatarMenu() {
       <SunMoonIcon className="size-5" />
     );
 
-  const triggerClassName = `relative flex h-[var(--control-height)] cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 py-2 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+  const triggerHeightClass = isCollapsed ? "h-[var(--control-height)] py-2" : "h-auto py-2";
+  const triggerClassName = `relative flex ${triggerHeightClass} cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
     isCollapsed ? "ml-[0.5625rem] w-[var(--control-height)] justify-center" : "w-full pr-2 pl-3"
   } ${isMenuOpen ? "bg-hover-background" : ""}`;
 
@@ -111,17 +113,13 @@ export function BackOfficeAvatarMenu() {
     <div className="relative w-full px-3">
       <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <DropdownMenuTrigger className={triggerClassName} aria-label={t`User menu`}>
-          <Avatar>
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          {!isCollapsed && (
-            <>
-              <div className="ml-3 flex-1 overflow-hidden text-left font-medium text-ellipsis whitespace-nowrap text-foreground">
-                {displayName || <Trans>Back Office</Trans>}
-              </div>
-              <ChevronsUpDownIcon className="ml-2 size-3.5 shrink-0 text-foreground opacity-70" />
-            </>
-          )}
+          <AvatarMenuTriggerContent
+            isCollapsed={isCollapsed}
+            initials={initials}
+            displayName={displayName}
+            email={email}
+            isAdmin={isAdmin}
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"

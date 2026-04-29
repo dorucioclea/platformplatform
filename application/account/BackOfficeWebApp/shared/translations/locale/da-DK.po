@@ -64,9 +64,6 @@ msgstr "Feature flags (kommer snart)"
 msgid "Go to home"
 msgstr "Gå til forsiden"
 
-msgid "Group claims"
-msgstr "Gruppeclaims"
-
 msgid "Hide details"
 msgstr "Skjul detaljer"
 
@@ -114,9 +111,6 @@ msgstr "Navigation"
 
 msgid "No back-office access"
 msgstr "Ingen adgang til Back Office"
-
-msgid "None"
-msgstr "Ingen"
 
 msgid "Page not found"
 msgstr "Siden blev ikke fundet"

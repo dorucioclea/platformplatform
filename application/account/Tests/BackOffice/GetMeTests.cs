@@ -12,10 +12,10 @@ namespace Account.Tests.BackOffice;
 public sealed class GetMeTests : BackOfficeEndpointBaseTest
 {
     [Fact]
-    public async Task GetMe_WithValidClientPrincipalHeaders_ShouldReturnDisplayNameAndGroups()
+    public async Task GetMe_WithAdminIdentity_ShouldReturnIsAdminTrue()
     {
         // Arrange
-        var identity = MockEasyAuthIdentities.Default[0];
+        var identity = MockEasyAuthIdentities.Default.Single(i => i.Id == "admin");
         using var client = CreateBackOfficeClientForIdentity(identity);
 
         // Act
@@ -26,6 +26,28 @@ public sealed class GetMeTests : BackOfficeEndpointBaseTest
         var payload = await response.Content.ReadFromJsonAsync<MeResponse>();
         payload.Should().NotBeNull();
         payload.DisplayName.Should().Be(identity.Name);
+        payload.Email.Should().Be(identity.Email);
+        payload.IsAdmin.Should().BeTrue();
+        payload.Groups.Should().BeEquivalentTo(identity.Groups);
+    }
+
+    [Fact]
+    public async Task GetMe_WithNonAdminIdentity_ShouldReturnIsAdminFalse()
+    {
+        // Arrange
+        var identity = MockEasyAuthIdentities.Default.Single(i => i.Id == "user");
+        using var client = CreateBackOfficeClientForIdentity(identity);
+
+        // Act
+        var response = await client.GetAsync("/api/back-office/me");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var payload = await response.Content.ReadFromJsonAsync<MeResponse>();
+        payload.Should().NotBeNull();
+        payload.DisplayName.Should().Be(identity.Name);
+        payload.Email.Should().Be(identity.Email);
+        payload.IsAdmin.Should().BeFalse();
         payload.Groups.Should().BeEquivalentTo(identity.Groups);
     }
 

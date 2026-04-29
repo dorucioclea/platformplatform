@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AppLayout } from "@repo/ui/components/AppLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/Card";
+import { Card, CardHeader, CardTitle } from "@repo/ui/components/Card";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/Sidebar";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -31,15 +31,6 @@ function DashboardPage() {
                 {me?.displayName ? <Trans>Welcome, {me.displayName}</Trans> : <Trans>Welcome</Trans>}
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-2 text-sm">
-              <div>
-                <span className="font-medium">
-                  <Trans>Group claims</Trans>
-                </span>
-                <span>: </span>
-                <span>{me?.groups?.length ? me.groups.join(", ") : <Trans>None</Trans>}</span>
-              </div>
-            </CardContent>
           </Card>
         </AppLayout>
       </SidebarInset>

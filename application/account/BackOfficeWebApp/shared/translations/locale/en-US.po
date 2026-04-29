@@ -64,9 +64,6 @@ msgstr "Feature flags (coming soon)"
 msgid "Go to home"
 msgstr "Go to home"
 
-msgid "Group claims"
-msgstr "Group claims"
-
 msgid "Hide details"
 msgstr "Hide details"
 
@@ -114,9 +111,6 @@ msgstr "Navigation"
 
 msgid "No back-office access"
 msgstr "No back-office access"
-
-msgid "None"
-msgstr "None"
 
 msgid "Page not found"
 msgstr "Page not found"
