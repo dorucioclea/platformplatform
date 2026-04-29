@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Account;
+using Account.Api;
 using Microsoft.Extensions.Options;
 using SharedKernel.Authentication;
 using SharedKernel.Authentication.BackOfficeIdentity;
@@ -19,7 +20,8 @@ builder
 // Configure dependency injection services like Repositories, MediatR, Pipelines, FluentValidation validators, etc.
 builder.Services
     .AddApiServices([Assembly.GetExecutingAssembly(), Configuration.Assembly], ApiDocumentLayout.AccountAndBackOffice)
-    .AddAccountServices();
+    .AddAccountServices()
+    .AddBackOfficeDevStaticProxy();
 
 var app = builder.Build();
 
@@ -51,6 +53,11 @@ if (SharedInfrastructureConfiguration.IsRunningInAzure)
 {
     app.MapGet("/login", Results.Unauthorized).RequireHost(backOfficeHostname);
 }
+
+// Dev-only: forward back-office static-asset and HMR traffic on the back-office Kestrel listener to
+// the rsbuild dev server. Registered before UseApiServices so the conditional branch short-circuits
+// matching requests before the auth-gated SPA fallback.
+app.UseBackOfficeDevStaticProxy(backOfficeHostname);
 
 app
     .UseApiServices() // Add common configuration for all APIs like Swagger, HSTS, and DeveloperExceptionPage.

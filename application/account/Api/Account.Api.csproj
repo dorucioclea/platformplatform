@@ -38,6 +38,7 @@
             <IncludeAssets>runtime; build; native; contentFiles; analyzers; buildTransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Yarp.ReverseProxy"/>
     </ItemGroup>
 
     <!--

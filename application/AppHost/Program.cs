@@ -90,6 +90,9 @@ var accountApi = builder
     // Second Kestrel port for back-office.dev.localhost so localhost mirrors the Azure post-split
     // topology where back-office has its own external ingress and AppGateway is not in the path.
     .WithEnvironment("BACK_OFFICE_KESTREL_PORT", ports.BackOfficeApi.ToString())
+    // BackOfficeDevStaticProxy forwards /static/* and HMR traffic on the back-office Kestrel listener
+    // to the rsbuild dev server. Dev-only; production builds serve a baked bundle from disk.
+    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString())
     // Back-office bundle URLs target the dedicated Kestrel port directly (no AppGateway).
     .WithEnvironment("BACK_OFFICE_PUBLIC_URL", backOfficeBaseUrl)
     .WithEnvironment("BACK_OFFICE_CDN_URL", backOfficeBaseUrl)
