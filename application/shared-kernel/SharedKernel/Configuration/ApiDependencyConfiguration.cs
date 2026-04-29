@@ -282,14 +282,17 @@ public static class ApiDependencyConfiguration
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
                     options.ForwardLimit = 1;
                     // Forwarded headers are honored only when the immediate caller is a trusted proxy.
-                    // Trust IPv4/IPv6 loopback for Aspire localhost and the Container Apps environment
-                    // subnet for Azure (see cloud-infrastructure virtual-network bicep, /23). Anything
-                    // reaching the API from outside these networks (e.g. a direct request that bypasses
-                    // AppGateway) cannot spoof X-Forwarded-* headers.
+                    // Trust loopback (Aspire localhost) and all RFC 1918 private ranges so Azure
+                    // Container Apps' internal envoy/ingress proxies are honored regardless of which
+                    // private subnet they present from. Externally-exposed services (AppGateway, the
+                    // back-office app) sit behind ACA platform ingress that rewrites X-Forwarded-*
+                    // and ignores client-supplied values, so client spoofing cannot pass this check.
                     options.KnownIPNetworks.Clear();
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("127.0.0.0"), 8));
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
-                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 23));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("172.16.0.0"), 12));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("192.168.0.0"), 16));
                 }
             );
         }
