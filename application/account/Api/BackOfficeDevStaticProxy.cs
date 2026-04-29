@@ -1,15 +1,17 @@
 using System.Net;
 using System.Net.Security;
 using Microsoft.AspNetCore.Http.Extensions;
+using SharedKernel.Configuration;
 using Yarp.ReverseProxy.Forwarder;
 
 namespace Account.Api;
 
-// Dev-only proxy that forwards back-office static-asset and HMR traffic from the back-office Kestrel
-// listener (BACK_OFFICE_KESTREL_PORT) to the rsbuild dev server (BACK_OFFICE_STATIC_PORT). Production
-// builds bake the bundle into BackOfficeWebApp/dist and serve it via UseStaticFiles, so this proxy
-// is registered only in development. The proxy must run before authentication so anonymous browsers
-// can fetch /static/*, /rsbuild-hmr, and HMR /{filename}.hot-update.{ext} during the SPA bootstrap.
+// Non-Azure proxy that forwards back-office static-asset and HMR traffic from the back-office Kestrel
+// listener (BACK_OFFICE_KESTREL_PORT) to the rsbuild dev server (BACK_OFFICE_STATIC_PORT). Azure
+// deployments bake the bundle into BackOfficeWebApp/dist and serve it via UseStaticFiles, so this
+// proxy is registered only outside Azure. The proxy must run before authentication so anonymous
+// browsers can fetch /static/*, /rsbuild-hmr, and HMR /{filename}.hot-update.{ext} during the SPA
+// bootstrap.
 public static class BackOfficeDevStaticProxy
 {
     public static IServiceCollection AddBackOfficeDevStaticProxy(this IServiceCollection services)
@@ -20,7 +22,7 @@ public static class BackOfficeDevStaticProxy
 
     public static IApplicationBuilder UseBackOfficeDevStaticProxy(this WebApplication app, string backOfficeHostname)
     {
-        if (!app.Environment.IsDevelopment()) return app;
+        if (SharedInfrastructureConfiguration.IsRunningInAzure) return app;
 
         var rawPort = Environment.GetEnvironmentVariable("BACK_OFFICE_STATIC_PORT");
         if (!int.TryParse(rawPort, out var staticPort) || staticPort <= 0) return app;
