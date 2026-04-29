@@ -172,15 +172,8 @@ msgstr "Venteliste"
 msgid "Wait list (coming soon)"
 msgstr "Venteliste (kommer snart)"
 
-msgid "Welcome"
-msgstr "Velkommen"
-
 msgid "Welcome to the Back Office"
 msgstr "Velkommen til Back Office"
-
-#. placeholder {0}: me.displayName
-msgid "Welcome, {0}"
-msgstr "Velkommen, {0}"
 
 msgid "Your account is not in the required group."
 msgstr "Din konto er ikke i den krævede gruppe."

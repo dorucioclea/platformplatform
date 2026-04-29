@@ -172,15 +172,8 @@ msgstr "Wait list"
 msgid "Wait list (coming soon)"
 msgstr "Wait list (coming soon)"
 
-msgid "Welcome"
-msgstr "Welcome"
-
 msgid "Welcome to the Back Office"
 msgstr "Welcome to the Back Office"
-
-#. placeholder {0}: me.displayName
-msgid "Welcome, {0}"
-msgstr "Welcome, {0}"
 
 msgid "Your account is not in the required group."
 msgstr "Your account is not in the required group."

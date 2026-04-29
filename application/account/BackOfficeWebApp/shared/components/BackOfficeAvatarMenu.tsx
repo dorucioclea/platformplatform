@@ -4,6 +4,8 @@ import { Trans } from "@lingui/react/macro";
 import { preferredLocaleKey } from "@repo/infrastructure/translations/constants";
 import localeMap from "@repo/infrastructure/translations/i18n.config.json";
 import { type Locale, translationContext } from "@repo/infrastructure/translations/TranslationContext";
+import { Avatar, AvatarFallback } from "@repo/ui/components/Avatar";
+import { Badge } from "@repo/ui/components/Badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -104,8 +106,7 @@ export function BackOfficeAvatarMenu() {
       <SunMoonIcon className="size-5" />
     );
 
-  const triggerHeightClass = isCollapsed ? "h-[var(--control-height)] py-2" : "h-auto py-2";
-  const triggerClassName = `relative flex ${triggerHeightClass} cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+  const triggerClassName = `relative flex h-[var(--control-height)] cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 py-2 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
     isCollapsed ? "ml-[0.5625rem] w-[var(--control-height)] justify-center" : "w-full pr-2 pl-3"
   } ${isMenuOpen ? "bg-hover-background" : ""}`;
 
@@ -113,13 +114,7 @@ export function BackOfficeAvatarMenu() {
     <div className="relative w-full px-3">
       <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <DropdownMenuTrigger className={triggerClassName} aria-label={t`User menu`}>
-          <AvatarMenuTriggerContent
-            isCollapsed={isCollapsed}
-            initials={initials}
-            displayName={displayName}
-            email={email}
-            isAdmin={isAdmin}
-          />
+          <AvatarMenuTriggerContent isCollapsed={isCollapsed} initials={initials} displayName={displayName} />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"
@@ -127,6 +122,23 @@ export function BackOfficeAvatarMenu() {
           className="w-auto bg-popover"
           style={{ minWidth: `${SIDE_MENU_DEFAULT_WIDTH_REM - 1.5}rem` }}
         >
+          <div className="flex flex-col items-center gap-1 px-4 py-3">
+            <Avatar className="size-16">
+              <AvatarFallback className="text-xl">{initials}</AvatarFallback>
+            </Avatar>
+            <div className="flex items-center gap-2">
+              <span className="font-medium">{displayName || <Trans>Back Office</Trans>}</span>
+              {isAdmin && (
+                <Badge variant="outline">
+                  <Trans>Admin</Trans>
+                </Badge>
+              )}
+            </div>
+            {email && <span className="text-sm text-muted-foreground">{email}</span>}
+          </div>
+
+          <DropdownMenuSeparator />
+
           <DropdownMenuSub>
             <DropdownMenuSubTrigger aria-label={t`Change theme`}>
               {themeIcon}
