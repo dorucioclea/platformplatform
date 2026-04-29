@@ -139,7 +139,7 @@ public static class ApiDependencyConfiguration
 
             app
                 .UseForwardedHeaders()
-                .UseRouting() // Explicit so it runs AFTER UseForwardedHeaders. Without this, ASP.NET Core inserts UseRouting at the start of the pipeline and endpoint matching (RequireHost) sees the unrewritten Host header forwarded by YARP (the destination address), not the public host promoted from X-Forwarded-Host.
+                .UseRouting() // Explicit so it runs AFTER UseForwardedHeaders. Without this, ASP.NET Core inserts UseRouting at the start of the pipeline and the SPA-host fallback (UseHostScopedSinglePageAppFallback's RequireHost) sees the unrewritten Host header forwarded by YARP (the destination address), not the public host promoted from X-Forwarded-Host.
                 .UseMockEasyAuthInDevelopment() // Dev-only: serve /.auth/login/aad and inject X-MS-CLIENT-PRINCIPAL-* headers from a dev cookie. Must run before authentication.
                 .UseAuthentication() // Must be above TelemetryContextMiddleware to ensure authentication happens first
                 .UseAuthorization()
@@ -286,11 +286,13 @@ public static class ApiDependencyConfiguration
             // This is required when running behind a reverse proxy like YARP or Azure Container Apps
             return services.Configure<ForwardedHeadersOptions>(options =>
                 {
-                    // X-Forwarded-For for client-IP logging; X-Forwarded-Proto for scheme awareness;
-                    // X-Forwarded-Host is no longer load-bearing for RequireHost matching because
-                    // AppGateway's RequestHeaderOriginalHost transform preserves the public Host at
-                    // the YARP layer; X-Forwarded-Host stays enabled as a defense-in-depth fallback
-                    // that the trust list below gates so untrusted callers cannot rewrite Request.Host.
+                    // X-Forwarded-For surfaces client IPs in logs; X-Forwarded-Proto sets the request
+                    // scheme so generated URLs use https. X-Forwarded-Host remains enabled because the
+                    // SPA-host fallback (UseHostScopedSinglePageAppFallback) RequireHost's against
+                    // Request.Host to pick the right SPA bundle; that one needs the public host to be
+                    // promoted on dev where AppGateway forwards across hostnames. API endpoints no
+                    // longer rely on X-Forwarded-Host -- AppGateway and ACA's internal ingress are the
+                    // trust boundary, so endpoints that previously declared RequireHost have dropped it.
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
                     options.ForwardLimit = 1;
                     // Honor forwarded headers only from trusted proxies. Loopback covers the Aspire

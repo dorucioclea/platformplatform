@@ -11,8 +11,11 @@ namespace Account.Tests.ArchitectureTests;
 
 // Walks the actual registered endpoints in Account.Api and enforces:
 // - Every endpoint under /api/back-office/* must declare RequireHost on the back-office host.
-// - Every public endpoint under /api/account/* must declare RequireHost on the user-facing host.
-//   (/internal-api/* is only callable backend-to-backend, so it skips RequireHost; BlockInternalApiTransform in AppGateway rejects external callers.)
+//   Account-api hosts both the user-facing and back-office SPAs in one process; back-office endpoints
+//   stay host-scoped so they cannot be reached via the user-facing host.
+// - Public /api/account/* endpoints intentionally do NOT declare RequireHost. Internal-only ACA apps
+//   sit behind AppGateway and ACA's internal ingress; the host header from upstream proxies cannot
+//   be trusted as a security boundary, and AppGateway is the public trust boundary.
 // - Every endpoint under /api/account/* and /internal-api/account/* must declare WithGroupName("account").
 // - Every endpoint under /api/back-office/* must declare WithGroupName("back-office").
 public sealed class EndpointMetadataTests : IDisposable
@@ -65,7 +68,7 @@ public sealed class EndpointMetadataTests : IDisposable
     }
 
     [Fact]
-    public void PublicAccountEndpoints_ShouldAllRequireHost()
+    public void PublicAccountEndpoints_ShouldNotDeclareRequireHost()
     {
         // Arrange
         var routeEndpoints = GetRouteEndpoints();
@@ -75,11 +78,11 @@ public sealed class EndpointMetadataTests : IDisposable
         publicAccountEndpoints.Should().NotBeEmpty();
 
         // Assert
-        var endpointsMissingHost = publicAccountEndpoints
-            .Where(endpoint => endpoint.Metadata.GetMetadata<IHostMetadata>() is null || !endpoint.Metadata.GetMetadata<IHostMetadata>()!.Hosts.Contains(AppHost))
+        var endpointsWithHost = publicAccountEndpoints
+            .Where(endpoint => endpoint.Metadata.GetMetadata<IHostMetadata>() is not null)
             .Select(endpoint => endpoint.RoutePattern.RawText)
             .ToList();
-        endpointsMissingHost.Should().BeEmpty($"public account endpoints must declare RequireHost('{AppHost}') so they cannot be reached via the back-office host");
+        endpointsWithHost.Should().BeEmpty("public account endpoints must NOT declare RequireHost. AppGateway and ACA internal ingress are the trust boundaries; X-Forwarded-Host from upstream proxies is not a reliable security signal.");
     }
 
     [Fact]

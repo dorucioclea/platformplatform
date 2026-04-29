@@ -62,8 +62,8 @@ public abstract class BackOfficeEndpointBaseTest : IDisposable
                             // configuring it here lets BackOfficeAdminAuthorizationHandler and GetMe.IsAdmin
                             // resolve admin status the same way they do in dev.
                             ["BackOffice:AdminsGroupId"] = MockEasyAuthIdentities.MockAdminsGroupId,
-                            // Account endpoints declare RequireHost(Hostnames:App). Tests that target the
-                            // user-facing host use app.test.localhost.
+                            // The user-facing SPA shell is scoped to Hostnames:App via UseHostScopedSinglePageAppFallback.
+                            // Tests that target the user-facing host use app.test.localhost.
                             ["Hostnames:App"] = "app.test.localhost"
                         };
 

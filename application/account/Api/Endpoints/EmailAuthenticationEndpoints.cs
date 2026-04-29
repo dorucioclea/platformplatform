@@ -12,9 +12,7 @@ public sealed class EmailAuthenticationEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var appHost = routes.ServiceProvider.GetRequiredService<IConfiguration>()["Hostnames:App"]!;
-
-        var group = routes.MapGroup(RoutesPrefix).WithTags("EmailAuthentication").WithGroupName(OpenApiDocumentNames.Account).RequireHost(appHost).RequireAuthorization().ProducesValidationProblem();
+        var group = routes.MapGroup(RoutesPrefix).WithTags("EmailAuthentication").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
 
         group.MapPost("/login/start", async Task<ApiResult<StartEmailLoginResponse>> (StartEmailLoginCommand command, IMediator mediator)
             => await mediator.Send(command)

@@ -111,8 +111,9 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
 
                 builder.ConfigureAppConfiguration((_, configuration) =>
                     {
-                        // Account endpoints declare RequireHost(Hostnames:App). The TestServer sends requests
-                        // to "localhost" by default, so configure the option to match.
+                        // Account-api hosts both the user-facing and back-office SPAs scoped via RequireHost
+                        // on each MapFallback. The TestServer sends requests to "localhost" by default, so
+                        // configure Hostnames:App to match for the user-facing SPA shell.
                         configuration.AddInMemoryCollection(new Dictionary<string, string?>
                             {
                                 ["Hostnames:App"] = "localhost"
