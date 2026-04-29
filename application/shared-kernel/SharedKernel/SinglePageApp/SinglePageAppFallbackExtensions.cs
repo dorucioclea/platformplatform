@@ -250,7 +250,14 @@ public static class SinglePageAppFallbackExtensions
                     fallback.RequireAuthorization(spa.AuthorizationPolicy);
                 }
 
-                app.UseStaticFiles(new StaticFileOptions { FileProvider = fileProvider });
+                // Host-scope the static-file middleware so each SPA only serves assets from its own bundle
+                // directory on its own host. Without this, requests like https://back-office.../legal/terms.md
+                // would fall through to the user-facing SPA's static files (which bake legal docs into dist),
+                // leaking content the back-office bundle does not contain.
+                app.UseWhen(
+                    context => context.Request.Host.Host.Equals(spa.Host, StringComparison.OrdinalIgnoreCase),
+                    branch => branch.UseStaticFiles(new StaticFileOptions { FileProvider = fileProvider })
+                );
             }
 
             return app.UseRequestLocalization(SinglePageAppConfiguration.SupportedLocalizations);
