@@ -9,9 +9,8 @@ namespace AppGateway.Tests;
 public sealed class HostMatchConfigFilterTests
 {
     private const string AppHost = "app.dev.localhost";
-    private const string BackOfficeHost = "back-office.dev.localhost";
 
-    private readonly HostMatchConfigFilter _filter = new(Options.Create(new HostnamesOptions { App = AppHost, BackOffice = BackOfficeHost }));
+    private readonly HostMatchConfigFilter _filter = new(Options.Create(new HostnamesOptions { App = AppHost }));
 
     [Fact]
     public async Task ConfigureRouteAsync_WhenMetadataReferencesApp_ShouldInjectAppHostnameOnly()
@@ -27,19 +26,6 @@ public sealed class HostMatchConfigFilterTests
     }
 
     [Fact]
-    public async Task ConfigureRouteAsync_WhenMetadataReferencesBackOffice_ShouldInjectBackOfficeHostnameOnly()
-    {
-        // Arrange
-        var route = CreateRoute("back-office-api", "BackOffice");
-
-        // Act
-        var result = await _filter.ConfigureRouteAsync(route, null, CancellationToken.None);
-
-        // Assert
-        result.Match.Hosts.Should().BeEquivalentTo(BackOfficeHost);
-    }
-
-    [Fact]
     public async Task ConfigureRouteAsync_WhenMetadataReferencesWildcard_ShouldInjectAllConfiguredHostnames()
     {
         // Arrange
@@ -49,7 +35,7 @@ public sealed class HostMatchConfigFilterTests
         var result = await _filter.ConfigureRouteAsync(route, null, CancellationToken.None);
 
         // Assert
-        result.Match.Hosts.Should().BeEquivalentTo(AppHost, BackOfficeHost);
+        result.Match.Hosts.Should().BeEquivalentTo(AppHost);
     }
 
     [Fact]

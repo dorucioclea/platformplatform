@@ -49,10 +49,12 @@ public sealed record PortAllocation(int BasePort)
 
     public int BackOfficeStatic => BasePort + 16;
 
+    public int BackOfficeApi => BasePort + 17;
+
     public int[] AllPorts =>
     [
         AppGateway, Aspire, Postgres, Blob, MailpitSmtp, MailpitHttp, OtelEndpoint, ResourceService,
-        MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeStatic
+        MainApi, MainStatic, MainWorkers, AccountApi, AccountStatic, AccountWorkers, BackOfficeStatic, BackOfficeApi
     ];
 
     // Empty on the default base port so existing developers' Docker volumes are reused unchanged on

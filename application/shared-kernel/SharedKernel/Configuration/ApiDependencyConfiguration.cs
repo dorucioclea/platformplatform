@@ -48,7 +48,11 @@ public static class ApiDependencyConfiguration
         public WebApplicationBuilder AddDevelopmentPort()
         {
             // KESTREL_PORT is set by AppHost from the base port in .workspace/port.txt.
-            // Outside Aspire (e.g. unit tests via WebApplicationFactory) ConfigureKestrel is not invoked.
+            // BACK_OFFICE_KESTREL_PORT is optional; AppHost sets it on the consolidated account-api so
+            // back-office.dev.localhost can hit Kestrel directly without traversing AppGateway,
+            // mirroring the production split where back-office is its own ACA container app with its
+            // own external ingress. Outside Aspire (e.g. unit tests via WebApplicationFactory)
+            // ConfigureKestrel is not invoked.
             builder.WebHost.ConfigureKestrel((context, serverOptions) =>
                 {
                     if (!context.HostingEnvironment.IsDevelopment()) return;
@@ -62,6 +66,11 @@ public static class ApiDependencyConfiguration
 
                     serverOptions.ConfigureEndpointDefaults(listenOptions => listenOptions.UseHttps());
                     serverOptions.ListenLocalhost(port, listenOptions => listenOptions.UseHttps());
+
+                    if (int.TryParse(Environment.GetEnvironmentVariable("BACK_OFFICE_KESTREL_PORT"), out var backOfficePort) && backOfficePort > 0)
+                    {
+                        serverOptions.ListenLocalhost(backOfficePort, listenOptions => listenOptions.UseHttps());
+                    }
                 }
             );
             return builder;
@@ -130,7 +139,6 @@ public static class ApiDependencyConfiguration
 
             app
                 .UseForwardedHeaders()
-                .UseRouting() // Explicit so it runs AFTER UseForwardedHeaders. Without this, ASP.NET Core inserts UseRouting at the start of the pipeline and endpoint matching (RequireHost) sees the unrewritten Host header.
                 .UseMockEasyAuthInDevelopment() // Dev-only: serve /.auth/login/aad and inject X-MS-CLIENT-PRINCIPAL-* headers from a dev cookie. Must run before authentication.
                 .UseAuthentication() // Must be above TelemetryContextMiddleware to ensure authentication happens first
                 .UseAuthorization()
@@ -277,22 +285,27 @@ public static class ApiDependencyConfiguration
             // This is required when running behind a reverse proxy like YARP or Azure Container Apps
             return services.Configure<ForwardedHeadersOptions>(options =>
                 {
-                    // Enable support for proxy headers such as X-Forwarded-For, X-Forwarded-Proto, and X-Forwarded-Host
-                    // X-Forwarded-Host is required so RequireHost("back-office.example.com") matches when YARP forwards the request
+                    // X-Forwarded-For for client-IP logging; X-Forwarded-Proto for scheme awareness;
+                    // X-Forwarded-Host is no longer load-bearing for RequireHost matching because
+                    // AppGateway's RequestHeaderOriginalHost transform preserves the public Host at
+                    // the YARP layer; X-Forwarded-Host stays enabled as a defense-in-depth fallback
+                    // that the trust list below gates so untrusted callers cannot rewrite Request.Host.
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
                     options.ForwardLimit = 1;
-                    // Forwarded headers are honored only when the immediate caller is a trusted proxy.
-                    // Trust loopback (Aspire localhost) and all RFC 1918 private ranges so Azure
-                    // Container Apps' internal envoy/ingress proxies are honored regardless of which
-                    // private subnet they present from. Externally-exposed services (AppGateway, the
-                    // back-office app) sit behind ACA platform ingress that rewrites X-Forwarded-*
-                    // and ignores client-supplied values, so client spoofing cannot pass this check.
+                    // Honor forwarded headers only from trusted proxies. Loopback covers the Aspire
+                    // localhost stack; the ACA Container Apps environment subnet (see
+                    // cloud-infrastructure/modules/virtual-network.bicep, /23) covers AppGateway pods
+                    // forwarding to internal account-api / main-api. Externally-exposed services
+                    // (AppGateway, back-office) sit behind ACA's platform envoy which strips
+                    // client-supplied X-Forwarded-* and sets its own; envoy IPs may live outside the
+                    // VNet subnet, so externally-exposed services may not surface client IP via this
+                    // path -- platform-level Azure logging covers that case. PP-1066: closes the
+                    // wide-open trust risk by narrowing to networks we control.
                     options.KnownIPNetworks.Clear();
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("127.0.0.0"), 8));
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
-                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
-                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("172.16.0.0"), 12));
-                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("192.168.0.0"), 16));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 23));
+                    options.KnownProxies.Clear();
                 }
             );
         }

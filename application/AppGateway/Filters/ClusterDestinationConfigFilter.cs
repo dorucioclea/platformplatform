@@ -33,7 +33,6 @@ public class ClusterDestinationConfigFilter(PortAllocation ports) : IProxyConfig
         {
             "account-api" => ResolveAddress("ACCOUNT_API_URL", ports.AccountApi),
             "account-static" => ResolveAddress("ACCOUNT_API_URL", ports.AccountStatic),
-            "back-office-static" => ResolveAddress("ACCOUNT_API_URL", ports.BackOfficeStatic),
             "account-storage" => ResolveStorageAddress("ACCOUNT_STORAGE_URL", ports.Blob),
             "main-api" => ResolveAddress("MAIN_API_URL", ports.MainApi),
             "main-static" => ResolveAddress("MAIN_API_URL", ports.MainStatic),

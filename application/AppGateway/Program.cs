@@ -16,7 +16,6 @@ builder.Services
     .Bind(builder.Configuration.GetSection(HostnamesOptions.SectionName))
     .ValidateDataAnnotations()
     .Validate(o => !string.IsNullOrWhiteSpace(o.App), "Hostnames:App must be configured.")
-    .Validate(o => !string.IsNullOrWhiteSpace(o.BackOffice), "Hostnames:BackOffice must be configured.")
     .ValidateOnStart();
 
 // PortAllocation reads .workspace/port.txt by walking up to the repo root for .git, which doesn't
@@ -120,7 +119,7 @@ app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions
             Type = "https://tools.ietf.org/html/rfc9110#section-15.5.5",
             Extensions =
             {
-                ["canonicalUrls"] = new[] { $"https://{hostnames.App}{portSuffix}", $"https://{hostnames.BackOffice}{portSuffix}" }
+                ["canonicalUrls"] = new[] { $"https://{hostnames.App}{portSuffix}" }
             }
         };
 

@@ -20,7 +20,9 @@ var appHostname = builder.Configuration["Hostnames:App"] ?? "app.dev.localhost";
 var backOfficeHostname = builder.Configuration["Hostnames:BackOffice"] ?? "back-office.dev.localhost";
 
 var appBaseUrl = $"https://{appHostname}:{ports.AppGateway}";
-var backOfficeBaseUrl = $"https://{backOfficeHostname}:{ports.AppGateway}";
+// Localhost mirrors the Azure post-split topology: back-office traffic bypasses AppGateway and
+// hits the consolidated account-api process directly on a dedicated Kestrel port.
+var backOfficeBaseUrl = $"https://{backOfficeHostname}:{ports.BackOfficeApi}";
 
 var certificatePassword = await builder.CreateSslCertificateIfNotExists();
 
@@ -85,6 +87,12 @@ var accountWorkers = builder
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
     .WithEnvironment("KESTREL_PORT", ports.AccountApi.ToString())
+    // Second Kestrel port for back-office.dev.localhost so localhost mirrors the Azure post-split
+    // topology where back-office has its own external ingress and AppGateway is not in the path.
+    .WithEnvironment("BACK_OFFICE_KESTREL_PORT", ports.BackOfficeApi.ToString())
+    // Back-office bundle URLs target the dedicated Kestrel port directly (no AppGateway).
+    .WithEnvironment("BACK_OFFICE_PUBLIC_URL", backOfficeBaseUrl)
+    .WithEnvironment("BACK_OFFICE_CDN_URL", backOfficeBaseUrl)
     .WithUrlConfiguration(appHostname, ports.AppGateway, "/account")
     // Google OAuth's redirect_uri whitelist requires literal 'localhost', not subdomains like
     // 'app.dev.localhost'. The callback then 301's via LocalhostRedirectMiddleware back to the
@@ -134,7 +142,6 @@ builder
     .WaitFor(frontendBuild)
     .WithEnvironment("ASPNETCORE_URLS", "https://localhost:" + ports.AppGateway)
     .WithEnvironment("Hostnames__App", appHostname)
-    .WithEnvironment("Hostnames__BackOffice", backOfficeHostname)
     .WithUrls(context =>
         {
             // Replace the auto-published "https" endpoint URL with three explicit dashboard URLs.

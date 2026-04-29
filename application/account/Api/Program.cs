@@ -31,11 +31,16 @@ var backOfficeHostname = app.Services.GetRequiredService<IOptions<BackOfficeHost
 
 // Per-host bundle URLs. The process-wide PUBLIC_URL/CDN_URL env vars are set by AppHost for the
 // user-facing host only, so the back-office host must inject its own to avoid embedding the account
-// SPA's bundle URLs into back-office HTML.
+// SPA's bundle URLs into back-office HTML. AppHost sets BACK_OFFICE_PUBLIC_URL/BACK_OFFICE_CDN_URL
+// explicitly because back-office now binds a dedicated Kestrel port (not AppGateway's port), so
+// host substitution alone would yield the wrong port. Falls back to host-substitution for any
+// runtime that hasn't set the explicit vars yet.
 var appPublicUrl = Environment.GetEnvironmentVariable(SinglePageAppConfiguration.PublicUrlKey);
 var appCdnUrl = Environment.GetEnvironmentVariable(SinglePageAppConfiguration.CdnUrlKey);
-var backOfficePublicUrl = appPublicUrl is null ? null : ReplaceHost(appPublicUrl, appHostname, backOfficeHostname);
-var backOfficeCdnUrl = backOfficePublicUrl;
+var backOfficePublicUrl =
+    Environment.GetEnvironmentVariable("BACK_OFFICE_PUBLIC_URL")
+    ?? (appPublicUrl is null ? null : ReplaceHost(appPublicUrl, appHostname, backOfficeHostname));
+var backOfficeCdnUrl = Environment.GetEnvironmentVariable("BACK_OFFICE_CDN_URL") ?? backOfficePublicUrl;
 
 // The /login picker is the dev-only MockEasyAuth identity selector. In Azure-deployed instances the
 // path must not be reachable: it is removed from the auth-gate exemption list (so the back-office
