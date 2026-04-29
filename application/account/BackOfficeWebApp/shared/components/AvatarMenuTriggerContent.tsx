@@ -20,7 +20,7 @@ export function AvatarMenuTriggerContent({
       </Avatar>
       {!isCollapsed && (
         <>
-          <div className="ml-3 overflow-hidden text-left font-medium text-ellipsis whitespace-nowrap text-foreground">
+          <div className="ml-3 flex-1 overflow-hidden text-left font-medium text-ellipsis whitespace-nowrap text-foreground">
             {displayName || <Trans>Back Office</Trans>}
           </div>
           <ChevronsUpDownIcon className="ml-2 size-3.5 shrink-0 text-foreground opacity-70" />

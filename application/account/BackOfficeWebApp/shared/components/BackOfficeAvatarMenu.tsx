@@ -126,15 +126,13 @@ export function BackOfficeAvatarMenu() {
             <Avatar className="size-16">
               <AvatarFallback className="text-xl">{initials}</AvatarFallback>
             </Avatar>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">{displayName || <Trans>Back Office</Trans>}</span>
-              {isAdmin && (
-                <Badge variant="outline">
-                  <Trans>Admin</Trans>
-                </Badge>
-              )}
-            </div>
+            <span className="font-medium">{displayName || <Trans>Back Office</Trans>}</span>
             {email && <span className="text-sm text-muted-foreground">{email}</span>}
+            {isAdmin && (
+              <Badge variant="outline" className="mt-1">
+                <Trans>Admin</Trans>
+              </Badge>
+            )}
           </div>
 
           <DropdownMenuSeparator />
