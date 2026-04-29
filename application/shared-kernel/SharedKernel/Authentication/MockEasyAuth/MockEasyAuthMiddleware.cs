@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharedKernel.Authentication.BackOfficeIdentity;
+using SharedKernel.OpenIdConnect;
 
 namespace SharedKernel.Authentication.MockEasyAuth;
 
@@ -54,7 +55,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
     private static void RedirectToMockLoginPage(HttpContext context)
     {
         var redirect = context.Request.Query["post_login_redirect_uri"].ToString();
-        if (string.IsNullOrEmpty(redirect)) redirect = "/";
+        if (string.IsNullOrEmpty(redirect) || !ReturnPathHelper.IsValidRelativePath(redirect)) redirect = "/";
 
         // Belt-and-suspenders: if the post-login target is itself the picker, send the user home after
         // sign-in to prevent a feedback loop if some upstream component starts gating the picker again.
@@ -72,7 +73,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
     {
         var identityId = context.Request.Query["identity"].ToString();
         var redirect = context.Request.Query["post_login_redirect_uri"].ToString();
-        if (string.IsNullOrEmpty(redirect)) redirect = "/";
+        if (string.IsNullOrEmpty(redirect) || !ReturnPathHelper.IsValidRelativePath(redirect)) redirect = "/";
 
         var identity = MockEasyAuthIdentities.Find(identityId);
         if (identity is null)
@@ -96,7 +97,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
     {
         context.Response.Cookies.Delete(MockEasyAuthCookie.CookieName, new CookieOptions { Secure = true, Path = "/" });
         var redirect = context.Request.Query["post_logout_redirect_uri"].ToString();
-        if (string.IsNullOrEmpty(redirect)) redirect = "/";
+        if (string.IsNullOrEmpty(redirect) || !ReturnPathHelper.IsValidRelativePath(redirect)) redirect = "/";
         context.Response.Redirect(redirect);
     }
 }
