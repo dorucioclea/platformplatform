@@ -13,18 +13,15 @@ public class RunCommand : Command
 {
     public RunCommand() : base("run", "Runs Aspire AppHost (use --watch for hot reload)")
     {
-        var basePortArgument = new Argument<int?>("basePort") { Description = "Optional base port. If provided, written to .workspace/port.txt before Aspire starts.", DefaultValueFactory = _ => null };
         var watchOption = new Option<bool>("--watch", "-w") { Description = "Enable watch mode for hot reload" };
         var attachOption = new Option<bool>("--attach", "-a") { Description = "Keep the CLI process attached to the Aspire process (detached is the default)" };
         var publicUrlOption = new Option<string?>("--public-url") { Description = "Set the PUBLIC_URL environment variable for the app (e.g., https://example.ngrok-free.app)" };
 
-        Arguments.Add(basePortArgument);
         Options.Add(watchOption);
         Options.Add(attachOption);
         Options.Add(publicUrlOption);
 
         SetAction(parseResult => Execute(
-                parseResult.GetValue(basePortArgument),
                 parseResult.GetValue(watchOption),
                 parseResult.GetValue(attachOption),
                 parseResult.GetValue(publicUrlOption)
@@ -34,9 +31,6 @@ public class RunCommand : Command
 
     // The CLI binary is published outside the repo, so PortAllocation.Load (which walks up from
     // AppContext.BaseDirectory) cannot find the repo. Use the CLI's known SourceCodeFolder instead.
-    // Re-read on every access so a run/restart invocation with a positional base port picks up the
-    // freshly written .workspace/port.txt without any cached PortAllocation lingering from earlier
-    // in the call.
     internal static PortAllocation Ports => PortAllocation.LoadFrom(Configuration.SourceCodeFolder);
 
     internal static int AspirePort => Ports.Aspire;
@@ -45,35 +39,22 @@ public class RunCommand : Command
 
     internal static int ResourceServicePort => Ports.ResourceService;
 
-    private static void Execute(int? basePort, bool watch, bool attach, string? publicUrl)
+    private static void Execute(bool watch, bool attach, string? publicUrl)
     {
         Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Node, Prerequisite.Docker);
 
-        // Refuse if Aspire is already on the currently configured port -- updating port.txt now would orphan the running stack.
+        // Refuse if Aspire is already on the currently configured port.
         // Skipped in a fresh worktree (no port.txt) where the check would false-positive on another worktree's stack.
         if (PortAllocation.PortFileExists(Configuration.SourceCodeFolder) && IsAspireRunning())
         {
             var alias = Configuration.AliasName;
-            var message = basePort is null
-                ? $"Aspire AppHost is already running on port {AspirePort}. Run '{alias} stop' to stop it or '{alias} restart' to start a fresh instance."
-                : $"Aspire AppHost is already running on port {AspirePort}. Run '{alias} stop' first or use '{alias} restart {basePort}' to switch.";
-            AnsiConsole.MarkupLine($"[yellow]{message}[/]");
+            AnsiConsole.MarkupLine($"[yellow]Aspire AppHost is already running on port {AspirePort}. Run '{alias} stop' to stop it or '{alias} restart' to start a fresh instance.[/]");
             Environment.Exit(1);
         }
-
-        WriteBasePortIfProvided(basePort);
 
         CheckForPortConflicts();
 
         StartAspireAppHost(watch, attach, publicUrl);
-    }
-
-    internal static void WriteBasePortIfProvided(int? basePort)
-    {
-        if (basePort is null) return;
-
-        PortAllocation.WriteBasePort(Configuration.SourceCodeFolder, basePort.Value);
-        AnsiConsole.MarkupLine($"[blue]Set base port to {basePort.Value}.[/]");
     }
 
     internal static bool IsAspireRunning()

@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "developer-cli": {
-      "command": "dotnet",
-      "args": ["run", "--project", "developer-cli", "mcp"]
-    },
     "shadcn": {
       "command": "npx",
       "args": ["-y", "shadcn@latest", "mcp"]
