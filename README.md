@@ -5,18 +5,17 @@
 [![App Gateway](https://github.com/platformplatform/PlatformPlatform/actions/workflows/app-gateway.yml/badge.svg)](https://github.com/platformplatform/PlatformPlatform/actions/workflows/app-gateway.yml?query=branch%3Amain)
 [![Account](https://github.com/platformplatform/PlatformPlatform/actions/workflows/account.yml/badge.svg)](https://github.com/platformplatform/PlatformPlatform/actions/workflows/account.yml?query=branch%3Amain)
 [![Main](https://github.com/platformplatform/PlatformPlatform/actions/workflows/main.yml/badge.svg)](https://github.com/platformplatform/PlatformPlatform/actions/workflows/main.yml?query=branch%3Amain)
-[![Back Office](https://github.com/platformplatform/PlatformPlatform/actions/workflows/back-office.yml/badge.svg)](https://github.com/platformplatform/PlatformPlatform/actions/workflows/back-office.yml?query=branch%3Amain)
 [![Cloud Infrastructure](https://github.com/platformplatform/PlatformPlatform/actions/workflows/cloud-infrastructure.yml/badge.svg)](https://github.com/platformplatform/PlatformPlatform/actions/workflows/cloud-infrastructure.yml?query=branch%3Amain)
 
 [![GitHub issues with enhancement label](https://img.shields.io/github/issues-raw/platformplatform/PlatformPlatform/enhancement?label=enhancements&logo=github&color=%23A2EEEF)](https://github.com/orgs/PlatformPlatform/projects/1/views/3?filterQuery=-status%3A%22%E2%9C%85+Done%22+label%3Aenhancement)
 [![GitHub issues with roadmap label](https://img.shields.io/github/issues-raw/platformplatform/PlatformPlatform/roadmap?label=roadmap&logo=github&color=%23006B75)](https://github.com/orgs/PlatformPlatform/projects/2/views/2?filterQuery=is%3Aopen+label%3Aroadmap)
 [![GitHub issues with bug label](https://img.shields.io/github/issues-raw/platformplatform/PlatformPlatform/bug?label=bugs&logo=github&color=red)](https://github.com/platformplatform/PlatformPlatform/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=coverage)](https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=coverage)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=alert_status)](https://sonarcloud.io/summary/overall?id=PlatformPlatform_platformplatform)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=security_rating)](https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Security)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=reliability_rating)](https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Reliability)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Maintainability)
+<a href="https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=coverage" target="_blank" rel="noopener noreferrer"><img src="https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=coverage" alt="Coverage" /></a>
+<a href="https://sonarcloud.io/summary/overall?id=PlatformPlatform_platformplatform" target="_blank" rel="noopener noreferrer"><img src="https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=alert_status" alt="Quality Gate Status" /></a>
+<a href="https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Security" target="_blank" rel="noopener noreferrer"><img src="https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=security_rating" alt="Security Rating" /></a>
+<a href="https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Reliability" target="_blank" rel="noopener noreferrer"><img src="https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=reliability_rating" alt="Reliability Rating" /></a>
+<a href="https://sonarcloud.io/component_measures?id=PlatformPlatform_platformplatform&metric=Maintainability" target="_blank" rel="noopener noreferrer"><img src="https://sonarcloud.io/api/project_badges/measure?project=PlatformPlatform_platformplatform&metric=sqale_rating" alt="Maintainability Rating" /></a>
 
 </h4>
 
@@ -529,18 +528,13 @@ PlatformPlatform is a [monorepo](https://en.wikipedia.org/wiki/Monorepo) contain
 │  │   ├─ Core           # Core business logic, application use cases, and infrastructure
 │  │   ├─ Workers        # Background workers for long-running tasks and event processing
 │  │   └─ Tests          # Tests for the Api, Core, and Workers
-│  ├─ account            # Federated module for authentication, user and account management
-│  │   ├─ WebApp         # React SPA loaded into main via Module Federation
-│  │   ├─ Api            # Presentation layer exposing the API to WebApp or other clients
-│  │   ├─ Core           # Core business logic, application use cases, and infrastructure
-│  │   ├─ Workers        # Background workers for long-running tasks and event processing
-│  │   └─ Tests          # Tests for the Api, Core, and Workers
-│  ├─ back-office        # Standalone SCS for operations and support (separate login)
-│  │   ├─ WebApp         # React SPA frontend using TypeScript and ShadCN 2.0 with Base UI
-│  │   ├─ Api            # Presentation layer exposing the API to WebApp or other clients
-│  │   ├─ Core           # Core business logic, application use cases, and infrastructure
-│  │   ├─ Workers        # Background workers for long-running tasks and event processing
-│  │   └─ Tests          # Tests for the Api, Core, and Workers
+│  ├─ account            # Federated module for authentication, user and account management; also hosts the back-office surface
+│  │   ├─ WebApp          # React SPA loaded into main via Module Federation
+│  │   ├─ BackOfficeWebApp # React SPA for operations and support, served on its own host (Entra ID Easy Auth)
+│  │   ├─ Api             # Presentation layer exposing both account and back-office endpoints
+│  │   ├─ Core            # Core business logic, application use cases, and infrastructure
+│  │   ├─ Workers         # Background workers for long-running tasks and event processing
+│  │   └─ Tests           # Tests for the Api, Core, and Workers
 │  ├─ shared-kernel      # Reusable components and default configuration for all systems
 │  └─ shared-webapp      # Reusable ShadCN 2.0 components with Base UI that affect all systems
 ├─ cloud-infrastructure  # Contains Bash and Bicep scripts (IaC) for Azure resources
@@ -550,7 +544,7 @@ PlatformPlatform is a [monorepo](https://en.wikipedia.org/wiki/Monorepo) contain
 └─ developer-cli         # A .NET CLI tool for automating common developer tasks
 ```
 
-** A [Self-Contained System](https://scs-architecture.org/) is a large microservice (or a small monolith) that contains the full stack, including frontend, background jobs, etc. The `main` SCS is the shell application with catch-all routing where you build your product. The `account` SCS is loaded into main via Module Federation, enabling seamless navigation between product pages and account pages without full page reloads. The `back-office` SCS runs as a fully standalone application with its own login.
+** A [Self-Contained System](https://scs-architecture.org/) is a large microservice (or a small monolith) that contains the full stack, including frontend, background jobs, etc. The `main` SCS is the shell application with catch-all routing where you build your product. The `account` SCS is loaded into main via Module Federation, enabling seamless navigation between product pages and account pages without full page reloads. The back-office surface for operations and support is hosted by the `account` SCS as a separate SPA on its own hostname, authenticated via Entra ID (Azure Easy Auth in production, MockEasyAuth in development).
 
 # Technologies
 
