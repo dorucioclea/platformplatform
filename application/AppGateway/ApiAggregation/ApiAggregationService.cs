@@ -32,21 +32,9 @@ public class ApiAggregationService(
 
         var proxyConfiguration = proxyConfigProvider.GetConfig();
 
-        foreach (var cluster in proxyConfiguration.Clusters.Where(c => c.ClusterId.EndsWith("-api")))
+        foreach (var cluster in proxyConfiguration.Clusters.Where(c => c.ClusterId is "account-api" or "back-office-api"))
         {
-            OpenApiDocument openApiDocument;
-            switch (cluster.ClusterId)
-            {
-                case "account-api":
-                    openApiDocument = await FetchOpenApiDocument(cluster, "ACCOUNT_API_URL");
-                    break;
-                case "back-office-api":
-                    openApiDocument = await FetchOpenApiDocument(cluster, "BACK_OFFICE_API_URL");
-                    break;
-                default:
-                    continue;
-            }
-
+            var openApiDocument = await FetchOpenApiDocument(cluster);
             CombineOpenApiDocuments(aggregatedOpenApiDocument, openApiDocument);
         }
 
@@ -55,10 +43,11 @@ public class ApiAggregationService(
         return aggregatedOpenApiDocument;
     }
 
-    private async Task<OpenApiDocument> FetchOpenApiDocument(ClusterConfig cluster, string environmentVariable)
+    private async Task<OpenApiDocument> FetchOpenApiDocument(ClusterConfig cluster)
     {
-        var clusterBasePath = Environment.GetEnvironmentVariable(environmentVariable)
-                              ?? cluster.Destinations!.Single().Value.Address;
+        // Cluster destinations are already substituted by ClusterDestinationConfigFilter using
+        // PortAllocation in dev and {SERVICE}_API_URL in production.
+        var clusterBasePath = cluster.Destinations!.Single().Value.Address;
 
         var clusterOpenApiUrl = $"{clusterBasePath}/openapi/v1.json";
         logger.LogInformation("Fetching OpenAPI document for cluster {ClusterId} from {Url}", cluster.ClusterId, clusterOpenApiUrl);

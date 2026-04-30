@@ -40,11 +40,21 @@ public static class ApiDependencyConfiguration
             return builder;
         }
 
-        public WebApplicationBuilder AddDevelopmentPort(int port)
+        public WebApplicationBuilder AddDevelopmentPort()
         {
+            // KESTREL_PORT is set by AppHost from the base port in .workspace/port.txt.
+            // Outside Aspire (e.g. unit tests via WebApplicationFactory) ConfigureKestrel is not invoked.
             builder.WebHost.ConfigureKestrel((context, serverOptions) =>
                 {
                     if (!context.HostingEnvironment.IsDevelopment()) return;
+
+                    if (!int.TryParse(Environment.GetEnvironmentVariable("KESTREL_PORT"), out var port) || port <= 0)
+                    {
+                        throw new InvalidOperationException(
+                            "KESTREL_PORT environment variable is required for development startup. Run via Aspire AppHost or set KESTREL_PORT manually."
+                        );
+                    }
+
                     serverOptions.ConfigureEndpointDefaults(listenOptions => listenOptions.UseHttps());
                     serverOptions.ListenLocalhost(port, listenOptions => listenOptions.UseHttps());
                 }

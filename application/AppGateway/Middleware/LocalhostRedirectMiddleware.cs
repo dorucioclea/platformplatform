@@ -1,8 +1,9 @@
 using Microsoft.Extensions.Options;
+using SharedKernel.Configuration;
 
 namespace AppGateway.Middleware;
 
-public sealed class LocalhostRedirectMiddleware(IOptions<HostnamesOptions> hostnamesOptions) : IMiddleware
+public sealed class LocalhostRedirectMiddleware(IOptions<HostnamesOptions> hostnamesOptions, PortAllocation ports) : IMiddleware
 {
     private const string LocalhostHost = "localhost";
 
@@ -15,7 +16,7 @@ public sealed class LocalhostRedirectMiddleware(IOptions<HostnamesOptions> hostn
             return next(context);
         }
 
-        var port = context.Request.Host.Port ?? 9000;
+        var port = context.Request.Host.Port ?? ports.AppGateway;
         var location = $"https://{_hostnames.App}:{port}{context.Request.Path}{context.Request.QueryString}";
 
         context.Response.StatusCode = StatusCodes.Status301MovedPermanently;

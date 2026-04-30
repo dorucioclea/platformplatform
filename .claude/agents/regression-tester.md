@@ -29,7 +29,7 @@ You persist across the entire [feature]. You maintain context across all tasks.
 - Use `owner@platformplatform.local` / `admin@platformplatform.local` / `member@platformplatform.local`
 - The OTP is always `UNLOCK` on localhost
 - If unable to login with `owner@platformplatform.local`, create a new tenant and invite the other users
-- Access the application at `[APP_URL]`
+- Access the application at `https://app.dev.localhost:<appGateway>` (call the `get_ports` MCP tool to find the current `appGateway` port).
 
 ## What to Test
 

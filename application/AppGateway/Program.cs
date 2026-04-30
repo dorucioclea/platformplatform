@@ -19,6 +19,8 @@ builder.Services
     .Validate(o => !string.IsNullOrWhiteSpace(o.BackOffice), "Hostnames:BackOffice must be configured.")
     .ValidateOnStart();
 
+builder.Services.AddSingleton(PortAllocation.Load());
+
 var reverseProxyBuilder = builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
@@ -52,9 +54,14 @@ builder.AddNamedBlobStorages([("account-storage", "ACCOUNT_STORAGE_URL")]);
 
 builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
-builder.Services.AddHttpClient(
-    "Account",
-    client => { client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("ACCOUNT_API_URL") ?? "https://localhost:9100"); }
+builder.Services.AddHttpClient("Account", (sp, client) =>
+    {
+        var ports = sp.GetRequiredService<PortAllocation>();
+        var productionUrl = Environment.GetEnvironmentVariable("ACCOUNT_API_URL");
+        client.BaseAddress = !string.IsNullOrEmpty(productionUrl)
+            ? new Uri(productionUrl)
+            : new Uri($"https://localhost:{ports.AccountApi}");
+    }
 );
 
 builder.Services
@@ -89,10 +96,10 @@ app.MapScalarApiReference("/openapi", options =>
 
 app.MapReverseProxy();
 
-app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions) =>
+app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions, PortAllocation ports) =>
     {
         var hostnames = hostnameOptions.Value;
-        var port = context.Request.Host.Port ?? 9000;
+        var port = context.Request.Host.Port ?? ports.AppGateway;
         var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status404NotFound,

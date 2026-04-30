@@ -80,7 +80,15 @@ For development, you need .NET, Docker, and Node. And GitHub and Azure CLI for s
     winget install OpenJS.NodeJS
     ```
 
-4.	(Recommended) Install language servers for enhanced Claude Code support:
+4.	(Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces:
+
+    ```powershell
+    irm https://aspire.dev/install.ps1 | iex
+    ```
+
+    Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+5.	(Recommended) Install language servers for enhanced Claude Code support:
 
     ```powershell
     npm install -g typescript-language-server typescript
@@ -115,7 +123,15 @@ Open a terminal and run the following commands (if not installed):
    brew install node
    ```
 
-4. (Recommended) Install language servers for enhanced Claude Code support:
+4. (Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces:
+
+   ```bash
+   curl -sSL https://aspire.dev/install.sh | bash
+   ```
+
+   Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+5. (Recommended) Install language servers for enhanced Claude Code support:
 
    ```bash
    npm install -g typescript-language-server typescript
@@ -167,7 +183,15 @@ Open a terminal and run the following commands (if not installed):
    sudo apt-get install -y nodejs
    ```
 
-5. Trust the HTTPS development certificate
+5. (Recommended) Install the [Aspire CLI](https://aspire.dev/get-started/install-cli/) — provides the [Aspire MCP server](https://aspire.dev/get-started/aspire-mcp-server/) so Claude Code can inspect AppHost resources, logs, and traces
+
+   ```bash
+   curl -sSL https://aspire.dev/install.sh | bash
+   ```
+
+   Verify with `aspire --version`. Restart your terminal if the command is not yet on PATH.
+
+6. Trust the HTTPS development certificate
 
    ```bash
    echo 'export SSL_CERT_DIR="$HOME/.aspnet/dev-certs/trust:${SSL_CERT_DIR:-/usr/lib/ssl/certs}"' >> ~/.bashrc
@@ -181,23 +205,23 @@ Open a terminal and run the following commands (if not installed):
    dotnet dev-certs https --trust
    ```
 
-6. **Log out and log back in** to apply Docker group and shell configuration changes.
+7. **Log out and log back in** to apply Docker group and shell configuration changes.
 
-7. (Recommended) Install language servers for enhanced Claude Code support
+8. (Recommended) Install language servers for enhanced Claude Code support
 
    ```bash
    npm install -g typescript-language-server typescript
    dotnet tool install -g csharp-ls
    ```
 
-8. (Optional) If using Snap Chromium, trust the certificate in its sandbox
+9. (Optional) If using Snap Chromium, trust the certificate in its sandbox
 
    ```bash
    certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -L >/dev/null 2>&1 || (mkdir -p $HOME/snap/chromium/current/.pki/nssdb && certutil -d sql:$HOME/snap/chromium/current/.pki/nssdb -N --empty-password)
    dotnet dev-certs https --trust
    ```
 
-9. (Optional) Install GitHub CLI and Azure CLI (needed for CI/CD setup)
+10. (Optional) Install GitHub CLI and Azure CLI (needed for CI/CD setup)
 
    ```bash
    (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
@@ -242,6 +266,8 @@ With the CLI installed:
 pp run # First time downloading Docker containers will take several minutes
 ```
 
+Pass an optional base port (e.g. `pp run 11000`) to run a parallel stack from another worktree.
+
 Or without the CLI:
 
 ```bash
@@ -253,7 +279,7 @@ Alternatively, open the [PlatformPlatform](./application/PlatformPlatform.slnx) 
 
 On first startup, Aspire will prompt for `stripe-enabled` -- enter `true` to configure Stripe integration (see the optional Stripe setup section below) or `false` to skip.
 
-Once the Aspire dashboard fully loads, click to the WebApp and sign up for a new account (https://localhost:9000/signup). A one-time password (OTP) will be sent to the development mail server, but for local development, you can always use the code `UNLOCK` instead of checking the mail server.
+Once the Aspire dashboard fully loads, click to the WebApp and sign up for a new account (https://app.dev.localhost:9000/signup). A one-time password (OTP) will be sent to the development mail server, but for local development, you can always use the code `UNLOCK` instead of checking the mail server.
 
 ### 3.1 (Optional) Set up Google OAuth for "Sign in with Google" on localhost
 
@@ -272,7 +298,7 @@ PlatformPlatform supports authentication via Google OAuth using OpenID Connect w
 5. Create OAuth client ID:
    - Application type: "Web application"
    - Name: "YourProduct Localhost"
-6. Add Authorized redirect URIs:
+6. Add Authorized redirect URIs (Google does not allow https://app.dev.localhost:9000/):
    - `https://localhost:9000/api/account/authentication/Google/login/callback`
    - `https://localhost:9000/api/account/authentication/Google/signup/callback`
 7. Note the Client ID and Client Secret
@@ -299,9 +325,9 @@ Each developer needs their own Stripe sandbox. The local database stays in sync 
 1. **Create a sandbox**: Go to [Stripe Dashboard](https://dashboard.stripe.com) and create an account. Click the **account picker** (top-left) > **Sandboxes** > **Create**. Name it `dev-yourname` and open it. All subsequent steps are performed inside your sandbox.
 2. **Create products**: Navigate to **Product catalog** > **+ Create product**. Create a `Standard` product with **Recurring** / **Monthly** pricing (e.g., 19 EUR), then a `Premium` product (e.g., 39 EUR). Important: Click **More pricing options** and add `standard_monthly` and `premium_monthly` respectively in the **Lookup key** field.
 3. **Disable non-card payment methods**: Go to **Settings** (gear icon) > **Payments** > **Payment methods**. Turn off every payment method except **Cards** (and **Cartes Bancaires** which cannot be disabled)
-4. **Limit to 1 subscription**: Go to **Settings** > **Payments** > **Checkout and Payment Links**, scroll to **Subscriptions**, and enable **Limit customers to 1 subscription**. Add link to `https://app.yourcompany.com/account/billing` (`https://localhost:9000/account/billing` is not valid)
+4. **Limit to 1 subscription**: Go to **Settings** > **Payments** > **Checkout and Payment Links**, scroll to **Subscriptions**, and enable **Limit customers to 1 subscription**. Add link to `https://app.dev.localhost:9000/account/billing`
 5. **Configure failed payment recovery**: Go to **Settings** > **Billing** > **Subscriptions and emails** > **Manage failed payments**, and configure desired retry behavior
-6. **Configure email notifications**: Go to **Settings** > **Billing** > **Subscriptions and emails** > **Email notifications and customer management**, and enable all settings as you see fit. Set "Use your own custom link" to `https://localhost:9000/account/billing`
+6. **Configure email notifications**: Go to **Settings** > **Billing** > **Subscriptions and emails** > **Email notifications and customer management**, and enable all settings as you see fit. Set "Use your own custom link" to `https://app.dev.localhost:9000/account/billing`
 7. **Enable 3D Secure**: Go to **Settings** > **Billing** > **Subscriptions and emails** > **Manage payments that require confirmation**, and check off **Enable 3D Secure**. The embedded Stripe components support showing e.g. Visa and Danish MitID multi-factor confirmation dialogs
 8. **Set invoice prefix**: Go to **Settings** > **Billing** > **Invoices**. In the **Invoice numbering** section, change the **Invoice prefix** to something meaningful for your organization, and optionally reset the **Invoice sequence** if needed
 9. **Disable payment link in invoice emails**: Go to **Settings** > **Billing** > **Invoices** and uncheck **Include a link to a payment page in the invoice email**
