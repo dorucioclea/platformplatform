@@ -25,19 +25,17 @@ export function LoginFooterControls() {
   );
 }
 
+function renderThemeIcon(theme: string | undefined, resolvedTheme: string | undefined) {
+  if (theme === "dark") return <MoonIcon className="size-5" />;
+  if (theme === "light") return <SunIcon className="size-5" />;
+  if (resolvedTheme === "dark") return <MoonStarIcon className="size-5" />;
+  return <SunMoonIcon className="size-5" />;
+}
+
 function ThemeDropdown() {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
-  const themeIcon =
-    theme === "dark" ? (
-      <MoonIcon className="size-5" />
-    ) : theme === "light" ? (
-      <SunIcon className="size-5" />
-    ) : resolvedTheme === "dark" ? (
-      <MoonStarIcon className="size-5" />
-    ) : (
-      <SunMoonIcon className="size-5" />
-    );
+  const themeIcon = renderThemeIcon(theme, resolvedTheme);
 
   return (
     <DropdownMenu trackingTitle="Theme menu">

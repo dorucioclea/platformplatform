@@ -10,10 +10,10 @@ using Microsoft.Extensions.Options;
 namespace SharedKernel.Authentication.BackOfficeIdentity;
 
 public sealed class BackOfficeIdentityHandler(
-    IOptionsMonitor<BackOfficeIdentityOptions> options,
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder
-) : AuthenticationHandler<BackOfficeIdentityOptions>(options, logger, encoder)
+) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
@@ -53,10 +53,18 @@ public sealed class BackOfficeIdentityHandler(
 
         var oid = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalIdHeader].ToString();
         var payload = Context.Request.Headers[BackOfficeIdentityDefaults.PrincipalPayloadHeader].ToString();
-
-        // The PrincipalNameHeader carries the UPN/email in real Easy Auth. The friendly display name
-        // lives in the payload's OIDC `name` claim, which we prefer when present.
         var principal = string.IsNullOrWhiteSpace(payload) ? null : TryDecodePayload(payload);
+
+        var claims = BuildClaims(headerName, oid, principal);
+        var identity = new ClaimsIdentity(claims, BackOfficeIdentityDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+        var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name);
+        return Task.FromResult(AuthenticateResult.Success(ticket));
+    }
+
+    // The PrincipalNameHeader carries the UPN/email in real Easy Auth. The friendly display name
+    // lives in the payload's OIDC `name` claim, which we prefer when present.
+    private static List<Claim> BuildClaims(string headerName, string oid, BackOfficeClientPrincipal? principal)
+    {
         var displayName = principal?.Claims?
             .FirstOrDefault(claim => claim.Type == BackOfficeIdentityDefaults.NameClaimType)?
             .Value;
@@ -65,30 +73,29 @@ public sealed class BackOfficeIdentityHandler(
             displayName = headerName;
         }
 
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, displayName)
-        };
+        var claims = new List<Claim> { new(ClaimTypes.Name, displayName) };
 
         if (!string.IsNullOrWhiteSpace(oid))
         {
             claims.Add(new Claim(ClaimTypes.NameIdentifier, oid));
         }
 
-        if (principal?.Claims is not null)
+        if (principal?.Claims is null) return claims;
+
+        foreach (var claim in principal.Claims)
         {
-            foreach (var claim in principal.Claims)
-            {
-                if (string.IsNullOrEmpty(claim.Type)) continue;
-                if (claim.Type is ClaimTypes.Name or ClaimTypes.NameIdentifier) continue;
-                if (claim.Type == BackOfficeIdentityDefaults.NameClaimType) continue;
-                claims.Add(new Claim(claim.Type, claim.Value));
-            }
+            if (IsReservedClaim(claim.Type)) continue;
+            claims.Add(new Claim(claim.Type, claim.Value));
         }
 
-        var identity = new ClaimsIdentity(claims, BackOfficeIdentityDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-        var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme.Name);
-        return Task.FromResult(AuthenticateResult.Success(ticket));
+        return claims;
+    }
+
+    private static bool IsReservedClaim(string? claimType)
+    {
+        if (string.IsNullOrEmpty(claimType)) return true;
+        if (claimType is ClaimTypes.Name or ClaimTypes.NameIdentifier) return true;
+        return claimType == BackOfficeIdentityDefaults.NameClaimType;
     }
 
     private static bool PrefersHtml(HttpRequest request)

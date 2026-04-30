@@ -35,10 +35,12 @@ public static class BackOfficeDevStaticProxy
                 AllowAutoRedirect = false,
                 AutomaticDecompression = DecompressionMethods.None,
                 UseCookies = false,
-                // The rsbuild dev server uses a self-signed certificate from Aspire; trust it locally.
+                // The rsbuild dev server uses ASP.NET Core's localhost dev certificate (CN=localhost).
+                // Accept that specific cert even when only the chain is untrusted (self-signed).
                 SslOptions = new SslClientAuthenticationOptions
                 {
-                    RemoteCertificateValidationCallback = (_, _, _, _) => true
+                    RemoteCertificateValidationCallback = (_, certificate, _, errors)
+                        => errors == SslPolicyErrors.None || (errors == SslPolicyErrors.RemoteCertificateChainErrors && certificate?.Subject == "CN=localhost")
                 }
             }
         );

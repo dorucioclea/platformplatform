@@ -72,8 +72,7 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
     private static void HandleCallback(HttpContext context)
     {
         var identityId = context.Request.Query["identity"].ToString();
-        var redirect = context.Request.Query["post_login_redirect_uri"].ToString();
-        if (string.IsNullOrEmpty(redirect) || !ReturnPathHelper.IsValidRelativePath(redirect)) redirect = "/";
+        var redirect = SafeRelativeRedirect(context.Request.Query["post_login_redirect_uri"].ToString());
 
         var identity = MockEasyAuthIdentities.Find(identityId);
         if (identity is null)
@@ -96,9 +95,20 @@ public sealed class MockEasyAuthMiddleware(RequestDelegate next)
     private static void HandleLogout(HttpContext context)
     {
         context.Response.Cookies.Delete(MockEasyAuthCookie.CookieName, new CookieOptions { Secure = true, Path = "/" });
-        var redirect = context.Request.Query["post_logout_redirect_uri"].ToString();
-        if (string.IsNullOrEmpty(redirect) || !ReturnPathHelper.IsValidRelativePath(redirect)) redirect = "/";
+        var redirect = SafeRelativeRedirect(context.Request.Query["post_logout_redirect_uri"].ToString());
         context.Response.Redirect(redirect);
+    }
+
+    // Returns a guaranteed safe in-app redirect target. Anything that is not a single-leading-slash
+    // relative path (rejecting protocol-relative "//", schemes, traversal, backslashes, etc.) falls back
+    // to "/", so the redirect callers below cannot send the browser to an attacker-controlled URL.
+    private static string SafeRelativeRedirect(string candidate)
+    {
+        if (string.IsNullOrEmpty(candidate)) return "/";
+        if (!candidate.StartsWith('/')) return "/";
+        if (candidate.StartsWith("//", StringComparison.Ordinal)) return "/";
+        if (!ReturnPathHelper.IsValidRelativePath(candidate)) return "/";
+        return candidate;
     }
 }
 

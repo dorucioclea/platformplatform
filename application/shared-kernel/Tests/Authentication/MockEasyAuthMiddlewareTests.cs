@@ -11,6 +11,8 @@ namespace SharedKernel.Tests.Authentication;
 
 public sealed class MockEasyAuthMiddlewareTests
 {
+    private static readonly JsonSerializerOptions WebJsonOptions = new(JsonSerializerDefaults.Web);
+
     [Fact]
     public async Task Invoke_WhenLoginPathRequested_ShouldRedirectToMockLoginPage()
     {
@@ -148,7 +150,7 @@ public sealed class MockEasyAuthMiddlewareTests
             {
                 Path = "/api/back-office/me",
                 Method = HttpMethods.Get,
-                Headers = { ["Cookie"] = $"{MockEasyAuthCookie.CookieName}={admin.Id}" }
+                Headers = { Cookie = $"{MockEasyAuthCookie.CookieName}={admin.Id}" }
             }
         };
 
@@ -161,7 +163,7 @@ public sealed class MockEasyAuthMiddlewareTests
 
         var payloadBytes = Convert.FromBase64String(observed[BackOfficeIdentityDefaults.PrincipalPayloadHeader]);
         var json = Encoding.UTF8.GetString(payloadBytes);
-        var principal = JsonSerializer.Deserialize<BackOfficeClientPrincipal>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var principal = JsonSerializer.Deserialize<BackOfficeClientPrincipal>(json, WebJsonOptions);
         principal!.Claims.Should().Contain(c => c.Type == BackOfficeIdentityDefaults.GroupsClaimType && c.Value == "BackOfficeAdmins");
     }
 

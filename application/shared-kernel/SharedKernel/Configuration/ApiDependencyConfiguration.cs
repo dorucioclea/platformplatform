@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -257,7 +258,7 @@ public static class ApiDependencyConfiguration
                         );
                     }
                 )
-                .AddScheme<BackOfficeIdentityOptions, BackOfficeIdentityHandler>(BackOfficeIdentityDefaults.AuthenticationScheme, _ => { });
+                .AddScheme<AuthenticationSchemeOptions, BackOfficeIdentityHandler>(BackOfficeIdentityDefaults.AuthenticationScheme, _ => { });
 
             services.AddSingleton<IAuthorizationHandler, BackOfficeAdminAuthorizationHandler>();
 

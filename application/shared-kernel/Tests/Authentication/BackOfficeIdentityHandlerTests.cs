@@ -14,6 +14,8 @@ namespace SharedKernel.Tests.Authentication;
 
 public sealed class BackOfficeIdentityHandlerTests
 {
+    private static readonly JsonSerializerOptions WebJsonOptions = new(JsonSerializerDefaults.Web);
+
     [Fact]
     public async Task HandleAuthenticate_WhenPrincipalNameHeaderMissing_ShouldReturnNoResult()
     {
@@ -146,14 +148,14 @@ public sealed class BackOfficeIdentityHandlerTests
             RoleType = ClaimTypes.Role,
             Claims = claims
         };
-        var json = JsonSerializer.Serialize(principal, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var json = JsonSerializer.Serialize(principal, WebJsonOptions);
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
     }
 
     private static async Task<(BackOfficeIdentityHandler Handler, HttpContext Context)> CreateHandlerAsync(Action<IHeaderDictionary>? configureHeaders = null)
     {
-        var optionsMonitor = Options.Create(new BackOfficeIdentityOptions());
-        var monitor = new TestOptionsMonitor<BackOfficeIdentityOptions>(optionsMonitor.Value);
+        var optionsMonitor = Options.Create(new AuthenticationSchemeOptions());
+        var monitor = new TestOptionsMonitor<AuthenticationSchemeOptions>(optionsMonitor.Value);
         var handler = new BackOfficeIdentityHandler(monitor, NullLoggerFactory.Instance, UrlEncoder.Default);
 
         var context = new DefaultHttpContext();

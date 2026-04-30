@@ -43,6 +43,13 @@ const zoomLevelOptions = [
   { value: "1.25", label: () => t`Larger` }
 ];
 
+function renderThemeIcon(theme: string | undefined, resolvedTheme: string | undefined) {
+  if (theme === "dark") return <MoonIcon className="size-5" />;
+  if (theme === "light") return <SunIcon className="size-5" />;
+  if (resolvedTheme === "dark") return <MoonStarIcon className="size-5" />;
+  return <SunMoonIcon className="size-5" />;
+}
+
 export function BackOfficeAvatarMenu() {
   const isCollapsed = useContext(collapsedContext);
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -88,23 +95,14 @@ export function BackOfficeAvatarMenu() {
     }
     document.documentElement.style.setProperty("--zoom-level", value);
     setCurrentZoomLevel(value);
-    window.location.reload();
+    globalThis.location.reload();
   };
 
   const handleLogout = () => {
     globalThis.location.href = "/.auth/logout";
   };
 
-  const themeIcon =
-    theme === "dark" ? (
-      <MoonIcon className="size-5" />
-    ) : theme === "light" ? (
-      <SunIcon className="size-5" />
-    ) : resolvedTheme === "dark" ? (
-      <MoonStarIcon className="size-5" />
-    ) : (
-      <SunMoonIcon className="size-5" />
-    );
+  const themeIcon = renderThemeIcon(theme, resolvedTheme);
 
   const triggerClassName = `relative flex h-[var(--control-height)] cursor-pointer items-center gap-0 overflow-visible rounded-md border-0 py-2 font-normal text-sm outline-ring hover:bg-hover-background focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
     isCollapsed ? "ml-[0.5625rem] w-[var(--control-height)] justify-center" : "w-full pr-2 pl-3"

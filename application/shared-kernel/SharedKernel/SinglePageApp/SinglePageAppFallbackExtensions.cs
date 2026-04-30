@@ -203,14 +203,14 @@ public static class SinglePageAppFallbackExtensions
                 // than the SPA fallback so the back-office host's auth-gated fallback below does not turn
                 // unmatched cross-host API calls into 401/302 responses (e.g. /api/account/* on back-office
                 // host must surface 404, mirroring /api/back-office/* on the user-facing host).
-                app.MapMethods("/api/{**rest}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
+                app.MapMethods("/api/{**_}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
                     {
                         context.Response.StatusCode = StatusCodes.Status404NotFound;
                         context.Response.ContentType = "text/plain";
                         return context.Response.WriteAsync("404 Not Found");
                     }
                 ).RequireHost(spa.Host);
-                app.MapMethods("/internal-api/{**rest}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
+                app.MapMethods("/internal-api/{**_}", ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"], context =>
                     {
                         context.Response.StatusCode = StatusCodes.Status404NotFound;
                         context.Response.ContentType = "text/plain";

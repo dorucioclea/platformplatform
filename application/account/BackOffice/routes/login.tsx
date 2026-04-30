@@ -37,16 +37,17 @@ function MockLoginPage() {
   const [selectedId, setSelectedId] = useState<string>("admin");
   const [isPending, setIsPending] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsPending(true);
-    const encodedReturnPath = encodeURIComponent(returnPath);
-    globalThis.location.href = `/.auth/login/aad/callback?identity=${selectedId}&post_login_redirect_uri=${encodedReturnPath}`;
-  };
-
   return (
     <HorizontalHeroLayout>
-      <form onSubmit={handleSubmit} className="flex w-full max-w-[22rem] flex-col items-center gap-4 pt-8 pb-4">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          setIsPending(true);
+          const encodedReturnPath = encodeURIComponent(returnPath);
+          globalThis.location.href = `/.auth/login/aad/callback?identity=${selectedId}&post_login_redirect_uri=${encodedReturnPath}`;
+        }}
+        className="flex w-full max-w-[22rem] flex-col items-center gap-4 pt-8 pb-4"
+      >
         <Link href="/" className="cursor-pointer">
           <img src={logoMarkUrl} className="size-12" alt={t`Logo`} />
         </Link>
