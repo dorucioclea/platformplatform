@@ -129,7 +129,7 @@ jobs:
 
       - name: Publish Back Office Frontend Artifacts
         if: ${{ steps.determine_deployment.outputs.deploy_staging == 'true' }}
-        working-directory: application/account/BackOfficeWebApp
+        working-directory: application/account/BackOffice
         run: npm run publish
 
       - name: Publish API Build
@@ -223,7 +223,7 @@ jobs:
         run: npm run lint
 
       - name: Run Back Office Lint
-        working-directory: application/account/BackOfficeWebApp
+        working-directory: application/account/BackOffice
         run: npm run lint
 
   database-migrations-stage:

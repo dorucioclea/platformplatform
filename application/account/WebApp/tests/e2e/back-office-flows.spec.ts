@@ -14,7 +14,7 @@ test.describe("@smoke", () => {
    * triggers a redirect to the MockEasyAuth impersonation page; selecting an
    * identity sets the DevEasyAuth cookie; and a follow-up request to
    * `/api/back-office/me` returns the impersonated identity's claims. Also
-   * verifies that the back-office host serves the BackOfficeWebApp SPA shell.
+   * verifies that the back-office host serves the BackOffice SPA shell.
    * Production validation (real Easy Auth) is a manual deploy-time check, not
    * covered by this CI suite.
    */

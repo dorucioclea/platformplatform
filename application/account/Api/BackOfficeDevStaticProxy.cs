@@ -8,7 +8,7 @@ namespace Account.Api;
 
 // Non-Azure proxy that forwards back-office static-asset and HMR traffic from the back-office Kestrel
 // listener (BACK_OFFICE_KESTREL_PORT) to the rsbuild dev server (BACK_OFFICE_STATIC_PORT). Azure
-// deployments bake the bundle into BackOfficeWebApp/dist and serve it via UseStaticFiles, so this
+// deployments bake the bundle into BackOffice/dist and serve it via UseStaticFiles, so this
 // proxy is registered only outside Azure. The proxy must run before authentication so anonymous
 // browsers can fetch /static/*, /rsbuild-hmr, and HMR /{filename}.hot-update.{ext} during the SPA
 // bootstrap.

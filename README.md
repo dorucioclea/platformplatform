@@ -529,8 +529,8 @@ PlatformPlatform is a [monorepo](https://en.wikipedia.org/wiki/Monorepo) contain
 │  │   ├─ Workers        # Background workers for long-running tasks and event processing
 │  │   └─ Tests          # Tests for the Api, Core, and Workers
 │  ├─ account            # Federated module for authentication, user and account management; also hosts the back-office surface
-│  │   ├─ WebApp          # React SPA loaded into main via Module Federation
-│  │   ├─ BackOfficeWebApp # React SPA for operations and support, served on its own host (Entra ID Easy Auth)
+│  │   ├─ WebApp         # React SPA loaded into main via Module Federation
+│  │   ├─ BackOffice     # React SPA for operations and support, served on its own host (Entra ID Easy Auth)
 │  │   ├─ Api             # Presentation layer exposing both account and back-office endpoints
 │  │   ├─ Core            # Core business logic, application use cases, and infrastructure
 │  │   ├─ Workers         # Background workers for long-running tasks and event processing

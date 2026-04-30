@@ -162,7 +162,7 @@ public static class SinglePageAppFallbackExtensions
 
         // Registers one MapFallback per host-scoped SPA so a single container can serve multiple SPAs
         // bound to different hostnames (e.g. consolidated account-api hosting account/WebApp on the
-        // user-facing host and account/BackOfficeWebApp on the back-office host). Each entry serves its
+        // user-facing host and account/BackOffice on the back-office host). Each entry serves its
         // own bundle directory, embeds its own userInfo, and is restricted via RequireHost.
         public IApplicationBuilder UseHostScopedSinglePageAppFallback(params HostScopedSinglePageApp[] singlePageApps)
         {

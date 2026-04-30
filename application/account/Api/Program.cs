@@ -71,7 +71,7 @@ app
         ),
         new HostScopedSinglePageApp(
             backOfficeHostname,
-            "BackOfficeWebApp",
+            "BackOffice",
             BuildBackOfficeUserInfo,
             backOfficePublicUrl,
             backOfficeCdnUrl,
