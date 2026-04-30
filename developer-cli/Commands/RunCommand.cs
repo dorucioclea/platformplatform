@@ -375,7 +375,7 @@ public class RunCommand : Command
         AnsiConsole.MarkupLine("[blue]Starting ngrok tunnel...[/]");
 
         // Start ngrok in detached mode
-        var ngrokCommand = $"ngrok http --url={subdomain}.ngrok-free.app https://localhost:9000";
+        var ngrokCommand = $"ngrok http --url={subdomain}.ngrok-free.app https://app.dev.localhost:9000";
 
         // Use shell to handle backgrounding properly on macOS/Linux
         ProcessHelper.StartProcess(

@@ -26,5 +26,6 @@
         <Project Path="shared-webapp\SharedKernel.WebApp.esproj"/>
     </Folder>
     <Project Path="AppGateway\AppGateway.csproj"/>
+    <Project Path="AppGateway.Tests\AppGateway.Tests.csproj"/>
     <Project Path="AppHost\AppHost.csproj"/>
 </Solution>

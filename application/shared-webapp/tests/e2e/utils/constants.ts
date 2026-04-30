@@ -4,7 +4,7 @@
  * Shared constants for End2End tests
  */
 
-const DEFAULT_BASE_URL = "https://localhost:9000";
+const DEFAULT_BASE_URL = "https://app.dev.localhost:9000";
 
 export const isWindows = process.platform === "win32";
 export const isLinux = process.platform === "linux";

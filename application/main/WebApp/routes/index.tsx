@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
                   <Trans>Welcome to PlatformPlatform</Trans>
                 </h1>
                 <p className="text-xl text-muted-foreground md:text-2xl">
-                  {window.location.hostname === "localhost" ? (
+                  {window.location.hostname === "localhost" || window.location.hostname.endsWith(".localhost") ? (
                     <Trans>You successfully installed PlatformPlatform! 🎉</Trans>
                   ) : (
                     <Trans>You successfully deployed PlatformPlatform! 🎉</Trans>
