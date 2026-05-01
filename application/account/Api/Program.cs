@@ -59,9 +59,47 @@ if (SharedInfrastructureConfiguration.IsRunningInAzure)
 // matching requests before the auth-gated SPA fallback.
 app.UseBackOfficeDevStaticProxy(backOfficeHostname);
 
-app
-    .UseApiServices() // Add common configuration for all APIs like Swagger, HSTS, and DeveloperExceptionPage.
-    .UseHostScopedSinglePageAppFallback(
+app.UseApiServices(); // Add common configuration for all APIs like Swagger, HSTS, and DeveloperExceptionPage.
+
+if (SharedInfrastructureConfiguration.IsRunningInAzure)
+{
+    // Production: same image runs in two ACA container apps. The back-office one carries an explicit
+    // env var; account-api does not. Each registers only the SPA it serves, so endpoint matching does
+    // not depend on Request.Host being correctly rewritten from X-Forwarded-Host through the ACA mesh.
+    var isBackOfficeContainer = app.Configuration.GetValue("BackOffice:IsBackOfficeContainer", false);
+
+    if (isBackOfficeContainer)
+    {
+        app.UseSingleSpaFallback(
+            new HostScopedSinglePageApp(
+                backOfficeHostname,
+                "BackOffice",
+                BuildBackOfficeUserInfo,
+                backOfficePublicUrl,
+                backOfficeCdnUrl,
+                BackOfficeIdentityDefaults.PolicyName,
+                unauthenticatedPaths: backOfficeUnauthenticatedPaths
+            )
+        );
+    }
+    else
+    {
+        app.UseSingleSpaFallback(
+            new HostScopedSinglePageApp(
+                appHostname,
+                "WebApp",
+                context => context.RequestServices.GetRequiredService<IExecutionContext>().UserInfo,
+                appPublicUrl,
+                appCdnUrl
+            )
+        );
+    }
+}
+else
+{
+    // Local dev (Aspire): one process serves both SPAs via dual Kestrel listeners; host-scoped
+    // fallback disambiguates because Aspire really delivers requests with the right Host header.
+    app.UseHostScopedSinglePageAppFallback(
         new HostScopedSinglePageApp(
             appHostname,
             "WebApp",
@@ -79,6 +117,7 @@ app
             unauthenticatedPaths: backOfficeUnauthenticatedPaths
         )
     );
+}
 
 await app.RunAsync();
 return;

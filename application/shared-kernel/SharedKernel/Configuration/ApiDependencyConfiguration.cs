@@ -287,28 +287,26 @@ public static class ApiDependencyConfiguration
             // This is required when running behind a reverse proxy like YARP or Azure Container Apps
             return services.Configure<ForwardedHeadersOptions>(options =>
                 {
-                    // X-Forwarded-For surfaces client IPs in logs; X-Forwarded-Proto sets the request
-                    // scheme so generated URLs use https. X-Forwarded-Host remains enabled because the
-                    // SPA-host fallback (UseHostScopedSinglePageAppFallback) RequireHost's against
-                    // Request.Host to pick the right SPA bundle; that one needs the public host to be
-                    // promoted on dev where AppGateway forwards across hostnames. API endpoints no
-                    // longer rely on X-Forwarded-Host -- AppGateway and ACA's internal ingress are the
-                    // trust boundary, so endpoints that previously declared RequireHost have dropped it.
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+                    // X-Forwarded-For surfaces real upstream client IPs in App Insights / logs.
+                    // X-Forwarded-Proto sets Request.Scheme so generated absolute URLs use https.
+                    // X-Forwarded-Host is intentionally NOT enabled: each Azure container app
+                    // registers only the SPA it serves (see Account.Api Program.cs), so endpoint
+                    // matching no longer depends on Request.Host being rewritten from forwarded
+                    // headers, and dev's dual-Kestrel setup delivers the right Host directly.
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                     options.ForwardLimit = 1;
                     // Honor forwarded headers only from trusted proxies. Loopback covers the Aspire
-                    // localhost stack; the ACA Container Apps environment subnet (see
-                    // cloud-infrastructure/modules/virtual-network.bicep, /23) covers AppGateway pods
-                    // forwarding to internal account-api / main-api. Externally-exposed services
-                    // (AppGateway, back-office) sit behind ACA's platform envoy which strips
-                    // client-supplied X-Forwarded-* and sets its own; envoy IPs may live outside the
-                    // VNet subnet, so externally-exposed services may not surface client IP via this
-                    // path -- platform-level Azure logging covers that case. PP-1066: closes the
-                    // wide-open trust risk by narrowing to networks we control.
+                    // localhost stack. RFC 6598 (100.64.0.0/10) covers ACA's mesh envoy, which
+                    // presents from shared address space rather than from the customer VNet -- it is
+                    // the immediate peer for both AppGateway pods and internal account-api / main-api
+                    // pods. Externally-exposed services sit behind that envoy, which strips
+                    // client-supplied X-Forwarded-* and sets its own, so trusting this range does not
+                    // let external callers spoof the headers. PP-1066: keeps trust scoped to networks
+                    // we control.
                     options.KnownIPNetworks.Clear();
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("127.0.0.0"), 8));
                     options.KnownIPNetworks.Add(new IPNetwork(IPAddress.IPv6Loopback, 128));
-                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 23));
+                    options.KnownIPNetworks.Add(new IPNetwork(IPAddress.Parse("100.64.0.0"), 10));
                     options.KnownProxies.Clear();
                 }
             );

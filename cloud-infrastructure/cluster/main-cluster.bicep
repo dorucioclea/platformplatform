@@ -360,7 +360,13 @@ module backOffice '../modules/container-app.bicep' = {
     additionalDomainName: backOfficeDomainName
     external: true
     revisionSuffix: revisionSuffix
-    environmentVariables: accountApiEnvironmentVariables
+    // The back-office container runs the same image as account-api; this flag tells Program.cs to register the BackOffice SPA fallback instead of the user-facing one.
+    environmentVariables: concat(accountApiEnvironmentVariables, [
+      {
+        name: 'BackOffice__IsBackOfficeContainer'
+        value: 'true'
+      }
+    ])
   }
   dependsOn: [accountApi]
 }
