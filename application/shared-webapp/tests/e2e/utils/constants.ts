@@ -28,6 +28,9 @@ function readBasePort(): number {
 
 const BASE_PORT = readBasePort();
 const DEFAULT_BASE_URL = `https://app.dev.localhost:${BASE_PORT}`;
+// Back-office runs on a dedicated Kestrel listener at BASE_PORT + 17 (PortAllocation.BackOfficeApi).
+// AppGateway only routes the user-facing host post host-isolation refactor.
+const DEFAULT_BACK_OFFICE_BASE_URL = `https://back-office.dev.localhost:${BASE_PORT + 17}`;
 
 export const isWindows = process.platform === "win32";
 export const isLinux = process.platform === "linux";
@@ -37,6 +40,15 @@ export const isLinux = process.platform === "linux";
  */
 export function getBaseUrl(): string {
   return process.env.PUBLIC_URL ?? DEFAULT_BASE_URL;
+}
+
+/**
+ * Get the back-office base URL for tests. Back-office is hosted on its own Kestrel
+ * listener (BASE_PORT + 17) — AppGateway is not in the path, mirroring the Azure
+ * post-split topology.
+ */
+export function getBackOfficeBaseUrl(): string {
+  return process.env.BACK_OFFICE_PUBLIC_URL ?? DEFAULT_BACK_OFFICE_BASE_URL;
 }
 
 /**

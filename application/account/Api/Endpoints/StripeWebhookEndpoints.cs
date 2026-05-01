@@ -2,6 +2,7 @@ using Account.Features.Subscriptions.Commands;
 using Account.Features.Subscriptions.Shared;
 using SharedKernel.ApiResults;
 using SharedKernel.Endpoints;
+using SharedKernel.OpenApi;
 using Result = SharedKernel.Cqrs.Result;
 
 namespace Account.Api.Endpoints;
@@ -12,7 +13,7 @@ public sealed class StripeWebhookEndpoints : IEndpoints
 
     public void MapEndpoints(IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup(RoutesPrefix).WithTags("StripeWebhook").RequireAuthorization().ProducesValidationProblem();
+        var group = routes.MapGroup(RoutesPrefix).WithTags("StripeWebhook").WithGroupName(OpenApiDocumentNames.Account).RequireAuthorization().ProducesValidationProblem();
 
         // Two-phase webhook processing with pessimistic locking requires inline logic beyond 3-line convention
         group.MapPost("/", async Task<ApiResult> (HttpRequest request, IMediator mediator, ProcessPendingStripeEvents processPendingStripeEvents) =>

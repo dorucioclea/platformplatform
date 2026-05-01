@@ -1,4 +1,6 @@
+using AppGateway.Filters;
 using Microsoft.OpenApi;
+using SharedKernel.Configuration;
 using Yarp.ReverseProxy.Configuration;
 
 namespace AppGateway.ApiAggregation;
@@ -6,7 +8,8 @@ namespace AppGateway.ApiAggregation;
 public class ApiAggregationService(
     ILogger<ApiAggregationService> logger,
     IProxyConfigProvider proxyConfigProvider,
-    IHttpClientFactory httpClientFactory
+    IHttpClientFactory httpClientFactory,
+    PortAllocation ports
 )
 {
     public async Task<string> GetAggregatedOpenApiJson()
@@ -32,10 +35,14 @@ public class ApiAggregationService(
 
         var proxyConfiguration = proxyConfigProvider.GetConfig();
 
-        foreach (var cluster in proxyConfiguration.Clusters.Where(c => c.ClusterId is "account-api" or "back-office-api"))
+        // account-api emits two OpenAPI documents (account, back-office) post-consolidation; the
+        // user-facing aggregator only surfaces 'account' since back-office endpoints don't appear
+        // in the user-facing contract.
+        var accountCluster = proxyConfiguration.Clusters.FirstOrDefault(c => c.ClusterId == "account-api");
+        if (accountCluster is not null)
         {
-            var openApiDocument = await FetchOpenApiDocument(cluster);
-            CombineOpenApiDocuments(aggregatedOpenApiDocument, openApiDocument);
+            var accountDocument = await FetchOpenApiDocument(accountCluster, "account");
+            CombineOpenApiDocuments(aggregatedOpenApiDocument, accountDocument);
         }
 
         FilterInternalEndpoints(aggregatedOpenApiDocument);
@@ -43,13 +50,14 @@ public class ApiAggregationService(
         return aggregatedOpenApiDocument;
     }
 
-    private async Task<OpenApiDocument> FetchOpenApiDocument(ClusterConfig cluster)
+    private async Task<OpenApiDocument> FetchOpenApiDocument(ClusterConfig cluster, string documentName)
     {
-        // Cluster destinations are already substituted by ClusterDestinationConfigFilter using
-        // PortAllocation in dev and {SERVICE}_API_URL in production.
-        var clusterBasePath = cluster.Destinations!.Single().Value.Address;
+        // IProxyConfigProvider.GetConfig() returns the unfiltered source config (the appsettings.json
+        // placeholder), so resolve the destination ourselves using the same env-var-then-PortAllocation
+        // logic as ClusterDestinationConfigFilter.
+        var clusterBasePath = ClusterDestinationConfigFilter.ResolveClusterAddress(cluster.ClusterId, ports);
 
-        var clusterOpenApiUrl = $"{clusterBasePath}/openapi/v1.json";
+        var clusterOpenApiUrl = $"{clusterBasePath}/openapi/{documentName}.json";
         logger.LogInformation("Fetching OpenAPI document for cluster {ClusterId} from {Url}", cluster.ClusterId, clusterOpenApiUrl);
 
         using var httpClient = httpClientFactory.CreateClient();

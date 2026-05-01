@@ -25,20 +25,6 @@ public sealed class RouteConfigurationTests(AppGatewayApplicationFactory factory
     }
 
     [Theory]
-    [InlineData("back-office-api")]
-    [InlineData("back-office-spa")]
-    [InlineData("back-office-static")]
-    [InlineData("back-office-hmr")]
-    public void BackOfficeRoutes_ShouldDeclareBackOfficeHostnameKey(string routeId)
-    {
-        // Act
-        var route = GetRoute(routeId);
-
-        // Assert
-        route.Metadata.Should().ContainKey("HostnameKey").WhoseValue.Should().Be("BackOffice");
-    }
-
-    [Theory]
     [InlineData("favicon")]
     [InlineData("apple-touch-icon")]
     [InlineData("manifest")]
@@ -76,43 +62,22 @@ public sealed class RouteConfigurationTests(AppGatewayApplicationFactory factory
     }
 
     [Fact]
-    public void BackOfficeSpa_ShouldMatchRootCatchAllPath()
+    public void NoRoute_ShouldReferenceBackOffice()
     {
+        // Arrange -- AppGateway must remain unaware of back-office in both Azure and localhost.
+        // Production routes back-office traffic to its own ACA container app via DNS; localhost
+        // routes it directly to account-api on a dedicated Kestrel port. Either path proves
+        // wrong if AppGateway grows a back-office route by mistake.
+        using var scope = factory.Services.CreateScope();
+        var provider = scope.ServiceProvider.GetRequiredService<IProxyConfigProvider>();
+
         // Act
-        var route = GetRoute("back-office-spa");
+        var routes = provider.GetConfig().Routes;
+        var hostnameKeys = routes.Select(r => r.Metadata?.GetValueOrDefault("HostnameKey")).ToArray();
 
         // Assert
-        route.Match.Path.Should().Be("/{**catch-all}");
-    }
-
-    [Fact]
-    public void BackOfficeStatic_ShouldMatchRootStaticPath()
-    {
-        // Act
-        var route = GetRoute("back-office-static");
-
-        // Assert
-        route.Match.Path.Should().Be("/static/{**catch-all}");
-    }
-
-    [Fact]
-    public void BackOfficeHmr_ShouldMatchRootHmrPath()
-    {
-        // Act
-        var route = GetRoute("back-office-hmr");
-
-        // Assert
-        route.Match.Path.Should().Be("/{filename}.hot-update.{ext}");
-    }
-
-    [Fact]
-    public void BackOfficeApi_ShouldPreserveApiBackOfficePath()
-    {
-        // Act
-        var route = GetRoute("back-office-api");
-
-        // Assert
-        route.Match.Path.Should().Be("/api/back-office/{**catch-all}");
+        routes.Should().NotContain(r => r.RouteId.Contains("back-office", StringComparison.OrdinalIgnoreCase));
+        hostnameKeys.Should().NotContain("BackOffice");
     }
 
     private RouteConfig GetRoute(string routeId)

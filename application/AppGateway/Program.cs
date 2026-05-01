@@ -16,10 +16,17 @@ builder.Services
     .Bind(builder.Configuration.GetSection(HostnamesOptions.SectionName))
     .ValidateDataAnnotations()
     .Validate(o => !string.IsNullOrWhiteSpace(o.App), "Hostnames:App must be configured.")
-    .Validate(o => !string.IsNullOrWhiteSpace(o.BackOffice), "Hostnames:BackOffice must be configured.")
     .ValidateOnStart();
 
-builder.Services.AddSingleton(PortAllocation.Load());
+// PortAllocation reads .workspace/port.txt by walking up to the repo root for .git, which doesn't
+// exist in Azure Container Apps (working dir /app). Locally we load the real allocation; in Azure we
+// register a sentinel so downstream consumers (YARP filters, middleware, HttpClient factories) still
+// resolve the dependency, while their {SERVICE}_API_URL env-var paths take priority over the unused
+// port values.
+builder.Services.AddSingleton(SharedInfrastructureConfiguration.IsRunningInAzure
+    ? new PortAllocation(0)
+    : PortAllocation.Load()
+);
 
 var reverseProxyBuilder = builder.Services
     .AddReverseProxy()
@@ -99,7 +106,11 @@ app.MapReverseProxy();
 app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions, PortAllocation ports) =>
     {
         var hostnames = hostnameOptions.Value;
+        // Port is only meaningful for local Aspire stacks (non-standard ports). In Azure both the
+        // request Host.Port and the sentinel PortAllocation(0) leave us at 0; drop the suffix so the
+        // canonical URLs resolve to the standard https port behind ACA ingress.
         var port = context.Request.Host.Port ?? ports.AppGateway;
+        var portSuffix = port == 0 ? string.Empty : $":{port}";
         var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status404NotFound,
@@ -108,7 +119,7 @@ app.MapFallback((HttpContext context, IOptions<HostnamesOptions> hostnameOptions
             Type = "https://tools.ietf.org/html/rfc9110#section-15.5.5",
             Extensions =
             {
-                ["canonicalUrls"] = new[] { $"https://{hostnames.App}:{port}", $"https://{hostnames.BackOffice}:{port}" }
+                ["canonicalUrls"] = new[] { $"https://{hostnames.App}{portSuffix}" }
             }
         };
 

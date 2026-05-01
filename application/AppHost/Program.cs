@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using AppHost;
 using Azure.Storage.Blobs;
 using Projects;
+using SharedKernel.Authentication.MockEasyAuth;
 using SharedKernel.Configuration;
 
 // Read the port allocation before CreateBuilder so we can set Aspire's dashboard env vars
@@ -19,7 +20,9 @@ var appHostname = builder.Configuration["Hostnames:App"] ?? "app.dev.localhost";
 var backOfficeHostname = builder.Configuration["Hostnames:BackOffice"] ?? "back-office.dev.localhost";
 
 var appBaseUrl = $"https://{appHostname}:{ports.AppGateway}";
-var backOfficeBaseUrl = $"https://{backOfficeHostname}:{ports.AppGateway}";
+// Localhost mirrors the Azure post-split topology: back-office traffic bypasses AppGateway and
+// hits the consolidated account-api process directly on a dedicated Kestrel port.
+var backOfficeBaseUrl = $"https://{backOfficeHostname}:{ports.BackOfficeApi}";
 
 var certificatePassword = await builder.CreateSslCertificateIfNotExists();
 
@@ -84,11 +87,23 @@ var accountWorkers = builder
 var accountApi = builder
     .AddProject<Account_Api>("account-api")
     .WithEnvironment("KESTREL_PORT", ports.AccountApi.ToString())
+    // Second Kestrel port for back-office.dev.localhost so localhost mirrors the Azure post-split
+    // topology where back-office has its own external ingress and AppGateway is not in the path.
+    .WithEnvironment("BACK_OFFICE_KESTREL_PORT", ports.BackOfficeApi.ToString())
+    // BackOfficeDevStaticProxy forwards /static/* and HMR traffic on the back-office Kestrel listener
+    // to the rsbuild dev server. Dev-only; production builds serve a baked bundle from disk.
+    .WithEnvironment("BACK_OFFICE_STATIC_PORT", ports.BackOfficeStatic.ToString())
+    // Back-office bundle URLs target the dedicated Kestrel port directly (no AppGateway).
+    .WithEnvironment("BACK_OFFICE_PUBLIC_URL", backOfficeBaseUrl)
+    .WithEnvironment("BACK_OFFICE_CDN_URL", backOfficeBaseUrl)
     .WithUrlConfiguration(appHostname, ports.AppGateway, "/account")
     // Google OAuth's redirect_uri whitelist requires literal 'localhost', not subdomains like
     // 'app.dev.localhost'. The callback then 301's via LocalhostRedirectMiddleware back to the
     // canonical 'app.dev.localhost' so OAuth-state session cookies flow with the redirected request.
     .WithEnvironment("OAUTH_PUBLIC_URL", "https://localhost:" + ports.AppGateway)
+    .WithEnvironment("Hostnames__App", appHostname)
+    .WithEnvironment("BackOffice__Host", backOfficeHostname)
+    .WithEnvironment("BackOffice__AdminsGroupId", MockEasyAuthIdentities.MockAdminsGroupId)
     .WithReference(accountDatabase)
     .WithReference(azureStorage)
     .WithEnvironment("OAuth__Google__ClientId", googleOAuthClientId)
@@ -100,24 +115,6 @@ var accountApi = builder
     .WithEnvironment("Stripe__PublishableKey", stripePublishableKey)
     .WithEnvironment("Stripe__AllowMockProvider", "true")
     .WaitFor(accountWorkers);
-
-var backOfficeDatabase = postgres
-    .AddDatabase("back-office-database", "back-office");
-
-var backOfficeWorkers = builder
-    .AddProject<BackOffice_Workers>("back-office-workers")
-    .WithEnvironment("KESTREL_PORT", ports.BackOfficeWorkers.ToString())
-    .WithReference(backOfficeDatabase)
-    .WithReference(azureStorage)
-    .WaitFor(backOfficeDatabase);
-
-var backOfficeApi = builder
-    .AddProject<BackOffice_Api>("back-office-api")
-    .WithEnvironment("KESTREL_PORT", ports.BackOfficeApi.ToString())
-    .WithUrlConfiguration(backOfficeHostname, ports.AppGateway, "")
-    .WithReference(backOfficeDatabase)
-    .WithReference(azureStorage)
-    .WaitFor(backOfficeWorkers);
 
 var mainDatabase = postgres
     .AddDatabase("main-database", "main");
@@ -143,13 +140,11 @@ builder
     .AddProject<AppGateway>("app-gateway")
     .WithReference(frontendBuild)
     .WithReference(accountApi)
-    .WithReference(backOfficeApi)
     .WithReference(mainApi)
     .WaitFor(accountApi)
     .WaitFor(frontendBuild)
     .WithEnvironment("ASPNETCORE_URLS", "https://localhost:" + ports.AppGateway)
     .WithEnvironment("Hostnames__App", appHostname)
-    .WithEnvironment("Hostnames__BackOffice", backOfficeHostname)
     .WithUrls(context =>
         {
             // Replace the auto-published "https" endpoint URL with three explicit dashboard URLs.

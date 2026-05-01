@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using SharedKernel.Authentication;
@@ -105,6 +106,19 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
                 builder.ConfigureLogging(logging =>
                     {
                         logging.AddFilter(_ => false); // Suppress all logs during tests
+                    }
+                );
+
+                builder.ConfigureAppConfiguration((_, configuration) =>
+                    {
+                        // Account-api hosts both the user-facing and back-office SPAs scoped via RequireHost
+                        // on each MapFallback. The TestServer sends requests to "localhost" by default, so
+                        // configure Hostnames:App to match for the user-facing SPA shell.
+                        configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                            {
+                                ["Hostnames:App"] = "localhost"
+                            }
+                        );
                     }
                 );
 
@@ -202,8 +216,7 @@ public abstract class EndpointBaseTest<TContext> : IDisposable where TContext : 
             LastName = user.LastName,
             Title = user.Title,
             AvatarUrl = user.Avatar.Url,
-            Locale = user.Locale,
-            IsInternalUser = user.IsInternalUser
+            Locale = user.Locale
         };
     }
 }

@@ -8,16 +8,13 @@ public sealed class HostnamesOptions
 
     public string App { get; init; } = string.Empty;
 
-    public string BackOffice { get; init; } = string.Empty;
-
-    public string[] AllHostnames => [App, BackOffice];
+    public string[] AllHostnames => [App];
 
     public string? Resolve(string hostnameKey)
     {
         return hostnameKey switch
         {
             "App" => App,
-            "BackOffice" => BackOffice,
             _ => null
         };
     }
