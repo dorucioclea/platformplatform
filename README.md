@@ -406,6 +406,14 @@ pp github-config
 
 Select the **Stripe** group and enter the **Publishable Key**, **API Key** (Secret key), and **Webhook Secret** (the signing secret from the webhook endpoint). The subscription feature is automatically enabled on Azure when all three secrets are present in Key Vault.
 
+### Back-office access
+
+The deploy command provisions everything needed for the back-office host automatically: an Entra ID app registration per environment with reply URLs scoped to `back-office.<domain>`, a `<env>-BackOfficeAdmins` security group, and the corresponding GitHub variables consumed by the cluster Bicep. The infrastructure deploy then provisions a dedicated Azure Container App for the back-office subdomain with Easy Auth bound to that Entra app.
+
+To grant a person access to the back-office host, add their Entra user account as a member of the `<env>-BackOfficeAdmins` security group. The platform Easy Auth redirects unauthenticated visitors to Entra ID; once signed in, the platform-issued token carries the group claim that the back-office uses to enforce admin-only endpoints.
+
+If a custom back-office domain is configured, add a DNS CNAME record for `back-office.<domain>` pointing at the cluster's Container Apps environment, the same way you would for `app.<domain>`.
+
 # Multi-Agent Development with Claude Code
 
 PlatformPlatform includes a multi-agent autonomous development workflow powered by [Claude Code Agent Teams](https://code.claude.com/docs/en/agent-teams). Specialized AI agents collaborate to deliver complete features, from requirements to production-ready code, while enforcing enterprise-grade quality standards.
