@@ -207,7 +207,14 @@ public static class SharedInfrastructureConfiguration
                         // We want to view all traces in development
                         if (builder.Environment.IsDevelopment()) tracing.SetSampler(new AlwaysOnSampler());
 
-                        tracing.AddAspNetCoreInstrumentation().AddGrpcClientInstrumentation().AddHttpClientInstrumentation();
+                        tracing
+                            .AddAspNetCoreInstrumentation(options =>
+                                options.EnrichWithHttpRequest = PublicHostTelemetryEnricher.Enrich
+                            )
+                            .AddGrpcClientInstrumentation()
+                            .AddHttpClientInstrumentation(options =>
+                                options.EnrichWithHttpRequestMessage = PublicHostTelemetryEnricher.EnrichOutbound
+                            );
                     }
                 );
 
