@@ -117,8 +117,12 @@ public static class ApiDependencyConfiguration
 
         private IServiceCollection AddApiExecutionContext()
         {
-            // Add the execution context service that will be used to make current user information available to the application
-            return services.AddScoped<IExecutionContext, HttpExecutionContext>();
+            // Add the execution context service that will be used to make current user information available to the application.
+            // OpenTelemetryEnricher depends on IExecutionContext, so it lives here -- AppGateway has no per-request execution
+            // context and only emits transport-level traces via AddSharedTelemetry.
+            return services
+                .AddScoped<IExecutionContext, HttpExecutionContext>()
+                .AddScoped<OpenTelemetryEnricher>();
         }
     }
 

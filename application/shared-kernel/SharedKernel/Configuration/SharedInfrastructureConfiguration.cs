@@ -44,17 +44,29 @@ public static class SharedInfrastructureConfiguration
                 .AddAzureKeyVaultConfiguration()
                 .ConfigureDatabaseContext<T>(connectionName)
                 .AddDefaultBlobStorage()
-                .AddConfigureOpenTelemetry()
-                .AddOpenTelemetryExporters();
+                .AddSharedTelemetry();
 
             builder.Services
-                .AddApplicationInsightsTelemetry()
                 .ConfigureHttpClientDefaults(http =>
                     {
                         http.AddStandardResilienceHandler(); // Turn on resilience by default
                         http.AddServiceDiscovery(); // Turn on service discovery by default
                     }
                 );
+
+            return builder;
+        }
+
+        // Wires OpenTelemetry tracing/logging/metrics, the Azure Monitor exporter, and Application
+        // Insights without requiring a DbContext. AppGateway and other database-less hosts should call
+        // this directly; AddSharedInfrastructure<T> calls it as part of the full bundle.
+        public IHostApplicationBuilder AddSharedTelemetry()
+        {
+            builder
+                .AddConfigureOpenTelemetry()
+                .AddOpenTelemetryExporters();
+
+            builder.Services.AddApplicationInsightsTelemetry();
 
             return builder;
         }
@@ -259,7 +271,6 @@ public static class SharedInfrastructureConfiguration
             services
                 .AddApplicationInsightsTelemetry(applicationInsightsServiceOptions)
                 .AddApplicationInsightsTelemetryProcessor<EndpointTelemetryFilter>()
-                .AddScoped<OpenTelemetryEnricher>()
                 .AddSingleton<ITelemetryInitializer, ApplicationInsightsTelemetryInitializer>();
 
             if (!IsRunningInAzure)
