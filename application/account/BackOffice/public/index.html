@@ -44,7 +44,8 @@
         </script>
         <link href="/favicon.ico" rel="icon" type="image/x-icon" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
-        <link rel="manifest" href="/manifest.json" />
+        <!-- crossorigin="use-credentials" sends the Easy Auth cookie so ACA does not redirect to Entra. -->
+        <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
     </head>
     <body id="back-office">
         <div id="root"></div>
