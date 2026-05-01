@@ -1,6 +1,7 @@
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using SharedKernel.Configuration;
 using SharedKernel.ExecutionContext;
 
 namespace SharedKernel.Telemetry;
@@ -12,6 +13,16 @@ public class ApplicationInsightsTelemetryInitializer : ITelemetryInitializer
 
     public void Initialize(ITelemetry telemetry)
     {
+        // Apply deployment metadata to every telemetry item, including PageViews/Exceptions/Metrics
+        // forwarded from the SPA via /api/track (where IExecutionContext is not always set).
+        if (SharedInfrastructureConfiguration.ServiceVersion is not null)
+        {
+            telemetry.Context.Component.Version = SharedInfrastructureConfiguration.ServiceVersion;
+        }
+
+        AddCustomProperty(telemetry, "deployment.commit_hash", SharedInfrastructureConfiguration.DeploymentCommitHash);
+        AddCustomProperty(telemetry, "deployment.github_action_id", SharedInfrastructureConfiguration.DeploymentGithubActionId);
+
         var executionContext = ExecutionContext.Value;
 
         if (executionContext is null)

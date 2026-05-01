@@ -15,6 +15,7 @@ using Npgsql;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SharedKernel.Integrations.BlobStorage;
 using SharedKernel.Telemetry;
@@ -25,7 +26,36 @@ public static class SharedInfrastructureConfiguration
 {
     public static readonly bool IsRunningInAzure = Environment.GetEnvironmentVariable("AZURE_CLIENT_ID") is not null;
 
+    public static readonly string? ServiceVersion = ResolveServiceVersion();
+
+    // Baked into the assembly at build time via /p:DeploymentCommitHash=<sha>
+    // /p:DeploymentGithubActionId=<run_id> in the deployment workflows. The Directory.Build.props at
+    // /application emits AssemblyMetadata attributes from those properties so each artifact carries
+    // its own provenance -- pulling and running the image anywhere produces the same telemetry stamp.
+    public static readonly string? DeploymentCommitHash = GetAssemblyMetadata("DeploymentCommitHash");
+
+    public static readonly string? DeploymentGithubActionId = GetAssemblyMetadata("DeploymentGithubActionId");
+
     public static DefaultAzureCredential DefaultAzureCredential => GetDefaultAzureCredential();
+
+    private static string? ResolveServiceVersion()
+    {
+        // The .NET SDK auto-appends "+<source revision id>" to AssemblyInformationalVersion when
+        // building inside a git checkout. Strip it so application_Version stays clean (the commit
+        // SHA travels separately as the deployment.commit_hash custom dimension).
+        var informationalVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        if (informationalVersion is null) return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+
+        var plusIndex = informationalVersion.IndexOf('+');
+        return plusIndex < 0 ? informationalVersion : informationalVersion[..plusIndex];
+    }
+
+    private static string? GetAssemblyMetadata(string key)
+    {
+        return Assembly.GetEntryAssembly()?
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .FirstOrDefault(a => a.Key == key)?.Value;
+    }
 
     private static DefaultAzureCredential GetDefaultAzureCredential()
     {
@@ -65,6 +95,17 @@ public static class SharedInfrastructureConfiguration
             builder
                 .AddConfigureOpenTelemetry()
                 .AddOpenTelemetryExporters();
+
+            // Register service.version AFTER UseAzureMonitor so it wins the resource merge against
+            // the Azure Container Apps detector, which otherwise sets service.version to the revision
+            // name. The deployment.* tags travel as activity tags via DeploymentTagsProcessor since
+            // Azure Monitor only surfaces a fixed set of resource attributes on AppRequests.
+            if (ServiceVersion is not null)
+            {
+                builder.Services.AddOpenTelemetry().ConfigureResource(resource =>
+                    resource.AddAttributes([new KeyValuePair<string, object>("service.version", ServiceVersion)])
+                );
+            }
 
             builder.Services.AddApplicationInsightsTelemetry();
 
@@ -220,6 +261,7 @@ public static class SharedInfrastructureConfiguration
                         if (builder.Environment.IsDevelopment()) tracing.SetSampler(new AlwaysOnSampler());
 
                         tracing
+                            .AddProcessor(new DeploymentTagsProcessor())
                             .AddAspNetCoreInstrumentation(options =>
                                 options.EnrichWithHttpRequest = PublicHostTelemetryEnricher.Enrich
                             )
