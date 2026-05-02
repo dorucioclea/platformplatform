@@ -291,7 +291,7 @@ public static class ApiDependencyConfiguration
             // This is required when running behind a reverse proxy like YARP or Azure Container Apps
             return services.Configure<ForwardedHeadersOptions>(options =>
                 {
-                    // X-Forwarded-For surfaces real upstream client IPs in App Insights / logs.
+                    // X-Forwarded-For surfaces real upstream client IPs in Application Insights / logs.
                     // X-Forwarded-Proto sets Request.Scheme so generated absolute URLs use https.
                     // X-Forwarded-Host is intentionally NOT enabled: each Azure container app
                     // registers only the SPA it serves (see Account.Api Program.cs), so endpoint

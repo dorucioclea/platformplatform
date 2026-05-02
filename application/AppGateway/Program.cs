@@ -12,7 +12,7 @@ using SharedKernel.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Wire OpenTelemetry, Azure Monitor exporter, and Application Insights so AppGateway requests,
-// dependencies, traces, and logs surface in the cluster's App Insights workspace alongside the APIs.
+// dependencies, traces, and logs surface in the cluster's Application Insights workspace alongside the APIs.
 builder.AddSharedTelemetry();
 
 builder.Services

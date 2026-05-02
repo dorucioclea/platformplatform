@@ -9,7 +9,7 @@ namespace SharedKernel.Telemetry;
 //     internal ACA FQDNs, defaulted to https in Azure, with the redundant default :443/:80 stripped.
 //     AppGateway shows the public hostname; backend services show "<service>.internal", which is the
 //     conventional layered view in distributed tracing.
-//   - client.address comes from X-Forwarded-For so the App Insights geo lookup resolves to the real
+//   - client.address comes from X-Forwarded-For so the Application Insights geo lookup resolves to the real
 //     browser IP instead of the Azure Container Apps ingress envoy in the cluster's region. The header
 //     is set by the external ingress, which strips client-supplied values, so spoofing is not possible.
 public static class PublicHostTelemetryEnricher
@@ -27,7 +27,7 @@ public static class PublicHostTelemetryEnricher
             activity.SetTag("url.full", fullUrl);
             // Older semconv tag still consumed by some Azure Monitor mappings.
             activity.SetTag("http.url", fullUrl);
-            // null skips server.port so App Insights' URL builder doesn't render the redundant :443/:80.
+            // null skips server.port so Application Insights' URL builder doesn't render the redundant :443/:80.
             activity.SetTag("server.port", explicitPort);
         }
 

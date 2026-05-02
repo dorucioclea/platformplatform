@@ -5,7 +5,7 @@ namespace SharedKernel.Telemetry;
 
 // Stamps deployment provenance (commit SHA + GitHub Actions run ID, baked into the assembly via
 // AssemblyMetadata attributes) onto every span on start. Activity tags surface as customDimensions
-// on AppRequests / AppDependencies in App Insights -- arbitrary OpenTelemetry resource attributes
+// on AppRequests / AppDependencies in Application Insights -- arbitrary OpenTelemetry resource attributes
 // are stored in an internal hash table and aren't queryable, so resource attributes don't work for
 // this. The values are read once at startup; this class does no per-request work beyond two SetTag
 // calls.

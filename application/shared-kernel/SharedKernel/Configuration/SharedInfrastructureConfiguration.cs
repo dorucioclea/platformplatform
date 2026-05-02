@@ -263,7 +263,15 @@ public static class SharedInfrastructureConfiguration
                         tracing
                             .AddProcessor(new DeploymentTagsProcessor())
                             .AddAspNetCoreInstrumentation(options =>
-                                options.EnrichWithHttpRequest = PublicHostTelemetryEnricher.Enrich
+                                {
+                                    options.EnrichWithHttpRequest = PublicHostTelemetryEnricher.Enrich;
+                                    // 4xx is a client problem (validation, auth, missing route); the server handled it.
+                                    // Mark OK so Application Insights doesn't flag it; only 5xx is a real server error.
+                                    options.EnrichWithHttpResponse = (activity, response) =>
+                                    {
+                                        if (response.StatusCode is >= 400 and < 500) activity.SetStatus(ActivityStatusCode.Ok);
+                                    };
+                                }
                             )
                             .AddGrpcClientInstrumentation()
                             .AddHttpClientInstrumentation(options =>
