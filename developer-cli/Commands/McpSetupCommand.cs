@@ -124,12 +124,12 @@ public class McpSetupCommand : Command
 
     private static AzureAccount[] LoadAzureSubscriptions()
     {
-        var json = RunAz("account list -o json", redirectOutput: true, exitOnError: false);
+        var json = RunAz("account list -o json", true, false);
         if (string.IsNullOrWhiteSpace(json) || !json.TrimStart().StartsWith('['))
         {
             AnsiConsole.MarkupLine("[blue]Logging in to Azure...[/]");
-            RunAz("login", redirectOutput: false);
-            json = RunAz("account list -o json", redirectOutput: true);
+            RunAz("login", false);
+            json = RunAz("account list -o json", true);
         }
 
         var accounts = JsonSerializer.Deserialize<AzureAccount[]>(json, JsonOptions);
@@ -163,8 +163,8 @@ public class McpSetupCommand : Command
                     {
                         var json = RunAz(
                             $"resource list --subscription {subscription.Id} --resource-type microsoft.insights/components -o json",
-                            redirectOutput: true,
-                            exitOnError: false
+                            true,
+                            false
                         );
 
                         if (!string.IsNullOrWhiteSpace(json) && json.TrimStart().StartsWith('['))
@@ -175,13 +175,14 @@ public class McpSetupCommand : Command
                                 foreach (var rawResource in rawResources)
                                 {
                                     results.Add(new AppInsightsResource(
-                                        rawResource.Name,
-                                        rawResource.ResourceGroup,
-                                        subscription.Id,
-                                        subscription.Name,
-                                        subscription.TenantId,
-                                        subscription.TenantDefaultDomain ?? subscription.TenantId
-                                    ));
+                                            rawResource.Name,
+                                            rawResource.ResourceGroup,
+                                            subscription.Id,
+                                            subscription.Name,
+                                            subscription.TenantId,
+                                            subscription.TenantDefaultDomain ?? subscription.TenantId
+                                        )
+                                    );
                                 }
                             }
                         }
@@ -247,12 +248,12 @@ public class McpSetupCommand : Command
               [bold]Enable the hook?[/]
               """
             : $"""
-              [yellow]Your [blue]core.hooksPath[/] is currently set to [bold]{current}[/].[/]
+               [yellow]Your [blue]core.hooksPath[/] is currently set to [bold]{current}[/].[/]
 
-              Setting it to [blue]developer-cli/git-hooks[/] would overwrite your existing config so the committed [blue]post-checkout[/] hook can copy [blue].claude/settings.local.json[/] into new worktrees.
+               Setting it to [blue]developer-cli/git-hooks[/] would overwrite your existing config so the committed [blue]post-checkout[/] hook can copy [blue].claude/settings.local.json[/] into new worktrees.
 
-              [bold]Overwrite?[/]
-              """;
+               [bold]Overwrite?[/]
+               """;
 
         if (!AnsiConsole.Confirm(prompt.Replace("\n\n", "\n")))
         {
