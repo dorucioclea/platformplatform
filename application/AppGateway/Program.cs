@@ -72,6 +72,9 @@ builder.Services.AddHttpClient("Account", (sp, client) =>
         client.BaseAddress = !string.IsNullOrEmpty(productionUrl)
             ? new Uri(productionUrl)
             : new Uri($"https://localhost:{ports.AccountApi}");
+        // Allow cold-start refreshes to complete and deliver the new Set-Cookie back to the browser.
+        // The browser has no client-side timeout, so the gateway is the authoritative timeout for refresh.
+        client.Timeout = TimeSpan.FromSeconds(60);
     }
 );
 
