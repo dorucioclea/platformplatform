@@ -136,4 +136,4 @@ public class BadBuildCommand : Command
 
 ## Troubleshooting
 
-The CLI is self-compiling, so to build use `build(cli=true)`. If you ever see `Failed to publish new CLI`, retry the command - the publish step rarely fails (e.g. a transient I/O error on the staged artifact swap).
+The CLI is self-compiling, so to build use `build(cli=true)`. After detecting changes, the CLI rebuilds, atomically swaps the new binary into place, and re-runs the original command automatically.

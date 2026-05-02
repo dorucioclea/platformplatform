@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Cryptography;
 using DeveloperCli.Utilities;
 using Spectre.Console;
@@ -8,6 +9,11 @@ public static class ChangeDetection
 {
     internal static void EnsureCliIsCompiledWithLatestChanges(bool isDebugBuild)
     {
+        // The auto-rerun child process inherits this env var so it does not re-detect the same
+        // change the parent just published (which would print "Changes detected..." twice if the
+        // parent's hash save failed silently).
+        if (Environment.GetEnvironmentVariable(Configuration.SkipChangeDetectionEnvironmentVariable) == "1") return;
+
         if (Configuration.IsWindows)
         {
             // In Windows, the process is renamed to .previous.exe when updating to unblock publishing of new executable
@@ -60,13 +66,22 @@ public static class ChangeDetection
 
         PublishDeveloperCli(currentHash);
 
-        // When running in debug mode, we want to avoid restarting the process
+        // When running in debug mode (via `dotnet run`), the parent process manages execution -- don't re-run.
         if (isDebugBuild) return;
 
-        AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine("[green]The CLI was successfully updated. Please rerun the command.[/]");
-        AnsiConsole.WriteLine();
-        Environment.Exit(0);
+        // Re-execute the original command against the freshly published binary so the user does not
+        // have to retype it. Environment.ProcessPath now resolves to the new binary on disk; the old
+        // executable's inode is still mapped into this process and gets cleaned up on exit.
+        var startInfo = new ProcessStartInfo { FileName = Environment.ProcessPath!, UseShellExecute = false };
+        startInfo.Environment[Configuration.SkipChangeDetectionEnvironmentVariable] = "1";
+        foreach (var arg in Environment.GetCommandLineArgs().Skip(1))
+        {
+            startInfo.ArgumentList.Add(arg);
+        }
+
+        using var process = Process.Start(startInfo)!;
+        process.WaitForExit();
+        Environment.Exit(process.ExitCode);
     }
 
     private static void TryDeletePreviousExe(string previousExePath)
@@ -105,6 +120,35 @@ public static class ChangeDetection
         {
             // Ignore - file will be cleaned up next time
         }
+    }
+
+    // Best-effort hash save. JsonSerializer can lazily load System.IO.Pipelines on the post-publish
+    // path; if that fails, swallow it -- the binary is in place and the next invocation will
+    // republish if the hash was not saved this time.
+    private static void SaveCurrentHash(string currentHash)
+    {
+        try
+        {
+            var configurationSetting = Configuration.GetConfigurationSetting();
+            configurationSetting.Hash = currentHash;
+            Configuration.SaveConfigurationSetting(configurationSetting);
+        }
+        catch
+        {
+            // Ignore -- the hash will be re-saved next time the CLI publishes successfully.
+        }
+    }
+
+    // Wraps ProcessHelper.ExecuteQuietly so the noisy dotnet build/publish output stays hidden on
+    // success but is printed in full when the underlying process fails -- giving the user something
+    // actionable instead of a silent failure.
+    private static void RunQuietlyOrExit(string command, string workingDirectory)
+    {
+        var result = ProcessHelper.ExecuteQuietly(command, workingDirectory);
+        if (result.Success) return;
+
+        AnsiConsole.WriteLine(result.CombinedOutput);
+        Environment.Exit(result.ExitCode);
     }
 
     private static FileStream WaitForBuildLock(string lockFilePath)
@@ -173,10 +217,10 @@ public static class ChangeDetection
                 return;
             }
 
-            AnsiConsole.MarkupLine("[green]Changes detected, rebuilding and publishing new CLI.[/]");
+            AnsiConsole.MarkupLine("[yellow]Changes detected, rebuilding CLI...[/]");
 
             // Build the project before renaming exe on Windows
-            ProcessHelper.StartProcess("dotnet build", Configuration.CliFolder);
+            RunQuietlyOrExit("dotnet build", Configuration.CliFolder);
 
             if (Configuration.IsWindows)
             {
@@ -185,7 +229,7 @@ public static class ChangeDetection
                 renamedExecutablePath = currentExecutablePath.Replace(".exe", ".previous.exe");
                 File.Move(currentExecutablePath, renamedExecutablePath, true);
 
-                ProcessHelper.StartProcess(
+                RunQuietlyOrExit(
                     $"dotnet publish DeveloperCli.csproj -o \"{Configuration.PublishFolder}\"",
                     Configuration.CliFolder
                 );
@@ -201,14 +245,21 @@ public static class ChangeDetection
                 tempPublishFolder = Path.Combine(Configuration.PublishFolder, $".publish-{Configuration.AliasName}.tmp");
                 if (Directory.Exists(tempPublishFolder)) Directory.Delete(tempPublishFolder, recursive: true);
 
-                ProcessHelper.StartProcess(
+                RunQuietlyOrExit(
                     $"dotnet publish DeveloperCli.csproj -o \"{tempPublishFolder}\"",
                     Configuration.CliFolder
                 );
 
+                // Save the hash before moving files into place: while the old single-file bundle is
+                // still mapped at PublishFolder, the runtime can resolve any assembly JsonSerializer
+                // lazily pulls in (notably System.IO.Pipelines). Once the move replaces pp on disk,
+                // a fresh assembly load fails because the runtime tries to read it from the new
+                // bundle layout.
+                SaveCurrentHash(currentHash);
+
                 // Skip the config file -- the publish folder is shared across multiple project CLIs
                 // and each one keeps its config (e.g. pp.json) here. Publish does not emit it, but
-                // we exclude it defensively so a future change cannot clobber the hash.
+                // we exclude it defensively so a future change cannot clobber the hash we just saved.
                 var configFileName = $"{Configuration.AliasName}.json";
                 foreach (var publishedFile in Directory.EnumerateFiles(tempPublishFolder))
                 {
@@ -223,19 +274,11 @@ public static class ChangeDetection
                 tempPublishFolder = null;
             }
 
-            // Hash save is best-effort. The new binary is already in place, so a failure here only
-            // means the next invocation re-publishes (slow but not broken). The known offender is
-            // JsonSerializer lazily loading System.IO.Pipelines.dll on the post-publish path -- by
-            // swallowing it here, the user's command still proceeds via the auto-rerun below.
-            try
+            if (Configuration.IsWindows)
             {
-                var configurationSetting = Configuration.GetConfigurationSetting();
-                configurationSetting.Hash = currentHash;
-                Configuration.SaveConfigurationSetting(configurationSetting);
-            }
-            catch
-            {
-                // Ignore -- the hash will be re-saved next time the CLI publishes successfully.
+                // On Windows the new pp.exe is already in place by here -- save with the same
+                // best-effort wrapper for symmetry.
+                SaveCurrentHash(currentHash);
             }
         }
         catch (Exception e)
