@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using Account.Database;
 using Account.Features.Billing.Commands;
 using Account.Features.Subscriptions.Domain;
-using Account.Integrations.Stripe;
 using FluentAssertions;
 using SharedKernel.Tests;
 using SharedKernel.Tests.Persistence;
@@ -11,15 +10,8 @@ using Xunit;
 
 namespace Account.Tests.Billing;
 
-[Collection("StripeTests")]
 public sealed class RetryPendingInvoicePaymentTests : EndpointBaseTest<AccountDbContext>
 {
-    protected override void Dispose(bool disposing)
-    {
-        MockStripeClient.ResetOverrides();
-        base.Dispose(disposing);
-    }
-
     [Fact]
     public async Task RetryPendingInvoicePayment_WhenOpenInvoicePaid_ShouldReturnPaid()
     {
@@ -31,7 +23,7 @@ public sealed class RetryPendingInvoicePaymentTests : EndpointBaseTest<AccountDb
                 ("current_period_end", TimeProvider.GetUtcNow().AddDays(30))
             ]
         );
-        MockStripeClient.SimulateOpenInvoice = true;
+        StripeState.SimulateOpenInvoice = true;
 
         // Act
         var response = await AuthenticatedOwnerHttpClient.PostAsync("/api/account/billing/retry-pending-invoice", null);

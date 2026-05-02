@@ -38,7 +38,7 @@ public static class Configuration
             services.AddHttpClient<GravatarClient>(client =>
                 {
                     client.BaseAddress = new Uri("https://gravatar.com/");
-                    client.Timeout = TimeSpan.FromSeconds(5);
+                    client.Timeout = TimeSpan.FromSeconds(2);
                 }
             );
 
@@ -53,6 +53,7 @@ public static class Configuration
             services.AddScoped<OAuthProviderFactory>();
 
             services.AddMemoryCache();
+            services.AddSingleton<MockStripeState>();
             services.AddKeyedScoped<IStripeClient, StripeClient>("stripe");
             services.AddKeyedScoped<IStripeClient, MockStripeClient>("mock-stripe");
             services.AddKeyedScoped<IStripeClient, UnconfiguredStripeClient>("unconfigured-stripe");
