@@ -136,11 +136,4 @@ public class BadBuildCommand : Command
 
 ## Troubleshooting
 
-The CLI is self-compiling, so to build use `build(cli=true)`. Sometimes you will get errors like:
-
-```bash
-Failed to publish new CLI. Please run 'dotnet run' to fix. Could not load file or assembly 'System.IO.Pipelines,
-Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. The system cannot find the
-```
-
-Just retry the command and it should work.
+The CLI is self-compiling, so to build use `build(cli=true)`. If you ever see `Failed to publish new CLI`, retry the command - the publish step rarely fails (e.g. a transient I/O error on the staged artifact swap).

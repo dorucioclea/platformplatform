@@ -161,6 +161,7 @@ public static class ChangeDetection
 
         var currentExecutablePath = Environment.ProcessPath!;
         var renamedExecutablePath = "";
+        string? tempPublishFolder = null;
 
         try
         {
@@ -183,21 +184,64 @@ public static class ChangeDetection
                 // We rename the current executable to .previous.exe to unblock publishing of new executable
                 renamedExecutablePath = currentExecutablePath.Replace(".exe", ".previous.exe");
                 File.Move(currentExecutablePath, renamedExecutablePath, true);
+
+                ProcessHelper.StartProcess(
+                    $"dotnet publish DeveloperCli.csproj -o \"{Configuration.PublishFolder}\"",
+                    Configuration.CliFolder
+                );
+            }
+            else
+            {
+                // macOS/Linux: publish to a temp folder next to the publish folder, then atomically
+                // rename each artifact into place. Overwriting the running CLI's single-file bundle
+                // in place can leave the in-flight process unable to lazily load bundled assemblies
+                // from a partially written file, surfacing as "Could not load file or assembly
+                // System.IO.Pipelines". POSIX rename(2) atomically swaps paths; the running process
+                // keeps its inode.
+                tempPublishFolder = Path.Combine(Configuration.PublishFolder, $".publish-{Configuration.AliasName}.tmp");
+                if (Directory.Exists(tempPublishFolder)) Directory.Delete(tempPublishFolder, recursive: true);
+
+                ProcessHelper.StartProcess(
+                    $"dotnet publish DeveloperCli.csproj -o \"{tempPublishFolder}\"",
+                    Configuration.CliFolder
+                );
+
+                // Skip the config file -- the publish folder is shared across multiple project CLIs
+                // and each one keeps its config (e.g. pp.json) here. Publish does not emit it, but
+                // we exclude it defensively so a future change cannot clobber the hash.
+                var configFileName = $"{Configuration.AliasName}.json";
+                foreach (var publishedFile in Directory.EnumerateFiles(tempPublishFolder))
+                {
+                    var fileName = Path.GetFileName(publishedFile);
+                    if (string.Equals(fileName, configFileName, StringComparison.OrdinalIgnoreCase)) continue;
+
+                    var targetPath = Path.Combine(Configuration.PublishFolder, fileName);
+                    File.Move(publishedFile, targetPath, overwrite: true);
+                }
+
+                Directory.Delete(tempPublishFolder, recursive: true);
+                tempPublishFolder = null;
             }
 
-            // Call "dotnet publish" to create a new executable
-            ProcessHelper.StartProcess(
-                $"dotnet publish DeveloperCli.csproj -o \"{Configuration.PublishFolder}\"",
-                Configuration.CliFolder
-            );
-
-            var configurationSetting = Configuration.GetConfigurationSetting();
-            configurationSetting.Hash = currentHash;
-            Configuration.SaveConfigurationSetting(configurationSetting);
+            // Hash save is best-effort. The new binary is already in place, so a failure here only
+            // means the next invocation re-publishes (slow but not broken). The known offender is
+            // JsonSerializer lazily loading System.IO.Pipelines.dll on the post-publish path -- by
+            // swallowing it here, the user's command still proceeds via the auto-rerun below.
+            try
+            {
+                var configurationSetting = Configuration.GetConfigurationSetting();
+                configurationSetting.Hash = currentHash;
+                Configuration.SaveConfigurationSetting(configurationSetting);
+            }
+            catch
+            {
+                // Ignore -- the hash will be re-saved next time the CLI publishes successfully.
+            }
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[red]Failed to publish new CLI. Please run 'dotnet run' to fix. {e.Message}[/]");
+            AnsiConsole.MarkupLine($"[red]Failed to publish new CLI. Please run 'dotnet run' to fix.[/]");
+            AnsiConsole.WriteException(e);
             Environment.Exit(0);
         }
         finally
@@ -207,6 +251,12 @@ public static class ChangeDetection
                 // If the publish command did not successfully create a new executable, put back the old one to ensure
                 // the CLI is still working
                 File.Move(renamedExecutablePath, currentExecutablePath);
+            }
+
+            if (tempPublishFolder is not null && Directory.Exists(tempPublishFolder))
+            {
+                try { Directory.Delete(tempPublishFolder, recursive: true); }
+                catch { /* best-effort cleanup */ }
             }
         }
     }
