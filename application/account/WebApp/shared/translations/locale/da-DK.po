@@ -1172,9 +1172,6 @@ msgstr "Faste kolonner"
 msgid "For detailed compliance certifications and audit reports, visit Microsoft's official resources."
 msgstr "For detaljerede certificeringer og revisionsrapporter, besøg Microsofts officielle ressourcer."
 
-msgid "For your protection, you have been logged out. Please log in again to continue."
-msgstr "For din beskyttelse er du blevet logget ud. Log venligst ind igen for at fortsætte."
-
 msgid "Forward"
 msgstr "Fremad"
 
@@ -2240,9 +2237,6 @@ msgstr "Søgedrevet menu med grupperede elementer og inline-genveje. Pak den ind
 msgid "Secondary"
 msgstr "Sekundær"
 
-msgid "Security alert"
-msgstr "Sikkerhedsadvarsel"
-
 msgid "Security, privacy, and compliance information"
 msgstr "Sikkerheds-, privatlivs- og overholdelsesoplysninger"
 
@@ -2931,9 +2925,6 @@ msgstr "Advarselsbesked"
 
 msgid "We detected a security issue with your login attempt. Please try again."
 msgstr "Vi opdagede et sikkerhedsproblem med dit loginforsøg. Prøv venligst igen."
-
-msgid "We detected suspicious activity on your account. Someone may have attempted to take over your session."
-msgstr "Vi opdagede mistænkelig aktivitet på din konto. Nogen kan have forsøgt at overtage din session."
 
 msgid "What's at the market this week"
 msgstr "Hvad er på markedet denne uge"
