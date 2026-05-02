@@ -81,12 +81,12 @@ jobs:
         if: ${{ steps.determine_deployment.outputs.deploy_staging == 'true' }}
         working-directory: application
         run: |
-          dotnet build PlatformPlatform.slnx --no-restore /p:Version=${{ steps.generate_version.outputs.version }} /p:DeploymentCommitHash=${{ github.sha }} /p:DeploymentGithubActionId=${{ github.run_id }}
+          dotnet build PlatformPlatform.slnx --no-restore /p:Version=${{ steps.generate_version.outputs.version }} /p:DeploymentCommitHash=${{ github.event.pull_request.head.sha || github.sha }} /p:DeploymentGithubActionId=${{ github.run_id }}
       - name: Publish Build
         if: ${{ steps.determine_deployment.outputs.deploy_staging == 'true' }}
         working-directory: application
         run: |
-          dotnet publish ./AppGateway/AppGateway.csproj --no-restore --configuration Release --output ./AppGateway/publish /p:Version=${{ steps.generate_version.outputs.version }} /p:DeploymentCommitHash=${{ github.sha }} /p:DeploymentGithubActionId=${{ github.run_id }}
+          dotnet publish ./AppGateway/AppGateway.csproj --no-restore --configuration Release --output ./AppGateway/publish /p:Version=${{ steps.generate_version.outputs.version }} /p:DeploymentCommitHash=${{ github.event.pull_request.head.sha || github.sha }} /p:DeploymentGithubActionId=${{ github.run_id }}
       - name: Save Artifacts
         if: ${{ steps.determine_deployment.outputs.deploy_staging == 'true' }}
         uses: actions/upload-artifact@v7
