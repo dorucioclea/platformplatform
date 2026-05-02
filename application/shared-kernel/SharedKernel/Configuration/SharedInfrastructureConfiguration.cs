@@ -79,7 +79,21 @@ public static class SharedInfrastructureConfiguration
             builder.Services
                 .ConfigureHttpClientDefaults(http =>
                     {
-                        http.AddStandardResilienceHandler(); // Turn on resilience by default
+                        // 45s total request timeout for API-tier outbound calls (account-api, main-api).
+                        // Sized to absorb a downstream container scale-from-zero: ~31s P99 container start
+                        // plus ~12s P99 first-request slowness on account-api. Still tight enough to defend
+                        // against slow-loris / DoS upstream. AppGateway sets a longer per-client timeout for
+                        // its account-api refresh path because that path must deliver the rotated Set-Cookie
+                        // to the browser.
+                        // Retries are disabled: most 5xx errors during a bad release are persistent, so
+                        // retrying triples the load during incidents and inflates the failure rate in
+                        // Application Insights. Real transient errors are rare in same-region traffic.
+                        http.AddStandardResilienceHandler(options =>
+                            {
+                                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(45);
+                                options.Retry.ShouldHandle = _ => ValueTask.FromResult(false);
+                            }
+                        );
                         http.AddServiceDiscovery(); // Turn on service discovery by default
                     }
                 );
